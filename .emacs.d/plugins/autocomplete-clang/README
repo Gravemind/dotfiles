@@ -1,0 +1,27 @@
+This is a completion source for the ``auto-complete`` bundle of Emacs. It act as an backend providing completion hints to auto-complete bundle by capturing Clang's output.
+
+Install Prerequisite
+====================
+
+* auto-complete
+
+auto-complete-clang act as a completion-source of auto-complete. So make sure you have installed auto-complete bundle for Emacs, and well configured it. For further information please refer to ``http://cx4a.org/software/auto-complete/``
+
+* clang (>= 2.9 for C++ support)
+
+Make sure clang is installed, since auto-complete-clang relies on Clang's ``code-completion-at`` parameter. 
+
+You can get clang's svn trunk from here: ``http://clang.llvm.org/get_started.html#build``
+
+Install and Configure
+=====================
+
+Put the ``auto-complete-clang.el`` file under the ``load-path``, so that Emacs will find it using ``(require 'auto-complete-clang)``. Since auto-complete-clang will invoke a clang process everytime a completion is triggered, you have to do some tweak for auto-complete. Please refer to the ``sample-config.el``.
+
+A sample configure file for c-basic-mode is given, please refer to ``sample-config.el``.
+
+Author
+======
+
+Mike Qin <mikeandmore@gmail.com>
+

@@ -1,0 +1,16 @@
+
+
+ArchLinux
+
+Windows manager:
+    i3-wm
+
+Shell:
+    zsh
+
+Editor:
+    emacs 23.2
+
+misc:
+    urxvt
+    git

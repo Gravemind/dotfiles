@@ -1,0 +1,7 @@
+#name: int main(ac, av) { ... }
+# --
+int main(int ac, char *av[])
+{
+    $0
+    return 0;
+}
