@@ -21,6 +21,8 @@ COL_BG1='#222222'
 PICO=4
 PBAR=5
 
+SEPARATOR="^fg($COL_BG1) ~ "
+
 MEM_AWKS='/^MemTotal:/   {mtotal=$2};
 /^MemFree:/    {mfree=$2};
 /^Cached:/    {mcached=$2};
@@ -68,10 +70,28 @@ do
 	fi
 
 	#
-	# DATE
+	# CMUS
 	#
-	OUT+=" ^fg($COL_FG)"
-	OUT+=`date -d "now" "+%H:%M %d/%m"`
+	CMUSON=`cmus-remote -C status 2> /dev/null`
+	if [ "$CMUSON" = "" ]
+	then
+		OUT+="^fg($COL_BG1)^p(;+$PICO)^i(${ICONPATH}/stop.xbm)^p(;-$PICO)"
+	else
+		CMUSST=`cmus-remote -C status | grep "status" | cut -d " " -f 2`
+		if [ "$CMUSST" != "playing" ]
+		then
+			OUT+="^fg($COL_FAIL)^p(;+$PICO)^i(${ICONPATH}/pause.xbm)^p(;-$PICO)"
+		else
+			OUT+="^fg($COL_OK)^p(;+$PICO)^i(${ICONPATH}/play.xbm) ^i(${ICONPATH}/note.xbm)^p(;-$PICO) ^fg($COL_FG1)"
+			OUT+=`cmus-remote -C status | grep "tag artist" | cut -d " " -f 3-10`
+			OUT+=" ^fg($COL_FG2)"
+			OUT+=`cmus-remote -C status | grep "tag title" | cut -d " " -f 3-10`
+		fi
+	fi
+
+	OUT+="^pa(1113)"
+
+	OUT+="$SEPARATOR"
 
 	#
 	# NETWORK
@@ -80,27 +100,12 @@ do
     TXBN=`cat /sys/class/net/${INTERFACE}/statistics/tx_bytes`
     RXR=$(printf "%4d" $(echo "($RXBN - $RXB) / 1024" | bc) )
     TXR=$(printf "%4d" $(echo "($TXBN - $TXB) / 1024" | bc) )
-    OUT+=" ^fg($COL_FG1)${RXR}^fg($COL_OK)^p(2;+$PICO)^i(${ICONPATH}/net_down_01.xbm)^p(;-$PICO)"
+    OUT+="^fg($COL_FG1)${RXR}^fg($COL_OK)^p(2;+$PICO)^i(${ICONPATH}/net_down_01.xbm)^p(;-$PICO)"
 	OUT+=" ^fg($COL_FG1)${TXR}^fg($COL_FAIL)^p(2;+$PICO)^i(${ICONPATH}/net_up_02.xbm)^p(;-$PICO)"
     RXB=$RXBN
 	TXB=$TXBN
 
-	#
-	# TEMPERATURES
-	#
-	if [ $i -eq 0 ]
-	then
-		SENSORS=`sensors`
-		OUT_TEMP=""
-		OUT_TEMP+=" ^fg($COL_FG1)^p(2;+$PICO)^i(${ICONPATH}/temp.xbm)^p(5;-$PICO)"
-		OUT_TEMP+=$(print_temp "$SENSORS" "MB Temp")
-		OUT_TEMP+="^p(5)"
-		OUT_TEMP+=$(print_temp "$SENSORS" "Core")
-		OUT_TEMP+="^p(5)"
-		OUT_TEMP+=$(print_temp "$SENSORS" "temp1")
-		OUT_TEMP+=" "
-	fi
-	OUT+="$OUT_TEMP"
+	OUT+="$SEPARATOR"
 
 	#
 	# CPUs
@@ -121,33 +126,42 @@ do
 	fi
 	OUT+="$OUT_MEM"
 
+	OUT+="$SEPARATOR"
+
+	#
+	# TEMPERATURES
+	#
+	if [ $i -eq 0 ]
+	then
+		SENSORS=`sensors`
+		OUT_TEMP=""
+		OUT_TEMP+="^fg($COL_FG1)^p(2;+$PICO)^i(${ICONPATH}/temp.xbm)^p(5;-$PICO)"
+		OUT_TEMP+=$(print_temp "$SENSORS" "MB Temp")
+		OUT_TEMP+="^p(5)"
+		OUT_TEMP+=$(print_temp "$SENSORS" "Core")
+		OUT_TEMP+="^p(5)"
+		OUT_TEMP+=$(print_temp "$SENSORS" "temp1")
+		OUT_TEMP+=""
+	fi
+	OUT+="$OUT_TEMP"
+
+	OUT+="$SEPARATOR"
+
 	#
 	# VOLUME
 	#
-	OUT+=" ^fg($COL_FG2)^p(;+$PICO)^i(${ICONPATH}/spkr_01.xbm)^p(;-$PICO)^p(5;+$PBAR)"
+	OUT+="^fg($COL_FG2)^p(;+$PICO)^i(${ICONPATH}/spkr_01.xbm)^p(;-$PICO)^p(5;+$PBAR)"
 	VOL=`amixer get Master | grep -Eo "[0-9]+%"`
-
-	#
-	# CMUS
-	#
 	OUT+=$(echo $VOL | $DBAR -ss 1 -sw 2 -w 50 -h 6 -fg $COL_FG2 -bg $COL_BG1 )
 	OUT+="^p(;-$PBAR)"
-	CMUSON=`cmus-remote -C status 2> /dev/null`
-	if [ "$CMUSON" = "" ]
-	then
-		OUT+=" ^fg($COL_BG1)^p(;+$PICO)^i(${ICONPATH}/stop.xbm)^p(;-$PICO)"
-	else
-		CMUSST=`cmus-remote -C status | grep "status" | cut -d " " -f 2`
-		if [ "$CMUSST" != "playing" ]
-		then
-			OUT+=" ^fg($COL_FAIL)^p(;+$PICO)^i(${ICONPATH}/pause.xbm)^p(;-$PICO)"
-		else
-			OUT+=" ^fg($COL_OK)^p(;+$PICO)^i(${ICONPATH}/play.xbm) ^i(${ICONPATH}/note.xbm)^p(;-$PICO) ^fg($COL_FG1)"
-			OUT+=`cmus-remote -C status | grep "tag artist" | cut -d " " -f 3-10`
-			OUT+=" ^fg($COL_FG2)"
-			OUT+=`cmus-remote -C status | grep "tag title" | cut -d " " -f 3-10`
-		fi
-	fi
+
+	OUT+="$SEPARATOR"
+
+	#
+	# DATE
+	#
+	OUT+="^fg($COL_FG)"
+	OUT+=`date -d "now" "+%d/%m %H:%M"`
 
 	#
 	# print all
