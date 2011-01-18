@@ -7,26 +7,26 @@ font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # Use Mouse+Mod1 to drag floating windows to their wanted position
 floating_modifier Mod4
 
-# Fullscreen (Mod1+f)
+# Fullscreen (Mod4+f)
 bind Mod4+41 f
 
-# Stacking (Mod1+h)
+# Stacking (Mod4+h)
 bind Mod4+43 s
 
-# Tabbed (Mod1+w)
+# Tabbed (Mod4+w)
 bind Mod4+25 T
 
-# Default (Mod1+e)
+# Default (Mod4+e)
 bind Mod4+26 d
 
-# Toggle tiling/floating of the current window (Mod1+Shift+Space)
+# Toggle tiling/floating of the current window (Mod4+Shift+Space)
 bind Mod4+Shift+65 t
 
 # Go into the tiling layer / floating layer, depending on whether
 # the current window is tiling / floating (Mod1+t)
 bind Mod4+28 focus ft
 
-# Focus (Mod1+j/k/l/;)
+# Focus (Mod4+j/k/l/;)
 bind Mod4+44 h
 bind Mod4+45 j
 bind Mod4+46 k
@@ -36,6 +36,17 @@ bindsym Mod4+Left h
 bindsym Mod4+Down j
 bindsym Mod4+Up k
 bindsym Mod4+Right l
+
+# Focus Container (Mod4+Mod1+j/k/l/;)
+bind Mod4+Mod1+44 wch
+bind Mod4+Mod1+45 wcj
+bind Mod4+Mod1+46 wck
+bind Mod4+Mod1+47 wcl
+# (alternatively, you can use the cursor keys:)
+bindsym Mod4+Mod1+Left wch
+bindsym Mod4+Mod1+Down wcj
+bindsym Mod4+Mod1+Up wck
+bindsym Mod4+Mod1+Right wcl
 
 # Snap (Mod1+Control+j/k/l/;)
 bind Mod4+Control+44 sh
@@ -59,11 +70,16 @@ bindsym Mod4+Shift+Down mj
 bindsym Mod4+Shift+Up mk
 bindsym Mod4+Shift+Right ml
 
-# Move Container (Mod3+Shift+j/k/l/;)
-bind Mod3+Shift+44 wcmh
-bind Mod3+Shift+45 wcmj
-bind Mod3+Shift+46 wcmk
-bind Mod3+Shift+47 wcml
+# Move Container (Mod1+Shift+j/k/l/;)
+bind Mod4+Mod1+Shift+44 wcmh
+bind Mod4+Mod1+Shift+45 wcmj
+bind Mod4+Mod1+Shift+46 wcmk
+bind Mod4+Mod1+Shift+47 wcml
+# (alternatively, you can use the cursor keys:)
+bindsym Mod4+Mod1+Shift+Left wcmh
+bindsym Mod4+Mod1+Shift+Down wcmj
+bindsym Mod4+Mod1+Shift+Up wcmk
+bindsym Mod4+Mod1+Shift+Right wcml
 
 # Workspaces (Mod1+1/2/…)
 bind Mod4+10 1
@@ -119,13 +135,13 @@ workspace 4 output DVI-0
 workspace 5 output DVI-0
 workspace 6 output HDMI-0
 workspace 7 output HDMI-0
-workspace 8 output HDMI-0 IM
-workspace 9 output HDMI-0 Music
+workspace 8 output HDMI-0 Music
+workspace 9 output HDMI-0 IM
 workspace 10 output HDMI-0 Right
 
 assign chromium 3
-assign qnetsoul ~8
-assign pidgin ~8
+assign qnetsoul ~9
+assign pidgin ~9
 assign dia ~
 assign gimp ~
 
