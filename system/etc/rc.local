@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+# /etc/rc.local: Local multi-user startup script.
+#
+
+echo auto > /sys/class/drm/card0/device/power_profile
+/usr/bin/numlockx on
