@@ -87,6 +87,7 @@ alias shut='sudo shutdown -h now'
 alias reboot='sudo reboot'
 alias cat='cat -v'
 alias cemacs='emacs -nw'
+alias disk='df -h --total'
 alias rchttpd='sudo /etc/rc.d/httpd'
 alias rcmysqld='sudo /etc/rc.d/mysqld'
 
