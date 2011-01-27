@@ -21,4 +21,4 @@ plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/kde/bin:/usr/bin/vendor_perl:/usr/bin/core_perl:/opt/qt/bin:/home/jo/bin:/home/jo/bin
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/kde/bin:/usr/bin/vendor_perl:/usr/bin/core_perl:/opt/qt/bin:/home/jo/bin
