@@ -6,8 +6,8 @@ LOW_SLEEP=5
 ICONPATH=$HOME/.dzen
 INTERFACE=eth0
 
-RXB=`cat /sys/class/net/${INTERFACE}/statistics/rx_bytes`
-TXB=`cat /sys/class/net/${INTERFACE}/statistics/tx_bytes`
+RX_TOTAL_OLD=`cat /sys/class/net/${INTERFACE}/statistics/rx_bytes`
+TX_TOTAL_OLD=`cat /sys/class/net/${INTERFACE}/statistics/tx_bytes`
 
 COL_FG='#7799AA'
 COL_FG1='#557799'
@@ -96,14 +96,20 @@ do
 	#
 	# NETWORK
 	#
-    RXBN=`cat /sys/class/net/${INTERFACE}/statistics/rx_bytes`
-    TXBN=`cat /sys/class/net/${INTERFACE}/statistics/tx_bytes`
-    RXR=$(printf "%4d" $(echo "($RXBN - $RXB) / 1024" | bc) )
-    TXR=$(printf "%4d" $(echo "($TXBN - $TXB) / 1024" | bc) )
-    OUT+="^fg($COL_FG1)${RXR}^fg($COL_OK)^p(2;+$PICO)^i(${ICONPATH}/net_down_01.xbm)^p(;-$PICO)"
-	OUT+=" ^fg($COL_FG1)${TXR}^fg($COL_FAIL)^p(2;+$PICO)^i(${ICONPATH}/net_up_02.xbm)^p(;-$PICO)"
-    RXB=$RXBN
-	TXB=$TXBN
+    RX_TOTAL=`cat /sys/class/net/${INTERFACE}/statistics/rx_bytes`
+    TX_TOTAL=`cat /sys/class/net/${INTERFACE}/statistics/tx_bytes`
+	RX_BYTES=$(echo "($RX_TOTAL - $RX_TOTAL_OLD)" | bc)
+	TX_BYTES=$(echo "($TX_TOTAL - $TX_TOTAL_OLD)" | bc)
+    RX=$(printf "%4d" $(echo "$RX_BYTES / 1024" | bc) )
+    TX=$(printf "%4d" $(echo "$TX_BYTES / 1024" | bc) )
+	XCOL="$COL_OK";
+	if [ $RX_BYTES = "0" ]; then XCOL="$COL_FG3"; fi
+	OUT+="^fg($COL_FG1)${RX}^fg($XCOL)^p(2;+$PICO)^i(${ICONPATH}/net_down_01.xbm)^p(;-$PICO)"
+	XCOL="$COL_FAIL";
+	if [ $TX_BYTES = "0" ]; then XCOL="$COL_FG3"; fi
+	OUT+=" ^fg($COL_FG1)${TX}^fg($XCOL)^p(2;+$PICO)^i(${ICONPATH}/net_up_02.xbm)^p(;-$PICO)"
+    RX_TOTAL_OLD=$RX_TOTAL
+    TX_TOTAL_OLD=$TX_TOTAL
 
 	OUT+="$SEPARATOR"
 

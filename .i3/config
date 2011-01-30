@@ -1,125 +1,152 @@
 # This configuration uses Mod1 and Mod3. Make sure they are mapped properly using xev(1)
 # and xmodmap(1). Usually, Mod1 is Alt (Alt_L) and Mod3 is Windows (Super_L)
 
+set $ModKey Mod4
+set $resize_size 100
+
+set $screen_1 DVI-0
+set $screen_2 HDMI-0
+
+
 # ISO 10646 = Unicode
 font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 
 # Use Mouse+Mod1 to drag floating windows to their wanted position
-floating_modifier Mod4
+floating_modifier $ModKey
 
-# Fullscreen (Mod4+f)
-bind Mod4+41 f
+# Fullscreen ($ModKey+f)
+bind $ModKey+41 f
 
-# Stacking (Mod4+h)
-bind Mod4+43 s
+# Stacking ($ModKey+h)
+bind $ModKey+43 s
 
-# Tabbed (Mod4+w)
-bind Mod4+25 T
+# Tabbed ($ModKey+w)
+bind $ModKey+25 T
 
-# Default (Mod4+e)
-bind Mod4+26 d
+# Default ($ModKey+e)
+bind $ModKey+26 d
 
-# Toggle tiling/floating of the current window (Mod4+Shift+Space)
-bind Mod4+Shift+65 t
+# Toggle tiling/floating of the current window ($ModKey+Shift+Space)
+bind $ModKey+Shift+65 t
 
 # Go into the tiling layer / floating layer, depending on whether
 # the current window is tiling / floating (Mod1+t)
-bind Mod4+28 focus ft
+bind $ModKey+28 focus ft
 
-# Focus (Mod4+j/k/l/;)
-bind Mod4+44 h
-bind Mod4+45 j
-bind Mod4+46 k
-bind Mod4+47 l
+# Focus ($ModKey+j/k/l/;)
+bind $ModKey+44 h
+bind $ModKey+45 j
+bind $ModKey+46 k
+bind $ModKey+47 l
 # (alternatively, you can use the cursor keys:)
-bindsym Mod4+Left h
-bindsym Mod4+Down j
-bindsym Mod4+Up k
-bindsym Mod4+Right l
+bindsym $ModKey+Left h
+bindsym $ModKey+Down j
+bindsym $ModKey+Up k
+bindsym $ModKey+Right l
 
-# Focus Container (Mod4+Mod1+j/k/l/;)
-bind Mod4+Mod1+44 wch
-bind Mod4+Mod1+45 wcj
-bind Mod4+Mod1+46 wck
-bind Mod4+Mod1+47 wcl
+# Focus Container ($ModKey+Mod1+j/k/l/;)
+bind $ModKey+Mod1+44 wch
+bind $ModKey+Mod1+45 wcj
+bind $ModKey+Mod1+46 wck
+bind $ModKey+Mod1+47 wcl
 # (alternatively, you can use the cursor keys:)
-bindsym Mod4+Mod1+Left wch
-bindsym Mod4+Mod1+Down wcj
-bindsym Mod4+Mod1+Up wck
-bindsym Mod4+Mod1+Right wcl
+bindsym $ModKey+Mod1+Left wch
+bindsym $ModKey+Mod1+Down wcj
+bindsym $ModKey+Mod1+Up wck
+bindsym $ModKey+Mod1+Right wcl
 
 # Snap (Mod1+Control+j/k/l/;)
-bind Mod4+Control+44 sh
-bind Mod4+Control+45 sj
-bind Mod4+Control+46 sk
-bind Mod4+Control+47 sl
+bind $ModKey+Control+44 sh
+bind $ModKey+Control+45 sj
+bind $ModKey+Control+46 sk
+bind $ModKey+Control+47 sl
 # (alternatively, you can use the cursor keys:)
-bindsym Mod4+Control+Left sh
-bindsym Mod4+Control+Down sj
-bindsym Mod4+Control+Up sk
-bindsym Mod4+Control+Right sl
+bindsym $ModKey+Control+Left sh
+bindsym $ModKey+Control+Down sj
+bindsym $ModKey+Control+Up sk
+bindsym $ModKey+Control+Right sl
 
 # Move (Mod1+Shift+j/k/l/;)
-bind Mod4+Shift+44 mh
-bind Mod4+Shift+45 mj
-bind Mod4+Shift+46 mk
-bind Mod4+Shift+47 ml
+bind $ModKey+Shift+44 mh
+bind $ModKey+Shift+45 mj
+bind $ModKey+Shift+46 mk
+bind $ModKey+Shift+47 ml
 # (alternatively, you can use the cursor keys:)
-bindsym Mod4+Shift+Left mh
-bindsym Mod4+Shift+Down mj
-bindsym Mod4+Shift+Up mk
-bindsym Mod4+Shift+Right ml
+bindsym $ModKey+Shift+Left mh
+bindsym $ModKey+Shift+Down mj
+bindsym $ModKey+Shift+Up mk
+bindsym $ModKey+Shift+Right ml
 
 # Move Container (Mod1+Shift+j/k/l/;)
-bind Mod4+Mod1+Shift+44 wcmh
-bind Mod4+Mod1+Shift+45 wcmj
-bind Mod4+Mod1+Shift+46 wcmk
-bind Mod4+Mod1+Shift+47 wcml
+bind $ModKey+Mod1+Shift+44 wcmh
+bind $ModKey+Mod1+Shift+45 wcmj
+bind $ModKey+Mod1+Shift+46 wcmk
+bind $ModKey+Mod1+Shift+47 wcml
 # (alternatively, you can use the cursor keys:)
-bindsym Mod4+Mod1+Shift+Left wcmh
-bindsym Mod4+Mod1+Shift+Down wcmj
-bindsym Mod4+Mod1+Shift+Up wcmk
-bindsym Mod4+Mod1+Shift+Right wcml
+bindsym $ModKey+Mod1+Shift+Left wcmh
+bindsym $ModKey+Mod1+Shift+Down wcmj
+bindsym $ModKey+Mod1+Shift+Up wcmk
+bindsym $ModKey+Mod1+Shift+Right wcml
 
-# Workspaces (Mod1+1/2/…)
-bind Mod4+10 1
-bind Mod4+11 2
-bind Mod4+12 3
-bind Mod4+13 4
-bind Mod4+14 5
-bind Mod4+15 6
-bind Mod4+16 7
-bind Mod4+17 8
-bind Mod4+18 9
-bind Mod4+19 10
+mode "resize" {
+
+        bindsym Left resize left -$resize_size
+        bindsym Shift+Left resize left +$resize_size
+
+        bindsym Down resize bottom +$resize_size
+        bindsym Shift+Down resize bottom -$resize_size
+
+        bindsym Up resize top -$resize_size
+        bindsym Shift+Up resize top +$resize_size
+
+        bindsym Right resize right +$resize_size
+        bindsym Shift+Right resize right -$resize_size
+
+        bind 9 mode default
+        bind 36 mode default
+}
+# Enter resize mode
+bindsym $ModKey+s mode resize
+
+# Workspaces ($ModKey+1/2/…)
+bind $ModKey+10 1
+bind $ModKey+11 2
+bind $ModKey+12 3
+bind $ModKey+13 4
+bind $ModKey+14 5
+bind $ModKey+15 6
+bind $ModKey+16 7
+bind $ModKey+17 8
+bind $ModKey+18 9
+bind $ModKey+19 10
 
 # Move to Workspaces
-bind Mod4+Shift+10 m1
-bind Mod4+Shift+11 m2
-bind Mod4+Shift+12 m3
-bind Mod4+Shift+13 m4
-bind Mod4+Shift+14 m5
-bind Mod4+Shift+15 m6
-bind Mod4+Shift+16 m7
-bind Mod4+Shift+17 m8
-bind Mod4+Shift+18 m9
-bind Mod4+Shift+19 m10
+bind $ModKey+Shift+10 m1
+bind $ModKey+Shift+11 m2
+bind $ModKey+Shift+12 m3
+bind $ModKey+Shift+13 m4
+bind $ModKey+Shift+14 m5
+bind $ModKey+Shift+15 m6
+bind $ModKey+Shift+16 m7
+bind $ModKey+Shift+17 m8
+bind $ModKey+Shift+18 m9
+bind $ModKey+Shift+19 m10
 
-# Mod4+Enter starts a new terminal
-bind Mod4+36 exec urxvt
+# $ModKey+Enter starts a new terminal
+bind $ModKey+36 exec urxvt
 
-# Mod4+Shift+q kills the current client
-bind Mod4+Shift+24 kill
+# $ModKey+Shift+q kills the current client
+bind $ModKey+Shift+24 kill
 
-# Mod4+v starts dmenu and launches the selected application
+# $ModKey+v starts dmenu and launches the selected application
 # for now, we don’t have a launcher of our own.
-bind Mod4+55 exec ~/.i3/dmenu.sh
+bind $ModKey+55 exec ~/.i3/dmenu.sh
 
-# Mod4+Shift+e exits i3
-bind Mod4+Shift+26 exit
+# $ModKey+Shift+e exits i3
+bind $ModKey+Shift+26 exit
 
-# Mod4+Shift+r restarts i3 inplace
-bind Mod4+Shift+27 restart
+# $ModKey+Shift+r restarts i3 inplace
+bind $ModKey+Shift+27 restart
 
 # The IPC interface allows programs like an external workspace bar
 # (i3-wsbar) or i3-msg (can be used to "remote-control" i3) to work.
@@ -128,29 +155,28 @@ ipc-socket ~/.i3/ipc.sock
 focus_follows_mouse no
 new_window bp
 
-workspace 1 output DVI-0 Home
-workspace 2 output DVI-0 Work
-workspace 3 output DVI-0 wWw
-workspace 4 output DVI-0
-workspace 5 output DVI-0
-workspace 6 output HDMI-0
-workspace 7 output HDMI-0
-workspace 8 output HDMI-0 Music
-workspace 9 output HDMI-0 IM
-workspace 10 output HDMI-0 Right
+workspace 1 output $screen_1 Home
+workspace 2 output $screen_1 Work
+workspace 3 output $screen_1 wWw
+workspace 4 output $screen_1
+workspace 5 output $screen_1
+workspace 6 output $screen_2
+workspace 7 output $screen_2
+workspace 8 output $screen_2 Music
+workspace 9 output $screen_2 IM
+workspace 10 output $screen_2 Right
 
 assign chromium 3
-assign qnetsoul ~9
-assign pidgin ~9
-assign dia ~
+assign qnetsoul 9
+assign pidgin 9
 assign gimp ~
 
-bind Mod4+52 exec i3lock -c 111111
-bindsym Mod4+End exec cmus-remote -u
-bindsym Mod4+Prior exec cmus-remote -r
-bindsym Mod4+Next exec cmus-remote -n
-bind Mod4+20 exec amixer sset Master 2%-
-bind Mod4+21 exec amixer sset Master 2%+
+bind $ModKey+52 exec i3lock -c 111111
+bindsym $ModKey+End exec cmus-remote -u
+bindsym $ModKey+Prior exec cmus-remote -r
+bindsym $ModKey+Next exec cmus-remote -n
+bind $ModKey+20 exec amixer sset Master 2%-
+bind $ModKey+21 exec amixer sset Master 2%+
 
 workspace_bar no
 
