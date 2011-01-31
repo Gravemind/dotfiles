@@ -180,5 +180,5 @@ bind $ModKey+21 exec amixer sset Master 2%+
 
 workspace_bar no
 
-exec ~/.i3/wsbar.sh
+exec ~/.i3/bar/bar.py
 exec ~/.i3/bg.sh

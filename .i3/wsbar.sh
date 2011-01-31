@@ -57,6 +57,7 @@ do
 	# this command takes 1 seconde
 	CPU=`mpstat -P ALL 1 1 | tail -n 3`
 	CPU1=$(echo "$CPU" | grep " all " | awk '{print $11}')
+	# CPU1=50
 
 	OUT=""
 
