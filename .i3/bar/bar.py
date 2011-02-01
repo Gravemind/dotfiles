@@ -171,7 +171,7 @@ try:
 
         d.fg('fg').a(datetime.datetime.now().strftime('%d/%m %H:%M'))
 
-        os.write(fd_w, str(d.out + '\n').encode('UTF-8'))
+        os.write(fd_w, str(d.out + '\n').encode('ASCII'))
 
         delay2 = timer.elapsed_time()
         if delay2 < time_rate:

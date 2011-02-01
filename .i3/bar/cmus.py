@@ -19,7 +19,7 @@ class CMus:
 
     def update(self):
         self.status = {}
-        out = subprocess.getoutput(self.command)
+        out = subprocess.getoutput(self.command+' | cat -v')
         for line in out.splitlines():
             word = get_next_token(line, ' ')
             word = line[:len(word)]

@@ -1,21 +1,33 @@
-*background:  #101010
+*background:  #202020
 *foreground:  #BBBBBB
-*color0:      #000000
-*color1:      #9e1828
-*color2:      #aece92
-*color3:      #968a38
-*color4:      #414171
-*color5:      #963c59
-*color6:      #418179
-*color7:      #bebebe
-*color8:      #666666
-*color9:      #cf6171
-*color10:     #c5f779
-*color11:     #fff796
-*color12:     #4186be
-*color13:     #cf9ebe
-*color14:     #71bebe
-*color15:     #ffffff
+
+! Daisuke
+*background: #000000
+*foreground: #dcdccc
+!black
+*color0: #1e1e1e
+*color8: #707070
+!red
+*color1: #b04020
+*color9: #dd4010
+!green
+*color2: #afd700
+*color10: #daff30
+!yellow
+*color3: #f7cf0a
+*color11: #fce70d
+!blue
+*color4: #3060aa
+*color12: #6099dd
+!magenta
+*color5: #d6156c
+*color13: #fe4365
+!cyan
+*color6: #a0c2de
+*color14: #c9dee8
+!white
+*color7: #808080
+*color15: #b0b0b0
 
 URxvt.buffered:			true
 URxvt.cursorColor:		yellow
@@ -24,5 +36,6 @@ URxvt.font:				xft:DejaVu Sans Mono:pixelsize=12
 URxvt.scrollBar_right:	false
 URxvt.scrollBar:		false
 
-urxvt*transparent: true
-urxvt*shading: 15
+URxvt.transparent: true
+URxvt.tintColor: #000000
+URxvt.shading: 15
