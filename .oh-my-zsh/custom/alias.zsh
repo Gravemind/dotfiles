@@ -11,7 +11,7 @@ alias e='exit'
 alias j='jobs'
 
 alias clean='find . \( -name "*~" -or -name "#*#" \) -print -delete'
-alias fclean='find . \( -name "*~" -or -name "#*#" -or -name "*.o" \) -print -delete'
+alias fclean='find . \( -name "*~" -or -name "#*#" -or -name "*.o" -or -name "*.pyc" \) -print -delete'
 alias cleansvn='find . -name ".svn" -execdir rm -rf {} \;'
 alias cleandhcp='sudo rm -rf /var/lib/dhcp3/*.lease'
 

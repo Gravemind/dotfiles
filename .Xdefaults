@@ -29,13 +29,12 @@
 *color7: #808080
 *color15: #b0b0b0
 
-URxvt.buffered:			true
-URxvt.cursorColor:		yellow
-URxvt.underlineColor:	#FFFFFF
-URxvt.font:				xft:DejaVu Sans Mono:pixelsize=12
-URxvt.scrollBar_right:	false
-URxvt.scrollBar:		false
+urxvt.buffered:			true
+urxvt.cursorColor:		yellow
+urxvt.underlineColor:	#FFFFFF
+urxvt.font:				xft:DejaVu Sans Mono:pixelsize=12
+urxvt.scrollBar_right:	false
+urxvt.scrollBar:		false
 
-URxvt.transparent: true
-URxvt.tintColor: #000000
-URxvt.shading: 15
+urxvt.transparent: true
+urxvt.shading: 15
