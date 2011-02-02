@@ -81,6 +81,14 @@ def disp_temp(d, *temps):
         d.fg('green')
     d.a(str(temp))
 
+def disp_error(title, d = None):
+    if d != None:
+        d.fg('red').a('ERROR ', title)
+    print('{:-<50}{:->20}'
+          .format('ERROR--' + title,
+                  datetime.datetime.now().strftime('%m/%d-%H:%M:%S')))
+    traceback.print_exception(*sys.exc_info())
+    print('{:-^70}'.format(''))
 
 try:
 
@@ -102,70 +110,93 @@ try:
 
         d.reset()
 
-        if len(cmus.status) == 0:
-            d.fg('bg1').p(0, pico).i('stop').p(0, -pico)
-        elif cmus.status['status'] != 'playing':
-            d.fg('red').p(0, pico).i('pause').p(0, -pico)
-        else:
-            d.fg('green').p(0, pico).i('play').a(' ').i('music').p(0, -pico)
-            d.fg('fg1').a(' ', cmus.status['artist'])
-            d.fg('fg2').a(' ', cmus.status['title'])
+        try:
+            if len(cmus.status) == 0:
+                d.fg('bg1').p(0, pico).i('stop').p(0, -pico)
+            elif cmus.status['status'] != 'playing':
+                d.fg('red').p(0, pico).i('pause').p(0, -pico)
+            else:
+                d.fg('green').p(0, pico).i('play').a(' ').i('music').p(0, -pico)
+                d.fg('fg1')
+                if 'artist' in cmus.status and 'title' in cmus.status:
+                    d.a(' ', cmus.status['artist']).fg('fg2').a(' ', cmus.status['title'])
+                elif 'file' in cmus.status:
+                    d.a(' ', cmus.status['file'])
+                else:
+                    d.a(' ', '???')
+        except:
+            disp_error('cmus', d)
 
         d.pa('1113')
         d.a('   ')
 
-        d.fg('fg1').a(str(net.rx_bytes).rjust(4))
-        if net.rx_bit == 0:
-            d.fg('fg3')
-        else:
-            d.fg('green')
-        d.p(2, pico).i('down').p(0, -pico)
-        d.a(' ')
-        d.fg('fg1').a(str(net.tx_bytes).rjust(4))
-        if net.tx_bit == 0:
-            d.fg('fg3')
-        else:
-            d.fg('red')
-        d.p(2, pico).i('up').p(0, -pico)
+        try:
+            d.fg('fg1').a(str(net.rx_bytes).rjust(4))
+            if net.rx_bit == 0:
+                d.fg('fg3')
+            else:
+                d.fg('green')
+            d.p(2, pico).i('down').p(0, -pico)
+            d.a(' ')
+            d.fg('fg1').a(str(net.tx_bytes).rjust(4))
+            if net.tx_bit == 0:
+                d.fg('fg3')
+            else:
+                d.fg('red')
+            d.p(2, pico).i('up').p(0, -pico)
+        except:
+            disp_error('net', d)
 
         d.a(separator)
 
-        d.fg('fg2').p(0, pico).i('cpu').p(0, -pico).p(5, pbar)
-        cpubar = dzen.Bar(50, 6, 0, 100, 2, 1)
-        cpubar.push(int(cpu.usage['all']['user'] +
-                        cpu.usage['all']['nice'] +
-                        cpu.usage['all']['sys']), col['fg2'])
-        cpubar.push(int(cpu.usage['all']['io'] +
-                        cpu.usage['all']['irq'] +
-                        cpu.usage['all']['softirq']), col['fg4'])
-        d.a(cpubar.draw(col['bg1'])).p(0, -pbar)
-        d.a(' ')
+        try:
+            d.fg('fg2').p(0, pico).i('cpu').p(0, -pico).p(5, pbar)
+            cpubar = dzen.Bar(50, 6, 0, 100, 2, 1)
+            cpubar.push(int(cpu.usage['all']['user'] +
+                            cpu.usage['all']['nice'] +
+                            cpu.usage['all']['sys']), col['fg2'])
+            cpubar.push(int(cpu.usage['all']['io'] +
+                            cpu.usage['all']['irq'] +
+                            cpu.usage['all']['softirq']), col['fg4'])
+            d.a(cpubar.draw(col['bg1'])).p(0, -pbar)
+            d.a(' ')
+        except:
+            disp_error('cpu', d)
 
-        d.fg('fg2').p(0, pico).i('mem').p(0, -pico).p(5, pbar)
-        membar = dzen.Bar(50, 6, 0, mem.usages['total'], 2, 1)
-        membar.push(mem.usages['total']
-                    - mem.usages['free']
-                    - mem.usages['cached'], col['fg2'])
-        membar.push(mem.usages['cached'], col['fg4'])
-        d.a(membar.draw(col['bg1'])).p(0, -pbar)
-
-        d.a(separator)
-
-        d.fg('fg2').p(0, pico).i('temp').p(0, -pico).a(' ')
-        disp_temp(d, sens.temp['atk0110-acpi-0']['MB Temperature'])
-        d.p(5, 0)
-        disp_temp(d, sens.temp['coretemp-isa-0000']['Core 0'],
-                  sens.temp['coretemp-isa-0001']['Core 1'])
-        d.p(5, 0)
-        disp_temp(d, sens.temp['radeon-pci-0300']['temp1'],
-                  sens.temp['radeon-pci-0400']['temp1'])
+        try:
+            d.fg('fg2').p(0, pico).i('mem').p(0, -pico).p(5, pbar)
+            membar = dzen.Bar(50, 6, 0, mem.usages['total'], 2, 1)
+            membar.push(mem.usages['total']
+                        - mem.usages['free']
+                        - mem.usages['cached'], col['fg2'])
+            membar.push(mem.usages['cached'], col['fg4'])
+            d.a(membar.draw(col['bg1'])).p(0, -pbar)
+        except:
+            disp_error('mem', d)
 
         d.a(separator)
 
-        d.fg('fg2').p(0, pico).i('vol').p(5, -pico).p(0, pbar)
-        volbar = dzen.Bar(50, 6, 0, 100, 2, 1)
-        volbar.push(vol.vol['Master'], col['fg2'])
-        d.a(volbar.draw(col['bg1'])).p(0, -pbar)
+        try:
+            d.fg('fg2').p(0, pico).i('temp').p(0, -pico).a(' ')
+            disp_temp(d, sens.temp['atk0110-acpi-0']['MB Temperature'])
+            d.p(5, 0)
+            disp_temp(d, sens.temp['coretemp-isa-0000']['Core 0'],
+                      sens.temp['coretemp-isa-0001']['Core 1'])
+            d.p(5, 0)
+            disp_temp(d, sens.temp['radeon-pci-0300']['temp1'],
+                      sens.temp['radeon-pci-0400']['temp1'])
+        except:
+            disp_error('sensors', d)
+
+        d.a(separator)
+
+        try:
+            d.fg('fg2').p(0, pico).i('vol').p(5, -pico).p(0, pbar)
+            volbar = dzen.Bar(50, 6, 0, 100, 2, 1)
+            volbar.push(vol.vol['Master'], col['fg2'])
+            d.a(volbar.draw(col['bg1'])).p(0, -pbar)
+        except:
+            disp_error('amixer', d)
 
         d.a(separator)
 
@@ -178,8 +209,6 @@ try:
             time.sleep(time_rate - delay2)
 
 except:
-    print('{:-^70}'.format('ERROR'))
-    traceback.print_exception(*sys.exc_info())
-    print('{:-^70}'.format(''))
+    disp_error('ERROR')
 finally:
     os.kill(pid_child, 9)
