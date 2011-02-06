@@ -14,7 +14,6 @@
 ;;
 ;; clang completion intallation:
 ;;    - read .emacs.d/plugins/autocomplete-clang/README
-;;    - uncomment line 156 of .emacs
 ;;    - M-/ clang completion
 ;;
 ;;
@@ -60,6 +59,9 @@
 ;; ;; C-c C-f : unfold all
 ;; ;; C-c r   : force refresh
 ;; ;; C-c w   : kill tag
+;;
+;;;;;;;;; FlyMake
+;; C-c l   : flymake check synthax
 ;;
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -139,10 +141,6 @@
   (global-set-key [(control return)] 'ac-complete-clang)
   ;; (global-set-key (kbd "M-/") 'ac-complete-clang)
 )
-;;
-;; >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-;;   Uncomment this for clang completion:
-;;
 (add-hook 'c-mode-common-hook 'jo/clang-complete)
 
 ;;
@@ -175,6 +173,18 @@
 (setq-default gdb-many-windows t)
 
 ;;
+;; FlyMake
+;;
+(setq flymake-master-file-dirs
+      '("."
+        "./src" "../src" "../../src" "../../src"
+        "./inc" "../inc" "../../inc"
+        "./include" "../include" "../../include"
+        ))
+
+(global-set-key "\C-cl" 'flymake-start-syntax-check)
+
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -203,7 +213,6 @@
 
   ;; (local-set-key "\C-f" 'senator-fold-tag-toggle)
 
-  (local-set-key "\C-cr" 'senator-force-refresh)
   (local-set-key "\C-cw" 'senator-kill-tag)
   )
 (add-hook 'c-mode-common-hook 'jo/cedet-hook)
@@ -298,9 +307,13 @@
 (c-set-offset 'label 0)
 
 ;; tab config
-(setq-default indent-tabs-mode t)
-(setq-default c-basic-offset 4)
-(setq-default tab-width 4)
+(setq-default c-basic-offset 4
+			  tab-width 4
+			  indent-tabs-mode nil)
+
+;; (setq-default indent-tabs-mode t)
+;; (setq-default c-basic-offset 4)
+;; (setq-default tab-width 4)
 (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 86 90))
 
 ;;

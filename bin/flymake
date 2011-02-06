@@ -1,0 +1,25 @@
+#!/bin/bash
+
+BUILD_DIR="build"
+
+[ -n "${1:-}" ] && BUILD_DIR="$1"
+
+MAKEFILE="Makefile"
+
+while read -r -d $'\0' CMAKELIST
+do
+    DIR=$( dirname "$PWD/$CMAKELIST" )
+    DIR=$( cd $DIR ; pwd -P )
+    DIRNAME=${DIR##*/}
+    FLAGS_DIR="${DIR}/${BUILD_DIR}/CMakeFiles/${DIRNAME}.dir/"
+
+    echo "Generate FlyMake: ${DIR}/${MAKEFILE}"
+    echo "# Generated for emacs FlyMake" > "${DIR}/${MAKEFILE}"
+    echo "include ${FLAGS_DIR}flags.make" >> "${DIR}/${MAKEFILE}"
+    echo "all:" >> "${DIR}/${MAKEFILE}"
+    echo -e "\tmake -C ${DIR}/${BUILD_DIR}/" >> "${DIR}/${MAKEFILE}"
+    echo "check-syntax:" >> "${DIR}/${MAKEFILE}"
+    echo -e "\t\${CXX} -o /dev/null \${CXX_FLAGS} \${CXX_DEFINES} -S \${CHK_SOURCES}" >> "${DIR}/${MAKEFILE}"
+    echo ".PHONY: check-syntax" >> "${DIR}/${MAKEFILE}"
+
+done < <( find . -name "CMakeLists.txt" -print0 )
