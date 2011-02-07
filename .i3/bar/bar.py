@@ -34,11 +34,12 @@ ico = {
     'vol'   : ico_dir + 'spkr_01.xbm',
     }
 col = {
-    'fg'  : '#7799AA',
-    'fg1' : '#557799',
-    'fg2' : '#335566',
-    'fg3' : '#888888',
-    'fg4' : '#223945',
+    'fgoff' : '#777777',
+    'fg1' : '#4C7899',
+    'fg2' : '#3A5C75',
+    'fg3' : '#2B4457',
+    'fg4' : '#1B2A36',
+    'fg5' : '#0A1014',
     'bg'  : '#000000',
     'bg1' : '#222222',
     'red'   : '#9E3A26',
@@ -133,14 +134,14 @@ try:
         try:
             d.fg('fg1').a(str(net.rx_bytes).rjust(4))
             if net.rx_bit == 0:
-                d.fg('fg3')
+                d.fg('fgoff')
             else:
                 d.fg('green')
             d.p(2, pico).i('down').p(0, -pico)
             d.a(' ')
             d.fg('fg1').a(str(net.tx_bytes).rjust(4))
             if net.tx_bit == 0:
-                d.fg('fg3')
+                d.fg('fgoff')
             else:
                 d.fg('red')
             d.p(2, pico).i('up').p(0, -pico)
@@ -150,25 +151,27 @@ try:
         d.a(separator)
 
         try:
-            d.fg('fg2').p(0, pico).i('cpu').p(0, -pico).p(5, pbar)
+            d.fg('fg1').p(0, pico).i('cpu').p(0, -pico).p(5, pbar)
             cpubar = dzen.Bar(50, 6, 0, 100, 2, 1)
             cpubar.push(int(cpu.usage['all']['user'] +
                             cpu.usage['all']['nice'] +
-                            cpu.usage['all']['sys']), col['fg2'])
+                            cpu.usage['all']['sys']), col['fg1'])
             cpubar.push(int(cpu.usage['all']['io'] +
                             cpu.usage['all']['irq'] +
-                            cpu.usage['all']['softirq']), col['fg4'])
+                            cpu.usage['all']['softirq']), col['fg3'])
             d.a(cpubar.draw(col['bg1'])).p(0, -pbar)
             d.a(' ')
         except:
             disp_error('cpu', d)
 
         try:
-            d.fg('fg2').p(0, pico).i('mem').p(0, -pico).p(5, pbar)
+            d.fg('fg1').p(0, pico).i('mem').p(0, -pico).p(5, pbar)
             membar = dzen.Bar(50, 6, 0, mem.usages['total'], 2, 1)
             membar.push(mem.usages['total']
                         - mem.usages['free']
-                        - mem.usages['cached'], col['fg2'])
+                        - mem.usages['buff']
+                        - mem.usages['cached'], col['fg1'])
+            membar.push(mem.usages['buff'], col['fg3'])
             membar.push(mem.usages['cached'], col['fg4'])
             d.a(membar.draw(col['bg1'])).p(0, -pbar)
         except:
@@ -177,7 +180,7 @@ try:
         d.a(separator)
 
         try:
-            d.fg('fg2').p(0, pico).i('temp').p(0, -pico).a(' ')
+            d.fg('fg1').p(0, pico).i('temp').p(0, -pico).a(' ')
             disp_temp(d, sens.temp['atk0110-acpi-0']['MB Temperature'])
             d.p(5, 0)
             disp_temp(d, sens.temp['coretemp-isa-0000']['Core 0'],
@@ -191,16 +194,16 @@ try:
         d.a(separator)
 
         try:
-            d.fg('fg2').p(0, pico).i('vol').p(5, -pico).p(0, pbar)
+            d.fg('fg1').p(0, pico).i('vol').p(5, -pico).p(0, pbar)
             volbar = dzen.Bar(50, 6, 0, 100, 2, 1)
-            volbar.push(vol.vol['Master'], col['fg2'])
+            volbar.push(vol.vol['Master'], col['fg1'])
             d.a(volbar.draw(col['bg1'])).p(0, -pbar)
         except:
             disp_error('amixer', d)
 
         d.a(separator)
 
-        d.fg('fg').a(datetime.datetime.now().strftime('%d/%m %H:%M'))
+        d.fg('fg2').a(datetime.datetime.now().strftime('%d/%m %H:%M'))
 
         os.write(fd_w, str(d.out + '\n').encode('ASCII'))
 

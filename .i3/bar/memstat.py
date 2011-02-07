@@ -6,6 +6,7 @@ class MemStat:
     ref = {
         'total'   : 'MemTotal',
         'free'    : 'MemFree',
+        'buff'    : 'Buffers',
         'cached'  : 'Cached',
         }
     usages = {}
@@ -32,6 +33,6 @@ class MemStat:
                     break
             if len(self.usages) == len(self.ref):
                 break
-        self.usage = ((self.usages['total'] - self.usages['free']
+        self.usage = ((self.usages['total'] - self.usages['free'] - self.usages['buff']
                        - self.usages['cached']) * 100) / self.usages['total']
         self.file.seek(0)
