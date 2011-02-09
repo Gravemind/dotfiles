@@ -181,8 +181,41 @@
         "./inc" "../inc" "../../inc"
         "./include" "../include" "../../include"
         ))
+(setq flymake-buildfile-dirs  '("./",  "../", "../../", "../../../", "../../../../"))
 
+(setq flymake-allowed-file-name-masks
+      '(("\\.c\\'" flymake-simple-make-init)
+        ("\\.cpp\\'" flymake-simple-make-init)
+        ("\\.hpp\\'" flymake-simple-make-init)
+        ("\\.h\\'" flymake-simple-make-init)
+        ;; ("\\.h\\'" flymake-master-make-header-init flymake-master-cleanup)
+        ("\\.xml\\'" flymake-xml-init)
+        ("\\.html?\\'" flymake-xml-init)
+        ("\\.cs\\'" flymake-simple-make-init)
+        ("\\.pl\\'" flymake-perl-init)
+        ("\\.java\\'" flymake-simple-make-java-init flymake-simple-java-cleanup)
+        ("[0-9]+\\.tex\\'" flymake-master-tex-init flymake-master-cleanup)
+        ("\\.tex\\'" flymake-simple-tex-init)
+        ("\\.idl\\'" flymake-simple-make-init)
+        ;; ("\\.cpp\\'" 1)
+        ;; ("\\.java\\'" 3)
+        ;; ("\\.h\\'" 2 ("\\.cpp\\'" "\\.c\\'")
+        ;; ("[ \t]*#[ \t]*include[ \t]*\"\\([\w0-9/\\_\.]*[/\\]*\\)\\(%s\\)\"" 1 2))
+        ;; ("\\.idl\\'" 1)
+        ;; ("\\.odl\\'" 1)
+        ;; ("[0-9]+\\.tex\\'" 2 ("\\.tex\\'")
+        ;; ("[ \t]*\\input[ \t]*{\\(.*\\)\\(%s\\)}" 1 2 ))
+        ;; ("\\.tex\\'" 1)
+        )
+)
+
+  ;; ( '("\\.h$" flymake-simple-make-init flymake-simple-cleanup flymake-get-real-file-name) flymake-allowed-file-name-masks)
 (global-set-key "\C-cl" 'flymake-start-syntax-check)
+(dolist (hook (list
+               'c-mode-hook
+               'c++-mode-hook
+               ))
+  (add-hook hook 'flymake-find-file-hook))
 
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
