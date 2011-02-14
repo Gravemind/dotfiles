@@ -217,6 +217,8 @@
                ))
   (add-hook hook 'flymake-find-file-hook))
 
+(require 'u-mandelbrot)
+
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -432,7 +434,9 @@
    '(font-lock-warning-face ((t (:foreground "#BB2222" :weight normal :underline t))))
    '(compilation-warning ((t (:foreground "#CCAA33" :weight normal :underline t))))
    '(compilation-info ((t (:foreground "#33CC33" :weight normal :underline t))))
-   )
+   '(flymake-errline ((t (:underline "#CC2222"))))
+   '(flymake-warnline ((t (:underline "#22CC22"))))
+  )
 )
 (theme-wombat-256)
 ;; (set-frame-font "-*-DejaVu Sans Mono-normal-normal-normal-*-10-*-*-*-*-*-*-*")
