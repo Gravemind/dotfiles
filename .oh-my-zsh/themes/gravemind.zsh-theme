@@ -1,5 +1,5 @@
 
-PROMPT='%{$fg_bold[blue]%}|%(?..%{$fg[red]%} %?%{$reset_color%}) %{$fg_bold[black]%}%j %{$fg_bold[black]%}%m%{$fg_bold[blue]%}::%{$fg_bold[black]%}%~
+PROMPT='%{$fg_bold[blue]%}|%(?..%{$fg[red]%} %?%{$reset_color%}) %{$fg_bold[black]%}%j %{$fg_bold[black]%}%m%{$fg_bold[blue]%} :: %{$fg_bold[black]%}%~
 %{$fg_bold[blue]%}| %{$reset_color%}%{$bold_color%}%T %{$fg_bold[blue]%}%n %# %{$reset_color%}'
 
 PROMPT2='%{$fg_bold[blue]%}| %{$fg_bold[black]%}%_ %{$fg_bold[blue]%}> %{$reset_color%}'
