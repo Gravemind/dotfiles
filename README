@@ -6,8 +6,11 @@ Windows manager:
     i3-wm
 
 Shell:
-    zsh
-	oh-my-zsh >>> oh-my-zsh-install.sh
+    zsh oh-my-zsh
+    oh-my-zsh-install.sh
+        - plugin zsh-syntax-highlighting / INSTALL:
+            cd ~/.oh-my-zsh/plugins/
+            git clone git://github.com/nicoulaj/zsh-syntax-highlighting.git
 
 Editor:
     emacs 23.2
