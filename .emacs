@@ -182,7 +182,6 @@
         "./include" "../include" "../../include"
         ))
 (setq flymake-buildfile-dirs  '("./",  "../", "../../", "../../../", "../../../../"))
-
 (setq flymake-allowed-file-name-masks
       '(("\\.c\\'" flymake-simple-make-init)
         ("\\.cpp\\'" flymake-simple-make-init)
@@ -206,16 +205,19 @@
         ;; ("[0-9]+\\.tex\\'" 2 ("\\.tex\\'")
         ;; ("[ \t]*\\input[ \t]*{\\(.*\\)\\(%s\\)}" 1 2 ))
         ;; ("\\.tex\\'" 1)
-        )
-)
-
-  ;; ( '("\\.h$" flymake-simple-make-init flymake-simple-cleanup flymake-get-real-file-name) flymake-allowed-file-name-masks)
+        ))
 (global-set-key "\C-cl" 'flymake-start-syntax-check)
-(dolist (hook (list
-               'c-mode-hook
-               'c++-mode-hook
-               ))
-  (add-hook hook 'flymake-find-file-hook))
+(setq flymake-gui-warnings-enabled nil)
+;; (dolist (hook (list
+;;                'c-mode-hook
+;;                'c++-mode-hook
+;;                ))
+;;   (add-hook hook 'flymake-find-file-hook))
+
+;;
+;; MadelBrot
+;;
+(require 'u-mandelbrot)
 
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
