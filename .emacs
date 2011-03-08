@@ -378,6 +378,7 @@
 (global-set-key [S-f9]  'delete-other-windows)
 
 (global-set-key (kbd "C-x C-b") 'buffer-menu)
+(global-set-key (kbd "C-x f") 'set-frame-name)
 
 (global-set-key [M-right]  'enlarge-window-horizontally)
 (global-set-key [M-left]  'shrink-window-horizontally)
