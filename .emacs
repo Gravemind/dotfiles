@@ -305,7 +305,8 @@
  '(tool-bar-mode nil)
  '(truncate-lines t)
  '(inhibit-startup-message t)
- '(show-paren-mode t))
+ '(show-paren-mode t)
+ '(make-backup-files nil))
 
 ;; ".h" -> c++-mode
 (add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
