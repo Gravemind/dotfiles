@@ -12,6 +12,7 @@ export PAGER='less'
 export LESS='-R'
 export PATH="$PATH:/home/jo/bin"
 export OSTYPE=`uname -s`
+export BROWSER='/usr/bin/chromium-browser'
 
 export CNORM_PATH='/home/jo/lib/cnorm_2.10'
 export KOOC_PATH='/home/jo/documents/epitech/KOOC'
