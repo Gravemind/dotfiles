@@ -9,6 +9,6 @@ settings = {
     bell_beeps = "yes";
     beep_when_away = "yes";
     beep_when_window_active = "yes";
-    beep_msg_level = "HILIGHT INVITES MSGS NOTICES CTCPS DCC DCCMSGS"
+    beep_msg_level = "ALL";
   };
 };
