@@ -37,12 +37,15 @@
 *color7:      #bebebe
 *color15:     #ffffff
 
-urxvt.buffered:			true
-urxvt.cursorColor:		yellow
-urxvt.underlineColor:	#FFFFFF
-urxvt.font:				xft:DejaVu Sans Mono:pixelsize=12
-urxvt.scrollBar_right:	false
-urxvt.scrollBar:		false
 
-urxvt.transparent: true
-urxvt.shading: 15
+URxvt*urgentOnBell:     true
+
+URxvt.buffered:         true
+URxvt.cursorColor:      yellow
+URxvt.underlineColor:   #FFFFFF
+URxvt.font:             xft:DejaVu Sans Mono:pixelsize=12
+URxvt.scrollBar_right:  false
+URxvt.scrollBar:        false
+
+URxvt.transparent:      true
+URxvt.shading:          15
