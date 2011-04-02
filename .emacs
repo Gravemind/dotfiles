@@ -332,6 +332,7 @@
 (defun jo/compile-in-current-buffer ()
   (interactive)
   (switch-to-buffer "*compilation*")
+  (compile "make")
   )
 
 ;; backspace erase tabulations
@@ -347,6 +348,9 @@
 
 (c-set-offset 'substatement-open 0)
 (c-set-offset 'label 0)
+(c-set-offset 'arglist-intro 4)
+(c-set-offset 'arglist-close 0)
+(c-set-offset 'brace-list-open 0)
 
 ;; tab config
 (setq-default c-basic-offset 4
