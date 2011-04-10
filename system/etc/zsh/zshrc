@@ -38,3 +38,8 @@ bindkey "\e[5D" backward-word
 bindkey "\eOd" emacs-backward-word
 bindkey "\e\e[C" forward-word
 bindkey "\e\e[D" backward-word
+bindkey "\e\e[D" backward-word
+
+bindkey "\e\e[3~" delete-word
+bindkey "\e[3^" delete-word
+bindkey "^H" backward-delete-word
