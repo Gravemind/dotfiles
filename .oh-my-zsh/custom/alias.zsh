@@ -8,7 +8,6 @@ alias lt='l -rt'
 
 alias c='clear'
 alias e='exit'
-alias j='jobs'
 
 alias clean='find . \( -name "*~" -or -name "#*#" \) -print -delete'
 alias fclean='find . \( -name "*~" -or -name "#*#" -or -name "*.o" -or -name "*.pyc" \) -print -delete'
