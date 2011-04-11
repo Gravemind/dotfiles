@@ -323,7 +323,7 @@
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
 ;; pour que la fenetre de compilation ne soit pas trop grande
-(setq compilation-window-height 15)
+(setq compilation-window-height 10)
 
 ;; affiche les espaces inutile
 (setq-default show-trailing-whitespace t)
@@ -420,7 +420,7 @@
 ;; by wacren_p
 (defun theme-wombat-256 ()
   (custom-set-faces
-   '(default ((t (:foreground "#b0b0b0" :background "#202020" :weight light :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 85 :width normal :foundry "unknown" :family "DejaVu Sans Mono"))))
+   '(default ((t (:foreground "#b0b0b0" :background "#202020" :weight light :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 85 :width normal :foundry "unknown" :family "DejaVu LGC Sans Mono"))))
    '(cursor ((t (:background "cyan"))))
    '(font-lock-builtin-face ((t (:foreground "#78f2c9"))))
    '(font-lock-preprocessor-face ((t (:foreground "#e5786d"))))
@@ -443,9 +443,9 @@
    '(ac-completion-face ((t (:foreground "white" :underline t))))
    '(popup-isearch-match ((t (:background "sky blue" :foreground "red"))))
    '(semantic-tag-boundary-face ((t (:overline "#333333"))))
-   '(font-lock-warning-face ((t (:foreground "#BB2222" :weight normal :underline t))))
-   '(compilation-warning ((t (:foreground "#CCAA33" :weight normal :underline t))))
-   '(compilation-info ((t (:foreground "#33CC33" :weight normal :underline t))))
+   '(font-lock-warning-face ((t (:foreground "#B34949" :weight normal :underline nil))))
+   '(compilation-warning ((t (:foreground "#66D466" :weight normal :underline nil))))
+   '(compilation-info ((t (:foreground "#79B379" :weight normal :underline nil))))
    '(flymake-errline ((t (:underline "#CC2222"))))
    '(flymake-warnline ((t (:underline "#22CC22"))))
   )
