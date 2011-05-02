@@ -181,7 +181,9 @@
         "./inc" "../inc" "../../inc"
         "./include" "../include" "../../include"
         ))
-(setq flymake-buildfile-dirs  '("./",  "../", "../../", "../../../", "../../../../"))
+
+(setq flymake-buildfile-dirs  '("./",  "../", "../../", "../../../", "../../../../") )
+
 (setq flymake-allowed-file-name-masks
       '(("\\.c\\'" flymake-simple-make-init)
         ("\\.cpp\\'" flymake-simple-make-init)
@@ -224,6 +226,13 @@
 ;;
 (require 'lua-mode)
 (setq auto-mode-alist (cons '("\\.lua$" . lua-mode) auto-mode-alist))
+
+;;
+;; yaml-mode
+;;
+(add-to-list 'load-path "~/.emacs.d/plugins/yaml-mode/")
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
