@@ -262,8 +262,7 @@
 (add-hook 'emacs-lisp-mode-hook 'jo/cedet-hook)
 (add-hook 'erlang-mode-hook 'jo/cedet-hook)
 (defun jo/c-mode-cedet-hook ()
-  (local-set-key "\C-xt" 'eassist-switch-h-cpp)
-  (local-set-key "\C-ct" 'eassist-switch-h-cpp)
+  (local-set-key "\C-cd" 'eassist-switch-h-cpp)
   (local-set-key "\C-ce" 'eassist-list-methods)
   (local-set-key "\C-c\C-r" 'semantic-symref)
   )
@@ -354,7 +353,7 @@
 
 ;; tab config
 (setq-default c-basic-offset 4
-			  tab-width 4
+			  tab-width 8
 			  indent-tabs-mode nil)
 
 ;; (setq-default indent-tabs-mode t)
