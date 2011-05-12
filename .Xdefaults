@@ -49,3 +49,7 @@ URxvt.scrollBar:        false
 
 URxvt.transparent:      true
 URxvt.shading:          15
+
+URxvt.scrollTtyOutput:      false
+URxvt.scrollTtyKeypress:    true
+URxvt.scrollWithBuffer:     false
