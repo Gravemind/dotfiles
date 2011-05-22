@@ -1,0 +1,6 @@
+#!/bin/zsh
+
+W="$1"
+[ -z "$1" ] && exit;
+shift
+find . -iname "*$W*" $* | grep --color=auto -i "$W"

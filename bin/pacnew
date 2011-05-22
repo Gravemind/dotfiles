@@ -1,0 +1,71 @@
+#!/bin/zsh
+
+FILES=()
+
+PAC_LOGFILE="/var/log/pacman.log"
+
+if [ "$1" = "-h" -o "$1" = "--help" ]
+then
+    echo "
+Usage: $0 [-h|--help] [-a]
+
+  (by default): search .pacnew in $PAC_LOGFILE
+  -a          : search all .pacnew with \`find\` (takes time)
+  -h --help   : usage
+"
+    exit;
+fi
+
+if [ "$1" = "-a" ]
+then
+    echo ">> searching all .pacnew ..."
+    find / \( -name "*.pacnew" -a -mount \) -print 2> /dev/null | while read F
+        do
+            echo "++ found: $F"
+            FILES+=$F
+        done
+
+else
+    echo ">> searching .pacnew in $PAC_LOGFILE ..."
+    ( ( cat "$PAC_LOGFILE" | grep --color=auto pacnew | sed -r 's#^.*installed as ([a-zA-Z0-9_./-]+\.pacnew).*$#\1#g' | sort -u ) 2> /dev/null ) | while read F
+    do
+        if [ -f "$F" ]
+        then
+            echo "++ found: $F"
+            FILES+=$F
+        fi
+    done
+fi
+
+echo "== ${#FILES} files found"
+
+for NEW in $FILES
+do
+
+    OLD=${NEW%.*}
+
+    echo
+    echo ">> merge: " $OLD
+    sudo meld "$NEW" "$OLD" &> /dev/null || echo "!! ERROR merge: $NEW"
+
+    echo "??"
+    echo "?? delete \"$NEW\" [y/n/q] ?"
+    echo -ne "?? ?:"
+
+    read RESP
+
+    if [ "$RESP" = "q" ]
+    then
+        echo ">> quit"
+        exit
+    fi
+
+    if [ "$RESP" = "y" ]
+    then
+        echo ">> delete: $NEW"
+        sudo rm "$NEW" || echo "!! ERROR delete: $NEW"
+    fi
+
+done
+
+echo ">> done"

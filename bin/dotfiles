@@ -1,0 +1,76 @@
+#!/bin/zsh
+
+C_1="\e[1;34m"
+C_0="\e[0;0m"
+
+REPO="$HOME/dotfiles"
+REPO_SYSDIR="$REPO/system/"
+_IGNORE="$REPO/.dotfiles_ignore"
+
+IGNORE_FILES=()
+REPO_FILES=()
+REPO_DIRS=()
+REPO_SYSFILES=()
+REPO_SYSDIRS=()
+
+cat "$_IGNORE" | while read F
+do
+    IGNORE_FILES+=$F
+done
+
+cd "$REPO"
+
+find . \( \! -path "./.git/*" -a \! -path "./system/*" -a -type f \) -print 2> /dev/null | while read F
+do
+    REPO_FILES+=${F#./}
+done
+
+find . \( \! -path "./.git/*" -a \! -path "./system/*" -a -type d \) -print 2> /dev/null | while read F
+do
+    REPO_DIRS+=${F#./}
+done
+
+cd -
+cd "$REPO_SYSDIR"
+
+find . \( -type f \) -print 2> /dev/null | while read F
+do
+    REPO_SYSFILES+=${F#./}
+done
+
+find . \( -type d \) -print 2> /dev/null | while read F
+do
+    REPO_SYSDIRS+=${F#./}
+done
+
+cd -
+
+echo $REPO_FILES
+echo $REPO_DIRS
+echo $REPO_SYSFILES
+echo $REPO_SYSDIRS
+
+sub check_files()
+{
+    DIR=$1
+    shift
+    for FILE in $*
+    do
+        echo $PREFIX $FILE
+    done
+}
+
+check_files $HOME $REPO_FILES
+
+# for FILE in $FILES
+# do
+#     DFILE="$C_1$FILE$C_0"
+
+#     if [ ! -f "$HOME/$FILE" ]
+#     then
+#         echo "NO $HOME/$DFILE"
+#     elif [ -n "$( diff "$HOME/$FILE" "$REPO/$FILE" )" ]
+#     then
+#         echo "diff \"$HOME/$DFILE\" \"$REPO/$DFILE\""
+#     fi
+# done

@@ -1,0 +1,16 @@
+meld ~/bin bin
+meld ~/.dzen .dzen
+meld ~/.emacs .emacs
+meld ~/.emacs.d .emacs.d
+meld ~/.gitconfig .gitconfig
+meld ~/.gitignore .gitignore
+meld ~/.i3 .i3
+meld ~/.irssi .irssi
+meld ~/.oh-my-zsh .oh-my-zsh
+meld ~/oh-my-zsh-install.sh oh-my-zsh-install.sh
+meld ~/.screenrc .screenrc
+meld ~/scripts scripts
+meld ~/.Xdefaults .Xdefaults
+meld ~/.xinitrc .xinitrc
+meld ~/.zshrc .zshrc
+meld / system

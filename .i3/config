@@ -170,6 +170,7 @@ assign chromium 3
 assign qnetsoul 9
 assign pidgin 9
 assign gimp ~
+assign wine ~
 
 bind $ModKey+52 exec i3lock -c 111111
 bindsym $ModKey+End exec cmus-remote -u

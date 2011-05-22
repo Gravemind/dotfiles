@@ -18,6 +18,12 @@ alias lock='i3lock -c 111111'
 alias shut='sudo shutdown -h now'
 alias reboot='sudo reboot'
 alias disk='df -h --total'
+alias x='7z x'
+alias flux='xflux -l 49 -k 4000'
+
+alias emacs='ne -q -l ~/.emacs.d/emacs-ide.el'
+alias nw='\emacs -nw'
+
 alias rchttpd='sudo /etc/rc.d/httpd'
 alias rcmysqld='sudo /etc/rc.d/mysqld'
 alias rcsshd='sudo /etc/rc.d/sshd'

@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+FILES=$(find . -maxdepth 1 -mindepth 1 -print0)
+while read -r -d $'\0' FILE
+do
+    FILENAME="${FILE##*/}"
+    DIRNAME="${FILE%%/*}"
+    NEWNAME=$(echo "$FILENAME" | sed -r 's#[^a-zA-Z0-9]+#.#g')
+    NEW="$DIRNAME/$NEWNAME"
+    if [ $NEW != $FILE ]
+    then
+        echo "mv \"$FILE\" \"$NEW\""
+    fi
+done < <( echo $FILES )
