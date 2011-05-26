@@ -11,4 +11,4 @@ xrandr --output HDMI-0 --auto --right-of DVI-0
 
 numlockx on
 
-exec i3 > /home/jo/.i3/log
+exec i3 &> /home/jo/.i3/log
