@@ -7,7 +7,6 @@ set $resize_size 100
 set $screen_1 DVI-0
 set $screen_2 HDMI-0
 
-
 # ISO 10646 = Unicode
 font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 
@@ -17,67 +16,83 @@ floating_modifier $ModKey
 # Fullscreen ($ModKey+f)
 bind $ModKey+41 f
 
-# Stacking ($ModKey+h)
-bind $ModKey+43 s
+# Stacking ($ModKey+d)
+bind $ModKey+40 s
 
-# Tabbed ($ModKey+w)
-bind $ModKey+25 T
+# Tabbed ($ModKey+s)
+bind $ModKey+39 T
 
-# Default ($ModKey+e)
-bind $ModKey+26 d
+# Default ($ModKey+a)
+bind $ModKey+38 d
 
-# Toggle tiling/floating of the current window ($ModKey+Shift+Space)
-bind $ModKey+Shift+65 t
+# Toggle tiling/floating of the current window ($ModKey+Space)
+bind $ModKey+65 t
 
 # Go into the tiling layer / floating layer, depending on whether
-# the current window is tiling / floating (Mod1+t)
-bind $ModKey+28 focus ft
+# the current window is tiling / floating ($ModKey+TAB)
+bind $ModKey+23 focus ft
 
-# Focus ($ModKey+j/k/l/;)
-bind $ModKey+44 h
-bind $ModKey+45 j
-bind $ModKey+46 k
-bind $ModKey+47 l
+# $ModKey+Enter starts a new terminal
+bind $ModKey+36 exec urxvt
+
+# $ModKey+q kills the current client
+bind $ModKey+24 kill
+
+# $ModKey+v starts dmenu and launches the selected application
+# for now, we don’t have a launcher of our own.
+bind $ModKey+55 exec ~/.i3/dmenu.sh
+
+# $ModKey+Shift+e exits i3
+bind $ModKey+Shift+26 exit
+
+# $ModKey+Shift+r restarts i3 inplace
+bind $ModKey+Shift+27 restart
+
+# Focus ($ModKey+h/j/k/l)
+bind $ModKey+43 h
+bind $ModKey+44 j
+bind $ModKey+45 k
+bind $ModKey+46 l
 # (alternatively, you can use the cursor keys:)
 bindsym $ModKey+Left h
 bindsym $ModKey+Down j
 bindsym $ModKey+Up k
 bindsym $ModKey+Right l
 
-# Focus Container ($ModKey+Mod1+j/k/l/;)
-bind $ModKey+Mod1+44 wch
-bind $ModKey+Mod1+45 wcj
-bind $ModKey+Mod1+46 wck
-bind $ModKey+Mod1+47 wcl
+# Focus Container ($ModKey+Alt+h/j/k/l)
+bind $ModKey+Mod1+43 wch
+bind $ModKey+Mod1+44 wcj
+bind $ModKey+Mod1+45 wck
+bind $ModKey+Mod1+46 wcl
 # (alternatively, you can use the cursor keys:)
 bindsym $ModKey+Mod1+Left wch
 bindsym $ModKey+Mod1+Down wcj
 bindsym $ModKey+Mod1+Up wck
 bindsym $ModKey+Mod1+Right wcl
 
-# Snap (Mod1+Control+j/k/l/;)
-bind $ModKey+Control+44 sh
-bind $ModKey+Control+45 sj
-bind $ModKey+Control+46 sk
-bind $ModKey+Control+47 sl
+# Snap ($ModKey+Control+h/j/k/l)
+bind $ModKey+Control+43 sh
+bind $ModKey+Control+44 sj
+bind $ModKey+Control+45 sk
+bind $ModKey+Control+46 sl
 # (alternatively, you can use the cursor keys:)
 bindsym $ModKey+Control+Left sh
 bindsym $ModKey+Control+Down sj
 bindsym $ModKey+Control+Up sk
 bindsym $ModKey+Control+Right sl
 
-# Move (Mod1+Shift+j/k/l/;)
-bind $ModKey+Shift+44 mh
-bind $ModKey+Shift+45 mj
-bind $ModKey+Shift+46 mk
-bind $ModKey+Shift+47 ml
+# Move ($ModKey+Shift+h/j/k/l)
+bind $ModKey+Shift+43 mh
+bind $ModKey+Shift+44 mj
+bind $ModKey+Shift+45 mk
+bind $ModKey+Shift+46 ml
 # (alternatively, you can use the cursor keys:)
 bindsym $ModKey+Shift+Left mh
 bindsym $ModKey+Shift+Down mj
 bindsym $ModKey+Shift+Up mk
 bindsym $ModKey+Shift+Right ml
 
-# Move Container (Mod1+Shift+j/k/l/;)
+# Move Container ($ModKey+Alt+Shift+h/j/k/l)
 bind $ModKey+Mod1+Shift+44 wcmh
 bind $ModKey+Mod1+Shift+45 wcmj
 bind $ModKey+Mod1+Shift+46 wcmk
@@ -88,8 +103,11 @@ bindsym $ModKey+Mod1+Shift+Down wcmj
 bindsym $ModKey+Mod1+Shift+Up wcmk
 bindsym $ModKey+Mod1+Shift+Right wcml
 
+# Resize mode
+#   resize + (Arrow)
+#   resize - (Shift+Arrow)
+#   quit redize mode (Enter / Escape)
 mode "resize" {
-
         bindsym Left resize left -$resize_size
         bindsym Shift+Left resize left +$resize_size
 
@@ -105,8 +123,9 @@ mode "resize" {
         bind 9 mode default
         bind 36 mode default
 }
-# Enter resize mode
-bindsym $ModKey+s mode resize
+
+# Enter resize mode ($ModKey+c)
+bindsym $ModKey+c mode resize
 
 # Workspaces ($ModKey+1/2/…)
 bind $ModKey+10 1
@@ -132,22 +151,6 @@ bind $ModKey+Shift+17 m8
 bind $ModKey+Shift+18 m9
 bind $ModKey+Shift+19 m10
 
-# $ModKey+Enter starts a new terminal
-bind $ModKey+36 exec urxvt
-
-# $ModKey+Shift+q kills the current client
-bind $ModKey+Shift+24 kill
-
-# $ModKey+v starts dmenu and launches the selected application
-# for now, we don’t have a launcher of our own.
-bind $ModKey+55 exec ~/.i3/dmenu.sh
-
-# $ModKey+Shift+e exits i3
-bind $ModKey+Shift+26 exit
-
-# $ModKey+Shift+r restarts i3 inplace
-bind $ModKey+Shift+27 restart
-
 # The IPC interface allows programs like an external workspace bar
 # (i3-wsbar) or i3-msg (can be used to "remote-control" i3) to work.
 ipc-socket ~/.i3/ipc.sock
@@ -167,15 +170,23 @@ workspace 9 output $screen_2 IM
 workspace 10 output $screen_2 Right
 
 assign chromium 3
-assign qnetsoul 9
+assign firefox 3
 assign pidgin 9
 assign gimp ~
 assign wine ~
 
+# lock ($ModKey+z)
 bind $ModKey+52 exec i3lock -c 111111
+
+# cmus :
+#   play/pause ($ModKey+End)
+#   next ($ModKey+PrevPage)
+#   prev ($ModKey+NextPage)
 bindsym $ModKey+End exec cmus-remote -u
 bindsym $ModKey+Prior exec cmus-remote -r
 bindsym $ModKey+Next exec cmus-remote -n
+
+# vol up ($Modkey+=) / vol down ($ModKey++)
 bind $ModKey+20 exec amixer sset Master 2%-
 bind $ModKey+21 exec amixer sset Master 2%+
 
