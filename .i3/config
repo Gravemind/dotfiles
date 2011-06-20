@@ -190,6 +190,14 @@ bindsym $ModKey+Next exec cmus-remote -n
 bind $ModKey+20 exec amixer sset Master 2%-
 bind $ModKey+21 exec amixer sset Master 2%+
 
+# Multimedia keys
+bindsym 172 exec cmus-remote -u
+bindsym 173 exec cmus-remote -r
+bindsym 171 exec cmus-remote -n
+bind 121 exec amixer sset Master toggle
+bind 122 exec amixer sset Master 2%-
+bind 123 exec amixer sset Master 2%+
+
 workspace_bar no
 
 exec ~/.i3/bar/bar.py

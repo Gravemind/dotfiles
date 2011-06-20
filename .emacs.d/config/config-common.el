@@ -211,7 +211,10 @@
 
 )
 
+(print (getenv "TERM"))
+
 (if (or (string-match "256" (getenv "TERM"))
+        (string= (getenv "TERM") "linux")
         (string= (getenv "TERM") "dumb"))
     (theme-wombat-256)
 )
