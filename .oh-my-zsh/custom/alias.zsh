@@ -1,4 +1,4 @@
-alias grep='grep --color=always'
+alias grep='grep --color=auto'
 alias less='less --quiet'
 alias cat='cat -v'
 
@@ -6,6 +6,7 @@ alias l='ls -l'
 alias la='ls -la'
 alias lt='l -rt'
 
+alias rcp='cp -r'
 alias c='clear'
 alias e='exit'
 
@@ -14,6 +15,7 @@ alias fclean='find . \( -name "*~" -or -name "#*#" -or -name "*.o" -or -name "*.
 alias cleansvn='find . -name ".svn" -execdir rm -rf {} \;'
 alias cleandhcp='sudo rm -rf /var/lib/dhcp3/*.lease'
 
+alias _='command sudo ' # ! trailing wihtespace is important
 alias lock='i3lock -c 111111'
 alias shut='sudo shutdown -h now'
 alias reboot='sudo reboot'
@@ -29,7 +31,7 @@ alias rchttpd='sudo /etc/rc.d/httpd'
 alias rcmysqld='sudo /etc/rc.d/mysqld'
 alias rcsshd='sudo /etc/rc.d/sshd'
 
-alias -g   CAT='|& cat -A'
+alias -g    CAT='|& cat -A'
 alias -g   GREP='|& grep'
 alias -g  GREPI='|& grep -i'
 alias -g  GREPR='|& grep -rni'

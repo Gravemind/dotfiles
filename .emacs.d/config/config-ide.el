@@ -10,16 +10,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Variables
+;; Misc
 ;;
-
-(custom-set-variables
- '(global-semantic-highlight-edits-mode t nil (semantic/util-modes))
- '(global-semantic-idle-tag-highlight-mode t nil (semantic/idle))
- '(semantic-format-use-images-flag t)
- '(semantic-lex-debug-analyzers t)
- '(semantic-mode t)
- )
 
 ;; colors in Shell mode
 (setq ansi-color-names-vector ; better contrast colors
@@ -48,13 +40,13 @@
 ;; Plugins
 ;;
 
+(config/plugins)
+
 (add-to-list 'load-path "~/.emacs.d/plugins")
 (add-to-list 'load-path "~/.emacs.d/plugins/yasnippet-0.6.1c")
 (add-to-list 'load-path "~/.emacs.d/plugins/autocomplete")
 
-;;
-;; CEDET + SEMANTIC
-;;
+;; cedet + semantic
 (semantic-mode 1)
 (global-ede-mode t)
 (setq semantic-default-submodes
@@ -66,33 +58,21 @@
 		;; global-semantic-stickyfunc-mode
 		;; global-semantic-idle-completions-mode
 		))
-;;
-;; YASNIPPETS
-;;
+
+;; yasnippet
 (require 'yasnippet)
 (yas/initialize)
 (yas/load-directory "~/.emacs.d/plugins/yasnippet-0.6.1c/snippets")
 
-;;
-;; AUTOCOMPLETE
-;;
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/plugins/autocomplete/ac-dict")
-(ac-config-default)
-
+;; auto-complete
 (setq-default ac-sources (append '(ac-source-semantic
                                    ac-source-semantic-raw)
                                  ac-sources))
 
-
-;;
-;; EASSIST
-;;
+;; easist
 (require 'eassist)
 
-;;
-;; AUTO-COMPLETE with semantic + yasnippet :
-;;
+;; auto-complete with semantic + yasnippet :
 (global-auto-complete-mode t)
 (setq-default ac-auto-start t)
 (setq-default ac-dwim t)
@@ -111,9 +91,7 @@
                 asm-mode
                 org-mode))
 
-;;
-;; AUTO-COMPELETE-CLANG
-;;
+;; auto-complete-clang
 (defun jo/clang-complete()
   (interactive)
   (add-to-list 'load-path "~/.emacs.d/plugins/autocomplete-clang")
@@ -123,30 +101,23 @@
 )
 (add-hook 'c-mode-common-hook 'jo/clang-complete)
 
-;;
-;; QT4 SEMANTIC COMPLETION :
-;;
+;; ;; Qt4 semantic completetion
 ;; (setq qt4-include-base-dir "/usr/include/")
 ;; (loop for dir in (directory-files qt4-include-base-dir t "^Q")
 ;; 	  do (semantic-add-system-include dir 'c++-mode))
 ;; (semantic-add-system-include qt4-include-base-dir 'c++-mode)
 ;; (add-to-list 'auto-mode-alist (cons (expand-file-name qt4-include-base-dir) 'c++-mode))
 
-;;
-;; HIDE-SHOW (FOLDING)
-;;
+;; hs
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
 
-;;
 ;; FlyMake
-;;
 (setq flymake-master-file-dirs
       '("."
         "./src" "../src" "../../src" "../../src"
         "./inc" "../inc" "../../inc"
         "./include" "../include" "../../include"
         ))
-
 (setq flymake-buildfile-dirs  '("./"  "../" "../../" "../../../" "../../../../") )
 (setq flymake-allowed-file-name-masks
       '(("\\.c\\'" flymake-simple-make-init)
@@ -175,10 +146,23 @@
 (global-set-key "\C-cl" 'flymake-start-syntax-check)
 (setq flymake-gui-warnings-enabled nil)
 
-;;
 ;; MadelBrot
-;;
 (require 'u-mandelbrot)
+
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Smantic variables
+
+(custom-set-variables
+ '(global-semantic-highlight-edits-mode t nil (semantic/util-modes))
+ '(global-semantic-idle-tag-highlight-mode t nil (semantic/idle))
+ '(semantic-format-use-images-flag t)
+ '(semantic-lex-debug-analyzers t)
+ '(semantic-mode t)
+ )
 
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

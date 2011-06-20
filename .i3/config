@@ -13,17 +13,19 @@ font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # Use Mouse+Mod1 to drag floating windows to their wanted position
 floating_modifier $ModKey
 
-# Fullscreen ($ModKey+f)
-bind $ModKey+41 f
-
-# Stacking ($ModKey+d)
-bind $ModKey+40 s
-
-# Tabbed ($ModKey+s)
-bind $ModKey+39 T
 
 # Default ($ModKey+a)
 bind $ModKey+38 d
+
+# Stacking ($ModKey+s)
+bind $ModKey+39 s
+
+# Tabbed ($ModKey+d)
+bind $ModKey+40 T
+
+# Fullscreen ($ModKey+f)
+bind $ModKey+41 f
+
 
 # Toggle tiling/floating of the current window ($ModKey+Space)
 bind $ModKey+65 t
@@ -38,9 +40,9 @@ bind $ModKey+36 exec urxvt
 # $ModKey+q kills the current client
 bind $ModKey+24 kill
 
-# $ModKey+v starts dmenu and launches the selected application
+# $ModKey+z starts dmenu and launches the selected application
 # for now, we don’t have a launcher of our own.
-bind $ModKey+55 exec ~/.i3/dmenu.sh
+bind $ModKey+52 exec ~/.i3/dmenu.sh
 
 # $ModKey+Shift+e exits i3
 bind $ModKey+Shift+26 exit
@@ -124,8 +126,8 @@ mode "resize" {
         bind 36 mode default
 }
 
-# Enter resize mode ($ModKey+c)
-bindsym $ModKey+c mode resize
+# Enter resize mode ($ModKey+r)
+bind $ModKey+27 mode resize
 
 # Workspaces ($ModKey+1/2/…)
 bind $ModKey+10 1
@@ -169,7 +171,9 @@ workspace 8 output $screen_2 Music
 workspace 9 output $screen_2 IM
 workspace 10 output $screen_2 Right
 
+assign chrome 3
 assign chromium 3
+assign chromium-browser 3
 assign firefox 3
 assign pidgin 9
 assign gimp ~
