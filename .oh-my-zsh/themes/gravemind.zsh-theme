@@ -1,12 +1,24 @@
+#!/bin/zsh
 
-PROMPT='%{$fg_bold[blue]%}|%(?..%{$fg[red]%} %?%{$reset_color%}) %{$fg_bold[black]%}%j %{$fg_bold[black]%}%m%{$fg_bold[blue]%} :: %{$fg_bold[black]%}%~
-%{$fg_bold[blue]%}| %{$reset_color%}%{$bold_color%}%T %{$fg_bold[blue]%}%n %# %{$reset_color%}'
+CR='%{$reset_color%}'
+CB='%{$fg_bold[black]%}'
+CF='%{$fg_bold[blue]%}'
+CW='%{$bold_color%}'
+COK='%{$fg_bold[green]%}'
+CKO='%{$fg_bold[red]%}'
 
-PROMPT2='%{$fg_bold[blue]%}| %{$fg_bold[black]%}%_ %{$fg_bold[blue]%}> %{$reset_color%}'
+PROMPT_SSH="${CB}"
+[ -n "$SSH_CONNECTION" ] && PROMPT_SSH="${COK}"
 
-RPS1='$(git_prompt_info)'
+PROMPT="${CF}| %(?..${CKO}%? )%1(j.${COK}%j .)${CF}:${CB}%~${CR}
+${CF}| ${PROMPT_SSH}%m ${CF}%n %(!.${CKO}.${CB})%#${CR} "
 
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[black]%}[%{$fg[red]%}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$fg_bold[black]%}]%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="*"
+PROMPT2="${CF}| ${CB}%_ ${CF}>${CR} "
+
+RPS1="$(git_prompt_info)${CW}(%T)${CR}"
+
+ZSH_THEME_GIT_PROMPT_PREFIX="${CB}[${CF}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="${CB}]${CR} "
+ZSH_THEME_GIT_PROMPT_DIRTY="${CKO}*"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
+ZSH_THEME_GIT_PROMPT_UNTRACKED="${CKO}?"
