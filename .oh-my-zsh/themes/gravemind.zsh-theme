@@ -7,6 +7,9 @@ CW="%{$bold_color%}"
 COK="%{$fg_bold[green]%}"
 CKO="%{$fg_bold[red]%}"
 
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=white,bold'
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
+
 PROMPT_SSH="${CB}"
 [ -n "$SSH_CONNECTION" ] && PROMPT_SSH="${COK}"
 
