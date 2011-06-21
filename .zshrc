@@ -21,7 +21,7 @@ export CASE_SENSITIVE="true"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=( git zsh-syntax-highlighting )
+plugins=( git zsh-syntax-highlighting history-substring-search )
 
 source $ZSH/oh-my-zsh.sh
 
