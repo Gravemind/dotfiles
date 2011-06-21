@@ -13,7 +13,6 @@ font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # Use Mouse+Mod1 to drag floating windows to their wanted position
 floating_modifier $ModKey
 
-
 # Default ($ModKey+a)
 bind $ModKey+38 d
 
@@ -195,12 +194,22 @@ bind $ModKey+20 exec amixer sset Master 2%-
 bind $ModKey+21 exec amixer sset Master 2%+
 
 # Multimedia keys
-bindsym 172 exec cmus-remote -u
-bindsym 173 exec cmus-remote -r
-bindsym 171 exec cmus-remote -n
-bind 121 exec amixer sset Master toggle
-bind 122 exec amixer sset Master 2%-
-bind 123 exec amixer sset Master 2%+
+bindsym XF86AudioPlay exec cmus-remote -u #play/pause
+bindsym XF86AudioPrev exec cmus-remote -r #prev
+bindsym XF86AudioNext exec cmus-remote -n #next
+bindsym XF86AudioLowerVolume exec amixer sset Master 2%-
+bindsym XF86AudioRaiseVolume exec amixer sset Master 2%+
+bindsym XF86AudioMute exec amixer sset Master toggle
+
+# Multimedia keys (with $ModKey)
+bind $ModKey+75 exec cmus-remote -u
+bind $ModKey+74 exec cmus-remote -r
+bind $ModKey+76 exec cmus-remote -n
+bind $ModKey+95 exec amixer sset Master 2%-
+bind $ModKey+96 exec amixer sset Master 2%+
+bindsym $ModKey+XF86AudioMute exec amixer sset Master toggle
+
+bindsym XF86TouchpadToggle exec zsh /home/jo/bin/toggletouchpad
 
 workspace_bar no
 
