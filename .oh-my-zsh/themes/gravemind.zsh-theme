@@ -26,7 +26,7 @@ function prompt_color_pwd() {
 }
 
 PROMPT='${CF}| %(?..${CKO}%? )%1(j.${COK}%j .)${PROMPT_SSH}%m${CF}:${CB}$(prompt_color_pwd)${CR}
-${CF}| ${CF}%n %(!.${CKO}\#.${CB}\$)${CR} '
+${CF}| ${CF}%n %(!.${CKO}#.${CB}\$)${CR} '
 
 PROMPT2='{CF}| ${CB}%_ ${CF}>${CR} '
 
