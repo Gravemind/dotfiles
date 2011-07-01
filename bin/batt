@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+function acpix() {
+    cat /proc/acpi/battery/BAT0/state | sed -nr "s/.*$1: +([0-9]+) .*/\1/p"
+}
+
+MV=$(acpix 'present voltage')
+MA=$(acpix 'present rate')
+
+W=`echo "scale=2; ($MV/1000) * ($MA/1000) " | bc`
+
+acpi -b
+
+echo "$MV mV  $MA mA  $W W"
+

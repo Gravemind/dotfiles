@@ -1,0 +1,43 @@
+#!/bin/zsh
+
+. ~/bin/functions.zsh
+
+INTERFACE='wlan0'
+WPA_CONF='/etc/wpa_supplicant.conf'
+SLEEP=2
+
+
+COK="\e[1;34m"
+CKO="\e[1;31m"
+CE="\e[0m"
+
+stat_busy "Hardware wifi switch"
+[ -n "$(rfkill list | grep "Hard blocked: yes")" ] && stat_die
+stat_done
+
+stat_busy "ifconfig $INTERFACE up"
+sudo ifconfig $INTERFACE up
+[ $? -ne 0 ] && exit stat_die
+stat_done
+
+stat_busy "STOP wpa_supplicant"
+sudo pkill wpa_supplicant
+stat_done
+
+stat_busy "START wpa_supplicant"
+sudo wpa_supplicant -d -B -Dwext -i$INTERFACE -c$WPA_CONF
+[ $? -ne 0 ] && stat_die
+stat_done
+
+stat_busy "SLEEP $SLEEP"
+sleep $SLEEP
+stat_done
+
+stat_busy "STOP dhcpd"
+sudo dhcpcd -x $INTERFACE &> /dev/null
+stat_done
+
+stat_busy "START dhcpd"
+sudo dhcpcd $INTERFACE
+[ $? -ne 0 ] && stat_die
+stat_done

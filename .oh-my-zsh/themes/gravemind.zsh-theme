@@ -10,8 +10,8 @@ CKO="%{$fg_bold[red]%}"
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=white,bold'
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
 
-PROMPT_SSH="${CB}"
-[ -n "$SSH_CONNECTION" ] && PROMPT_SSH="${COK}"
+PROMPT_SSH=" "
+[ -n "$SSH_CONNECTION" ] && PROMPT_SSH="${COK}@"
 
 function prompt_color_pwd() {
     PROMPT_PWDA="$(pwd)"
@@ -19,20 +19,24 @@ function prompt_color_pwd() {
     [ "$PROMPT_PWDA" != "$PROMPT_PWD" ] && PROMPT_PWD="~$PROMPT_PWD"
     if [ ${#PROMPT_PWD} -lt 2 ]
     then
-        echo "$fg_bold[blue]$PROMPT_PWD"
+        # echo -ne '${CF}'
+        # echo -ne "$PROMPT_PWD"
+        echo "${CF}$PROMPT_PWD"
     else
-        echo "${PROMPT_PWD%/*}/$fg_bold[blue]${PROMPT_PWD##*/}"
+        echo "${CB}${PROMPT_PWD%/*}/${CF}${PROMPT_PWD##*/}"
     fi
 }
 
-PROMPT='${CF}| %(?..${CKO}%? )%1(j.${COK}%j .)${PROMPT_SSH}%m${CF}:${CB}$(prompt_color_pwd)${CR}
-${CF}| ${CF}%n %(!.${CKO}#.${CB}\$)${CR} '
+# PROMPT='${CF}| %(?..${CKO}%? )%1(j.${COK}%j .)${PROMPT_SSH}%m${CF}:${CB}$(prompt_color_pwd)${CR}
+# ${CF}| ${CF}%n %(!.${CKO}#.${CB}\$)${CR} '
+#RPS1='$(git_prompt_info) ${CW}(%T)${CR}'
 
-PROMPT2='{CF}| ${CB}%_ ${CF}>${CR} '
+PROMPT='%{$bg[black]%}${CF}| ${CB}%m${PROMPT_SSH}${CF}%n %1(j.${COK}%j .)%(?..${CKO}%? )%(!.${CKO}#.${CB}\$) ${CR}'
+RPS1='%{$bg[black]%}$(prompt_color_pwd)${CR}$(git_prompt_info)${CR}'
 
-RPS1='$(git_prompt_info) ${CW}(%T)${CR}'
+PROMPT2='%{$bg[black]%}${CF}| ${CB}%_ ${CF}> ${CR}'
 
-ZSH_THEME_GIT_PROMPT_PREFIX="${CB}[${CF}"
+ZSH_THEME_GIT_PROMPT_PREFIX=" %{$bg[black]%}${CB}[${CF}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="${CB}]${CR}"
 ZSH_THEME_GIT_PROMPT_DIRTY="${CKO}*"
 ZSH_THEME_GIT_PROMPT_CLEAN=""

@@ -214,4 +214,4 @@ bindsym XF86TouchpadToggle exec zsh /home/jo/bin/toggletouchpad
 workspace_bar no
 
 exec ~/.i3/bar/bar.py
-exec ~/.i3/bg.sh
+exec ~/.i3/bg.py
