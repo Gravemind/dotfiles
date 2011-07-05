@@ -9,7 +9,8 @@ def get_next_token(line, sep):
     return line[:index]
 
 class CMus:
-    status = {}
+    status = ''
+    tags = {}
     command = ''
 
     skip_words = ('tag', 'set')
@@ -18,7 +19,7 @@ class CMus:
         self.command = command
 
     def update(self):
-        self.status = {}
+        self.tags = {}
         out = subprocess.getoutput(self.command+' | cat -v')
         for line in out.splitlines():
             word = get_next_token(line, ' ')
@@ -28,4 +29,9 @@ class CMus:
                 word = get_next_token(line, ' ')
                 word = line[:len(word)]
                 line = line[len(word) + 1:]
-            self.status[word] = line
+            self.tags[word] = line
+        if 'status' in self.tags:
+            self.status = self.tags['status']
+        else:
+            self.status = 'stopped'
+        return

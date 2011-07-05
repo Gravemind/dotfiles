@@ -7,6 +7,7 @@ from memstat import MemStat
 from sensors import Sensors
 from amixer import AMixer
 from cmus import CMus
+from MPD import MPD
 import dzen
 
 import datetime
@@ -57,14 +58,15 @@ mem = MemStat()
 sens = Sensors()
 sens.update()
 vol = AMixer('amixer get Master')
-cmus = CMus()
+music = CMus()
+# music = MPD("127.0.0.1", "6600")
 
 i3wsbar = (
     '/usr/bin/i3-wsbar',
     '--show-all', '-c',
     'dzen2 -dock -expand left -x %x -fn -*-DejaVu\ Sans\ Mono-normal-normal-normal-*-13-*-*-*-*-*-*-*',
-    '--input-on', 'DVI-0',
-    '-output-on', 'DVI-0'
+    '--input-on', 'DFP2',
+    '-output-on', 'DFP2'
     )
 pipe = os.pipe()
 fd_r, fd_w = pipe
@@ -102,7 +104,7 @@ try:
         net.update_stats(delay)
         cpu.update_stats(delay)
         vol.update()
-        cmus.update()
+        music.update()
         if sens_count > 4:
             sens.update()
             mem.update_stats()
@@ -112,21 +114,21 @@ try:
         d.reset()
 
         try:
-            if len(cmus.status) == 0:
+            if music.status == 'stopped':
                 d.fg('bg1').p(0, pico).i('stop').p(0, -pico)
-            elif cmus.status['status'] != 'playing':
+            elif music.status != 'playing':
                 d.fg('red').p(0, pico).i('pause').p(0, -pico)
             else:
                 d.fg('green').p(0, pico).i('play').a(' ').i('music').p(0, -pico)
                 d.fg('fg1')
-                if 'artist' in cmus.status and 'title' in cmus.status:
-                    d.a(' ', cmus.status['artist']).fg('fg2').a(' ', cmus.status['title'])
-                elif 'file' in cmus.status:
-                    d.a(' ', cmus.status['file'])
+                if 'artist' in music.tags and 'title' in music.tags:
+                    d.a(' ', music.tags['artist']).fg('fg2').a(' ', music.tags['title'])
+                elif 'file' in music.tags:
+                    d.a(' ', music.tags['file'])
                 else:
                     d.a(' ', '???')
         except:
-            disp_error('cmus', d)
+            disp_error('music', d)
 
         d.pa('1113')
         d.a('   ')
@@ -182,12 +184,12 @@ try:
         try:
             d.fg('fg1').p(0, pico).i('temp').p(0, -pico).a(' ')
             disp_temp(d, sens.temp['atk0110-acpi-0']['MB Temperature'])
-            d.p(5, 0)
-            disp_temp(d, sens.temp['coretemp-isa-0000']['Core 0'],
-                      sens.temp['coretemp-isa-0001']['Core 1'])
-            d.p(5, 0)
-            disp_temp(d, sens.temp['radeon-pci-0300']['temp1'],
-                      sens.temp['radeon-pci-0400']['temp1'])
+            # d.p(5, 0)
+            # disp_temp(d, sens.temp['coretemp-isa-0000']['Core 0'],
+            #           sens.temp['coretemp-isa-0001']['Core 1'])
+            # d.p(5, 0)
+            # disp_temp(d, sens.temp['radeon-pci-0300']['temp1'],
+            #           sens.temp['radeon-pci-0400']['temp1'])
         except:
             disp_error('sensors', d)
 

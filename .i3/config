@@ -181,33 +181,37 @@ assign wine ~
 # lock ($ModKey+z)
 bind $ModKey+52 exec i3lock -c 111111
 
-# cmus :
-#   play/pause ($ModKey+End)
-#   next ($ModKey+PrevPage)
-#   prev ($ModKey+NextPage)
-bindsym $ModKey+End exec cmus-remote -u
-bindsym $ModKey+Prior exec cmus-remote -r
-bindsym $ModKey+Next exec cmus-remote -n
-
 # vol up ($Modkey+=) / vol down ($ModKey++)
 bind $ModKey+20 exec amixer sset Master 2%-
 bind $ModKey+21 exec amixer sset Master 2%+
-
-# Multimedia keys
-bindsym XF86AudioPlay exec cmus-remote -u #play/pause
-bindsym XF86AudioPrev exec cmus-remote -r #prev
-bindsym XF86AudioNext exec cmus-remote -n #next
 bindsym XF86AudioLowerVolume exec amixer sset Master 2%-
 bindsym XF86AudioRaiseVolume exec amixer sset Master 2%+
 bindsym XF86AudioMute exec amixer sset Master toggle
+bindsym $ModKey+XF86AudioMute exec amixer sset Master toggle
+bind $ModKey+95 exec amixer sset Master 2%-
+bind $ModKey+96 exec amixer sset Master 2%+
 
-# Multimedia keys (with $ModKey)
+# CMUS
+bindsym $ModKey+End exec cmus-remote -u
+bindsym $ModKey+Prior exec cmus-remote -r
+bindsym $ModKey+Next exec cmus-remote -n
+bindsym XF86AudioPlay exec cmus-remote -u #play/pause
+bindsym XF86AudioPrev exec cmus-remote -r #prev
+bindsym XF86AudioNext exec cmus-remote -n #next
 bind $ModKey+75 exec cmus-remote -u
 bind $ModKey+74 exec cmus-remote -r
 bind $ModKey+76 exec cmus-remote -n
-bind $ModKey+95 exec amixer sset Master 2%-
-bind $ModKey+96 exec amixer sset Master 2%+
-bindsym $ModKey+XF86AudioMute exec amixer sset Master toggle
+
+# MPD
+# bindsym $ModKey+End exec mpc toggle
+# bindsym $ModKey+Prior exec mpc prev
+# bindsym $ModKey+Next exec mpc next
+# bindsym XF86AudioPlay exec mpc toggle
+# bindsym XF86AudioPrev exec mpc prev
+# bindsym XF86AudioNext exec mpc next
+# bind $ModKey+75 exec mpc toggle
+# bind $ModKey+74 exec mpc prev
+# bind $ModKey+76 exec mpc next
 
 bindsym XF86TouchpadToggle exec zsh /home/jo/bin/toggletouchpad
 
