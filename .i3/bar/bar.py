@@ -121,8 +121,10 @@ try:
             else:
                 d.fg('green').p(0, pico).i('play').a(' ').i('music').p(0, -pico)
                 d.fg('fg1')
-                if 'artist' in music.tags and 'title' in music.tags:
-                    d.a(' ', music.tags['artist']).fg('fg2').a(' ', music.tags['title'])
+                if 'artist' in music.tags and 'album' in music.tags and 'title' in music.tags:
+                    d.a(' ', music.tags['artist'])
+                    d.fg('fg2').a(' ', music.tags['album'])
+                    d.fg('fg3').a(' ', music.tags['title'])
                 elif 'file' in music.tags:
                     d.a(' ', music.tags['file'])
                 else:
