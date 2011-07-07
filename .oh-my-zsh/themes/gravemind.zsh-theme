@@ -34,11 +34,11 @@ function prompt_color_pwd() {
 PROMPT='%{$bg[black]%}${CF}| ${CB}%m${PROMPT_SSH}${CF}%n %1(j.${COK}%j .)%(?..${CKO}%? )%(!.${CKO}#.${CB}\$) ${CR}%E'
 #RPS1='%{$bg[black]%}$(prompt_color_pwd)${CR} $(git_prompt_info) ${CR} '
 
-RPS1='%{$bg[black]%}${CB}%~${CR}$(git_prompt_info)${CR}'
+RPS1='%{$bg[black]%}${CB}%~$(git_prompt_info)${CR}'
 
 PROMPT2='%{$bg[black]%}${CF}| ${CB}%_ ${CF}> ${CR}'
 
-ZSH_THEME_GIT_PROMPT_PREFIX=" %{$bg[black]%}${CF}"
+ZSH_THEME_GIT_PROMPT_PREFIX="${CF}:"
 ZSH_THEME_GIT_PROMPT_SUFFIX="${CR}"
 ZSH_THEME_GIT_PROMPT_DIRTY="${CKO}*"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
