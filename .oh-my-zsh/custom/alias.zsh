@@ -23,6 +23,7 @@ alias disk='df -h --total'
 alias x='7z x'
 alias flux='xflux -l 49 -k 4000'
 alias untar='tar xvzf'
+alias ntpup='sudo ntpd -qg &'
 
 alias emacs='ne -q -l ~/.emacs.d/emacs-ide.el'
 alias nw='\emacs -nw'

@@ -41,3 +41,5 @@ stat_busy "START dhcpd"
 sudo dhcpcd $INTERFACE
 [ $? -ne 0 ] && stat_die
 stat_done
+
+echo "\a"
