@@ -9,6 +9,10 @@ xset b 0 &> /dev/null
 
 xrandr --output HDMI-0 --auto --right-of DVI-0
 
+setxkbmap us_qwerty-fr
+
+# xmodmap -e 'keycode 135 = Super_R'
+
 numlockx on
 
 exec i3 &> /home/jo/.i3/log

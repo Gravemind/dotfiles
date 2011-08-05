@@ -14,6 +14,9 @@ set $screen_2       LVDS1
 # Font for window titles. ISO 10646 = Unicode
 font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 
+# use Mouse+Mod1 to drag floating windows to their wanted position
+floating_modifier $ModK
+
 # Start a terminal
 bindsym $ModK+Return exec /usr/bin/urxvt
 
@@ -21,7 +24,7 @@ bindsym $ModK+Return exec /usr/bin/urxvt
 bindsym $ModK+q kill
 
 # Start dmenu
-bindsym $ModK+z exec /usr/bin/dmenu_run
+bindsym $ModK+z exec /usr/bin/dmenu_run -p ">>" -nb '#222222' -nf '#CCCCCC' -sb '#4c7899' -sf '#FFFFFF'
 
 # Change focus
 bindsym $ModK+h     focus left
@@ -147,7 +150,7 @@ assign wine ~
 focus_follows_mouse no
 
 # Lock
-bindsym $ModK+z exec i3lock -c 111111
+bindsym $ModK+w exec ~/.i3/lock.sh
 
 # Amixer
 set $amixer_item Master
@@ -185,6 +188,7 @@ bind $ModK+76 exec cmus-remote -n
 # On/Off Touchpad
 bindsym XF86TouchpadToggle exec zsh /home/jo/bin/toggletouchpad
 
-exec ~/.i3/bar/bar.py
+# exec ~/.i3/bar/bar.py
 exec ~/.i3/bg.py
+exec ~/bin/conky -c ~/.conky/arch.conf
 ## exec i3status | i3bar -d
