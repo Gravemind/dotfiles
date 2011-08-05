@@ -2,15 +2,17 @@
 ArchLinux
 
 Windows manager:
-    i3-wm
+    i3-wm (v4)
+    conky-lua-arch + .conky/battery_watt.patch
 
 Shell:
     zsh oh-my-zsh
     oh-my-zsh-install.sh
 
 Editor:
-    emacs 23.2
+    emacs
 
 misc:
     urxvt
     git
+    cmus
