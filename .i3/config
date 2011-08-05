@@ -188,7 +188,6 @@ bind $ModK+76 exec cmus-remote -n
 # On/Off Touchpad
 bindsym XF86TouchpadToggle exec zsh /home/jo/bin/toggletouchpad
 
-# exec ~/.i3/bar/bar.py
+exec ~/.i3/bar/bar.py
 exec ~/.i3/bg.py
-exec ~/bin/conky -c ~/.conky/arch.conf
-## exec i3status | i3bar -d
+#exec ~/bin/conky -c ~/.conky/arch.conf
