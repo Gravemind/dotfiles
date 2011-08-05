@@ -1,0 +1,135 @@
+--- ../conky-1.8.1-origin/src//ccurl_thread.c	2011-08-06 00:20:55.534755488 +0200
++++ src/ccurl_thread.c	2011-08-06 00:20:34.568087628 +0200
+@@ -33,7 +33,7 @@
+ #endif /* DEBUG */
+ 
+ #include <curl/curl.h>
+-#include <curl/types.h>
++//#include <curl/types.h>
+ #include <curl/easy.h>
+ 
+ /*
+--- ../conky-1.8.1-origin/src//conky.c	2011-08-06 00:20:55.538088821 +0200
++++ src/conky.c	2011-08-06 00:20:34.568087628 +0200
+@@ -888,6 +888,9 @@
+ 			OBJ(battery_short) {
+ 				get_battery_short_status(p, p_max_size, obj->data.s);
+ 			}
++			OBJ(battery_watt) {
++				get_battery_stuff(p, p_max_size, obj->data.s, BATTERY_WATT);
++			}
+ #endif /* __OpenBSD__ */
+ 
+ 			OBJ(buffers) {
+--- ../conky-1.8.1-origin/src//core.c	2011-08-06 00:20:55.534755488 +0200
++++ src/core.c	2011-08-06 00:20:34.564754294 +0200
+@@ -285,6 +285,16 @@
+ 			strcpy(bat, "BAT0");
+ 		}
+ 		obj->data.s = strndup(bat, text_buffer_size);
++	END OBJ(battery_watt, 0)
++		char bat[64];
++
++		arg = scan_bar(obj, arg);
++		if (arg && strlen(arg)>0) {
++			sscanf(arg, "%63s", bat);
++		} else {
++			strcpy(bat, "BAT0");
++		}
++		obj->data.s = strndup(bat, text_buffer_size);
+ #endif /* !__OpenBSD__ */
+ 
+ #if defined(__linux__)
+--- ../conky-1.8.1-origin/src//eve.c	2011-08-06 00:20:55.541422154 +0200
++++ src/eve.c	2011-08-06 00:20:34.574754296 +0200
+@@ -37,7 +37,7 @@
+ #include <libxml/xmlwriter.h>
+ 
+ #include <curl/curl.h>
+-#include <curl/types.h>
++//#include <curl/types.h>
+ #include <curl/easy.h>
+ 
+ #include <time.h>
+--- ../conky-1.8.1-origin/src//linux.c	2011-08-06 00:20:55.541422154 +0200
++++ src/linux.c	2011-08-06 00:20:34.571420962 +0200
+@@ -1568,6 +1568,8 @@
+ static char last_battery_str[MAX_BATTERY_COUNT][64];
+ /* e.g. "3h 15m" */
+ static char last_battery_time_str[MAX_BATTERY_COUNT][64];
++/* e.g. "11.42" */
++static char last_battery_watt_str[MAX_BATTERY_COUNT][64];
+ 
+ static double last_battery_time[MAX_BATTERY_COUNT];
+ 
+@@ -1633,6 +1635,7 @@
+ 
+ 	memset(last_battery_str[idx], 0, sizeof(last_battery_str[idx]));
+ 	memset(last_battery_time_str[idx], 0, sizeof(last_battery_time_str[idx]));
++	memset(last_battery_watt_str[idx], 0, sizeof(last_battery_watt_str[idx]));
+ 
+  	/* first try SYSFS if that fails try ACPI */
+ 
+@@ -1646,6 +1649,7 @@
+ 
+  	if (sysfs_bat_fp[idx] != NULL) {
+  		/* SYSFS */
++		int	present_voltage = -1;
+  		int present_rate = -1;
+  		int remaining_capacity = -1;
+  		char charging_state[64];
+@@ -1669,6 +1673,8 @@
+  			current flowing now but it is the same value
+  			which was used in the past. so we continue
+  			the tradition! */
++ 			else if (strncmp(buf, "POWER_SUPPLY_VOLTAGE_NOW=", 25) == 0)
++ 				sscanf(buf, "POWER_SUPPLY_VOLTAGE_NOW=%d", &present_voltage);
+  			else if (strncmp(buf, "POWER_SUPPLY_CURRENT_NOW=", 25) == 0)
+  				sscanf(buf, "POWER_SUPPLY_CURRENT_NOW=%d", &present_rate);
+  			else if (strncmp(buf, "POWER_SUPPLY_ENERGY_NOW=", 24) == 0)
+@@ -1753,6 +1759,13 @@
+  			else
+  				strncpy(last_battery_str[idx], "AC", 64);
+  		}
++
++		/* battery_watt */
++		if (present_voltage > 0 && present_rate > 0) {
++			snprintf(last_battery_watt_str[idx], 64,
++					 "%.1f", ((float)present_rate / 1000000.f) * ((float)present_voltage / 1000000.f));
++		}
++
+ 	} else if (acpi_bat_fp[idx] != NULL) {
+ 		/* ACPI */
+ 		int present_rate = -1;
+@@ -1929,6 +1942,9 @@
+ 		case BATTERY_TIME:
+ 			snprintf(buffer, n, "%s", last_battery_time_str[idx]);
+ 			break;
++		case BATTERY_WATT:
++			snprintf(buffer, n, "%s", last_battery_watt_str[idx]);
++			break;
+ 		default:
+ 			break;
+ 	}
+--- ../conky-1.8.1-origin/src//conky.h	2011-08-06 00:20:55.534755488 +0200
++++ src/conky.h	2011-08-06 00:20:34.568087628 +0200
+@@ -201,7 +201,8 @@
+  * needed by conky.c, linux.c and freebsd.c */
+ enum {
+ 	BATTERY_STATUS,
+-	BATTERY_TIME
++	BATTERY_TIME,
++	BATTERY_WATT
+ };
+ 
+ /* if_up strictness selector
+--- ../conky-1.8.1-origin/src//text_object.h	2011-08-06 00:20:55.541422154 +0200
++++ src/text_object.h	2011-08-06 00:20:34.571420962 +0200
+@@ -47,6 +47,7 @@
+ 	OBJ_battery_percent,
+ 	OBJ_battery_bar,
+ 	OBJ_battery_short,
++	OBJ_battery_watt,
+ #endif /* !__OpenBSD__ */
+ 	OBJ_buffers,
+ 	OBJ_cached,
