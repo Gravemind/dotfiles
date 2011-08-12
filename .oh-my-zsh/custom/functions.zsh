@@ -8,6 +8,7 @@ sub wineprefix()
 
 sub sx()
 {
+    cd $HOME
     startx &
     disown
     exit

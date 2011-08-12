@@ -148,6 +148,8 @@ assign gimp ~
 assign wine ~
 
 focus_follows_mouse no
+new_window 1pixel
+default_orientation auto
 
 # Lock
 bindsym $ModK+w exec ~/.i3/lock.sh
@@ -190,4 +192,5 @@ bindsym XF86TouchpadToggle exec zsh /home/jo/bin/toggletouchpad
 
 exec ~/.i3/bar/bar.py
 exec ~/.i3/bg.py
+#exec ~/.i3/i3bar.sh
 #exec ~/bin/conky -c ~/.conky/arch.conf

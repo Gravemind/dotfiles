@@ -1,3 +1,5 @@
+#!/bin/zsh
+
 alias grep='grep --color=auto'
 alias less='less --quiet'
 alias cat='cat -v'
@@ -43,5 +45,3 @@ alias -g   TAIL='|& tail'
 alias -g     DN='/dev/null'
 alias -g    ERR='2> /dev/null'
 alias -g    COL='--color=always'
-
-alias bat='acpi -b'
