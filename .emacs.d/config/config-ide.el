@@ -64,32 +64,13 @@
 (yas/initialize)
 (yas/load-directory "~/.emacs.d/plugins/yasnippet-0.6.1c/snippets")
 
+;; easist
+(require 'eassist)
+
 ;; auto-complete
 (setq-default ac-sources (append '(ac-source-semantic
                                    ac-source-semantic-raw)
                                  ac-sources))
-
-;; easist
-(require 'eassist)
-
-;; auto-complete with semantic + yasnippet :
-(global-auto-complete-mode t)
-(setq-default ac-auto-start t)
-(setq-default ac-dwim t)
-(setq-default ac-override-local-map nil)
-(setq-default ac-expand-on-auto-complete nil)
-(setq-default ac-quick-help-delay 0.5)
-(setq-default ac-modes
-              '(emacs-lisp-mode lisp-interaction-mode lisp-mode scheme-mode
-                c-mode cc-mode c++-mode java-mode
-                perl-mode cperl-mode python-mode ruby-mode
-                ecmascript-mode javascript-mode php-mode css-mode
-                makefile-mode sh-mode fortran-mode f90-mode ada-mode
-                xml-mode sgml-mode
-                haskell-mode literate-haskell-mode
-                emms-tag-editor-mode
-                asm-mode
-                org-mode))
 
 ;; auto-complete-clang
 (defun jo/clang-complete()
@@ -109,7 +90,7 @@
 ;; (add-to-list 'auto-mode-alist (cons (expand-file-name qt4-include-base-dir) 'c++-mode))
 
 ;; hs
-(add-hook 'c-mode-common-hook 'hs-minor-mode)
+;; (add-hook 'c-mode-common-hook 'hs-minor-mode)
 
 ;; FlyMake
 (setq flymake-master-file-dirs

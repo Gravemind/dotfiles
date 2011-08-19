@@ -90,8 +90,14 @@
   ;; AUTOCOMPLETE
   ;;
   (require 'auto-complete-config)
-  (add-to-list 'ac-dictionary-directories "~/.emacs.d/plugins/autocomplete/ac-dict")
+  ;; (add-to-list 'ac-dictionary-directories "~/.emacs.d/plugins/autocomplete/ac-dict")
   (ac-config-default)
+
+  (setq ac-dwim nil)
+  (setq ac-auto-show-menu t)
+  (setq ac-quick-help-delay 2)
+  (setq ac-auto-start 1)
+  (setq ac-ignore-case nil)
 
 )
 
