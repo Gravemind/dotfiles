@@ -66,23 +66,25 @@
 ;; Plugins
 ;;
 
+(add-to-list 'load-path "~/.emacs.d/plugins")
+(add-to-list 'load-path "~/.emacs.d/plugins/php-mode")
+(add-to-list 'load-path "~/.emacs.d/plugins/yaml-mode")
+(add-to-list 'load-path "~/.emacs.d/plugins/autocomplete")
+
+(require 'lua-mode)
+(setq auto-mode-alist (cons '("\\.lua$" . lua-mode) auto-mode-alist))
+
+(require 'php-mode)
+
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+
+
 (defun config/plugins ()
   (interactive)
-  (add-to-list 'load-path "~/.emacs.d/plugins")
-  (add-to-list 'load-path "~/.emacs.d/plugins/php-mode")
-  (add-to-list 'load-path "~/.emacs.d/plugins/yaml-mode")
-  (add-to-list 'load-path "~/.emacs.d/plugins/autocomplete")
 
   (require 'autopair)
   (autopair-global-mode)
-
-  (require 'php-mode)
-
-  (require 'lua-mode)
-  (setq auto-mode-alist (cons '("\\.lua$" . lua-mode) auto-mode-alist))
-
-  (require 'yaml-mode)
-  (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
   ;;
   ;; AUTOCOMPLETE
