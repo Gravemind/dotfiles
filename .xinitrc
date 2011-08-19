@@ -10,8 +10,6 @@ amixer sset Mono 0% &> /dev/null
 
 xset b 0 &> /dev/null
 
-xrandr --output HDMI-0 --auto --right-of DVI-0
-
 setxkbmap us_qwerty-fr
 
 ## 'Menu' key as Windows key

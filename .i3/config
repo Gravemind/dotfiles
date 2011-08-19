@@ -8,8 +8,10 @@
 # Variables
 set $ModK           Mod4
 set $resize_step    100
-set $screen_1       LVDS1
-set $screen_2       LVDS1
+set $screenL        DFP2
+set $screenR        DFP1
+
+ipc-socket ~/.i3/ipc.sock
 
 # Font for window titles. ISO 10646 = Unicode
 font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -128,16 +130,16 @@ bindsym $ModK+Shift+8 move workspace 8
 bindsym $ModK+Shift+9 move workspace 9
 bindsym $ModK+Shift+0 move workspace 10
 
-workspace 1 output $screen_1
-workspace 2 output $screen_1
-workspace 3 output $screen_1
-workspace 4 output $screen_1
-workspace 5 output $screen_1
-workspace 6 output $screen_2
-workspace 7 output $screen_2
-workspace 8 output $screen_2
-workspace 9 output $screen_2
-workspace 10 output $screen_2
+workspace 1 output $screenL
+workspace 2 output $screenL
+workspace 3 output $screenL
+workspace 4 output $screenL
+workspace 5 output $screenL
+workspace 6 output $screenR
+workspace 7 output $screenR
+workspace 8 output $screenR
+workspace 9 output $screenR
+workspace 10 output $screenR
 
 assign chrome 3
 assign chromium 3
