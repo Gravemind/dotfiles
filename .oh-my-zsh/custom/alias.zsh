@@ -27,6 +27,12 @@ alias flux='xflux -l 49 -k 4000'
 alias untar='tar xvzf'
 alias ntpup='sudo ntpd -qg &'
 
+if [[ -n "$PACMAN" ]]
+then
+    alias pacman="$PACMAN"
+    compdef _pacman $PACMAN=pacman
+fi
+
 alias emacs='ne -q -l ~/.emacs.d/emacs-ide.el'
 alias nw='\emacs -nw'
 

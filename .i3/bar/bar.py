@@ -63,8 +63,8 @@ music = CMus()
 
 i3wsbar = (
     '/usr/bin/i3-wsbar',
-    '--show-all', '-c',
-    'dzen2 -dock -expand left -x %x -fn -*-DejaVu\ Sans\ Mono-normal-normal-normal-*-13-*-*-*-*-*-*-*',
+    '--show-all', 
+    '-c', 'dzen2 -dock -expand left -x %x -fn -*-DejaVu\ Sans\ Mono-normal-normal-normal-*-13-*-*-*-*-*-*-*',
     '--input-on', 'DFP2',
     '-output-on', 'DFP2'
     )
