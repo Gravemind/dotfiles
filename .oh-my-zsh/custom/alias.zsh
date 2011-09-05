@@ -25,7 +25,7 @@ alias disk='df -h --total'
 alias x='7z x'
 alias flux='xflux -l 49 -k 4000'
 alias untar='tar xvzf'
-alias ntpup='sudo ntpd -qg &'
+alias ntpup='sudo ntpd -qg'
 
 if [[ -n "$PACMAN" ]]
 then
