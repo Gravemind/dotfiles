@@ -15,7 +15,7 @@ Changelog:
 *v 2011mint -- reEdit despot77 (18.02.2011)
 ]]
 
-settings_table = {
+settings_table={
 
     {
         -- Edit this table to customise your rings.
@@ -169,7 +169,7 @@ settings_table = {
     {
         name='downspeedf',
         arg='eth0',
-        max=1000,
+        max=10000,
         bg_colour=0xffffff,
         bg_alpha=0.2,
         fg_colour=0x0066FF,
@@ -199,7 +199,7 @@ settings_table = {
     {
         name='downspeedf',
         arg='wlan0',
-        max=1000,
+        max=10000,
         bg_colour=0xffffff,
         bg_alpha=0.2,
         fg_colour=0x0066FF,
@@ -354,7 +354,10 @@ function conky_clock_rings()
         str=string.format('${%s %s}',pt['name'],pt['arg'])
         str=conky_parse(str)
 
-        value=tonumber(str)+0
+        value=tonumber(str)
+        if value==nil then
+           value=0
+        end
         pct=value/pt['max']
 
         draw_ring(cr,pct,pt)

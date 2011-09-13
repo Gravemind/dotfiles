@@ -33,6 +33,8 @@ then
     compdef _pacman $PACMAN=pacman
 fi
 
+compdef _pacman yaourt=pacman
+
 alias emacs='ne -q -l ~/.emacs.d/emacs-ide.el'
 alias nw='\emacs -nw'
 

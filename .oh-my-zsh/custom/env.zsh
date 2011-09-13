@@ -1,9 +1,4 @@
 
-if [ "$TERM" = "rxvt-unicode-256color" ]
-then
-    export TERM="rxvt-256color"
-fi
-
 export LESS_TERMCAP_mb=$'\E[01;34m'
 export LESS_TERMCAP_md=$'\E[01;34m'
 export LESS_TERMCAP_me=$'\E[0m'

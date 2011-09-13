@@ -12,6 +12,7 @@ function mymerge() {
 
 mymerge oh-my-zsh-install.sh ~/.oh-my-zsh/tools/install.sh
 mymerge ~/bin bin
+mymerge ~/.conky .conky
 mymerge ~/.dzen .dzen
 mymerge ~/.emacs .emacs
 mymerge ~/.emacs.d .emacs.d

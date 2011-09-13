@@ -101,6 +101,13 @@
 
 )
 
+(defun iwb ()
+  "indent whole buffer"
+  (interactive)
+  (delete-trailing-whitespace)
+  (indent-region (point-min) (point-max) nil)
+  (untabify (point-min) (point-max)))
+
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -115,7 +122,7 @@
 (global-set-key [f4]      'recompile)
 (global-set-key [S-f4]    'jo/compile-in-current-buffer)
 
-(global-set-key [f5]      'delete-trailing-whitespace)
+(global-set-key [f5]      'iwb)
 
 (global-set-key [f6]      'comment-or-uncomment-region)
 (global-set-key [S-f6]    'uncomment-region)
