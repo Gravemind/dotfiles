@@ -20,20 +20,20 @@ alias cleandhcp='sudo rm -rf /var/lib/dhcp3/*.lease'
 alias _='command sudo -E ' # ! trailing wihtespace is important
 alias lock='i3lock -c 111111'
 alias shut='sudo shutdown -h now'
-alias reboot='sudo reboot'
+alias reboot='sudo shutdown -r now'
 alias disk='df -h --total'
 alias x='7z x'
 alias xl='7z l'
 alias flux='xflux -l 49 -k 4000'
 alias untar='tar xvzf'
 alias ntpup='sudo ntpd -qg'
+alias log='less +G'
 
 if [[ -n "$PACMAN" ]]
 then
     alias pacman="$PACMAN"
     compdef _pacman $PACMAN=pacman
 fi
-
 compdef _pacman yaourt=pacman
 
 alias emacs='ne -q -l ~/.emacs.d/emacs-ide.el'
