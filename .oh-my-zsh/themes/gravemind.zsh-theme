@@ -3,7 +3,7 @@
 CR="%{$reset_color%}"
 CBG="%{$bg[black]%}"
 CB="%{$fg_bold[black]%}"
-CW="%{$bold_color%}"
+CW="%{$fg_bold[white]%}"
 COK="%{$fg_bold[green]%}"
 CKO="%{$fg_bold[red]%}"
 
@@ -17,16 +17,16 @@ HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=white,bold'
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
 
 if [ -n "$SSH_CONNECTION" ]; then
-    PROMPT_SSH="${COK}@"
+    PROMPT_SSH="${COK}@$HOST"
 else
-    PROMPT_SSH="${CB}@"
+    PROMPT_SSH=""
 fi
 
-PROMPT='${CBG}${CF}❰ ${CF}%n${PROMPT_SSH}%m%1(j. ${COK}%j.)%(?.. ${CKO}%?) ${CF}%(!.❱❱.❱) ${CR}%E'
+PROMPT='${CBG}${CW}❰ ${CF}%n${PROMPT_SSH}%1(j. ${COK}%j.)%(?.. ${CKO}%?) ${CW}❱ ${CR}'
 
-RPS1='%{$bg[black]%}${CB}%~$(git_prompt_info)${CR}'
+RPS1='${CBG}${CW}❰${CB}%~$(git_prompt_info)${CW}❱${CR}'
 
-PROMPT2='%{$bg[black]%}${CF}❰ ${CB}%_ ${CF}❱ ${CR}'
+PROMPT2='${CBG}  ${CF}%_ ${CW}❱ ${CR}'
 
 ZSH_THEME_GIT_PROMPT_PREFIX="${CF}:"
 ZSH_THEME_GIT_PROMPT_SUFFIX="${CR}"
