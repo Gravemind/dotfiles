@@ -47,6 +47,10 @@ _zsh_highlight()
   # Store the previous command return code to restore it whatever happens.
   local ret=$?
 
+  # Do not highlight if there are more than 300 chars in the buffer. It's most
+  # likely a pasted command or a huge list of files in that case..
+  [[ -n ${ZSH_HIGHLIGHT_MAXLENGTH:-} ]] && [[ $#BUFFER -gt $ZSH_HIGHLIGHT_MAXLENGTH ]] && return $ret
+
   # Do not highlight if there are pending inputs (copy/paste).
   [[ $PENDING -gt 0 ]] && return $ret
 
@@ -65,7 +69,8 @@ _zsh_highlight()
 
         # Remove what was stored in its cache from region_highlight.
         cache_place="_zsh_highlight_${highlighter}_highlighter_cache"
-        [[ ${#${(P)cache_place}} -gt 0 ]] && region_highlight=(${region_highlight:#(${(P~j.|.)cache_place})})
+        typeset -ga ${cache_place}
+        [[ ${#${(P)cache_place}} -gt 0 ]] && [[ ! -z ${region_highlight-} ]] && region_highlight=(${region_highlight:#(${(P~j.|.)cache_place})})
 
       fi
     done
@@ -78,7 +83,7 @@ _zsh_highlight()
       {
         "_zsh_highlight_${highlighter}_highlighter"
       } always  {
-        : ${(PA)cache_place::=${region_highlight:#(${(~j.|.)region_highlight_copy})}}
+        [[ ! -z ${region_highlight-} ]] && : ${(PA)cache_place::=${region_highlight:#(${(~j.|.)region_highlight_copy})}}
       }
     done
 
@@ -110,7 +115,75 @@ _zsh_highlight_buffer_modified()
 # Returns 0 if the cursor has moved since _zsh_highlight was last called.
 _zsh_highlight_cursor_moved()
 {
-  [[ -n $CURSOR ]] && [[ -n $_ZSH_HIGHLIGHT_PRIOR_CURSOR ]] && (($_ZSH_HIGHLIGHT_PRIOR_CURSOR != $CURSOR))
+  [[ -n $CURSOR ]] && [[ -n ${_ZSH_HIGHLIGHT_PRIOR_CURSOR-} ]] && (($_ZSH_HIGHLIGHT_PRIOR_CURSOR != $CURSOR))
+}
+
+
+# -------------------------------------------------------------------------------------------------
+# Setup functions
+# -------------------------------------------------------------------------------------------------
+
+# Rebind all ZLE widgets to make them invoke _zsh_highlights.
+_zsh_highlight_bind_widgets()
+{
+  # Load ZSH module zsh/zleparameter, needed to override user defined widgets.
+  zmodload zsh/zleparameter 2>/dev/null || {
+    echo 'zsh-syntax-highlighting: failed loading zsh/zleparameter.' >&2
+    return 1
+  }
+
+  # Override ZLE widgets to make them invoke _zsh_highlight.
+  local cur_widget
+  for cur_widget in ${${(f)"$(builtin zle -la)"}:#(.*|_*|orig-*|run-help|which-command|beep)}; do
+    case $widgets[$cur_widget] in
+
+      # Already rebound event: do nothing.
+      user:$cur_widget|user:_zsh_highlight_widget_*);;
+
+      # User defined widget: override and rebind old one with prefix "orig-".
+      user:*) eval "zle -N orig-$cur_widget ${widgets[$cur_widget]#*:}; \
+                    _zsh_highlight_widget_$cur_widget() { builtin zle orig-$cur_widget \"\$@\" && _zsh_highlight }; \
+                    zle -N $cur_widget _zsh_highlight_widget_$cur_widget";;
+
+      # Completion widget: override and rebind old one with prefix "orig-".
+      completion:*) eval "zle -C orig-$cur_widget ${${widgets[$cur_widget]#*:}/:/ }; \
+                          _zsh_highlight_widget_$cur_widget() { builtin zle orig-$cur_widget \"\$@\" && _zsh_highlight }; \
+                          zle -N $cur_widget _zsh_highlight_widget_$cur_widget";;
+
+      # Builtin widget: override and make it call the builtin ".widget".
+      builtin) eval "_zsh_highlight_widget_$cur_widget() { builtin zle .$cur_widget \"\$@\" && _zsh_highlight }; \
+                     zle -N $cur_widget _zsh_highlight_widget_$cur_widget";;
+
+      # Default: unhandled case.
+      *) echo "zsh-syntax-highlighting: unhandled ZLE widget '$cur_widget'" >&2 ;;
+    esac
+  done
+}
+
+# Load highlighters from directory.
+#
+# Arguments:
+#   1) Path to the highlighters directory.
+_zsh_highlight_load_highlighters()
+{
+  # Check the directory exists.
+  [[ -d "$1" ]] || {
+    echo "zsh-syntax-highlighting: highlighters directory '$1' not found." >&2
+    return 1
+  }
+
+  # Load highlighters from highlighters directory and check they define required functions.
+  local highlighter highlighter_dir
+  for highlighter_dir ($1/*/); do
+    highlighter="${highlighter_dir:t}"
+    [[ -f "$highlighter_dir/${highlighter}-highlighter.zsh" ]] && {
+      . "$highlighter_dir/${highlighter}-highlighter.zsh"
+      type "_zsh_highlight_${highlighter}_highlighter" &> /dev/null &&
+      type "_zsh_highlight_${highlighter}_highlighter_predicate" &> /dev/null || {
+        echo "zsh-syntax-highlighting: '${highlighter}' highlighter should define both required functions '_zsh_highlight_${highlighter}_highlighter' and '_zsh_highlight_${highlighter}_highlighter_predicate' in '${highlighter_dir}/${highlighter}-highlighter.zsh'." >&2
+      }
+    }
+  done
 }
 
 
@@ -118,60 +191,28 @@ _zsh_highlight_cursor_moved()
 # Setup
 # -------------------------------------------------------------------------------------------------
 
-# Load ZSH module zsh/zleparameter, needed to override user defined widgets.
-zmodload zsh/zleparameter 2>/dev/null || {
-  echo 'zsh-syntax-highlighting: failed loading zsh/zleparameter, exiting.' >&2
-  return -1
+# Try binding widgets.
+_zsh_highlight_bind_widgets || {
+  echo 'zsh-syntax-highlighting: failed binding ZLE widgets, exiting.' >&2
+  return 1
 }
 
 # Resolve highlighters directory location.
-highlighters_dir="${ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR:-${${(%):-%N}:A:h}/highlighters}"
-[[ -d $highlighters_dir ]] || {
-  echo "zsh-syntax-highlighting: highlighters directory '$highlighters_dir' not found, exiting." >&2
-  return -1
+_zsh_highlight_load_highlighters "${ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR:-${0:h}/highlighters}" || {
+  echo 'zsh-syntax-highlighting: failed loading highlighters, exiting.' >&2
+  return 1
 }
 
-# Override ZLE widgets to make them invoke _zsh_highlight.
-for event in ${${(f)"$(zle -la)"}:#(_*|orig-*|.run-help|.which-command)}; do
-  if [[ "$widgets[$event]" == completion:* ]]; then
-    eval "zle -C orig-$event ${${${widgets[$event]}#*:}/:/ } ; $event() { builtin zle orig-$event && _zsh_highlight } ; zle -N $event"
-  else
-    case $event in
-      accept-and-menu-complete)
-        eval "$event() { builtin zle .$event && _zsh_highlight } ; zle -N $event"
-        ;;
-      .*)
-        clean_event=$event[2,${#event}] # Remove the leading dot in the event name
-        case ${widgets[$clean_event]-} in
-          (completion|user):*)
-            ;;
-          *)
-            eval "$clean_event() { builtin zle $event && _zsh_highlight } ; zle -N $clean_event"
-            ;;
-        esac
-        ;;
-      *)
-        ;;
-    esac
-  fi
-done
-unset event clean_event
-
-# Start highlighting immediately after the creation of a new command line.
-autoload add-zsh-hook && add-zsh-hook precmd _zsh_highlight
-
-# Load highlighters from highlighters directory and check they define required functions.
-for highlighter_dir ($highlighters_dir/*/); do
-  highlighter="${highlighter_dir:t}"
-  [[ -f "$highlighter_dir/${highlighter}-highlighter.zsh" ]] && {
-    . "$highlighter_dir/${highlighter}-highlighter.zsh"
-    type "_zsh_highlight_${highlighter}_highlighter" &> /dev/null &&
-    type "_zsh_highlight_${highlighter}_highlighter_predicate" &> /dev/null || {
-      echo "zsh-syntax-highlighting: '${highlighter}' highlighter should define both required functions '_zsh_highlight_${highlighter}_highlighter' and '_zsh_highlight_${highlighter}_highlighter_predicate' in '${highlighter_dir}/${highlighter}-highlighter.zsh'." >&2
-    }
+# Reset scratch variables when commandline is done.
+_zsh_highlight_preexec_hook()
+{
+  _ZSH_HIGHLIGHT_PRIOR_BUFFER=
+  _ZSH_HIGHLIGHT_PRIOR_CURSOR=
+}
+autoload -U add-zsh-hook
+add-zsh-hook preexec _zsh_highlight_preexec_hook 2>/dev/null || {
+    echo 'zsh-syntax-highlighting: failed loading add-zsh-hook.' >&2
   }
-done
-unset highlighter highlighter_dir highlighters_dir
 
 # Initialize the array of active highlighters if needed.
-[[ $#ZSH_HIGHLIGHT_HIGHLIGHTERS -eq 0 ]] && ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
+[[ $#ZSH_HIGHLIGHT_HIGHLIGHTERS -eq 0 ]] && ZSH_HIGHLIGHT_HIGHLIGHTERS=(main) || true

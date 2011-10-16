@@ -1,6 +1,9 @@
 #!/usr/bin/python
 
+# python3-mpd
+# http://jatreuman.indefero.net/p/python-mpd/doc/
 from mpd import (MPDClient, CommandError)
+
 import pprint
 
 class MPD:
@@ -8,15 +11,20 @@ class MPD:
     client = MPDClient()
     status = "stop"
     tags = []
+    mpd_host = ""
+    mpd_port = ""
 
     def __init__(self, host, port):
+        self.mpd_host = host
+        self.mpd_port = port
         self.connect()
         return
 
     def connect(self):
         try:
-            self.client.connect(host, port)
-        except:
+            self.client.connect(self.mpd_host, self.mpd_port)
+        except Exception as err:
+            print("MPD: connect fail:", err)
             self.ok = False
             return
         self.ok = True        

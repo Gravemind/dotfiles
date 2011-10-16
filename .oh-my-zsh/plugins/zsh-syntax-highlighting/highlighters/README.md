@@ -6,6 +6,8 @@ Syntax highlighting is done by pluggable highlighters:
 * [***main***](highlighters/main) - the base highlighter, and the only one active by default.
 * [***brackets***](highlighters/brackets) - matches brackets and parenthesis.
 * [***pattern***](highlighters/pattern) - matches user-defined patterns.
+* [***cursor***](highlighters/cursor) - matches the cursor position.
+* [***root***](highlighters/root) - triggered if the current user is root.
 
 
 How to activate highlighters
@@ -13,7 +15,7 @@ How to activate highlighters
 
 To activate an highlighter, add it to the `ZSH_HIGHLIGHT_HIGHLIGHTERS` array in `~/.zshrc`, for example:
 
-    ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+    ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 
 
 How to tweak highlighters

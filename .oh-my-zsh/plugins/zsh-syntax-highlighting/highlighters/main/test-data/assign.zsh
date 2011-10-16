@@ -28,8 +28,8 @@
 # vim: ft=zsh sw=2 ts=2 et
 # -------------------------------------------------------------------------------------------------
 
-BUFFER='echo $(echo ${(z)array})'
+BUFFER='A=1'
 
 expected_region_highlight=(
-  # TODO
+  "1 3 $ZSH_HIGHLIGHT_STYLES[assign]" # A=1
 )
