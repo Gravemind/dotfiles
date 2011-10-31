@@ -1,0 +1,44 @@
+#!/bin/zsh
+
+function inlist() {
+    MIME="$1"
+    shift
+    for MS in "$@"
+    do
+        if [[ $MIME = $MS ]] then
+            return 0;
+        fi
+    done
+    return 1
+}
+
+if [[ ! -f "$1" ]]; then
+    echo "$0: $1: not found"
+    exit 1
+fi
+
+FILENAME="$1"
+EXT="${FILENAME##*.}"
+DIRNAME="${FILENAME%.*}"
+
+if [[ -e "$DIRNAME" ]]
+then
+    echo "$0: $DIRNAME: extract dir already exists"
+    exit 1;
+fi
+
+MIME="$(file -b --mime-type "$FILENAME")"
+
+mkdir "$DIRNAME"
+cd "$DIRNAME"
+FILENAME="../$FILNAME"
+
+if inlist $MIME application/tar application/x-tar multipart/x-tar
+then
+    tar xf "$FILNAME"
+elif inlist $MIME applicaton/x-gtar application/x-gzip application/x-bzip2
+then
+    tar xzf "$FILNAME"
+else
+    7z x "$FILENAME"
+fi

@@ -1,13 +1,11 @@
 #!/bin/zsh
 
-sub wineprefix()
-{
+function wineprefix() {
     export WINEARCH=win32
     export WINEPREFIX=~/wineprefixes/win32
 }
 
-sub sx()
-{
+function sx() {
     cd $HOME
     startx &
     disown

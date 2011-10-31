@@ -106,6 +106,19 @@ mode "resize" {
 }
 bindsym $ModK+r mode "resize"
 
+# Colors
+# class                 border  backgr. text
+client.focused          #000000 #619CC9 #222222
+client.focused_inactive #000000 #5f676a #ffffff
+client.unfocused        #000000 #000000 #888888
+client.urgent           #2f343a #900000 #ffffff
+
+# Default colors:
+# client.focused          #4c7899 #285577 #ffffff
+# client.focused_inactive #333333 #5f676a #ffffff
+# client.unfocused        #333333 #222222 #888888
+# client.urgent           #2f343a #900000 #ffffff
+
 # switch to workspace
 bindsym $ModK+1 workspace 1
 bindsym $ModK+2 workspace 2
