@@ -17,28 +17,28 @@ if [[ ! -f "$1" ]]; then
     exit 1
 fi
 
-FILENAME="$1"
+FILEPATH=$(readlink -e "$1")
+FILENAME="${FILEPATH##*/}"
 EXT="${FILENAME##*.}"
 DIRNAME="${FILENAME%.*}"
 
-if [[ -e "$DIRNAME" ]]
-then
-    echo "$0: $DIRNAME: extract dir already exists"
-    exit 1;
-fi
+# if [[ -e "$DIRNAME" ]]
+# then
+#     echo "$0: $DIRNAME: extract dir already exists"
+#     exit 1;
+# fi
 
-MIME="$(file -b --mime-type "$FILENAME")"
+MIME=$(file -b --mime-type "$FILEPATH")
 
 mkdir "$DIRNAME"
 cd "$DIRNAME"
-FILENAME="../$FILNAME"
 
 if inlist $MIME application/tar application/x-tar multipart/x-tar
 then
-    tar xf "$FILNAME"
+    tar xf "$FILEPATH"
 elif inlist $MIME applicaton/x-gtar application/x-gzip application/x-bzip2
 then
-    tar xzf "$FILNAME"
+    tar xzf "$FILEPATH"
 else
-    7z x "$FILENAME"
+    7z x "$FILEPATH"
 fi

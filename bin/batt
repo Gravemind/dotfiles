@@ -1,15 +1,21 @@
 #!/bin/zsh
 
-function acpix() {
-    cat /proc/acpi/battery/BAT0/state | sed -nr "s/.*$1: +([0-9]+) .*/\1/p"
-}
-
-MV=$(acpix 'present voltage')
-MA=$(acpix 'present rate')
-
-W=`echo "scale=2; ($MV/1000) * ($MA/1000) " | bc`
+PATH_TO_BATT='/sys/class/power_supply/BAT0'
 
 acpi -b
 
-echo "$MV mV  $MA mA  $W W"
+if [ -f "$PATH_TO_BATT/voltage_now" ]
+then
+    MV=$(cat "$PATH_TO_BATT/voltage_now")
+    MA=$(cat "$PATH_TO_BATT/current_now")
+    
+    MV=${MV[0, -4]}
+    MA=${MA[0, -4]}
+
+    W=`echo "scale=2; ($MV/1000) * ($MA/1000) " | bc`
+    echo "$MV mV  $MA mA  $W W"
+
+else
+    echo 'no battery ?!'
+fi
 
