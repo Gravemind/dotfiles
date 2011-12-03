@@ -9,4 +9,4 @@ CMakeFiles
 cmake_install.cmake
 .clang-completion-error
 Makefile
-build
+build*

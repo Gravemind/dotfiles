@@ -26,7 +26,7 @@ bindsym $ModK+Return exec /usr/bin/urxvt
 bindsym $ModK+q kill
 
 # Start dmenu
-bindsym $ModK+z exec /usr/bin/dmenu_run -p ">>" -nb '#222222' -nf '#CCCCCC' -sb '#4c7899' -sf '#FFFFFF'
+bindsym $ModK+z exec /usr/bin/dmenu_run -b -p ">>" -nb '#222222' -nf '#CCCCCC' -sb '#4c7899' -sf '#FFFFFF'
 
 # Change focus
 bindsym $ModK+h     focus left
@@ -83,26 +83,26 @@ bindsym $ModK+Shift+r restart
 
 # Resize window (you can also use the mouse for that)
 mode "resize" {
-        bindsym h           resize shrink left  $resize_step px
-        bindsym Shift+h     resize grow   left  $resize_step px
-        bindsym j           resize shrink down  $resize_step px
-        bindsym Shift+j     resize grow   down  $resize_step px
-        bindsym k           resize shrink up    $resize_step px
-        bindsym Shift+k     resize grow   up    $resize_step px
-        bindsym l           resize shrink right $resize_step px
-        bindsym Shift+l     resize grow   right $resize_step px
+bindsym h           resize shrink left  $resize_step px
+bindsym Shift+h     resize grow   left  $resize_step px
+bindsym j           resize shrink down  $resize_step px
+bindsym Shift+j     resize grow   down  $resize_step px
+bindsym k           resize shrink up    $resize_step px
+bindsym Shift+k     resize grow   up    $resize_step px
+bindsym l           resize shrink right $resize_step px
+bindsym Shift+l     resize grow   right $resize_step px
 
-        bindsym Left        resize shrink left  $resize_step px
-        bindsym Shift+Left  resize grow   left  $resize_step px
-        bindsym Down        resize shrink down  $resize_step px
-        bindsym Shift+Down  resize grow   down  $resize_step px
-        bindsym Up          resize shrink up    $resize_step px
-        bindsym Shift+Up    resize grow   up    $resize_step px
-        bindsym Right       resize shrink right $resize_step px
-        bindsym Shift+Right resize grow   right $resize_step px
+bindsym Left        resize shrink left  $resize_step px
+bindsym Shift+Left  resize grow   left  $resize_step px
+bindsym Down        resize shrink down  $resize_step px
+bindsym Shift+Down  resize grow   down  $resize_step px
+bindsym Up          resize shrink up    $resize_step px
+bindsym Shift+Up    resize grow   up    $resize_step px
+bindsym Right       resize shrink right $resize_step px
+bindsym Shift+Right resize grow   right $resize_step px
 
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
+bindsym Return mode "default"
+bindsym Escape mode "default"
 }
 bindsym $ModK+r mode "resize"
 
@@ -205,7 +205,11 @@ bind $ModK+76 exec cmus-remote -n
 # On/Off Touchpad
 bindsym XF86TouchpadToggle exec zsh /home/jo/bin/toggletouchpad
 
-exec ~/.i3/bar/bar.py
+bar {
+    status_command i3status
+    mode hide
+    # position top
+}
+
+#exec ~/.i3/bar/bar.py
 exec ~/.i3/bg.py
-#exec ~/.i3/i3bar.sh
-#exec ~/bin/conky -c ~/.conky/arch.conf

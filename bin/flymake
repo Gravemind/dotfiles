@@ -11,7 +11,7 @@ do
     DIR=$( dirname "$PWD/$CMAKELIST" )
     DIR=$( cd $DIR ; pwd -P )
     DIRNAME=${DIR##*/}
-    FLAGS_DIR="${DIR}/${BUILD_DIR}/CMakeFiles/${DIRNAME}.dir/"
+    FLAGS_DIR="${DIR}/${BUILD_DIR}/CMakeFiles/*.dir/"
 
     echo "Generate FlyMake: ${DIR}/${MAKEFILE}"
     echo "# Generated for emacs FlyMake" > "${DIR}/${MAKEFILE}"

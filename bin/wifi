@@ -4,7 +4,7 @@
 
 INTERFACE='wlan0'
 WPA_CONF='/etc/wpa_supplicant.conf'
-SLEEP=2
+SLEEP=4
 
 
 COK="\e[1;34m"

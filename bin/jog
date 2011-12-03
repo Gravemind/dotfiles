@@ -1,0 +1,5 @@
+#!/bin/bash
+
+DIR="$HOME/bin/jogsoul"
+
+perl "$DIR/jogsoul.pl" "$DIR/jogsoul.perl"
