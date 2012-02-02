@@ -4,8 +4,8 @@
 
 INTERFACE='wlan0'
 WPA_CONF='/etc/wpa_supplicant.conf'
-SLEEP=4
-
+SLEEP=2
+DHCP_LEASETIME=7200
 
 COK="\e[1;34m"
 CKO="\e[1;31m"
@@ -42,7 +42,7 @@ sleep $SLEEP
 stat_done
 
 stat_busy "START dhcpd"
-sudo dhcpcd $INTERFACE
+sudo dhcpcd $INTERFACE -l $DHCP_LEASETIME
 [ $? -ne 0 ] && stat_die
 stat_done
 

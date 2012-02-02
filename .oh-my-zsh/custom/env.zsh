@@ -1,24 +1,27 @@
 
-export LESS_TERMCAP_mb=$'\E[01;34m'
-export LESS_TERMCAP_md=$'\E[01;34m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[0m\E[1m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[01;36m'
+# export LESS_TERMCAP_mb=$'\E[01;34m'       # begin blinking
+# export LESS_TERMCAP_md=$'\E[01;34m'       # begin bold
+# export LESS_TERMCAP_me=$'\E[0m'           # end mode
+# export LESS_TERMCAP_se=$'\E[0m'           # end standout-mode
+# export LESS_TERMCAP_so=$'\E[0m\E[1m'      # begin standout-mode - info box
+# export LESS_TERMCAP_ue=$'\E[0m'           # end underline
+# export LESS_TERMCAP_us=$'\E[01;36m'       # begin underline
+
+export LESS_TERMCAP_mb=$'\E[01;34m'       # begin blinking
+export LESS_TERMCAP_md=$'\E[01;34m'       # begin bold
+export LESS_TERMCAP_me=$'\E[0m'           # end mode
+export LESS_TERMCAP_se=$'\E[0m'           # end standout-mode
+export LESS_TERMCAP_so=$'\E[1;37m'      # begin standout-mode - info box
+export LESS_TERMCAP_ue=$'\E[0m'           # end underline
+export LESS_TERMCAP_us=$'\E[01;36m'       # begin underline
 
 export EDITOR='emacs'
 export PAGER='less'
 export LESS='-R'
 export PATH="$PATH:/home/jo/bin"
 export OSTYPE=`uname -s`
-export BROWSER='/usr/bin/chromium-browser'
-
-export CNORM_PATH='/home/jo/lib/cnorm_2.10'
-export KOOC_PATH='/home/jo/documents/epitech/KOOC'
-export ATISTREAMSDKROOT='/home/jo/lib/ati-stream-sdk-v2.3-lnx64'
-export ATISTREAMSDKSAMPLESROOT="$ATISTREAMSDKROOT/samples"
-export LD_LIBRARY_PATH="$ATISTREAMSDKROOT/lib/x86_64:$LD_LIBRARY_PATH"
+export MACHTYPE=`uname -m`
+export BROWSER='/usr/bin/firefox'
 
 export PACMAN='pacman-color'
 export WINEARCH="win32"

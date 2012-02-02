@@ -96,12 +96,12 @@ foreach ($files as $file)
                 $includes[$in] = 1;
     }
     $proto_c = array();
-    if (($n = preg_match_all('#^
+    if (($n = preg_match_all('#^\s*
 (([0-9a-z_]+\s+)+)
 ([0-9a-z_\*\[\]\(\)]+)
 \((
   (\s*
-    ([0-9a-z_]+\s+)+
+    ([0-9a-z_\*]+\s+)+
     ([0-9a-z_\*\[\]\(\)]+)\s*\,?
   )*(\s*\.\.\.\s*)?
 )\)
@@ -134,7 +134,7 @@ $#mixs', $content, $proto_c, PREG_SET_ORDER)) > 0)
                 echo '    '.$str;
             $re .= $str;
         }
-        $res .= $re."\n";
+        $res .= $re;
         if (!$quite)
             echo 'End'."\n";
     }

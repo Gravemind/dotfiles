@@ -1,4 +1,4 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Emacs
 ;;
@@ -20,6 +20,9 @@
  '(make-backup-files nil)
  )
 
+;; (setq x-select-enabled-clipboard t)
+;; (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+
 (add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.cwp$" . c-mode))
 (add-to-list 'auto-mode-alist '("\\.cws" . c-mode))
@@ -35,9 +38,11 @@
 ;; Packages
 ;;
 
+(require 'package)
 (setq package-archives '(("ELPA" . "http://tromey.com/elpa/")
                          ("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")))
+(package-initialize)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -198,6 +203,31 @@
 (add-hook 'erlang-mode-hook     'jo/semantic-shortcuts)
 (add-hook 'c-mode-common-hook   'jo/semantic-shortcuts)
 
+(global-set-key [M-S-insert] 'jo/yank-primary)
+(defun jo/yank-primary()
+  (interactive)
+  (let ((primary
+         (cond
+          ((eq system-type 'windows-nt)
+           ;; MS-Windows emulates PRIMARY in x-get-selection, but not
+           ;; in x-get-selection-value (the latter only accesses the
+           ;; clipboard).  So try PRIMARY first, in case they selected
+           ;; something with the mouse in the current Emacs session.
+           (or (x-get-selection 'PRIMARY)
+               (x-get-selection-value)))
+          ((fboundp 'x-get-selection-value) ; MS-DOS and X.
+           ;; On X, x-get-selection-value supports more formats and
+           ;; encodings, so use it in preference to x-get-selection.
+           (or (x-get-selection-value)
+               (x-get-selection 'PRIMARY)))
+	  ;; FIXME: What about xterm-mouse-mode etc.?
+          (t
+           (x-get-selection 'PRIMARY)))))
+    (unless primary
+      (error "No selection is available"))
+    (insert primary))
+)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Theme
@@ -210,13 +240,13 @@
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
 ;; zenburn and wwombat are safe
-(custom-set-variables
- '(custom-safe-themes (quote ("c6e90f84efbac20494f6059533997989520a31bc" "84adc0a0978005d43a319a18e8676c73cbc2709d" default)))
-)
+;; (custom-set-variables
+;;  '(custom-safe-themes (quote ("c6e90f84efbac20494f6059533997989520a31bc" "84adc0a0978005d43a319a18e8676c73cbc2709d" default)))
+;; )
 
 ;; theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-theme 'wwombat)
+(load-theme 'wwombat t)
 
 (provide 'jo-config);
 

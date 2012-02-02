@@ -28,15 +28,12 @@ alias flux='xflux -l 49 -k 4000'
 alias untar='tar xvzf'
 alias ntpup='sudo ntpd -qg'
 alias log='less +G'
-
-if [[ -n "$PACMAN" ]]
-then
-    alias pacman="$PACMAN"
-    compdef _pacman $PACMAN=pacman
-fi
+alias a='echo -ne "\a"'
+alias pacman="pacman-color"
+compdef _pacman $PACMAN=pacman
 compdef _pacman yaourt=pacman
 
-alias emacs='ne -q -l ~/.emacs.d/emacs-ide.el'
+alias emacs='ne -q -l ~/.emacs.d/config/jo-config-ide.el'
 alias nw='\emacs -nw'
 
 alias rchttpd='sudo /etc/rc.d/httpd'

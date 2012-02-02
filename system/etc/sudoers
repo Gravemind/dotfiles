@@ -1,0 +1,1 @@
+jo joLaptop=NOPASSWD: /sbin/shutdown -h now,/sbin/reboot, /usr/sbin/pm-suspend

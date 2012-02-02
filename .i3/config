@@ -154,20 +154,21 @@ workspace 8 output $screenR
 workspace 9 output $screenR
 workspace 10 output $screenR
 
-assign chrome 3
-assign chromium 3
-assign chromium-browser 3
-assign firefox 3
-assign pidgin 9
-assign gimp ~
-assign wine ~
+assign [class="^chrome"] 3
+assign [class="^chromium"] 3
+assign [class="^chromium-browser"] 3
+assign [class="^Firefox$"] 3
+assign [class="^Pidgin$"] 9
+assign [class="^Gimp$"] 5
+assign [class="^wine$"] ~
 
 focus_follows_mouse no
 new_window 1pixel
 default_orientation auto
+workspace_auto_back_and_forth no
 
 # Lock
-bindsym $ModK+w exec ~/.i3/lock.sh
+bindsym $ModK+w exec ~/bin/purplelock -f -c xtrlock -i 10.X.X.X -a '@tek pause ?' -l '@tek en pause !' -i X.X.X.X -a '@home' -l '@home afk'
 
 # Amixer
 set $amixer_item Master
@@ -206,7 +207,8 @@ bind $ModK+76 exec cmus-remote -n
 bindsym XF86TouchpadToggle exec zsh /home/jo/bin/toggletouchpad
 
 bar {
-    status_command i3status
+    status_command i3status -c ~/.i3/i3status.conf
+    # status_command ~/documents/sandbox/ruby/bar/bar
     mode hide
     # position top
 }

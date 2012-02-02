@@ -1,12 +1,43 @@
-*.swp
+##
+## Linux
+##
+
+*.swp.*
+!.gitignore
 *~
+# KDE
+.directory
+
 *.ktree
 *.preprocessed
 *.a
 *.o
+
+##
+## Emacs
+##
+
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+.elc
+auto-save-list
+tramp
+.\#*
+
+##
+## CMake
+##
+
 CMakeCache.txt
 CMakeFiles
 cmake_install.cmake
-.clang-completion-error
-Makefile
-build*
+install_manifest.txt
+
+##
+## misc
+##
+
+build
+*.out

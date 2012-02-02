@@ -15,6 +15,11 @@ setxkbmap us_qwerty-fr
 ## 'Menu' key as Windows key
 # xmodmap -e 'keycode 135 = Super_R'
 
+## ssh agent
+ssh-agent -s > /tmp/ssh.keys
+.  /tmp/ssh.keys
+rm  /tmp/ssh.keys
+
 numlockx on
 
 exec i3 &> /home/jo/.i3/log
