@@ -1,5 +1,5 @@
 #!/bin/bash
 
-DIR="$HOME/bin/jogsoul"
+cd "$HOME/bin/jogsoul"
 
-perl "$DIR/jogsoul.pl" "$DIR/jogsoul.perl"
+perl jogsoul.pl jogsoul.perl &

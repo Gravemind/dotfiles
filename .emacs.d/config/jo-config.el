@@ -3,6 +3,8 @@
 ;; Emacs
 ;;
 
+(prefer-coding-system 'utf-8)
+
 (custom-set-variables
  '(blink-cursor-mode nil)
  '(column-number-mode t)
@@ -110,6 +112,7 @@
   (indent-region (point-min) (point-max) nil)
   (tabify (point-min) (point-max)))
 
+;; set indentation to 4 spaces tabulation
 (defun jo/indent-space ()
   "switch to 4 spaces indentation"
   (interactive)
@@ -117,6 +120,7 @@
                 tab-width 4
                 indent-tabs-mode nil))
 
+;; set indentationto 1 tab (4 spaces width) tabulation
 (defun jo/indent-tab ()
   "switch to 1 tabulation of size 4 indentation"
   (interactive)
@@ -124,7 +128,6 @@
                 tab-width 4
                 indent-tabs-mode t))
 
-;; C tab/space switchable config (see above)
 (jo/indent-space)
 
 ;; tab config
@@ -144,7 +147,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Keyborad
+;; Keyborad : Global shortcuts
 ;;
 
 ;; F3 > F9
@@ -164,46 +167,44 @@
 (global-set-key [S-f9]    'delete-other-windows)
 
 ;; Arrows
-(global-set-key [M-right] 'enlarge-window-horizontally)
-(global-set-key [M-left]  'shrink-window-horizontally)
-(global-set-key [M-up]    'shrink-window)
-(global-set-key [M-down]  'enlarge-window)
+
+;; M-S-arrow : resize windows
+(global-set-key [M-S-right] 'enlarge-window-horizontally)
+(global-set-key [M-S-left]  'shrink-window-horizontally)
+(global-set-key [M-S-up]    'shrink-window)
+(global-set-key [M-S-down]  'enlarge-window)
+
+;; M-up/M-down : scroll with fix cursor
+(global-set-key [M-up]      'scroll-down-keep-cursor)
+(global-set-key [M-down]    'scroll-up-keep-cursor)
+
+;; C-left/C-right : move to word
 (global-set-key [C-left]  'backward-word)
 (global-set-key [C-right] 'forward-word)
+;; C-up/C-down : move to paragraph
 (global-set-key [C-up]    'backward-paragraph)
 (global-set-key [C-down]  'forward-paragraph)
+
+;; S-arrow : move to windows
 (global-set-key [S-right] 'windmove-right)
 (global-set-key [S-left]  'windmove-left)
 (global-set-key [S-up]    'windmove-up)
 (global-set-key [S-down]  'windmove-down)
 
-;; rebind [C-] Home-End PageUp/Down
+;; C-Home/C-End : move to begin/end of buffer
 (global-set-key [C-end]  'move-end-of-line)
 (global-set-key [C-home]  'move-beginning-of-line)
 (global-set-key [C-next]  'end-of-buffer)
 (global-set-key [C-prior]  'beginning-of-buffer)
 
-;; buffer menu
+;; C-x C-b : buffer menu
 (global-set-key (kbd "C-x C-b") 'buffer-menu)
-;; change window title
+;; C-x f : change window title
 (global-set-key (kbd "C-x f")   'set-frame-name)
 
-;; CC-mode shortcuts
-(defun jo/semantic-shortcuts ()
-  (local-set-key "\C-c , d" 'semantic-ia-show-doc)
-  (local-set-key "\C-c , s" 'semantic-ia-show-summary)
-  (local-set-key "\C-cd"    'eassist-switch-h-cpp)
-  (local-set-key "\M-m"     'eassist-list-methods)
-  (local-set-key "\C-c\C-r" 'semantic-symref)
-  )
-(add-hook 'c-mode-common-hook   'jo/semantic-shortcuts)
-(add-hook 'lisp-mode-hook       'jo/semantic-shortcuts)
-(add-hook 'scheme-mode-hook     'jo/semantic-shortcuts)
-(add-hook 'emacs-lisp-mode-hook 'jo/semantic-shortcuts)
-(add-hook 'erlang-mode-hook     'jo/semantic-shortcuts)
-(add-hook 'c-mode-common-hook   'jo/semantic-shortcuts)
 
-(global-set-key [M-S-insert] 'jo/yank-primary)
+;; M-insert Yank the X clipboard buffer
+(global-set-key [M-insert] 'jo/yank-primary)
 (defun jo/yank-primary()
   (interactive)
   (let ((primary
@@ -248,6 +249,6 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (load-theme 'wwombat t)
 
-(provide 'jo-config);
+(provide 'jo-config)
 
 ;;EOF
