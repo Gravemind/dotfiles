@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 ## desactivate touchpad when typing
-#syndaemon -i 2 -t -k -d &
+# syndaemon -i 2 -t -k -d &
 
 amixer sset Master 50% &> /dev/null
 amixer sset Front 100% &> /dev/null

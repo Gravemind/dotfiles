@@ -116,9 +116,10 @@
 
 ;; ================================== CPP-H switch ===========================
 ;;;###autoload
-(defvar eassist-header-switches '(("h" . ("cpp" "cc" "c"))
-			     ("hpp" . ("cpp" "cc"))
+(defvar eassist-header-switches '(("h" . ("cpp" "cc" "c" "cxx"))
+			     ("hpp" . ("cpp" "cc" "cxx"))
 			     ("cpp" . ("h" "hpp"))
+			     ("cxx" . ("h" "hpp"))
 			     ("c" . ("h"))
 			     ("C" . ("H"))
 			     ("H" . ("C" "CPP" "CC"))

@@ -141,6 +141,7 @@
 (c-set-offset 'arglist-intro 4)
 (c-set-offset 'arglist-close 0)
 (c-set-offset 'brace-list-open 0)
+(c-set-offset 'innamespace 0)
 
 ;; Lua
 (setq lua-indent-level 4)
@@ -198,13 +199,12 @@
 (global-set-key [C-prior]  'beginning-of-buffer)
 
 ;; C-x C-b : buffer menu
-(global-set-key (kbd "C-x C-b") 'buffer-menu)
+(global-set-key "\C-x\C-b"  'buffer-menu)
 ;; C-x f : change window title
-(global-set-key (kbd "C-x f")   'set-frame-name)
+(global-set-key "\C-xf"     'set-frame-name)
 
-
-;; M-insert Yank the X clipboard buffer
-(global-set-key [M-insert] 'jo/yank-primary)
+;; S-insert Yank the X clipboard buffer
+(global-set-key [S-insert] 'jo/yank-primary)
 (defun jo/yank-primary()
   (interactive)
   (let ((primary

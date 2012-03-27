@@ -4,6 +4,7 @@ alias grep='grep --color=auto'
 alias less='less --quiet'
 alias cat='cat -v'
 
+alias ls='ls -h --color'
 alias l='ls -l'
 alias la='ls -la'
 alias lt='l -rt'
