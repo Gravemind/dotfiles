@@ -12,6 +12,24 @@
 ;; Packages
 ;;
 
+(add-to-list 'load-path "~/.emacs.d/plugins")
+
+;; widen window mode 
+
+(defun ww-mode ()
+  (require 'bw-base)
+  (require 'widen-window)
+
+  (interactive)
+  (setq ww-ratio 0.7)
+  (add-to-list 'ww-advised-functions 'windmove-right)
+  (add-to-list 'ww-advised-functions 'windmove-left)
+  (add-to-list 'ww-advised-functions 'windmove-up)
+  (add-to-list 'ww-advised-functions 'windmove-down)
+  (add-to-list 'ww-advised-functions 'recenter-top-bottom)
+  (global-widen-window-mode t)
+)
+
 ;; semantic
 
 (defun jo/semantic-hook ()
@@ -45,8 +63,6 @@
   ;;                                  ac-sources))
 
   ;; Semantic shortcuts
-
-  (add-to-list 'load-path "~/.emacs.d/plugins")
 
   (require 'eassist)
   ;; (require 'semantic-tag-folding)

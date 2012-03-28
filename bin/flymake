@@ -13,6 +13,11 @@ do
     DIRNAME=${DIR##*/}
     FLAGS_DIR="${DIR}/${BUILD_DIR}/CMakeFiles/*.dir/"
 
+    if [ -f "${DIR}/${MAKEFILE}" ]
+    then
+        echo "Error: \"${DIR}/${MAKEFILE}\" already exists: not generate"
+        continue
+    fi
     echo "Generate FlyMake: ${DIR}/${MAKEFILE}"
     echo "# Generated for emacs FlyMake" > "${DIR}/${MAKEFILE}"
     echo "include ${FLAGS_DIR}flags.make" >> "${DIR}/${MAKEFILE}"
