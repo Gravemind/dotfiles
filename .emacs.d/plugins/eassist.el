@@ -270,7 +270,7 @@ buffer and sets the point to a method/function, corresponding the line."
           (let ((p (string-match j i eassist-names-column)))
              (when p
                (push (make-overlay (+ pos p) (+ pos p (length j))) eassist-overlays)
-               (overlay-put (car eassist-overlays) 'face '(background-color . "yellow")))))
+               (overlay-put (car eassist-overlays) 'face '(background-color . "black")))))
         (setq pos (+ pos (length i))))
   (goto-line (/ (count-lines (point-min) (point-max)) 2)))
 

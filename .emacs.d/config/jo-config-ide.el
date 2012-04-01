@@ -1,10 +1,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Emacs
+;;  Emacs 24
+;;
+;;  By Gravemind <gravemind2a@gmail.com>
+;;  https://github.com/Gravemind/ArchLinux
+;;
+;;  IDE configuration (C/C++ optimized)
 ;;
 
 (add-to-list 'load-path "~/.emacs.d/config")
-
 (require 'jo-config)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -14,7 +18,7 @@
 
 (add-to-list 'load-path "~/.emacs.d/plugins")
 
-;; widen window mode 
+;; Widen window mode
 
 (defun ww-mode ()
   (require 'bw-base)
@@ -30,7 +34,7 @@
   (global-widen-window-mode t)
 )
 
-;; semantic
+;; Semantic
 
 (defun jo/semantic-hook ()
   (custom-set-variables
@@ -79,5 +83,5 @@
 (add-hook 'lisp-mode-hook       'jo/semantic-hook)
 (add-hook 'scheme-mode-hook     'jo/semantic-hook)
 (add-hook 'emacs-lisp-mode-hook 'jo/semantic-hook)
-(add-hook 'erlang-mode-hook     'jo/semantic-hook)
 
+;;EOF

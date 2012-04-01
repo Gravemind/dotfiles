@@ -1,9 +1,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Emacs
+;;  Emacs 24
 ;;
-
-(prefer-coding-system 'utf-8)
+;;  By Gravemind <gravemind2a@gmail.com>
+;;  https://github.com/Gravemind/ArchLinux
+;;
+;;  Default configuration
+;;
 
 (custom-set-variables
  '(blink-cursor-mode nil)
@@ -22,17 +25,21 @@
  '(make-backup-files nil)
  )
 
+;; UTF-8
+(prefer-coding-system 'utf-8)
+
 ;; (setq x-select-enabled-clipboard t)
 ;; (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
+;; Emacs modes
 (add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.cwp$" . c-mode))
 (add-to-list 'auto-mode-alist '("\\.cws" . c-mode))
 
-;; replace yes-or-no by y-or-n
+;; Replace yes-or-no by y-or-n
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; force backspace erase tabulations
+;; Force backspace erase tabulations
 (global-set-key [backspace] 'delete-backward-char)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -53,13 +60,14 @@
 ;;
 
 (custom-set-variables
- ;; dont automatically scroll the compilation window
+
+ ;; Dont automatically scroll the compilation window
  '(compilation-scroll-output 0)
 
  ;; Set the compilation window height...
  '(compilation-window-height 10)
 
- ;; Auto-dismiss compilation buffer...
+ ;; ;; Auto-dismiss compilation buffer...
  ;; '(compilation-finish-function
  ;;   (lambda (buf str)
  ;;     (if (string-match "exited abnormally" str)
@@ -67,7 +75,7 @@
  ;;       ;; no errors, make the compilation window go away after 2.5 sec
  ;;       (run-at-time 2.5 nil 'delete-windows-on buf)
  ;;       (message "No errors"))))
-)
+ )
 
 (require 'cl)
 
@@ -83,12 +91,12 @@
                        return nil))))
 
 (defun jo/compile ()
-  "This function does a compile."
+  "Compile (or re-compile if compilation buffer is already open)."
   (interactive)
   (compile (format "make -sC %s" (file-name-directory (get-closest-pathname "Makefile")))))
 
 (defun jo/compile-here ()
-  "This function force compile in current buffer."
+  "Force compile in current buffer."
   (interactive)
   (switch-to-buffer "*compilation*")
   (compile (format "make -sC %s" (file-name-directory (get-closest-pathname "Makefile")))))
@@ -98,53 +106,82 @@
 ;; Coding style
 ;;
 
-(defun jo/iwb-space ()
-  "indent whole buffer"
-  (interactive)
-  (delete-trailing-whitespace)
-  (indent-region (point-min) (point-max) nil)
-  (untabify (point-min) (point-max)))
-
-(defun jo/iwb-tab ()
-  "indent whole buffer"
-  (interactive)
-  (delete-trailing-whitespace)
-  (indent-region (point-min) (point-max) nil)
-  (tabify (point-min) (point-max)))
-
-;; set indentation to 4 spaces tabulation
-(defun jo/indent-space ()
-  "switch to 4 spaces indentation"
-  (interactive)
-  (setq-default c-basic-offset 4
-                tab-width 4
-                indent-tabs-mode nil))
-
-;; set indentationto 1 tab (4 spaces width) tabulation
-(defun jo/indent-tab ()
-  "switch to 1 tabulation of size 4 indentation"
-  (interactive)
-  (setq-default c-basic-offset 4
-                tab-width 4
-                indent-tabs-mode t))
-
-(jo/indent-space)
-
-;; tab config
+;; Set basic indentation to 4 spaces width
 (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 86 90))
 
-;; C
-(setq-default c-basic-offset 4
-              tab-width 4)
+;; C style
 (c-set-offset 'substatement-open 0)
 (c-set-offset 'label 0)
 (c-set-offset 'arglist-intro 4)
 (c-set-offset 'arglist-close 0)
 (c-set-offset 'brace-list-open 0)
-(c-set-offset 'innamespace 0)
+(c-set-offset 'innamespace 4)
 
-;; Lua
+;; Lua style
 (setq lua-indent-level 4)
+
+;; Indent whole buffer functions
+
+(defun jo/iwb-space ()
+  "Indent whole buffer, see jo/tab-space"
+  (interactive)
+  (delete-trailing-whitespace)
+  (indent-region (point-min) (point-max) nil)
+  (untabify (point-min) (point-max))
+  )
+
+(defun jo/iwb-tab ()
+  "Indent whole buffer, see jo/tab-tab"
+  (interactive)
+  (delete-trailing-whitespace)
+  (indent-region (point-min) (point-max) nil)
+  (tabify (point-min) (point-max))
+  )
+
+(defun jo/iwb-absurde ()
+  "Indent whole buffer, see jo/tab-absurde"
+  (interactive)
+  (delete-trailing-whitespace)
+  (indent-region (point-min) (point-max) nil)
+  (tabify (point-min) (point-max))
+  )
+
+;; Indentation style functions
+
+(defun jo/tab-space ()
+  "Indent with 4 spaces"
+  (interactive)
+  (global-set-key [f5] 'jo/iwb-space)
+  (setq-default c-basic-offset 4
+                tab-width 4
+                indent-tabs-mode nil)
+  )
+
+(defun jo/tab-tab ()
+  "Indent with 1 tabulation of 4 spaces width"
+  (interactive)
+  (global-set-key [f5] 'jo/iwb-tab)
+  (setq-default c-basic-offset 4
+                tab-width 4
+                indent-tabs-mode t)
+  )
+
+(defun jo/tab-absurde ()
+  "Indent absurde (4 spaces indent but replace 8 spaces by tabulation)"
+  (interactive)
+  (global-set-key [f5] 'jo/iwb-absurde)
+  (setq-default c-basic-offset 4
+                tab-width 8
+                indent-tabs-mode t)
+  )
+
+;; Set default indentation style
+
+(jo/tab-tab)
+
+(add-hook 'lisp-mode-hook       'jo/tab-space)
+(add-hook 'scheme-mode-hook     'jo/tab-space)
+(add-hook 'emacs-lisp-mode-hook 'jo/tab-space)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -156,8 +193,7 @@
 (global-set-key [S-f3]    'jo/compile-here)
 (global-set-key [f4]      'next-error)
 (global-set-key [S-f4]    'previous-error)
-(global-set-key [f5]      'jo/iwb-space)
-(global-set-key [S-f5]    'jo/iwb-tab)
+;; [F5] jo/iwb-* (set by functions jo/tab-* (see above))
 (global-set-key [f6]      'comment-or-uncomment-region)
 (global-set-key [S-f6]    'uncomment-region)
 (global-set-key [f7]      'split-window-horizontally)
@@ -175,18 +211,18 @@
 (global-set-key [M-S-up]    'shrink-window)
 (global-set-key [M-S-down]  'enlarge-window)
 
-;; M-up/M-down : scroll with fix cursor
+;; M-up/M-down : scroll with fix cursor ;; FIXME emacs 24
 (global-set-key [M-up]      'scroll-down-keep-cursor)
 (global-set-key [M-down]    'scroll-up-keep-cursor)
 
-;; C-left/C-right : move to word
+;; C-left/C-right : move to next/prev word
 (global-set-key [C-left]  'backward-word)
 (global-set-key [C-right] 'forward-word)
-;; C-up/C-down : move to paragraph
+;; C-up/C-down : move to next/prev paragraph
 (global-set-key [C-up]    'backward-paragraph)
 (global-set-key [C-down]  'forward-paragraph)
 
-;; S-arrow : move to windows
+;; S-arrow : move to [arrow] window
 (global-set-key [S-right] 'windmove-right)
 (global-set-key [S-left]  'windmove-left)
 (global-set-key [S-up]    'windmove-up)
@@ -200,10 +236,14 @@
 
 ;; C-x C-b : buffer menu
 (global-set-key "\C-x\C-b"  'buffer-menu)
-;; C-x f : change window title
+
+;; C-x f : change frame title
 (global-set-key "\C-xf"     'set-frame-name)
 
-;; S-insert Yank the X clipboard buffer
+;; C-c C-SPC : Goto last mark
+(global-set-key "\C-c\C- "  'pop-to-mark-command)
+
+;; S-insert : Force yank X clipboard buffer (fix for emacs 24)
 (global-set-key [S-insert] 'jo/yank-primary)
 (defun jo/yank-primary()
   (interactive)
@@ -221,33 +261,30 @@
            ;; encodings, so use it in preference to x-get-selection.
            (or (x-get-selection-value)
                (x-get-selection 'PRIMARY)))
-	  ;; FIXME: What about xterm-mouse-mode etc.?
+          ;; FIXME: What about xterm-mouse-mode etc.?
           (t
            (x-get-selection 'PRIMARY)))))
     (unless primary
       (error "No selection is available"))
     (insert primary))
-)
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Theme
+;; Theme / colorization
 ;;
 
-;; colors in Shell mode
+;; Colors in Shell mode
 (setq ansi-color-names-vector ; better contrast colors
       ["black" "red4" "green4" "yellow4"
        "blue3" "magenta4" "cyan4" "white"])
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
-;; zenburn and wwombat are safe
-;; (custom-set-variables
-;;  '(custom-safe-themes (quote ("c6e90f84efbac20494f6059533997989520a31bc" "84adc0a0978005d43a319a18e8676c73cbc2709d" default)))
-;; )
-
-;; theme
+;; Load theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (load-theme 'wwombat t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (provide 'jo-config)
 

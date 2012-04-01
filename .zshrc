@@ -29,9 +29,9 @@ CASE_SENSITIVE="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=( git zsh-syntax-highlighting history-substring-search ) #my_laptop
+plugins=( git zsh-syntax-highlighting history-substring-search autojump ) # my_laptop
 
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/kde/bin:/usr/bin/vendor_perl:/usr/bin/core_perl:/opt/qt/bin:/home/jo/bin
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/kde/bin:/usr/bin/vendor_perl:/usr/bin/core_perl:/opt/qt/bin:$HOME/bin
