@@ -84,4 +84,8 @@
 (add-hook 'scheme-mode-hook     'jo/semantic-hook)
 (add-hook 'emacs-lisp-mode-hook 'jo/semantic-hook)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(provide 'jo-config-ide)
+
 ;;EOF
