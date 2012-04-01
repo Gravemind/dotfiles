@@ -6,9 +6,10 @@
 ;; with buffer-menu colorization
 ;;
 
-(deftheme wwombat "mywombat")
+(deftheme wwombat "Custom theme wombat")
 
-(custom-set-faces
+(custom-theme-set-faces
+ 'wwombat
  '(default ((t (:foreground "#b0b0b0" :background "#202020"
                             :weight light :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 83 :width normal :foundry "unknown" :family "DejaVu Sans Mono"))))
  '(cursor ((t (:background "cyan"))))
@@ -60,3 +61,5 @@
 (add-hook 'electric-buffer-menu-mode-hook 'buffer-menu-custom-font-lock)
 
 (provide-theme 'wwombat)
+
+;;EOF
