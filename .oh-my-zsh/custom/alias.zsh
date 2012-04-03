@@ -34,6 +34,8 @@ alias pacman="pacman-color"
 compdef _pacman $PACMAN=pacman
 compdef _pacman yaourt=pacman
 
+alias ssh-fingerprint="find . -name '*.pub' -exec ssh-keygen -l -f {} \;"
+
 alias emacs='ne -q -l ~/.emacs.d/config/jo-config-ide.el'
 alias nw='\emacs -nw'
 
