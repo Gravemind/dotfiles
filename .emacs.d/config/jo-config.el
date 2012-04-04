@@ -182,6 +182,7 @@
 (add-hook 'lisp-mode-hook       'jo/tab-space)
 (add-hook 'scheme-mode-hook     'jo/tab-space)
 (add-hook 'emacs-lisp-mode-hook 'jo/tab-space)
+(add-hook 'ruby-mode-hook       'jo/tab-space)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -189,19 +190,19 @@
 ;;
 
 ;; F3 > F9
-(global-set-key [f3]      'jo/compile)
-(global-set-key [S-f3]    'jo/compile-here)
-(global-set-key [f4]      'next-error)
-(global-set-key [S-f4]    'previous-error)
+(global-set-key [f3]        'jo/compile)
+(global-set-key [S-f3]      'jo/compile-here)
+(global-set-key [f4]        'next-error)
+(global-set-key [S-f4]      'previous-error)
 ;; [F5] jo/iwb-* (set by functions jo/tab-* (see above))
-(global-set-key [f6]      'comment-or-uncomment-region)
-(global-set-key [S-f6]    'uncomment-region)
-(global-set-key [f7]      'split-window-horizontally)
-(global-set-key [S-f7]    'split-window-vertically)
-(global-set-key [f8]      'other-window)
-(global-set-key [S-f8]    'find-file)
-(global-set-key [f9]      'delete-window)
-(global-set-key [S-f9]    'delete-other-windows)
+(global-set-key [f6]        'comment-or-uncomment-region)
+(global-set-key [S-f6]      'uncomment-region)
+(global-set-key [f7]        'split-window-horizontally)
+(global-set-key [S-f7]      'split-window-vertically)
+(global-set-key [f8]        'other-window)
+(global-set-key [S-f8]      'find-file)
+(global-set-key [f9]        'delete-window)
+(global-set-key [S-f9]      'delete-other-windows)
 
 ;; Arrows
 
@@ -216,23 +217,23 @@
 (global-set-key [M-down]    'scroll-up-keep-cursor)
 
 ;; C-left/C-right : move to next/prev word
-(global-set-key [C-left]  'backward-word)
-(global-set-key [C-right] 'forward-word)
+(global-set-key [C-left]    'backward-word)
+(global-set-key [C-right]   'forward-word)
 ;; C-up/C-down : move to next/prev paragraph
-(global-set-key [C-up]    'backward-paragraph)
-(global-set-key [C-down]  'forward-paragraph)
+(global-set-key [C-up]      'backward-paragraph)
+(global-set-key [C-down]    'forward-paragraph)
 
 ;; S-arrow : move to [arrow] window
-(global-set-key [S-right] 'windmove-right)
-(global-set-key [S-left]  'windmove-left)
-(global-set-key [S-up]    'windmove-up)
-(global-set-key [S-down]  'windmove-down)
+(global-set-key [S-right]   'windmove-right)
+(global-set-key [S-left]    'windmove-left)
+(global-set-key [S-up]      'windmove-up)
+(global-set-key [S-down]    'windmove-down)
 
 ;; C-Home/C-End : move to begin/end of buffer
-(global-set-key [C-end]  'move-end-of-line)
-(global-set-key [C-home]  'move-beginning-of-line)
-(global-set-key [C-next]  'end-of-buffer)
-(global-set-key [C-prior]  'beginning-of-buffer)
+(global-set-key [C-end]     'move-end-of-line)
+(global-set-key [C-home]    'move-beginning-of-line)
+(global-set-key [C-next]    'end-of-buffer)
+(global-set-key [C-prior]   'beginning-of-buffer)
 
 ;; C-x C-b : buffer menu
 (global-set-key "\C-x\C-b"  'buffer-menu)
@@ -283,7 +284,6 @@
 ;; Load theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (load-theme 'wwombat t)
-;; (load-theme 'etenil-pastel t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

@@ -1,5 +1,5 @@
-#!/bin/bash
+#!/bin/zsh
 
-cd "$HOME/bin/jogsoul"
-
-perl jogsoul.pl jogsoul.perl &
+sh -c "sleep 1 ; cd \"$HOME/bin/jogsoul\" ; perl jogsoul.pl jogsoul.conf ; sleep 10" &
+disown
+echo ''
