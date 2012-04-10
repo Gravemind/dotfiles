@@ -27,4 +27,4 @@ do
     echo -e "\t\${CXX} -o /dev/null \${CXX_FLAGS} \${CXX_DEFINES} -S \${CHK_SOURCES}" >> "${DIR}/${MAKEFILE}"
     echo ".PHONY: check-syntax" >> "${DIR}/${MAKEFILE}"
 
-done < <( find . -name "CMakeLists.txt" -print0 )
+done < <( find . -maxdepth 1 -name "CMakeLists.txt" -print0 )

@@ -53,6 +53,9 @@
                          ("marmalade" . "http://marmalade-repo.org/packages/")))
 (package-initialize)
 
+(add-to-list 'load-path "~/.emacs.d/plugins")
+(require 'filladapt)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Compilation window
@@ -134,6 +137,7 @@
   "Indent whole buffer, see jo/tab-tab"
   (interactive)
   (delete-trailing-whitespace)
+  (tabify (point-min) (point-max))
   (indent-region (point-min) (point-max) nil)
   (tabify (point-min) (point-max))
   )
