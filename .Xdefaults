@@ -16,22 +16,25 @@
 
 !green
 *color2:      #aece92
-*color10:     #c5f779
+*color10:     #B8EB6C
+! c5f779
 
 !yellow
 *color3:      #968a38
 *color11:     #fff796
 
 !blue
-*color4:      #414171
-*color12:     #4186be
+!*color4:      #414171
+*color4:      #6485A3
+*color12:     #6D93B5
+! 4186be
 
 !magenta
 *color5:      #963c59
 *color13:     #cf9ebe
 
 !cyan
-*color6:      #418179
+*color6:      #45A397
 *color14:     #71bebe
 
 !white
@@ -49,7 +52,7 @@ URxvt.scrollBar_right:  false
 URxvt.scrollBar:        false
 
 URxvt.transparent:      true
-URxvt.shading:          10
+URxvt.shading:          15
 
 URxvt.scrollTtyOutput:      false
 URxvt.scrollTtyKeypress:    true

@@ -26,4 +26,5 @@ mymerge ~/scripts scripts
 mymerge ~/.Xdefaults .Xdefaults
 mymerge ~/.xinitrc .xinitrc
 mymerge ~/.zshrc .zshrc
+mymerge ~/.ncmpcpp .ncmpcpp
 mymerge / system
