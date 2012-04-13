@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+FILES=$(find . -maxdepth 1 -mindepth 1 -name "$1"  -print0)
+
+while read -r -d $'\0' FILE
+do
+    \emacs -q -batch "$FILE" -l ~/.emacs.d/scripts/indent-tab.el --eval "(iwb-save)" --kill
+done < <( echo $FILES )

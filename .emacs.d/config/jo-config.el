@@ -55,6 +55,7 @@
 
 (add-to-list 'load-path "~/.emacs.d/plugins")
 (require 'filladapt)
+(setq-default filladapt-mode t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;

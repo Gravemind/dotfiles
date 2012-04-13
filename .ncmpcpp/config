@@ -1,4 +1,6 @@
 
+mouse_support = no
+
 ##### delays #####
 playlist_disable_highlight_delay = "5"
 message_delay_time = "4"
@@ -12,10 +14,10 @@ browser_playlist_prefix               = "$2playlist$9 "
 selected_item_prefix                  = "$6"
 selected_item_suffix                  = "$9"
 song_status_format                    = "{(%l) }{%a - }{%t}|{%f}"
-song_window_title_format              = "{%a - }{%t}|{%f}"
+song_window_title_format              = "{%a - }{%t -}|{%f}"
 song_columns_list_format              = "(5)[red]{l} (20)[blue]{a} (30)[green]{b} (50)[white]{t}"
 alternative_header_first_line_format  = "{%t}"
-alternative_header_second_line_format = "$7{%a} - $5{%b} $8{(%y)}"
+alternative_header_second_line_format = "$5{%a}, $3{%b}, $8{%t}"
 
 ##### various settings #####
 playlist_display_mode            = "columns"
