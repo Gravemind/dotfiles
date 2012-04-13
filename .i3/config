@@ -22,6 +22,9 @@ floating_modifier $ModK
 # Start a terminal
 bindsym $ModK+Return exec /usr/bin/urxvt
 
+# Start emacs
+bindsym $ModK+Shift+Return exec /usr/bin/emacs ~
+
 # Kill focused window
 bindsym $ModK+q kill
 
