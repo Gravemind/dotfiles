@@ -71,9 +71,40 @@
   (require 'eassist)
   ;; (require 'semantic-tag-folding)
 
+  (require 'find-recursive)
+
+  (defvar jo/header-dir-list '("inc" "include" "includes" "src" "source" "sources"))
+  (defun jo/eassist-switch-h-cpp ()
+    "Switch header and body file according to `eassist-header-switches' var.
+The current buffer's file name extention is searched in
+`eassist-header-switches' variable to find out extention for file's counterpart,
+for example *.hpp <--> *.cpp."
+    (interactive)
+    (let* ((rootdir (file-name-directory (get-closest-pathname "Makefile")))
+           (ext (file-name-extension (buffer-file-name)))
+           (base-name (eassist-string-without-last (buffer-name) (length ext)))
+           (base-path (eassist-string-without-last (buffer-file-name) (length ext)))
+           (count-ext (cdr (find-if (lambda (i) (string= (car i) ext)) eassist-header-switches))))
+      (cond
+       (count-ext
+        (unless
+            (or
+             (loop for b in (mapcar (lambda (i) (concat base-name i)) count-ext)
+                   when (bufferp (get-buffer b)) return (switch-to-buffer b))
+             (loop for c in (mapcar (lambda (i) (concat base-name i)) count-ext)
+                   collect (loop for dir in (mapcar (lambda (i) (concat rootdir i)) jo/header-dir-list)
+                                 when (file-exists-p dir)
+                                 collect (loop for f in (find-recursive-directory-relative-files dir "" c)
+                                               collect (find-file (concat (concat dir "/") f))))
+                   )
+             )
+          (message "There is no corresponding pair (header or body) file.")))
+       (t
+        (message "It is not a header or body file! See eassist-header-switches variable.")))))
+
   (local-set-key "\C-c,d"   'semantic-ia-show-doc)
   (local-set-key "\C-c,s"   'semantic-ia-show-summary)
-  (local-set-key "\C-cd"    'eassist-switch-h-cpp)
+  (local-set-key "\C-cd"    'jo/eassist-switch-h-cpp)
   (local-set-key "\M-m"     'eassist-list-methods)
   (local-set-key "\C-c\C-r" 'semantic-symref)
 
