@@ -31,6 +31,13 @@ bindsym $ModK+q kill
 # Start dmenu
 bindsym $ModK+z exec /usr/bin/dmenu_run -b -p ">>" -nb '#222222' -nf '#CCCCCC' -sb '#4c7899' -sf '#FFFFFF'
 
+# Move to scrathpad
+bind $ModK+Shift+49 move scratchpad
+
+# Toggle scratchpad
+bind $ModK+49 scratchpad show
+
+
 # Change focus
 bindsym $ModK+h     focus left
 bindsym $ModK+j     focus down

@@ -1,0 +1,111 @@
+#Fonctionnement de conky 
+  total_run_times 0                     #Temps en secondes ; 0 = toujours actif
+  background no                        #Pour que conky tourne en arrière plan ; no = pour les tests
+
+#Réglages système
+  cpu_avg_samples 5                     #Nb d'échantillons pour calculer la moyenne d'utilisation CPU
+  net_avg_samples 10                     #Nb d'échantillons pour calculer la moyenne d'utilisation CPU
+
+#Mémoire
+  double_buffer yes                     #Éviter le clignotement
+  no_buffers yes                        #Soustraire les mémoires tampons de la mémoire utilisée
+  text_buffer_size 1024                 #Taille du cache pour le texte
+
+#Affichage
+  out_to_console no                     #Affiche le texte sur la sortie standard
+  update_interval 5                     #Taux de rafraîchissement de la fenêtre (s)
+
+#Fenêtre conky
+  alignment top_right                   #Alignement
+ #---
+  minimum_size 350                      #Taille minimum (px) ; largeur / hauteur
+  maximum_width 350                     #Largeur maximum (px)
+ #---
+  gap_x 0                              #Écart avec le bord gauche / droit
+  gap_y 80                              #Écart avec le bord haut / bas
+ #---
+  draw_shades no                        #Afficher les ombres
+  draw_outline no                       #Afficher les contours de fenêtre
+  draw_borders no                       #Afficher des contours autour des blocs de texte
+  border_width 1                        #Largeur du contour
+  border_inner_margin 1                 #Largeur des marges
+ #---
+  own_window yes                        #Utiliser sa propre fenêtre
+  own_window_type override              #Type de fenêtre ; normal / override / desktop
+  own_window_transparent yes            #Pseudo transparence
+
+#Mise en forme
+  use_xft yes                           #Utiliser Xft (polices lissées etc)
+  xftalpha .1                           #Utiliser Xft
+  override_utf8_locale yes              #Force l'UTF8
+  uppercase no                          #Tout le texte en majuscule
+  use_spacer right                      #Ajoute des espaces après certains objets (qu'avec des polices fixes)
+ #---
+  xftfont saxMono:size=9                #Police par défaut
+ #---
+  default_bar_size 82 3                 #Barre par défaut (longeur hauteur)
+  stippled_borders 3                    #Taille des pointillés
+
+#Couleurs
+  default_color FFFFFF                  #Couleur par défaut
+  default_shade_color FFFFFF            #Couleur des ombres
+  default_outline_color black           #Couleur des contours
+ #---
+  color1 FFFFFF                         #Argenté
+  color2 5B94C8                         #Bleu clair
+  color3 FFFFFF                         #Gris
+
+ #---
+  short_units yes                       #Unités courtes
+  pad_percents 2                        #Unité à 2 décimales
+
+#Prise en charge du LUA(CORRECT WITH YOUR PATH!!)
+lua_load ~/.conky/balloon/clock.lua
+lua_draw_hook_pre clock_rings
+
+
+TEXT
+# TIME
+${voffset -10}
+${offset 160}${font neuropolitical:size=20}${time %H:%M}
+${offset 160}${voffset -15}${font DejaVu Sans Mono :size=8}$uptime
+${offset 160}${voffset 5}${font DejaVu Sans Mono :size=8 style=bold}${color1}${exec date '+%e %B %Y'}
+${color1}${execpi 100 JOUR=$(date +%e) ; cal -m | sed '1d' | sed 's/'"$JOUR"'/${color2}'"$JOUR"'${color1}/1' | sed -r 's/^/${offset 160}/g'}
+
+
+
+
+
+#batt
+${offset 180}${font neuropolitical:size=20}${battery_percent BAT0}%${font DejaVu Sans Mono :size=8 style=bold} Batt
+${offset 180}${battery}
+${offset 180}${battery_time}
+
+
+
+
+
+#Ram
+${offset 130}${font neuropolitical:size=20}${memperc}%${font DejaVu Sans Mono :size=8 style=bold} Ram
+${offset 130}root ${fs_free /} /${fs_size /}
+${offset 130}win7 ${fs_free /media/win7} /${fs_size /media/win7} 
+
+
+
+#cpu
+${offset 230}${font neuropolitical:size=20}${cpu}%${font DejaVu Sans Mono :size=8 style=bold} Cpu
+
+
+
+
+
+
+#Net
+${font neuropolitical:size=12}${alignr}${offset -120}${downspeedf eth0}
+${font neuropolitical:size=12}${alignr}${voffset -19}${upspeedf eth0}
+${font DejaVu Sans Mono :size=8 style=bold}${offset 70}${voffset -16}eth0
+${alignr}${offset -35}${voffset -4}${addr eth0}
+${font neuropolitical:size=12}${alignr}${offset -120}${downspeedf wlan0}
+${font neuropolitical:size=12}${alignr}${voffset -19}${upspeedf wlan0}
+${font DejaVu Sans Mono :size=8 style=bold}${offset 70}${voffset -16}wlan0
+${alignr}${offset -35}${voffset -4}${wireless_essid wlan0} ${wireless_link_qual wlan0} ${wireless_bitrate wlan0}
