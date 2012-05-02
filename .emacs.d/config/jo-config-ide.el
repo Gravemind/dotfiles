@@ -108,6 +108,8 @@ for example *.hpp <--> *.cpp."
   (local-set-key "\M-m"     'eassist-list-methods)
   (local-set-key "\C-c\C-r" 'semantic-symref)
 
+  (auto-revert-mode t)
+
   )
 
 (add-hook 'c-mode-common-hook   'jo/semantic-hook)
