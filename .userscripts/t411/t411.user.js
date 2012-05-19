@@ -20,18 +20,18 @@ $(function(){
 
     var headerdemerde = $('.headWrapper');
 
-    $(window).bind('scroll', function () {
-        if (window.pageYOffset > 0 && headerdemerde.innerHeight() > 0)
-        {
-            headerdemerde.css('overflow', 'hidden');
-            headerdemerde.stop(true, false).animate({'height': 0});
-        }
-        if (window.pageYOffset == 0 && !headerdemerde.innerHeight() < 110)
-        {
-            headerdemerde.css('overflow', 'visible');
-            headerdemerde.stop(true, false).animate({'height': 110});
-        }
-    });
+    // $(window).bind('scroll', function () {
+    //     if (window.pageYOffset > 0 && headerdemerde.innerHeight() > 0)
+    //     {
+    //         headerdemerde.css('overflow', 'hidden');
+    //         headerdemerde.stop(true, false).animate({'height': 0});
+    //     }
+    //     if (window.pageYOffset == 0 && !headerdemerde.innerHeight() < 110)
+    //     {
+    //         headerdemerde.css('overflow', 'visible');
+    //         headerdemerde.stop(true, false).animate({'height': 110});
+    //     }
+    // });
 
     $('table.results thead th:nth-child(4)').html('Com');
     $('table.results thead th:nth-child(5)')
