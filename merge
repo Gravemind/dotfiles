@@ -17,14 +17,17 @@ mymerge ~/.dzen .dzen
 mymerge ~/.emacs .emacs
 mymerge ~/.emacs.d .emacs.d
 mymerge ~/.gitconfig .gitconfig
+mymerge ~/.gitconfig.win .gitconfig.win
 mymerge ~/.gitignore .gitignore
 mymerge ~/.i3 .i3
-mymerge ~/.irssi .irssi
+mymerge ~/.ncmpcpp .ncmpcpp
 mymerge ~/.oh-my-zsh .oh-my-zsh
+mymerge ~/oh-my-zsh-install.sh oh-my-zsh-install.sh
 mymerge ~/.screenrc .screenrc
 mymerge ~/scripts scripts
+mymerge ~/.userscripts userscripts
 mymerge ~/.Xdefaults .Xdefaults
 mymerge ~/.xinitrc .xinitrc
 mymerge ~/.zshrc .zshrc
-mymerge ~/.ncmpcpp .ncmpcpp
+
 mymerge / system

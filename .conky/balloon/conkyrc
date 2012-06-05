@@ -22,7 +22,7 @@
   maximum_width 350                     #Largeur maximum (px)
  #---
   gap_x 0                              #Écart avec le bord gauche / droit
-  gap_y 80                              #Écart avec le bord haut / bas
+  gap_y 180                              #Écart avec le bord haut / bas
  #---
   draw_shades no                        #Afficher les ombres
   draw_outline no                       #Afficher les contours de fenêtre
@@ -70,16 +70,20 @@ ${voffset -10}
 ${offset 160}${font neuropolitical:size=20}${time %H:%M}
 ${offset 160}${voffset -15}${font DejaVu Sans Mono :size=8}$uptime
 ${offset 160}${voffset 5}${font DejaVu Sans Mono :size=8 style=bold}${color1}${exec date '+%e %B %Y'}
-${color1}${execpi 100 JOUR=$(date +%e) ; cal -m | sed '1d' | sed 's/'"$JOUR"'/${color2}'"$JOUR"'${color1}/1' | sed -r 's/^/${offset 160}/g'}
+${color1}${execpi 100 JOUR=$(date +%e) ; cal -m | sed '1d' | sed -r 's/('"$JOUR"'[ ^].)/${color2}\1${color1}/1' | sed -r 's/^/${offset 160}/g'}
 
 
 
 
 
-#batt
-${offset 180}${font neuropolitical:size=20}${battery_percent BAT0}%${font DejaVu Sans Mono :size=8 style=bold} Batt
-${offset 180}${battery}
-${offset 180}${battery_time}
+# #batt
+# ${offset 180}${font neuropolitical:size=20}${battery_percent BAT0}%${font DejaVu Sans Mono :size=8 style=bold} Batt
+# ${offset 180}${battery}
+# ${offset 180}${battery_time}
+
+
+
+
 
 
 
@@ -87,8 +91,8 @@ ${offset 180}${battery_time}
 
 #Ram
 ${offset 130}${font neuropolitical:size=20}${memperc}%${font DejaVu Sans Mono :size=8 style=bold} Ram
-${offset 130}root ${fs_free /} /${fs_size /}
-${offset 130}win7 ${fs_free /media/win7} /${fs_size /media/win7} 
+${offset 130}root ${fs_free /}
+${offset 130}home ${fs_free /home/}
 
 
 
@@ -105,7 +109,3 @@ ${font neuropolitical:size=12}${alignr}${offset -120}${downspeedf eth0}
 ${font neuropolitical:size=12}${alignr}${voffset -19}${upspeedf eth0}
 ${font DejaVu Sans Mono :size=8 style=bold}${offset 70}${voffset -16}eth0
 ${alignr}${offset -35}${voffset -4}${addr eth0}
-${font neuropolitical:size=12}${alignr}${offset -120}${downspeedf wlan0}
-${font neuropolitical:size=12}${alignr}${voffset -19}${upspeedf wlan0}
-${font DejaVu Sans Mono :size=8 style=bold}${offset 70}${voffset -16}wlan0
-${alignr}${offset -35}${voffset -4}${wireless_essid wlan0} ${wireless_link_qual wlan0} ${wireless_bitrate wlan0}

@@ -37,8 +37,8 @@
  '(font-lock-warning-face ((t (:foreground "#B34949" :weight normal :underline nil))))
  '(compilation-warning ((t (:foreground "#66D466" :weight normal :underline nil))))
  '(compilation-info ((t (:foreground "#79B379" :weight normal :underline nil))))
- '(flymake-errline ((t (:underline "#CC2222"))))
- '(flymake-warnline ((t (:underline "#22CC22"))))
+ '(flymake-errline ((t (:background nil :underline "#CC2222"))))
+ '(flymake-warnline ((t (:background nil :underline "#22CC22"))))
  )
 
 (setq buffer-menu-buffer-font-lock-keywords
