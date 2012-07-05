@@ -57,6 +57,8 @@
 (require 'filladapt)
 (setq-default filladapt-mode t)
 
+(require 'cmake-mode)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Compilation window

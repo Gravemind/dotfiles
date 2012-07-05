@@ -21,6 +21,7 @@ install_manifest.txt
 build/
 
 # Linux
+# .*
 *~
 .directory
 *.ktree

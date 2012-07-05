@@ -69,11 +69,12 @@
   ;; Semantic shortcuts
 
   (require 'eassist)
-  ;; (require 'semantic-tag-folding)
 
+  ;; (require 'semantic-tag-folding)
+  
   (require 'find-recursive)
 
-  (defvar jo/header-dir-list '("inc" "include" "includes" "src" "source" "sources"))
+  (defvar jo/header-dir-list '("inc" "incs" "include" "includes" "src" "srcs" "source" "sources"))
   (defun jo/eassist-switch-h-cpp ()
     "Switch header and body file according to `eassist-header-switches' var.
 The current buffer's file name extention is searched in
@@ -116,6 +117,12 @@ for example *.hpp <--> *.cpp."
 (add-hook 'lisp-mode-hook       'jo/semantic-hook)
 (add-hook 'scheme-mode-hook     'jo/semantic-hook)
 (add-hook 'emacs-lisp-mode-hook 'jo/semantic-hook)
+
+;; nxHtml
+
+
+;; (load "~/.emacs.d/plugins/nxhtml/autostart.el")
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

@@ -24,4 +24,4 @@ rm  /tmp/ssh.keys
 
 numlockx on
 
-exec i3 &> /home/jo/.i3/log
+exec i3 >> ~/.i3/log 2>&1

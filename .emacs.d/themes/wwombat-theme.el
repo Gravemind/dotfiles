@@ -39,6 +39,11 @@
  '(compilation-info ((t (:foreground "#79B379" :weight normal :underline nil))))
  '(flymake-errline ((t (:background nil :underline "#CC2222"))))
  '(flymake-warnline ((t (:background nil :underline "#22CC22"))))
+ '(mumamo-background-chunk-major ((t (:background "#202020"))))
+ '(mumamo-background-chunk-submode1 ((t (:background "gray10"))))
+ '(mumamo-background-chunk-submode2 ((t (:background "gray10"))))
+ '(mumamo-background-chunk-submode3 ((t (:background "gray10"))))
+ '(mumamo-background-chunk-submode4 ((t (:background "gray10"))))
  )
 
 (setq buffer-menu-buffer-font-lock-keywords

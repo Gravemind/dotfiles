@@ -171,6 +171,7 @@ assign [class="^Firefox$"] 3
 assign [class="^Pidgin$"] 9
 assign [class="^Gimp$"] 5
 assign [class="^wine$"] ~
+assign [class="^Ekiga$"] 4
 
 focus_follows_mouse no
 new_window 1pixel
