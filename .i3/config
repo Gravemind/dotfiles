@@ -219,6 +219,7 @@ bindsym XF86TouchpadToggle exec zsh /home/jo/bin/toggletouchpad
 
 bar {
     status_command i3status -c ~/.i3/i3status.conf
+    # status_command ~/.i3/myi3status
     # status_command ~/documents/sandbox/ruby/bar/bar
     mode hide
     # position top
