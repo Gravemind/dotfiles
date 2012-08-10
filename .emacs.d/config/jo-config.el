@@ -8,9 +8,6 @@
 ;;  Default configuration
 ;;
 
-
-(modify-frame-parameters nil '((wait-for-wm . nil)))
-
 (custom-set-variables
  '(blink-cursor-mode nil)
  '(column-number-mode t)
@@ -26,6 +23,9 @@
  '(tool-bar-mode nil)
  '(truncate-lines t)
  '(make-backup-files nil)
+ '(compilation-scroll-output 0)
+ '(compilation-window-height 10)
+ '(standard-indent 4)
  )
 
 ;; UTF-8
@@ -56,35 +56,29 @@
                          ("marmalade" . "http://marmalade-repo.org/packages/")))
 (package-initialize)
 
+;; CMake mode
+(autoload 'cmake-mode "cmake-mode" t)
+(setq-default cmake-tab-width 4)
+(setq auto-mode-alist
+      (append '(("CMakeLists\\.txt\\'" . cmake-mode)
+                ("\\.cmake\\'" . cmake-mode))
+              auto-mode-alist))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Plugins
+;;
+
 (add-to-list 'load-path "~/.emacs.d/plugins")
 (require 'filladapt)
 (setq-default filladapt-mode t)
 
-(require 'cmake-mode)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Compilation window
+;;
 ;; http://stackoverflow.com/questions/749888/i/752954#752954
 ;;
-
-(custom-set-variables
-
- ;; Dont automatically scroll the compilation window
- '(compilation-scroll-output 0)
-
- ;; Set the compilation window height...
- '(compilation-window-height 10)
-
- ;; ;; Auto-dismiss compilation buffer...
- ;; '(compilation-finish-function
- ;;   (lambda (buf str)
- ;;     (if (string-match "exited abnormally" str)
- ;;         (message "compilation Errors")
- ;;       ;; no errors, make the compilation window go away after 2.5 sec
- ;;       (run-at-time 2.5 nil 'delete-windows-on buf)
- ;;       (message "No errors"))))
- )
 
 (require 'cl)
 
@@ -127,7 +121,7 @@
 (c-set-offset 'innamespace 4)
 
 ;; Lua style
-(setq lua-indent-level 4)
+(setq-default lua-indent-level 4)
 
 ;; Indent whole buffer functions
 
@@ -161,44 +155,48 @@
 (defun jo/tab-space ()
   "Indent with 4 spaces"
   (interactive)
-  (global-set-key [f5] 'jo/iwb-space)
-  (setq-default c-basic-offset 4
-                tab-width 4
-                indent-tabs-mode nil)
+  (local-set-key [f5] 'jo/iwb-space)
+  (setq c-basic-offset 4
+        tab-width 4
+        indent-tabs-mode nil)
+  (message "jo/tab-space %s" (buffer-name))
   )
 
 (defun jo/tab-tab ()
   "Indent with 1 tabulation of 4 spaces width"
   (interactive)
-  (global-set-key [f5] 'jo/iwb-tab)
-  (setq-default c-basic-offset 4
-                tab-width 4
-                indent-tabs-mode t)
+  (local-set-key [f5] 'jo/iwb-tab)
+  (setq c-basic-offset 4
+        tab-width 4
+        indent-tabs-mode t)
+  (message "jo/tab-tab %s" (buffer-name))
   )
 
 (defun jo/tab-absurde ()
   "Indent absurde (4 spaces indent but replace 8 spaces by tabulation)"
   (interactive)
-  (global-set-key [f5] 'jo/iwb-absurde)
-  (setq-default c-basic-offset 4
-                tab-width 8
-                indent-tabs-mode t)
+  (local-set-key [f5] 'jo/iwb-absurde)
+  (setq c-basic-offset 4
+        tab-width 8
+        indent-tabs-mode t)
+  (message "jo/tab-absurde %s" (buffer-name))
   )
 
 ;; Set default indentation style
+(global-set-key [f5] 'jo/iwb-tab)
+(setq-default c-basic-offset 4
+              tab-width 4
+              indent-tabs-mode t)
 
-(jo/tab-tab)
-
+(add-hook 'emacs-lisp-mode-hook 'jo/tab-space)
 (add-hook 'lisp-mode-hook       'jo/tab-space)
 (add-hook 'scheme-mode-hook     'jo/tab-space)
-(add-hook 'emacs-lisp-mode-hook 'jo/tab-space)
 (add-hook 'ruby-mode-hook       'jo/tab-space)
-
-(add-hook 'python-mode-hook (lambda ()
-                              (setq indent-tabs-mode t
-                                    py-indent-offset 4
-                                    tab-width 4)
-                              ))
+(add-hook 'c-mode-hook          'jo/tab-tab)
+(add-hook 'c++-mode-hook        'jo/tab-tab)
+(add-hook 'python-mode-hook     (lambda () (setq indent-tabs-mode t
+                                                 py-indent-offset 4
+                                                 tab-width 4)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;

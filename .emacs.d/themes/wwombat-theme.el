@@ -10,8 +10,9 @@
 
 (custom-theme-set-faces
  'wwombat
- '(default ((t (:foreground "#b0b0b0" :background "#202020"
-                            :weight light :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 83 :width normal :foundry "unknown" :family "DejaVu Sans Mono"))))
+ '(default ((t (:foreground "#b0b0b0" :weight light :weight normal
+                            :height 83 :width normal :foundry "unknown" :family "DejaVu Sans Mono"
+                            (if (window-system) (:background "#202020"))))))
  '(cursor ((t (:background "cyan"))))
  '(font-lock-builtin-face ((t (:foreground "#78f2c9"))))
  '(font-lock-preprocessor-face ((t (:foreground "#e5786d"))))

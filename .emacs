@@ -18,6 +18,7 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(add-to-list 'load-path "~/.emacs.d/config")
+(modify-frame-parameters nil '((wait-for-wm . nil)))
 
+(add-to-list 'load-path "~/.emacs.d/config")
 (require 'jo-config-ide)
