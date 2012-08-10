@@ -3,23 +3,7 @@
 INTERFACE='wlan0'
 
 
-#IW_ADDR='7A:A4:42:A7:92:36' # KO
-#IW_ADDR='36:C8:44:F5:05:AA' # KO
-#IW_ADDR='2E:1B:33:E6:16:22' # KO
-#IW_ADDR='CE:A0:D3:DC:7C:3E' # KO
-#IW_ADDR='A2:EA:65:61:30:9A' # KO
-#IW_ADDR='00:24:D4:56:8C:4D' # KO
-#IW_ADDR='F4:CA:E5:D5:07:AD' # KO
-#IW_ADDR='F4:CA:E5:F7:7B:41' # KO
-#IW_ADDR='C6:8E:37:E4:AB:4A' # KO
-#IW_ADDR='0E:78:2C:A1:45:5E' # KO
-#IW_ADDR='3E:EB:B9:9B:37:C6' # KO
-
-# 4A:9A:6D:77:82:41
-#IW_ADDR='F4:CA:E5:D5:07:AD'
-#IW_ADDR='F4:CA:E5:F7:7B:41'
-IW_ADDR='F2:4B:47:36:E5:D6' # OK
-#IW_ADDR='E6:A6:53:55:50:02' # OK
+IW_ADDR='00:00:00:00:00:00'
 
 IW_SSID='FreeWifi'
 
@@ -31,10 +15,23 @@ then
     echo "Wifi try connect on $IW_ADDR"
 
     sudo /etc/rc.d/net-auto-wireless stop
+
     sleep 1
-    sudo ifconfig $INTERFACE up
+
+    sudo ifconfig $INTERFACE down
+
+    sleep 1
+
     sudo iwconfig $INTERFACE mode Managed ap $IW_ADDR key open
+
+    sleep 1
+
     sudo iwconfig $INTERFACE essid "$IW_SSID" 
+
+    sleep 1
+
+    sudo ifconfig $INTERFACE up
+
     sleep 2
 fi
 
@@ -51,7 +48,7 @@ RES=`ifconfig $INTERFACE  | grep 'inet '`
 if [[ -z "$RES" || -n "$2" ]]
 then
     sudo dhcpcd -x $INTERFACE
-    sudo dhcpcd --noipv6 $INTERFACE -t 20
+    sudo dhcpcd --noipv6 $INTERFACE -t 30
     sleep 2
 fi
 
@@ -60,5 +57,5 @@ FREEWIFI_PASS=""
 
 wget -O - --post-data="login=$FREEWIFI_LOGIN&password=$FREEWIFI_PASS" "https://wifi.free.fr/Auth" 2> /dev/null | grep "CONNEXION AU SERVICE REUSSIE"
 
-echo -ne "\a"
+echo "\a"
 echo 'end'

@@ -93,20 +93,20 @@ settings_table = {
 			end_angle=360
 		},
 
-		{
-			name='battery_percent',
-			arg='BAT0',
-			max=100,
-			bg_colour=0xffffff,
-			bg_alpha=0.1,
-			fg_colour=0x0066FF,
-			fg_alpha=0.5,
-			x=120, y=275,
-			radius=35,
-			thickness=3,
-			start_angle=0,
-			end_angle=360
-		},
+		-- {
+		-- 	name='battery_percent',
+		-- 	arg='BAT0',
+		-- 	max=100,
+		-- 	bg_colour=0xffffff,
+		-- 	bg_alpha=0.1,
+		-- 	fg_colour=0x0066FF,
+		-- 	fg_alpha=0.5,
+		-- 	x=120, y=275,
+		-- 	radius=35,
+		-- 	thickness=3,
+		-- 	start_angle=0,
+		-- 	end_angle=360
+		-- },
 
 		{
 			name='memperc',
@@ -125,7 +125,7 @@ settings_table = {
 
 		{
 			name='fs_used_perc',
-			arg='/',
+			arg='/home',
 			max=100,
 			bg_colour=0xffffff,
 			bg_alpha=0.1,
@@ -173,19 +173,19 @@ settings_bars = {
 	},
 
 	-- BATT
-	{
-		x=122, y=222,
-		h=3, w=300,
-		fg_colour=0x0066FF,
-		fg_alpha=0.5,
-	},
+	-- {
+	-- 	x=122, y=222,
+	-- 	h=3, w=300,
+	-- 	fg_colour=0x0066FF,
+	-- 	fg_alpha=0.5,
+	-- },
 
-	{
-		x=119, y=222,
-		h=17, w=3,
-		fg_colour=0x0066FF,
-		fg_alpha=0.5,
-	},
+	-- {
+	-- 	x=119, y=222,
+	-- 	h=17, w=3,
+	-- 	fg_colour=0x0066FF,
+	-- 	fg_alpha=0.5,
+	-- },
 
 	-- RAM
 	{

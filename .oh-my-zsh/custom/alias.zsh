@@ -37,6 +37,8 @@ compdef _pacman yaourt=pacman
 alias start='sudo rc.d start'
 alias stop='sudo rc.d start'
 
+alias ggg='gdb --args'
+
 alias ssh-fingerprint="find . -name '*.pub' -exec ssh-keygen -l -f {} \;"
 
 alias ne='~/bin/ne -q -l ~/.emacs.d/config/jo-config.el'

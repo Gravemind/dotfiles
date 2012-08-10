@@ -1,0 +1,34 @@
+#!/bin/zsh
+
+I=0
+
+i3status -c ~/.i3/i3status.conf | while :
+do
+		I=`expr $I + 1`
+        read line
+		if [[ $I -lt 4 ]]
+		then
+			echo $line
+			continue
+		fi
+
+		MPD=`mpc`
+		OFF=$?
+		if [[ $OFF -ne 0 ]]
+		then
+			echo $line
+			continue
+		fi
+
+		PLAY=`mpc | grep playing`
+		PLAY=$?
+		
+		COLOR="#80BEED"
+		if [[ $PLAY -ne 0 ]]
+		then
+			COLOR="#777777"
+		fi
+
+		MPD=`mpc  -f '%title% - %album% - %artist%' | head -n 1`
+		echo ",[{\"name\":\"jo\",\"color\":\"$COLOR\",\"full_text\": \"$MPD\"}," "${line:2:1000}"
+done

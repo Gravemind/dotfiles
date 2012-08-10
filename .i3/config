@@ -176,6 +176,7 @@ assign [class="^Firefox$"] 3
 assign [class="^Pidgin$"] 9
 assign [class="^Gimp$"] 5
 assign [class="^wine$"] ~
+assign [class="^Ekiga$"] 4
 
 focus_follows_mouse no
 new_window 1pixel
@@ -223,6 +224,7 @@ bindsym XF86TouchpadToggle exec zsh /home/jo/bin/toggletouchpad
 
 bar {
     status_command i3status -c ~/.i3/i3status.conf
+    # status_command ~/.i3/myi3status
     # status_command ~/documents/sandbox/ruby/bar/bar
     mode hide
     # position top
@@ -230,3 +232,4 @@ bar {
 
 #exec ~/.i3/bar/bar.py
 exec ~/.i3/bg.py
+# exec conky -c ~/.conky/balloon/conkyrc

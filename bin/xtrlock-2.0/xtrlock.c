@@ -81,9 +81,10 @@ int main(int argc, char **argv){
 	int clen, rlen=0;
 	long goodwill= INITIALGOODWILL, timeout= 0;
 	XSetWindowAttributes attrib;
-	Cursor cursor, cursor_warn, cursor_err;
+	Cursor cursor[2], cursor_warn[2], cursor_err[2];
+    char   cursor_not_safe = 0;
 	Pixmap csr_source,csr_mask;
-	XColor csr_fg, csr_bg, dummy, csr_warn, csr_err;
+	XColor csr_fg, csr_bg, dummy, csr_warn, csr_err, csr_caps;
 	int ret;
 #ifdef SHADOW_PWD
 	struct spwd *sp;
@@ -133,6 +134,7 @@ int main(int argc, char **argv){
 	csr_source= XCreateBitmapFromData(display,window,lock_bits,lock_width,lock_height);
 	csr_mask= XCreateBitmapFromData(display,window,mask_bits,mask_width,mask_height);
 
+    ret = 1;
 	ret = XAllocNamedColor(display,
 						   DefaultColormap(display, DefaultScreen(display)),
 						   "steelblue3",
@@ -163,6 +165,11 @@ int main(int argc, char **argv){
 						   "firebrick",
 						   &dummy, &csr_err);
 
+	ret = XAllocNamedColor(display,
+						   DefaultColormap(display,DefaultScreen(display)),
+						   "darkgoldenrod2",
+						   &dummy, &csr_warn);
+
 	cursor = XCreatePixmapCursor(display,csr_source,csr_mask,&csr_fg,&csr_bg,
 								 lock_x_hot,lock_y_hot);
 
@@ -178,10 +185,10 @@ int main(int argc, char **argv){
 		exit(1);
 	}
 
-	cursor_err = XCreatePixmapCursor(display,csr_source,csr_mask,&csr_fg,&csr_err,
-									 lock_x_hot,lock_y_hot);
-	cursor_warn = XCreatePixmapCursor(display,csr_source,csr_mask,&csr_fg,&csr_warn,
-									  lock_x_hot,lock_y_hot);
+	cursor_err = XCreatePixmapCursor(display, csr_source, csr_mask, &csr_fg, &csr_err,
+									 lock_x_hot, lock_y_hot);
+	cursor_warn = XCreatePixmapCursor(display, csr_source, csr_mask, &csr_fg, &csr_warn,
+									  lock_x_hot, lock_y_hot);
 
 	Cursor*		curr_cursor = &cursor;
 	Cursor*		last_cursor = &cursor;
@@ -190,15 +197,26 @@ int main(int argc, char **argv){
 		XNextEvent(display,&ev);
 		switch (ev.type)
 		{
+		case KeyRelease:
+            if (ev.xkey.state & LockMask)
+                printf("lock on\n");
+            else
+                printf("lock off\n");
+            break;
+
 		case KeyPress:
 			if (ev.xkey.time < timeout) { XBell(display,0); break; }
 			clen= XLookupString(&ev.xkey,cbuf,9,&ks,0);
+
 			switch (ks) {
+
 			case XK_Escape: case XK_Clear:
 				rlen=0; break;
+
 			case XK_Delete: case XK_BackSpace:
 				rlen = 0;
 				break;
+
 			case XK_Linefeed: case XK_Return:
 				if (rlen==0) break;
 				rbuf[rlen]=0;
@@ -216,6 +234,7 @@ int main(int argc, char **argv){
 				goodwill+= timeout;
 				timeout+= ev.xkey.time + TIMEOUTPERATTEMPT;
 				break;
+
 			default:
 				if (clen != 1) break;
 				/* allow space for the trailing \0 */

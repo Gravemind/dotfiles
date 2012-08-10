@@ -1,22 +1,37 @@
-##
-## Linux
-##
+# Binaries
+*.slo
+*.lo
+*.o
+*.so
+*.lai
+*.la
+*.a
+*.lib
+*.dll
+*.so
+*.exe
+*.out
 
-*.swp.*
+# CMake
+CMakeCache.txt
+CMakeFiles
+/Makefile
+cmake_install.cmake
+install_manifest.txt
+build/
+
+# Linux
+#.*
 *~
-# KDE
 .directory
-
 *.ktree
 *.preprocessed
+<<<<<<< HEAD
 *.a
 *.o
 *.ko
 
-##
 ## Emacs
-##
-
 *~
 \#*\#
 /.emacs.desktop
@@ -25,23 +40,20 @@
 auto-save-list
 tramp
 .\#*
+.org-id-locations
+*_archive
 
-##
-## CMake
-##
+# Vim
+.*.sw[a-z]
+*.un~
+Session.vim
 
-CMakeCache.txt
-CMakeFiles
-cmake_install.cmake
-install_manifest.txt
-/Makefile
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
 
-##
-## misc
-##
-
-build
-*.out
+# Misc
 *.tmp
 *.bak
 
