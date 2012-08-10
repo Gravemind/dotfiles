@@ -12,7 +12,7 @@
  'wwombat
  '(default ((t (:foreground "#b0b0b0" :weight light :weight normal
                             :height 83 :width normal :foundry "unknown" :family "DejaVu Sans Mono"
-                            (if (window-system) (:background "#202020"))))))
+                            ))))
  '(cursor ((t (:background "cyan"))))
  '(font-lock-builtin-face ((t (:foreground "#78f2c9"))))
  '(font-lock-preprocessor-face ((t (:foreground "#e5786d"))))
@@ -48,6 +48,9 @@
  '(ebrowse-root-class ((t (:foreground "#f1aa7e" :weight normal ))))
  '(ebrowse-member-class ((t (:foreground "#f1aa7e" :weight normal ))))
  )
+
+(if window-system
+    (set-face-background 'default "#202020"))
 
 (setq buffer-menu-buffer-font-lock-keywords
       '(("^....[*]Man .*Man.*"   . font-lock-variable-name-face) ; Man page
