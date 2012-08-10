@@ -49,8 +49,15 @@
  '(ebrowse-member-class ((t (:foreground "#f1aa7e" :weight normal ))))
  )
 
-(if window-system
+(if (window-system)
     (set-face-background 'default "#202020"))
+
+(add-hook 'after-make-frame-functions
+          (lambda (frame)
+            (select-frame frame)
+            (if (window-system frame)
+              (set-face-background 'default "#202020"))
+            ))
 
 (setq buffer-menu-buffer-font-lock-keywords
       '(("^....[*]Man .*Man.*"   . font-lock-variable-name-face) ; Man page
