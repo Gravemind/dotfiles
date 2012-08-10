@@ -34,10 +34,14 @@ alias pacman="pacman-color"
 compdef _pacman $PACMAN=pacman
 compdef _pacman yaourt=pacman
 
+alias start='sudo rc.d start'
+alias stop='sudo rc.d start'
+
 alias ssh-fingerprint="find . -name '*.pub' -exec ssh-keygen -l -f {} \;"
 
-alias emacs='ne -q -l ~/.emacs.d/config/jo-config-ide.el'
-alias nw='\emacs -nw'
+alias ne='~/bin/ne -q -l ~/.emacs.d/config/jo-config.el'
+alias nw='\emacs -q -l ~/.emacs.d/config/jo-config.el -nw'
+alias ns='emacscl ns'
 
 alias rchttpd='sudo /etc/rc.d/httpd'
 alias rcmysqld='sudo /etc/rc.d/mysqld'

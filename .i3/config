@@ -23,7 +23,12 @@ floating_modifier $ModK
 bindsym $ModK+Return exec /usr/bin/urxvt
 
 # Start emacs
-bindsym $ModK+Shift+Return exec /usr/bin/emacs ~
+bindsym $ModK+Shift+Return exec ~/bin/emacscl main
+bindsym $ModK+Ctrl+Return exec ~/bin/emacscl main ~/TODO.org
+bindsym $ModK+F1 exec ~/bin/emacscl one
+bindsym $ModK+F2 exec ~/bin/emacscl two
+bindsym $ModK+F3 exec ~/bin/emacscl three
+bindsym $ModK+F4 exec ~/bin/emacscl four
 
 # Kill focused window
 bindsym $ModK+q kill

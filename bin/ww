@@ -1,0 +1,61 @@
+#!/usr/bin/ruby
+
+require 'pp'
+require 'optparse'
+
+opts = { }
+
+if ARGV.size == 1
+  a = ARGV[0]
+  if File.exists? a
+    raw = File.new(a, "r").read
+  else
+    opts[:ssid] = a.strip.downcase
+  end
+elsif ARGV.size > 1
+  if File.exists? ARGV[0]
+    raw = File.new(ARGV[0], "r").read
+    opts[:ssid] = ARGV[1].strip.downcase
+  elsif File.exists? ARGV[1]
+    raw = File.new(ARGV[1], "r").read
+    opts[:ssid] = ARGV[0].strip.downcase
+  else
+    puts 'ERROR: args'
+    exit 1
+  end
+end
+
+if not raw
+  raw = `iwlist wlan0 scanning`
+end
+
+if raw.to_s.downcase["no scan results"] or
+    (raw.to_s.size < 20 and raw.to_s.strip == 0)
+  puts 'ERROR: no scan'
+  exit 1
+end
+
+raw.gsub!(/^\s*/, " ")
+raw.gsub!("\n", " ")
+raw.gsub!("Cell", "\n")
+
+access = []
+
+raw.scan /^.*?Address:\s*([0-9a-z:]+).*?Quality=([0-9]+)\/([0-9]+).*?SSID:"(.*?)".*?$/i do |m|
+  acces = {
+    ssid: m[3],
+    addr: m[0],
+    quality: (m[1].to_f / m[2].to_f * 100.0)
+  }
+  access.push acces
+end
+
+if opts[:ssid]
+  access.select! {|v| v[:ssid].downcase[opts[:ssid]] }
+end
+
+access.sort_by! {|v| v[:quality] }
+
+for acces in access
+  puts "#{acces[:addr]} #{acces[:quality].to_i} #{acces[:ssid].ljust(20)}"
+end

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+~/bin/purplelock -c xtrlock -i X.X.X.X -a 'pause ?' -l '' &
+sleep 2
+sudo pm-suspend

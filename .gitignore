@@ -3,7 +3,6 @@
 ##
 
 *.swp.*
-!.gitignore
 *~
 # KDE
 .directory
@@ -12,6 +11,7 @@
 *.preprocessed
 *.a
 *.o
+*.ko
 
 ##
 ## Emacs
@@ -44,3 +44,5 @@ build
 *.out
 *.tmp
 *.bak
+
+!.gitignore
