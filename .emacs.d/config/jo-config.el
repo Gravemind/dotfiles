@@ -194,6 +194,12 @@
 (add-hook 'emacs-lisp-mode-hook 'jo/tab-space)
 (add-hook 'ruby-mode-hook       'jo/tab-space)
 
+(add-hook 'python-mode-hook (lambda ()
+                              (setq indent-tabs-mode t
+                                    py-indent-offset 4
+                                    tab-width 4)
+                              ))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Keyborad : Global shortcuts

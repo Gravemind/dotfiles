@@ -44,6 +44,8 @@
  '(mumamo-background-chunk-submode2 ((t (:background "gray10"))))
  '(mumamo-background-chunk-submode3 ((t (:background "gray10"))))
  '(mumamo-background-chunk-submode4 ((t (:background "gray10"))))
+ '(ebrowse-root-class ((t (:foreground "#f1aa7e" :weight normal ))))
+ '(ebrowse-member-class ((t (:foreground "#f1aa7e" :weight normal ))))
  )
 
 (setq buffer-menu-buffer-font-lock-keywords

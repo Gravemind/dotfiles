@@ -209,15 +209,15 @@ bind $ModK+74 exec cmus-remote -r
 bind $ModK+76 exec cmus-remote -n
 
 # MPD
-# bindsym $ModK+End exec mpc toggle
-# bindsym $ModK+Prior exec mpc prev
-# bindsym $ModK+Next exec mpc next
-# bindsym XF86AudioPlay exec mpc toggle
-# bindsym XF86AudioPrev exec mpc prev
-# bindsym XF86AudioNext exec mpc next
-# bind $ModK+75 exec mpc toggle
-# bind $ModK+74 exec mpc prev
-# bind $ModK+76 exec mpc next
+# bindsym $ModK+End exec mpc -q toggle
+# bindsym $ModK+Prior exec mpc -q prev
+# bindsym $ModK+Next exec mpc -q next
+# bindsym XF86AudioPlay exec mpc -q toggle
+# bindsym XF86AudioPrev exec mpc -q prev
+# bindsym XF86AudioNext exec mpc -q next
+# bind $ModK+75 exec mpc -q toggle
+# bind $ModK+74 exec mpc -q prev
+# bind $ModK+76 exec mpc -q next
 
 # On/Off Touchpad
 bindsym XF86TouchpadToggle exec zsh /home/jo/bin/toggletouchpad

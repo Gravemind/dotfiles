@@ -2,6 +2,7 @@
 *.slo
 *.lo
 *.o
+*.ko
 *.so
 *.lai
 *.la
@@ -26,12 +27,9 @@ build/
 .directory
 *.ktree
 *.preprocessed
-<<<<<<< HEAD
-*.a
-*.o
-*.ko
+*.swp.*
 
-## Emacs
+# Emacs
 *~
 \#*\#
 /.emacs.desktop
