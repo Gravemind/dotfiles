@@ -8,9 +8,6 @@
 ;;  Default configuration
 ;;
 
-
-(modify-frame-parameters nil '((wait-for-wm . nil)))
-
 (custom-set-variables
  '(blink-cursor-mode nil)
  '(column-number-mode t)
