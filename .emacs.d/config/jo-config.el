@@ -1,4 +1,4 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;  Emacs 24
 ;;
@@ -7,6 +7,9 @@
 ;;
 ;;  Default configuration
 ;;
+
+
+(modify-frame-parameters nil '((wait-for-wm . nil)))
 
 (custom-set-variables
  '(blink-cursor-mode nil)
@@ -87,6 +90,8 @@
 (add-to-list 'load-path "~/.emacs.d/plugins")
 (require 'filladapt)
 (setq-default filladapt-mode t)
+
+(require 'cmake-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;

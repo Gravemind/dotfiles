@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+setxkbmap -option terminate:ctrl_alt_bksp
+
 ## desactivate touchpad when typing
 #syndaemon -i 2 -t -k -d &
 
