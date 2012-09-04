@@ -32,7 +32,7 @@
   (add-to-list 'ww-advised-functions 'windmove-down)
   (add-to-list 'ww-advised-functions 'recenter-top-bottom)
   (global-widen-window-mode t)
-)
+  )
 
 ;; Semantic
 
@@ -52,6 +52,15 @@
   (yas/initialize)
   (yas/load-directory "~/.emacs.d/elpa/yasnippet-0.6.1/snippets")
 
+  ;; Semantic shortcuts
+
+  (require 'eassist)
+
+  ;; (require 'semantic-tag-folding)
+
+  (require 'find-recursive)
+
+  ;; auto-complete
   ;; (require 'auto-complete-config)
   ;; ;; auto-complete
   ;; ;; (require 'auto-complete-config)
@@ -66,46 +75,69 @@
   ;;                                    ac-source-semantic-raw)
   ;;                                  ac-sources))
 
-  ;; Semantic shortcuts
+;;   (defvar jo/header-dir-list '("inc" "incs" "include" "includes" "src" "srcs" "source" "sources"))    
 
-  (require 'eassist)
+;;   (defun jo/eassist-switch-h-cpp ()
+;;     "Switch header and body file according to `eassist-header-switches' var.
+;; The current buffer's file name extention is searched in
+;; `eassist-header-switches' variable to find out extention for file's counterpart,
+;; for example *.hpp <--> *.cpp."
+;;     (interactive)
+;;     (let* ((rootdir (file-name-directory (get-closest-pathname "Makefile")))
+;;            (ext (file-name-extension (buffer-file-name)))
+;;            (base-name (eassist-string-without-last (buffer-name) (length ext)))
+;;            (base-path (eassist-string-without-last (buffer-file-name) (length ext)))
+;;            (count-ext (cdr (find-if (lambda (i) (string= (car i) ext)) eassist-header-switches))))
+;;       (cond
+;;        (count-ext
+;;         (unless
+;;             (or
+;;              (loop for b in (mapcar (lambda (i) (concat base-name i)) count-ext)
+;;                    when (bufferp (get-buffer b)) return (switch-to-buffer b))
+;;              (loop for c in (mapcar (lambda (i) (concat base-name i)) count-ext)
+;;                    collect (loop for dir in (mapcar (lambda (i) (concat rootdir i)) jo/header-dir-list)
+;;                                  when (file-exists-p dir)
+;;                                  collect (loop for f in (find-recursive-directory-relative-files dir "" c)
+;;                                                collect (find-file (concat (concat dir "/") f))))
+;;                    )
+;;              )
+;;           (message "There is no corresponding pair (header or body) file.")))
+;;        (t
+;;         (message "It is not a header or body file! See eassist-header-switches variable.")))))
 
-  ;; (require 'semantic-tag-folding)
-  
-  (require 'find-recursive)
+  (defvar jo/header-dir-list '(("inc" "incs" "include" "includes") . ("src" "srcs" "source" "sources")))
 
-  (defvar jo/header-dir-list '("inc" "incs" "include" "includes" "src" "srcs" "source" "sources"))
-  (defun jo/eassist-switch-h-cpp ()
-    "Switch header and body file according to `eassist-header-switches' var.
-The current buffer's file name extention is searched in
-`eassist-header-switches' variable to find out extention for file's counterpart,
-for example *.hpp <--> *.cpp."
+  (defvar jo/header-switches '(("h" . ("cpp" "cc" "c"))
+                               ("hpp" . ("cpp" "cc"))
+                               ("cpp" . ("h" "hpp"))
+                               ("c" . ("h"))
+                               ("C" . ("H"))
+                               ("H" . ("C" "CPP" "CC"))
+                               ("cc" . ("h" "hpp"))))
+    
+  (defun jo/switch-h-c ()
     (interactive)
-    (let* ((rootdir (file-name-directory (get-closest-pathname "Makefile")))
+    (let* ((proj-dir-path (file-name-directory (get-closest-pathname "Makefile")))
+           (proj-dir-path-len (length proj-dir-path))
+           (file-dir-path (file-name-directory (buffer-file-name)))
+           (file-subpath (substring file-dir-path (- 0 (- (length file-dir-path) proj-dir-path-len))))
            (ext (file-name-extension (buffer-file-name)))
-           (base-name (eassist-string-without-last (buffer-name) (length ext)))
-           (base-path (eassist-string-without-last (buffer-file-name) (length ext)))
-           (count-ext (cdr (find-if (lambda (i) (string= (car i) ext)) eassist-header-switches))))
-      (cond
-       (count-ext
-        (unless
-            (or
-             (loop for b in (mapcar (lambda (i) (concat base-name i)) count-ext)
-                   when (bufferp (get-buffer b)) return (switch-to-buffer b))
-             (loop for c in (mapcar (lambda (i) (concat base-name i)) count-ext)
-                   collect (loop for dir in (mapcar (lambda (i) (concat rootdir i)) jo/header-dir-list)
-                                 when (file-exists-p dir)
-                                 collect (loop for f in (find-recursive-directory-relative-files dir "" c)
-                                               collect (find-file (concat (concat dir "/") f))))
-                   )
-             )
-          (message "There is no corresponding pair (header or body) file.")))
-       (t
-        (message "It is not a header or body file! See eassist-header-switches variable.")))))
+           (info (or (loop for e in (car (car jo/header-dir-list))
+                           when (string= ext e) return (cdr (cdr jo/header-dir-list)))
+                     (loop for e in (car (cdr jo/header-dir-list))
+                           when (string= ext e) return (cdr (car jo/header-dir-list)))
+                     )))
+      (message "file %s" (buffer-file-name))
+      (message "filedir %s" file-dir-path)
+      (message "proj %s" proj-dir-path)
+      (message "subp %s" file-subpath)
+      ))
 
   (local-set-key "\C-c,d"   'semantic-ia-show-doc)
   (local-set-key "\C-c,s"   'semantic-ia-show-summary)
+  ;; (local-set-key "\C-cd"    'jo/switch-h-c)
   (local-set-key "\C-cd"    'jo/eassist-switch-h-cpp)
+
   (local-set-key "\M-m"     'eassist-list-methods)
   (local-set-key "\C-c\C-r" 'semantic-symref)
 

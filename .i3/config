@@ -42,7 +42,6 @@ bind $ModK+Shift+49 move scratchpad
 # Toggle scratchpad
 bind $ModK+49 scratchpad show
 
-
 # Change focus
 bindsym $ModK+h     focus left
 bindsym $ModK+j     focus down
@@ -52,6 +51,16 @@ bindsym $ModK+Left  focus left
 bindsym $ModK+Down  focus down
 bindsym $ModK+Up    focus up
 bindsym $ModK+Right focus right
+
+# Change focus output
+bindsym $ModK+Mod1+h     focus output left
+bindsym $ModK+Mod1+j     focus output down
+bindsym $ModK+Mod1+k     focus output up
+bindsym $ModK+Mod1+l     focus output right
+bindsym $ModK+Mod1+Left  focus output left
+bindsym $ModK+Mod1+Down  focus output down
+bindsym $ModK+Mod1+Up    focus output up
+bindsym $ModK+Mod1+Right focus output right
 
 # Move focused window
 bindsym $ModK+Shift+h     move left

@@ -3,7 +3,7 @@
 require 'logger'
 require 'optparse'
 
-Log = Logger.new(STDERR)
+Log = Logger.new(STDOUT)
 Log.level = Logger::INFO
 Log.formatter = proc do |severity, datetime, progname, msg|
   "#{datetime.to_s}:: #{severity} #{msg}\n"

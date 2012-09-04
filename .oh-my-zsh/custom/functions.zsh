@@ -11,3 +11,15 @@ function sx() {
     disown
     exit
 }
+
+function xcd() {
+	FILEPATH=$(readlink -e "$1")
+	FILENAME="${FILEPATH##*/}"
+	DIRNAME="${FILENAME%.*}"
+	~/bin/xd $FILEPATH
+	if [[ $? -eq 0 ]]
+	then
+		echo "\ncd $DIRNAME\n"
+		cd $DIRNAME
+	fi
+}

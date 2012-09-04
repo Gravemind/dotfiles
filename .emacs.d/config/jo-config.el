@@ -1,4 +1,4 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;  Emacs 24
 ;;
@@ -11,22 +11,30 @@
 (custom-set-variables
  '(blink-cursor-mode nil)
  '(column-number-mode t)
- '(compilation-scroll-output t)
+ '(compilation-scroll-output 0)
+ '(compilation-window-height 10)
  '(fringe-mode 0 nil (fringe))
+ '(global-semantic-highlight-func-mode t)
+ '(global-semantic-idle-local-symbol-highlight-mode t nil (semantic/idle))
  '(ido-mode t nil (ido))
- '(inhibit-startup-message t)
+ '(ido-enable-flex-matching t)
+ '(ido-everywhere t)
+ '(inhibit-startup-screen t)
+ '(make-backup-files nil)
  '(menu-bar-mode nil)
  '(package-enable-at-startup t)
  '(package-load-list (quote (all)))
+ '(ruby-deep-arglist 4)
+ '(ruby-deep-indent-paren nil)
  '(scroll-bar-mode nil)
+ '(semantic-idle-scheduler-idle-time 0.5)
+ '(semantic-mode t)
  '(show-paren-mode t)
+ '(standard-indent 4)
  '(tool-bar-mode nil)
  '(truncate-lines t)
- '(make-backup-files nil)
- '(compilation-scroll-output 0)
- '(compilation-window-height 10)
- '(standard-indent 4)
- )
+ '(inhibit-startup-message t)
+)
 
 ;; UTF-8
 (prefer-coding-system 'utf-8)
@@ -52,17 +60,24 @@
 
 (require 'package)
 (setq package-archives '(("ELPA" . "http://tromey.com/elpa/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")
                          ("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")))
-(package-initialize)
+
+;; (package-initialize)
 
 ;; CMake mode
 (autoload 'cmake-mode "cmake-mode" t)
+
 (setq-default cmake-tab-width 4)
 (setq auto-mode-alist
       (append '(("CMakeLists\\.txt\\'" . cmake-mode)
                 ("\\.cmake\\'" . cmake-mode))
               auto-mode-alist))
+
+
+;; imaptient mode
+(autoload 'httpd-start "impatient-mode" t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;

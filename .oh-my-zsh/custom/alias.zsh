@@ -38,7 +38,7 @@ alias ggg='gdb --args'
 
 alias start='_ rc.d start'
 alias stop='_ rc.d stop'
-alias restart='_ rc.d start'
+alias restart='_ rc.d restart'
 
 alias ssh-fingerprint="find . -name '*.pub' -exec ssh-keygen -l -f {} \;"
 

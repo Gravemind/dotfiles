@@ -11,7 +11,7 @@
 (custom-theme-set-faces
  'wwombat
  '(default ((t (:foreground "#b0b0b0" :weight light :weight normal
-                            :height 83 :width normal :foundry "unknown" :family "DejaVu Sans Mono"
+                            :height 90 :width normal :foundry "unknown" :family "DejaVu Sans Mono"
                             ))))
  '(cursor ((t (:background "cyan"))))
  '(font-lock-builtin-face ((t (:foreground "#78f2c9"))))
