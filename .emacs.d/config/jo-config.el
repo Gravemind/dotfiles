@@ -75,9 +75,8 @@
                 ("\\.cmake\\'" . cmake-mode))
               auto-mode-alist))
 
-
 ;; imaptient mode
-(autoload 'httpd-start "impatient-mode" t)
+;; (autoload 'httpd-start "impatient-mode" t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -85,10 +84,9 @@
 ;;
 
 (add-to-list 'load-path "~/.emacs.d/plugins")
+
 (require 'filladapt)
 (setq-default filladapt-mode t)
-
-(require 'cmake-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -100,7 +98,8 @@
 (require 'cl)
 
 (defun get-closest-pathname (file)
-  "This function walks up the current path until it finds Makefile and then returns the path to it."
+  "This function walks up the current path until it finds
+  Makefile and then returns the path to it."
   (let ((root (expand-file-name "/")))
     (expand-file-name file
                       (loop
@@ -214,6 +213,9 @@
 (add-hook 'python-mode-hook     (lambda () (setq indent-tabs-mode t
                                                  py-indent-offset 4
                                                  tab-width 4)))
+
+(add-hook 'html-mode-hook       (lambda () (setq indent-tabs-mode nil
+                                                 tab-width 2)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;

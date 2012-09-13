@@ -23,3 +23,8 @@ function xcd() {
 		cd $DIRNAME
 	fi
 }
+
+function dolast() {
+	LAST=`\ls -t | head -n 1`
+	"$@" "$LAST"
+}
