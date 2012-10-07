@@ -201,6 +201,8 @@ bind $ModK+20 exec amixer sset $amixer_item 2%-
 bind $ModK+21 exec amixer sset $amixer_item 2%+
 bindsym XF86AudioLowerVolume exec amixer sset $amixer_item 2%-
 bindsym XF86AudioRaiseVolume exec amixer sset $amixer_item 2%+
+bindsym $ModK+XF86AudioLowerVolume exec amixer sset $amixer_item 2%-
+bindsym $ModK+XF86AudioRaiseVolume exec amixer sset $amixer_item 2%+
 bindsym XF86AudioMute exec amixer sset $amixer_item toggle
 bindsym $ModK+XF86AudioMute exec amixer sset $amixer_item toggle
 bind $ModK+95 exec amixer sset $amixer_item 2%-
@@ -224,6 +226,7 @@ bindsym $ModK+Next exec mpc -q next
 bindsym XF86AudioPlay exec mpc -q toggle
 bindsym XF86AudioPrev exec mpc -q prev
 bindsym XF86AudioNext exec mpc -q next
+bindsym XF86AudioStop exec mpc -q stop
 bind $ModK+75 exec mpc -q toggle
 bind $ModK+74 exec mpc -q prev
 bind $ModK+76 exec mpc -q next
