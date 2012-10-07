@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+sudo rfkill unblock 0
+sudo rfkill list

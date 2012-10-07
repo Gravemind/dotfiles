@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+GATE='galby_j@ssh.epitech.net'
+MACH='galby_j@opensuse'
+RACK='jo@10.224.15.122'
+
+ENDPORT=22
+PORT=33422
+
+ssh -t -t -t -L${PORT}:127.0.0.1:${PORT} "$GATE" "ssh  -t -t -t -L${PORT}:127.0.0.1:${PORT} \"$MACH\"  \"ssh -t -t -t -L${PORT}:127.0.0.1:${ENDPORT} \"$RACK\"\" "

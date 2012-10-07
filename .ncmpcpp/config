@@ -17,7 +17,7 @@ song_status_format                    = "{(%l) }{%a - }{%t}|{%f}"
 song_window_title_format              = "{%a - }{%t -}|{%f}"
 song_columns_list_format              = "(5)[red]{l} (20)[blue]{a} (30)[green]{b} (50)[white]{t}"
 alternative_header_first_line_format  = "{%t}"
-alternative_header_second_line_format = "$5{%a}, $3{%b}, $8{%t}"
+alternative_header_second_line_format = "$5{%a} $3{%b} $8{%t} $3{%y}"
 
 ##### various settings #####
 playlist_display_mode            = "columns"

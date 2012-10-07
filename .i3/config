@@ -107,41 +107,41 @@ bindsym $ModK+Shift+r restart
 
 # Resize window (you can also use the mouse for that)
 mode "resize" {
-bindsym h           resize shrink left  $resize_step px
-bindsym Shift+h     resize grow   left  $resize_step px
-bindsym j           resize shrink down  $resize_step px
-bindsym Shift+j     resize grow   down  $resize_step px
-bindsym k           resize shrink up    $resize_step px
-bindsym Shift+k     resize grow   up    $resize_step px
-bindsym l           resize shrink right $resize_step px
-bindsym Shift+l     resize grow   right $resize_step px
-
-bindsym Left        resize shrink left  $resize_step px
-bindsym Shift+Left  resize grow   left  $resize_step px
-bindsym Down        resize shrink down  $resize_step px
-bindsym Shift+Down  resize grow   down  $resize_step px
-bindsym Up          resize shrink up    $resize_step px
-bindsym Shift+Up    resize grow   up    $resize_step px
-bindsym Right       resize shrink right $resize_step px
-bindsym Shift+Right resize grow   right $resize_step px
-
-bindsym Return mode "default"
-bindsym Escape mode "default"
+    bindsym h           resize shrink left  $resize_step px
+    bindsym Shift+h     resize grow   left  $resize_step px
+    bindsym j           resize shrink down  $resize_step px
+    bindsym Shift+j     resize grow   down  $resize_step px
+    bindsym k           resize shrink up    $resize_step px
+    bindsym Shift+k     resize grow   up    $resize_step px
+    bindsym l           resize shrink right $resize_step px
+    bindsym Shift+l     resize grow   right $resize_step px
+    
+    bindsym Left        resize shrink left  $resize_step px
+    bindsym Shift+Left  resize grow   left  $resize_step px
+    bindsym Down        resize shrink down  $resize_step px
+    bindsym Shift+Down  resize grow   down  $resize_step px
+    bindsym Up          resize shrink up    $resize_step px
+    bindsym Shift+Up    resize grow   up    $resize_step px
+    bindsym Right       resize shrink right $resize_step px
+    bindsym Shift+Right resize grow   right $resize_step px
+    
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
 }
 bindsym $ModK+r mode "resize"
 
 # Colors
-# class                 border  backgr. text
-client.focused          #000000 #619CC9 #222222
-client.focused_inactive #000000 #5f676a #ffffff
-client.unfocused        #000000 #000000 #888888
-client.urgent           #2f343a #900000 #ffffff
+# class                 border  backgr. text    indicator
+client.focused          #000000 #285577 #dddddd #0099ff
+client.focused_inactive #000000 #333333 #888888 #484e50
+client.unfocused        #000000 #000000 #555555 #292d2e
+client.urgent           #2f343a #900000 #ffffff #900000
 
-# Default colors:
-# client.focused          #4c7899 #285577 #ffffff
-# client.focused_inactive #333333 #5f676a #ffffff
-# client.unfocused        #333333 #222222 #888888
-# client.urgent           #2f343a #900000 #ffffff
+# Def
+# client.focused          #4c7899 #285577 #ffffff #2e9ef4
+# client.focused_inactive #333333 #5f676a #ffffff #484e50
+# client.unfocused        #333333 #222222 #888888 #292d2e
+# client.urgent           #2f343a #900000 #ffffff #900000
 
 # switch to workspace
 bindsym $ModK+1 workspace 1
@@ -207,26 +207,26 @@ bind $ModK+95 exec amixer sset $amixer_item 2%-
 bind $ModK+96 exec amixer sset $amixer_item 2%+
 
 # Cmus
-bindsym $ModK+End exec cmus-remote -u
-bindsym $ModK+Prior exec cmus-remote -r
-bindsym $ModK+Next exec cmus-remote -n
-bindsym XF86AudioPlay exec cmus-remote -u #play/pause
-bindsym XF86AudioPrev exec cmus-remote -r #prev
-bindsym XF86AudioNext exec cmus-remote -n #next
-bind $ModK+75 exec cmus-remote -u
-bind $ModK+74 exec cmus-remote -r
-bind $ModK+76 exec cmus-remote -n
+# bindsym $ModK+End exec cmus-remote -u
+# bindsym $ModK+Prior exec cmus-remote -r
+# bindsym $ModK+Next exec cmus-remote -n
+# bindsym XF86AudioPlay exec cmus-remote -u #play/pause
+# bindsym XF86AudioPrev exec cmus-remote -r #prev
+# bindsym XF86AudioNext exec cmus-remote -n #next
+# bind $ModK+75 exec cmus-remote -u
+# bind $ModK+74 exec cmus-remote -r
+# bind $ModK+76 exec cmus-remote -n
 
 # MPD
-# bindsym $ModK+End exec mpc -q toggle
-# bindsym $ModK+Prior exec mpc -q prev
-# bindsym $ModK+Next exec mpc -q next
-# bindsym XF86AudioPlay exec mpc -q toggle
-# bindsym XF86AudioPrev exec mpc -q prev
-# bindsym XF86AudioNext exec mpc -q next
-# bind $ModK+75 exec mpc -q toggle
-# bind $ModK+74 exec mpc -q prev
-# bind $ModK+76 exec mpc -q next
+bindsym $ModK+End exec mpc -q toggle
+bindsym $ModK+Prior exec mpc -q prev
+bindsym $ModK+Next exec mpc -q next
+bindsym XF86AudioPlay exec mpc -q toggle
+bindsym XF86AudioPrev exec mpc -q prev
+bindsym XF86AudioNext exec mpc -q next
+bind $ModK+75 exec mpc -q toggle
+bind $ModK+74 exec mpc -q prev
+bind $ModK+76 exec mpc -q next
 
 # On/Off Touchpad
 bindsym XF86TouchpadToggle exec zsh /home/jo/bin/toggletouchpad
