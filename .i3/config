@@ -87,7 +87,7 @@ bindsym $ModK+c focus child
 # Change container layout
 bindsym $ModK+a layout tabbed
 bindsym $ModK+s layout stacking
-bindsym $ModK+d layout default
+bindsym $ModK+d layout toggle split
 
 # Enter fullscreen mode for the focused container
 bindsym $ModK+f fullscreen
@@ -245,3 +245,4 @@ bar {
 #exec ~/.i3/bar/bar.py
 exec ~/.i3/bg.py
 # exec conky -c ~/.conky/balloon/conkyrc
+exec i3lock -c 222222
