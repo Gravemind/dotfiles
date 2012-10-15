@@ -28,3 +28,10 @@ function dolast() {
 	LAST=`\ls -t | head -n 1`
 	"$@" "$LAST"
 }
+
+function agent() {
+	ssh-agent -s > /tmp/ssh.keys
+	. /tmp/ssh.keys
+	rm /tmp/ssh.keys
+	ssh-add
+}

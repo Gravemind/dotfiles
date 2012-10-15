@@ -1,0 +1,10 @@
+#!/bin/bash
+
+RES=`pgrep -f jogsoul.pl`
+
+if [[ -z "$RES" ]]
+then
+	/usr/bin/perl /bin/jogsoul.pl /etc/jogsoul.conf
+fi
+
+exit 0

@@ -1,6 +1,6 @@
 #!/bin/zsh
 
 pkill -f 'perl jogsoul.pl jogsoul.conf'
-sh -c "sleep 1 ; cd \"$HOME/bin/jogsoul\" ; perl jogsoul.pl jogsoul.conf ; sleep 10" &
+sh -c "sleep 1 ; cd \"$HOME/bin/jogsoul.d\" ; perl jogsoul.pl jogsoul.conf ; sleep 10" &
 disown
 echo ''

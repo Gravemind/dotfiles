@@ -210,9 +210,11 @@
 (add-hook 'ruby-mode-hook       'jo/tab-space)
 (add-hook 'c-mode-hook          'jo/tab-tab)
 (add-hook 'c++-mode-hook        'jo/tab-tab)
-(add-hook 'python-mode-hook     (lambda () (setq indent-tabs-mode t
-                                                 py-indent-offset 4
-                                                 tab-width 4)))
+(add-hook 'python-mode-hook     (lambda ()
+                                  (setq indent-tabs-mode t
+                                        python-indent 4
+                                        py-indent-offset 4
+                                        tab-width 4)))
 
 (add-hook 'html-mode-hook       (lambda () (setq indent-tabs-mode nil
                                                  tab-width 2)))
