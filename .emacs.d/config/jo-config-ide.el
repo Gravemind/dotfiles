@@ -16,7 +16,18 @@
 ;; Packages
 ;;
 
+
 (add-to-list 'load-path "~/.emacs.d/plugins")
+
+;; Vim modeline
+
+(add-to-list 'load-path "~/.emacs.d/plugins/emacs-vim-modeline")
+(require 'vim-modeline)
+;; (add-to-list 'find-file-hook 'vim-modeline/do)
+(defun modeline-vim ()
+  (interactive)
+  (vim-modeline/do)
+)
 
 ;; Widen window mode
 

@@ -61,6 +61,9 @@ bindsym $ModK+Mod1+Left  focus output left
 bindsym $ModK+Mod1+Down  focus output down
 bindsym $ModK+Mod1+Up    focus output up
 bindsym $ModK+Mod1+Right focus output right
+# Focus other output (when multi screen)
+bindsym $ModK+Tab        focus output right
+
 
 # Move focused window
 bindsym $ModK+Shift+h     move left
