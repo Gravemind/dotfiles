@@ -1,6 +1,6 @@
 #name : #ifndef XXX; #define XXX; #endif
 # --
-#ifndef ${1:`(concat "_" (replace-regexp-in-string "\\\." "_" (upcase (file-name-nondirectory (buffer-file-name)))) "_")`}
+#ifndef ${1:`(concat "FILE_" (replace-regexp-in-string "[^a-zA-Z0-9]+" "_" (upcase (file-name-nondirectory (buffer-file-name)))) "_")`}
 #define $1
 
 $0
