@@ -1,5 +1,7 @@
 
-mouse_support = no
+mouse_support = yes
+
+mpd_music_dir = "/home/mpd/music"
 
 ##### delays #####
 playlist_disable_highlight_delay = "5"
@@ -22,7 +24,7 @@ alternative_header_second_line_format = "$5{%a}, $3{%b}{ (%y)}, $8{%t}"
 ##### various settings #####
 playlist_display_mode            = "columns"
 incremental_seeking              = "yes"
-seek_time                        = "1"
+seek_time                        = "5"
 autocenter_mode                  = "yes"
 repeat_one_mode                  = "no"
 default_place_to_search_in       = "database"
