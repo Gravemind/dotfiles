@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+function mymerge() {
+    if [ -n "$(diff $1 $2)" ]
+    then
+        echo ">> merge $1 $2"
+        sudo meld $1 $2 &> /dev/null
+		sudo chown $USER:$USER $1
+    else
+        echo ">> ( no diff: $1 $2 )"
+    fi
+}
+
+for file in `cd ./system/etc/; echo *`
+do
+	mymerge "./system/etc/$file" "/etc/$file"
+done

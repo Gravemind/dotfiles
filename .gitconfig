@@ -8,3 +8,5 @@
 	br = branch
 	st = status
 	com = commit -m
+[push]
+	default = simple

@@ -126,7 +126,7 @@
 ;;
 
 ;; Set basic indentation to 4 spaces width
-; (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 86 90))
+(setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 86 90))
 
 ;; C style
 (c-set-offset 'substatement-open 0)

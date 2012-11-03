@@ -29,4 +29,3 @@ mymerge ~/.userscripts .userscripts
 mymerge ~/.Xdefaults .Xdefaults
 mymerge ~/.xinitrc .xinitrc
 mymerge ~/.zshrc .zshrc
-mymerge / system
