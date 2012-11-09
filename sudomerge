@@ -5,7 +5,7 @@ function mymerge() {
     then
         echo ">> merge $1 $2"
         sudo meld $1 $2 &> /dev/null
-		sudo chown $USER:$USER $1
+		sudo chown $USER:users $1
     else
         echo ">> ( no diff: $1 $2 )"
     fi

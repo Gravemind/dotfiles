@@ -30,6 +30,9 @@ bindsym $ModK+F2 exec ~/bin/emacscl two
 bindsym $ModK+F3 exec ~/bin/emacscl three
 bindsym $ModK+F4 exec ~/bin/emacscl four
 
+# Toggle border decoration
+bindsym $ModK+e border toggle
+
 # Kill focused window
 bindsym $ModK+q kill
 
@@ -38,7 +41,6 @@ bindsym $ModK+z exec /usr/bin/dmenu_run -b -p ">>" -nb '#222222' -nf '#CCCCCC' -
 
 # Move to scrathpad
 bind $ModK+Shift+49 move scratchpad
-
 # Toggle scratchpad
 bind $ModK+49 scratchpad show
 
@@ -53,17 +55,17 @@ bindsym $ModK+Up    focus up
 bindsym $ModK+Right focus right
 
 # Change focus output
-bindsym $ModK+Mod1+h     focus output left
-bindsym $ModK+Mod1+j     focus output down
-bindsym $ModK+Mod1+k     focus output up
-bindsym $ModK+Mod1+l     focus output right
-bindsym $ModK+Mod1+Left  focus output left
-bindsym $ModK+Mod1+Down  focus output down
-bindsym $ModK+Mod1+Up    focus output up
-bindsym $ModK+Mod1+Right focus output right
+# bindsym $ModK+Mod1+h     focus container left
+# bindsym $ModK+Mod1+j     focus container down
+# bindsym $ModK+Mod1+k     focus container up
+# bindsym $ModK+Mod1+l     focus container right
+# bindsym $ModK+Mod1+Left  focus container left
+# bindsym $ModK+Mod1+Down  focus container down
+# bindsym $ModK+Mod1+Up    focus container up
+# bindsym $ModK+Mod1+Right focus container right
+
 # Focus other output (when multi screen)
 bindsym $ModK+Tab        focus output right
-
 
 # Move focused window
 bindsym $ModK+Shift+h     move left
@@ -146,7 +148,7 @@ client.urgent           #2f343a #900000 #ffffff #900000
 # client.unfocused        #333333 #222222 #888888 #292d2e
 # client.urgent           #2f343a #900000 #ffffff #900000
 
-# switch to workspace
+# Switch to workspace
 bindsym $ModK+1 workspace 1
 bindsym $ModK+2 workspace 2
 bindsym $ModK+3 workspace 3
@@ -158,7 +160,7 @@ bindsym $ModK+8 workspace 8
 bindsym $ModK+9 workspace 9
 bindsym $ModK+0 workspace 10
 
-# move focused container to workspace
+# Move focused container to workspace
 bindsym $ModK+Shift+1 move workspace 1
 bindsym $ModK+Shift+2 move workspace 2
 bindsym $ModK+Shift+3 move workspace 3
@@ -194,6 +196,7 @@ focus_follows_mouse no
 new_window 1pixel
 default_orientation auto
 workspace_auto_back_and_forth no
+hide_edge_borders none
 
 # Lock
 bindsym $ModK+w exec ~/bin/purplelock -f -c xtrlock -i 10.X.X.X -a '@tek pause ?' -l '@tek en pause !' -i X.X.X.X -a '@home' -l '@home afk'
