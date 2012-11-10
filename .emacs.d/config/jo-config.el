@@ -208,6 +208,7 @@
 (add-hook 'lisp-mode-hook       'jo/tab-space)
 (add-hook 'scheme-mode-hook     'jo/tab-space)
 (add-hook 'ruby-mode-hook       'jo/tab-space)
+(add-hook 'text-mode-hook       'jo/tab-space)
 (add-hook 'c-mode-hook          'jo/tab-tab)
 (add-hook 'c++-mode-hook        'jo/tab-tab)
 (add-hook 'python-mode-hook     (lambda ()

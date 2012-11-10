@@ -16,7 +16,7 @@ ipc-socket ~/.i3/ipc.sock
 # Font for window titles. ISO 10646 = Unicode
 font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 
-# use Mouse+Mod1 to drag floating windows to their wanted position
+# use Mouse+ModK to drag floating windows to their wanted position
 floating_modifier $ModK
 
 # Start a terminal
@@ -106,7 +106,7 @@ bindsym $ModK+space focus mode_toggle
 # Reload the configuration file
 bindsym $ModK+Shift+w reload
 # Exit i3 (logs you out of your X session)
-bindsym $ModK+Shift+e exit
+# bindsym $ModK+Shift+e exit
 # Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $ModK+Shift+r restart
 
@@ -183,14 +183,15 @@ workspace 8 output $screenR
 workspace 9 output $screenR
 workspace 10 output $screenR
 
-assign [class="^chrome"] 3
-assign [class="^chromium"] 3
-assign [class="^chromium-browser"] 3
-assign [class="^Firefox$"] 3
-assign [class="^Pidgin$"] 9
-assign [class="^Gimp$"] 5
-assign [class="^wine$"] ~
-assign [class="^Ekiga$"] 4
+assign [class="^chrome"] → 10
+assign [class="^chromium"] → 10
+assign [class="^chromium-browser"] → 10
+assign [class="^Firefox$"] → 10
+assign [class="^Pidgin$"] → 9
+assign [class="^Gimp$"] → 5
+assign [class="^Ekiga$"] → 4
+for_window [title="(?i)^.*wine.*$"] floating enable
+for_window [title="(?i)^.*steam.*$"] floating enable
 
 focus_follows_mouse no
 new_window 1pixel
@@ -199,7 +200,7 @@ workspace_auto_back_and_forth no
 hide_edge_borders none
 
 # Lock
-bindsym $ModK+w exec ~/bin/purplelock -f -c xtrlock -i 10.X.X.X -a '@tek pause ?' -l '@tek en pause !' -i X.X.X.X -a '@home' -l '@home afk'
+bindsym $ModK+w exec "/bin/bash --login -c 'sleep 0.5; xtrlock'" ## RRHAA 'exec xtrlock' won't work
 
 # Amixer
 set $amixer_item Master

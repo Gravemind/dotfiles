@@ -26,6 +26,7 @@ function xcd() {
 
 function dolast() {
 	LAST=`\ls -t | head -n 1`
+	echo "\n## dolast" "$@" "$LAST\n" 1>&2
 	"$@" "$LAST"
 }
 
