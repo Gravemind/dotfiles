@@ -190,6 +190,7 @@ assign [class="^Firefox$"] → 10
 assign [class="^Pidgin$"] → 9
 assign [class="^Gimp$"] → 5
 assign [class="^Ekiga$"] → 4
+assign [class="(?i)^.*sflphone.*$"] → 4
 for_window [title="(?i)^.*wine.*$"] floating enable
 for_window [title="(?i)^.*steam.*$"] floating enable
 
