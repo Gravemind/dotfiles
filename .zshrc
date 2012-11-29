@@ -36,4 +36,6 @@ plugins=( git zsh-syntax-highlighting history-substring-search autojump ) # my_l
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/kde/bin:/usr/bin/vendor_perl:/usr/bin/core_perl:/opt/qt/bin:$HOME/bin
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/kde/bin:/usr/bin/vendor_perl:/usr/bin/core_perl:/opt/qt/bin:$HOME/bin:$HOME/.gem/ruby/1.9.1/bin
+
+export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
