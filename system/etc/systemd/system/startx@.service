@@ -1,0 +1,13 @@
+[Unit]
+Description=startx automatique pour l'utilisateur %I
+After=graphical.target systemd-user-sessions.service
+
+[Service]
+## User=%I
+## WorkingDirectory=%h
+## PAMName=login
+Type=simple
+ExecStart=/bin/su %I -c "/bin/bash --login -c 'cd $HOME; startx;'"
+
+[Install]
+WantedBy=graphical.target
