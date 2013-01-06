@@ -191,11 +191,16 @@ assign [class="^Pidgin$"] → 9
 assign [class="^Gimp$"] → 5
 assign [class="^Ekiga$"] → 4
 assign [class="(?i)^.*sflphone.*$"] → 4
-for_window [title="(?i)^.*wine.*$"] floating enable
-for_window [title="(?i)^.*steam.*$"] floating enable
+for_window [class="(?i)^.*wine.*$"] floating enable
+for_window [class="(?i)^.*steam.*$"] floating enable
+
+for_window [class="(?i)urxvt"] border pixel 2
+for_window [class="(?i)emacs"] border pixel 2
+for_window [class="(?i)firefox"] border none
+for_window [class="(?i)mplayer"] border none
 
 focus_follows_mouse no
-new_window 1pixel
+new_window normal
 default_orientation auto
 workspace_auto_back_and_forth no
 hide_edge_borders none

@@ -7,7 +7,7 @@ After=graphical.target systemd-user-sessions.service
 ## WorkingDirectory=%h
 ## PAMName=login
 Type=simple
-ExecStart=/bin/su %I -c "/bin/bash --login -c 'cd $HOME; startx;'"
+ExecStart=/bin/su %I -c "/bin/bash --login -c 'cd; startx;'"
 
 [Install]
 WantedBy=graphical.target

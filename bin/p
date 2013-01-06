@@ -1,0 +1,21 @@
+#!/bin/bash
+
+SAVE="$HOME/.last_reveil"
+
+touch "$SAVE"
+
+TIME=$(cat "$SAVE")
+
+if [[ -n "$1" ]] ; then TIME="$1" ; fi
+
+[ -n "$TIME" ] || exit 1
+
+echo "$TIME" > "$SAVE"
+
+mpc -q next
+
+echo 'mpc next ; xset dpms force on ;' | at "$TIME"
+
+at -c `atq | tail -n 1 | cut -f 1`
+
+echo "#### at $TIME"
