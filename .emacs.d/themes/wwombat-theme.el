@@ -29,9 +29,11 @@
      'wwombat
 
      ;; Emacs
-     `(default ((t (:foreground ,foreground :weight light :weight normal
-                                :height 90 :width normal :foundry "unknown" :family "DejaVu Sans Mono"
-                                ))))
+     `(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 90 :width normal))))
+
+     ;; `(default ((t (:foreground ,foreground :weight light :weight normal
+     ;;                            :height 90 :width normal :foundry "unknown" :family "DejaVu Sans Mono"
+     ;;                            ))))
      `(cursor ((t (:background "cyan"))))
 
      ;; Languages
@@ -71,6 +73,16 @@
      `(mumamo-background-chunk-submode4 ((t (:background "gray10"))))
      `(ebrowse-root-class ((t (:foreground "#f1aa7e" :weight normal ))))
      `(ebrowse-member-class ((t (:foreground "#f1aa7e" :weight normal ))))
+
+     `(buffer-menu-star-buffer ((t (:foreground ,comment :slant normal))))
+     `(buffer-menu-buffer-name ((t (:foreground ,orange :weight normal))))
+     `(buffer-menu-read-only-mark ((t (:foreground ,green))))
+     `(buffer-menu-directory-buffer ((t (:foreground ,red :background nil))))
+
+     `(buffer-menu-mode ((t (:foreground ,blue))))
+     `(buffer-menu-file-name ((t (:foreground ,blue))))
+     `(buffer-menu-modified-mark ((t (:foreground ,green))))
+     `(buffer-menu-size ((t (:foreground ,blue))))
      )
 
     (if (window-system)
@@ -99,8 +111,8 @@
         (set (make-local-variable 'font-lock-defaults)
              '(buffer-menu-buffer-font-lock-keywords t))
         (font-lock-fontify-buffer)))
-    (add-hook 'buffer-menu-mode-hook 'buffer-menu-custom-font-lock)
-    (add-hook 'electric-buffer-menu-mode-hook 'buffer-menu-custom-font-lock)
+    ;; (add-hook 'buffer-menu-mode-hook 'buffer-menu-custom-font-lock)
+    ;; (add-hook 'electric-buffer-menu-mode-hook 'buffer-menu-custom-font-lock)
     )
 )
 

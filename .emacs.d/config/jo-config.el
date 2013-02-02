@@ -34,6 +34,8 @@
  '(tool-bar-mode nil)
  '(truncate-lines t)
  '(inhibit-startup-message t)
+ '(dabbrev-case-fold-search nil)
+ '(dabbrev-case-replace nil)
 )
 
 ;; UTF-8
@@ -75,6 +77,14 @@
                 ("\\.cmake\\'" . cmake-mode))
               auto-mode-alist))
 
+(require 'multiple-cursors)
+
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->")         'mc/mark-next-word-like-this)
+(global-set-key (kbd "C-<")         'mc/mark-previous-word-like-this)
+(global-set-key (kbd "C-M->")       'mc/mark-more-like-this-extended)
+(global-set-key (kbd "C-c C-<")     'mc/mark-all-like-this)
+
 ;; imaptient mode
 ;; (autoload 'httpd-start "impatient-mode" t)
 
@@ -87,6 +97,13 @@
 
 (require 'filladapt)
 (setq-default filladapt-mode t)
+
+(require 'buff-menu+)
+
+(custom-set-variables
+ '(Buffer-menu-sort 5)
+ '(Buffer-menu-time-flag nil)
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -220,6 +237,12 @@
 (add-hook 'html-mode-hook       (lambda () (setq indent-tabs-mode nil
                                                  tab-width 2)))
 
+(defun jo/c-set-key ()
+  (local-set-key "\C-c\C-c"  'comment-or-uncomment-region)
+)
+(add-hook 'c-mode-hook 'jo/c-set-key)
+(add-hook 'c++-mode-hook 'jo/c-set-key)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Keyborad : Global shortcuts
@@ -272,13 +295,41 @@
 (global-set-key [C-prior]   'beginning-of-buffer)
 
 ;; C-x C-b : buffer menu
-(global-set-key "\C-x\C-b"  'buffer-menu)
+(defun jo/buffer-menu ()
+  (interactive)
+  (switch-to-buffer "*Buffer List*")
+  (buffer-menu)
+)
+
+(global-set-key "\C-x\C-b"  'jo/buffer-menu)
 
 ;; C-x f : change frame title
 (global-set-key "\C-xf"     'set-frame-name)
 
 ;; C-c C-SPC : Goto last mark
 (global-set-key "\C-c\C- "  'pop-to-mark-command)
+
+;; M-k : kill whole line
+(global-set-key "\M-k"  'kill-whole-line)
+
+;; C-M-w : delete-region 
+(global-set-key "\C-\M-w"  'delete-region)
+;; (delete-selection-mode t)
+
+(defun backward-delete-word (arg)
+  "Delete characters backward until encountering the end of a word.
+With argument, do this that many times."
+  (interactive "p")
+  (delete-region (point) (progn (forward-word (- arg)) (point))))
+
+(defun forward-delete-word (arg)
+  "Delete characters backward until encountering the end of a word.
+With argument, do this that many times."
+  (interactive "p")
+  (delete-region (point) (progn (backward-word (- arg)) (point))))
+
+(global-set-key [C-backspace]  'backward-delete-word)
+(global-set-key [C-delete]     'forward-delete-word)
 
 ;; S-insert : Force yank X clipboard buffer (fix for emacs 24)
 (global-set-key [S-insert] 'jo/yank-primary)
