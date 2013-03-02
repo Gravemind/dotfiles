@@ -66,7 +66,7 @@
                          ("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")))
 
-;; (package-initialize)
+(package-initialize)
 
 ;; CMake mode
 (autoload 'cmake-mode "cmake-mode" t)
