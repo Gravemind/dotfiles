@@ -1,12 +1,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; by wacren_p
-;;
 ;; 256 colors wombat theme
 ;; with buffer-menu colorization
 ;;
 
-(deftheme wwombat "Custom theme wombat")
+(deftheme automn "Custom theme automn")
 
 (let (
       (background "#202020")
@@ -16,18 +14,18 @@
 
       (comment    "#909090")
 
-      (red        "#e5786d")
-      (orange     "#f1aa7e")
-      (yellow     "#caeb82")
-      (green      "#95e454")
-      (cyan       "#78f2c9")
-      (blue       "#87afff")
+      (color1     "#f7bc75")
+      (color2     "#d47f54")
+      (color3     "#ab5b48")
+      (color4     "#8A423f")
+      (strings    "#b2ad79")
+      (otherkeyw  "#61cfd4")
 
       )
 
   (progn
     (custom-theme-set-faces
-     'wwombat
+     'automn
 
      ;; Emacs
      `(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 90 :width normal))))
@@ -117,6 +115,6 @@
     )
 )
 
-(provide-theme 'wwombat)
+(provide-theme 'automn)
 
 ;;EOF
