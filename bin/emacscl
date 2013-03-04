@@ -10,4 +10,4 @@ then
 	~/bin/emacsserver start $DAEMON_NAME
 fi
 
-emacsclient -s $DAEMON_NAME -c -n $*
+emacsclient -s $DAEMON_NAME -c -n "$@"

@@ -12,7 +12,7 @@
  '(blink-cursor-mode nil)
  '(column-number-mode t)
  '(compilation-scroll-output 0)
- '(compilation-window-height 10)
+ '(compilation-window-height 12)
  '(fringe-mode 0 nil (fringe))
  '(global-semantic-highlight-func-mode t)
  '(global-semantic-idle-local-symbol-highlight-mode t nil (semantic/idle))
@@ -34,6 +34,7 @@
  '(tool-bar-mode nil)
  '(truncate-lines t)
  '(inhibit-startup-message t)
+ '(gdb-many-windows t)
  '(dabbrev-case-fold-search nil)
  '(dabbrev-case-replace nil)
 )
@@ -66,7 +67,7 @@
                          ("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")))
 
-;; (package-initialize)
+(package-initialize)
 
 ;; CMake mode
 (autoload 'cmake-mode "cmake-mode" t)
@@ -126,16 +127,49 @@
                        if (equal d root)
                        return nil))))
 
-(defun jo/compile ()
-  "Compile (or re-compile if compilation buffer is already open)."
+(defvar jo/compile-dir nil)
+(defvar jo/build-command nil)
+
+(defun jo/get-compile-dir ()
+  (if (eq jo/compile-dir nil)
+      (let ((dir (file-name-directory (get-closest-pathname "Makefile"))))
+        (progn (message "jo/set-compile-dir to %s" dir)
+               (setq jo/compile-dir dir)))
+    jo/compile-dir))
+
+;; (defun jo/get-compile-dir ()
+;;   (let ((dir (file-name-directory (get-closest-pathname "Makefile"))))
+;;     (progn (message "jo/set-compile-dir to %s" dir)
+;;            (setq jo/compile-dir dir))))
+
+(defun jo/set-build-command ()
   (interactive)
-  (compile (format "make -sC %s" (file-name-directory (get-closest-pathname "Makefile")))))
+  (setq jo/build-command (read-from-minibuffer "jo/build-command (%s replaced by path)? " "make -C %s emacs"))
+  )
+
+(defun jo/get-build-command ()
+  (interactive)
+  (if (eq jo/build-command nil)
+      (jo/set-build-command)
+    jo/build-command)
+  )
 
 (defun jo/compile-here ()
   "Force compile in current buffer."
   (interactive)
   (switch-to-buffer "*compilation*")
-  (compile (format "make -sC %s" (file-name-directory (get-closest-pathname "Makefile")))))
+  ;; (cd (jo/get-compile-dir))
+  (compile (format (jo/get-build-command) (jo/get-compile-dir))))
+
+(defun jo/compile ()
+  "Compile (or re-compile if compilation buffer is already open)."
+  (interactive)
+  (let ((current-buffer (buffer-name)))
+    (progn
+      (compile (format (jo/get-build-command) (jo/get-compile-dir)))
+      ;; (jo/compile-here)
+      ;; (switch-to-buffer current-buffer)
+      )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -143,7 +177,7 @@
 ;;
 
 ;; Set basic indentation to 4 spaces width
-(setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 86 90))
+(setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120 124 128 132 136 140 144 148 152 156 160 164 168 172 176 180))
 
 ;; C style
 (c-set-offset 'substatement-open 0)
@@ -226,8 +260,7 @@
 (add-hook 'scheme-mode-hook     'jo/tab-space)
 (add-hook 'ruby-mode-hook       'jo/tab-space)
 (add-hook 'text-mode-hook       'jo/tab-space)
-(add-hook 'c-mode-hook          'jo/tab-tab)
-(add-hook 'c++-mode-hook        'jo/tab-tab)
+(add-hook 'c-mode-common-hook   'jo/tab-tab)
 (add-hook 'python-mode-hook     (lambda ()
                                   (setq indent-tabs-mode t
                                         python-indent 4
@@ -237,11 +270,20 @@
 (add-hook 'html-mode-hook       (lambda () (setq indent-tabs-mode nil
                                                  tab-width 2)))
 
+(add-hook 'gdb-mode-hook        (lambda () (setq tab-width 8)))
+
 (defun jo/c-set-key ()
   (local-set-key "\C-c\C-c"  'comment-or-uncomment-region)
-)
-(add-hook 'c-mode-hook 'jo/c-set-key)
-(add-hook 'c++-mode-hook 'jo/c-set-key)
+  )
+(add-hook 'c-mode-common-hook 'jo/c-set-key)
+
+(defun _jo/enable-linum ()
+  (linum-mode t)
+  )
+(defun jo/enable-linum ()
+  (interactive)
+  (add-hook 'c-mode-common-hook '_jo/enable-linum)
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -299,7 +341,7 @@
   (interactive)
   (switch-to-buffer "*Buffer List*")
   (buffer-menu)
-)
+  )
 
 (global-set-key "\C-x\C-b"  'jo/buffer-menu)
 

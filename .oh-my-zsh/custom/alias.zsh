@@ -16,6 +16,7 @@ alias e='exit'
 alias clean='find . \( -name "*~" -or -name "#*#" \) -print -delete'
 alias fclean='find . \( -name "*~" -or -name "#*#" -or -name "*.o" -or -name "*.pyc" \) -print -delete'
 alias cleansvn='find . -name ".svn" -execdir rm -rf {} \;'
+alias cleansvn='find . -name ".svn" -execdir rm -rf {} \;'
 alias cleandhcp='sudo rm -rf /var/lib/dhcp3/*.lease'
 
 alias _='command sudo -E ' # ! trailing wihtespace is important
@@ -33,8 +34,6 @@ alias a='echo -ne "\a"'
 alias pacman="pacman-color"
 compdef _pacman $PACMAN=pacman
 compdef _pacman yaourt=pacman
-
-alias ggg='gdb --args'
 
 alias start='_ rc.d start'
 alias stop='_ rc.d stop'
