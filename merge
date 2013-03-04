@@ -3,10 +3,10 @@
 function mymerge() {
     if [ -n "$(diff $1 $2)" ]
     then
-        echo ">> merge $1 $2"
+        echo "$> meld $1 $2"
         meld $1 $2 &> /dev/null
     else
-        echo ">> ( no diff: $1 $2 )"
+        echo "## ( no diff: $1 $2 )"
     fi
 }
 

@@ -412,7 +412,16 @@ With argument, do this that many times."
 
 ;; Load theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-theme 'wwombat t)
+;; (load-theme 'wwombat t)
+(load-theme 'automn t)
+
+;; (require 'color-theme-sanityinc-solarized)
+
+;; (color-theme-sanityinc-solarized-dark)
+
+;; (add-to-list 'custom-theme-load-path "/home/jo/.emacs.d/elpa/color-theme-sanityinc-solarized-20130225.1617")
+;; (load-theme 'color-theme-sanityinc-solarized t)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
