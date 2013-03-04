@@ -22,7 +22,6 @@
       (green      "#95e454")
       (cyan       "#78f2c9")
       (blue       "#87afff")
-
       )
 
   (progn
@@ -30,22 +29,20 @@
      'wwombat
 
      ;; Emacs
-     `(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 90 :width normal))))
-
-     ;; `(default ((t (:foreground ,foreground :weight light :weight normal
-     ;;                            :height 90 :width normal :foundry "unknown" :family "DejaVu Sans Mono"
-     ;;                            ))))
+     `(default ((t (:foreground ,foreground :weight light :weight normal
+                                :height 90 :width normal :foundry "unknown" :family "DejaVu Sans Mono"
+                                ))))
      `(cursor ((t (:background "cyan"))))
 
      ;; Languages
-     `(font-lock-builtin-face ((t (:foreground ,otherkeyw))))
-     `(font-lock-preprocessor-face ((t (:foreground ,color4))))
-     `(font-lock-constant-face ((t (:foreground ,color3))))
-     `(font-lock-function-name-face ((t (:foreground ,color1))))
-     `(font-lock-keyword-face ((t (:foreground ,color3 :weight normal))))
-     `(font-lock-string-face ((t (:foreground ,strings))))
-     `(font-lock-type-face ((t (:foreground ,color2))))
-     `(font-lock-variable-name-face ((t (:foreground ,color1))))
+     `(font-lock-builtin-face ((t (:foreground ,cyan))))
+     `(font-lock-preprocessor-face ((t (:foreground ,red))))
+     `(font-lock-constant-face ((t (:foreground ,red))))
+     `(font-lock-function-name-face ((t (:foreground ,orange))))
+     `(font-lock-keyword-face ((t (:foreground ,blue :weight normal))))
+     `(font-lock-string-face ((t (:foreground ,green))))
+     `(font-lock-type-face ((t (:foreground ,yellow))))
+     `(font-lock-variable-name-face ((t (:foreground ,orange)))) ;; "#f1ba7e"
 
      ;; Comments
      `(font-lock-comment-delimiter-face ((t (:foreground ,comment))))
@@ -76,14 +73,14 @@
      `(ebrowse-member-class ((t (:foreground "#f1aa7e" :weight normal ))))
 
      `(buffer-menu-star-buffer ((t (:foreground ,comment :slant normal))))
-     `(buffer-menu-buffer-name ((t (:foreground ,color2 :weight normal))))
-     `(buffer-menu-read-only-mark ((t (:foreground ,strings))))
-     `(buffer-menu-directory-buffer ((t (:foreground ,color3 :background nil))))
+     `(buffer-menu-buffer-name ((t (:foreground ,orange :weight normal))))
+     `(buffer-menu-read-only-mark ((t (:foreground ,green))))
+     `(buffer-menu-directory-buffer ((t (:foreground ,red :background nil))))
 
-     `(buffer-menu-mode ((t (:foreground ,color3))))
-     `(buffer-menu-file-name ((t (:foreground ,color3))))
-     `(buffer-menu-modified-mark ((t (:foreground ,strings))))
-     `(buffer-menu-size ((t (:foreground ,color3))))
+     `(buffer-menu-mode ((t (:foreground ,blue))))
+     `(buffer-menu-file-name ((t (:foreground ,blue))))
+     `(buffer-menu-modified-mark ((t (:foreground ,green))))
+     `(buffer-menu-size ((t (:foreground ,blue))))
      )
 
     (if (window-system)
