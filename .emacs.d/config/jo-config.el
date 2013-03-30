@@ -56,6 +56,9 @@
 ;; Force backspace erase tabulations
 (global-set-key [backspace] 'delete-backward-char)
 
+;; Auto update dired
+(add-hook 'dired-mode-hook 'auto-revert-mode)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Packages
