@@ -30,8 +30,6 @@ alias flux='xflux -l 49 -k 4000'
 alias untar='tar xvzf'
 alias ntpup='sudo ntpd -qg'
 alias a='echo -ne "\a"'
-alias pacman="pacman-color"
-compdef _pacman $PACMAN=pacman
 compdef _pacman yaourt=pacman
 
 alias start='_ rc.d start'

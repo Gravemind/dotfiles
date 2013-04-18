@@ -25,6 +25,5 @@ export OSTYPE=`uname -s`
 export MACHTYPE=`uname -m`
 export BROWSER='/usr/bin/firefox'
 
-export PACMAN='pacman-color'
 export WINEARCH="win32"
 export WINEPREFIX="$HOME/win32"

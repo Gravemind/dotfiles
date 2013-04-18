@@ -10,7 +10,7 @@
       (background "#202020")
       (foreground "#b0b0b0")
 
-      (selection  "#253B76")
+      (selection  "#393939")
 
       (comment    "#909090")
 
@@ -20,6 +20,8 @@
       (color4     "#8A423f")
       (strings    "#b2ad79")
       (otherkeyw  "#61cfd4")
+
+      (useless    "#602929")
 
       )
 
@@ -49,14 +51,26 @@
      `(font-lock-comment-delimiter-face ((t (:foreground ,comment))))
      `(font-lock-comment-face ((t (:foreground ,comment :slant italic))))
 
-     `(linum ((t (:foreground "#6B5B2C" :background "#111111"))))
+     ;; Mode line
+     `(mode-line ((t (:background "#555555" :foreground "#f6f3e8" :box (:line-width 2 :color "#555555") :weight normal))))
+     `(mode-line-buffer-id ((t nil)))
+     `(mode-line-emphasis ((t (:weight normal))))
+     `(mode-line-highlight ((t (:box nil))))
+     `(mode-line-inactive ((t (:inherit mode-line :background "#333333" :foreground "#857b6f" :box (:line-width 2 :color "#333333") :weight normal))))
+     `(vertical-border ((t (:foreground "#303030" ))))
+     `(fringe ((t (:foreground "#303030" :background ,background ))))
+
+     ;; White space mode
+     `(whitespace-space-before-tab ((t (:background ,useless))))
+     `(whitespace-trailing ((t (:background ,useless))))
+     `(whitespace-indentation ((t (:background ,useless))))
+
+     `(minibuffer-prompt ((t (:foreground "#36b5b1"))))
+
+     `(linum ((t (:foreground "#404040" :background ,background))))
      `(highlight ((t (:background "gray15" :height 1.0 :weight normal))))
-     `(mode-line ((default (:foreground "#f6f3e8" :background "#444444"))))
-     `(mode-line-inactive ((default (:foreground "#857b6f" :background "#333333"))))
      `(mouse ((t (:background "white"))))
      `(region ((t (:background ,selection))))
-     `(vertical-border ((t (:foreground "black"))))
-     `(minibuffer-prompt ((t (:foreground "#36b5b1"))))
      `(ac-completion-face ((t (:foreground "white" :underline t))))
      `(popup-isearch-match ((t (:background "sky blue" :foreground "red"))))
      `(semantic-tag-boundary-face ((t (:overline "#333333"))))
