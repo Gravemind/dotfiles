@@ -62,14 +62,12 @@
 
 ;; Emacs modes
 (add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.inl$" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.cwp$" . c-mode))
 (add-to-list 'auto-mode-alist '("\\.cws" . c-mode))
 
 ;; Replace yes-or-no by y-or-n
 (fset 'yes-or-no-p 'y-or-n-p)
-
-;; Force backspace erase tabulations
-(global-set-key [backspace] 'delete-backward-char)
 
 ;; Auto update dired
 (add-hook 'dired-mode-hook 'auto-revert-mode)
@@ -307,6 +305,9 @@
 ;;
 ;; Keyborad : Global shortcuts
 ;;
+
+;; Force backspace erase tabulations
+(global-set-key [backspace] 'delete-backward-char)
 
 ;; F3 > F9
 (global-set-key [f3]        'jo/compile)

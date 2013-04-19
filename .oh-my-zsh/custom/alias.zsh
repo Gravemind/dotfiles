@@ -18,6 +18,7 @@ alias fclean='find . \( -name "*~" -or -name "#*#" -or -name "*.o" -or -name "*.
 alias cleansvn='find . -name ".svn" -execdir rm -rf {} \;'
 alias cleansvn='find . -name ".svn" -execdir rm -rf {} \;'
 alias cleandhcp='sudo rm -rf /var/lib/dhcp3/*.lease'
+alias cleanhg='find . \( -name "*.orig" \) -print -delete'
 
 alias _='command sudo -E ' # ! trailing wihtespace is important
 alias lock='i3lock -c 111111'
