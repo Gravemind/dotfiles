@@ -13,7 +13,7 @@
  '(column-number-mode t)
  '(compilation-scroll-output 0)
  '(compilation-window-height 12)
- '(fringe-mode 0 nil (fringe))
+ ;; '(fringe-mode 0 nil (fringe))
  '(global-semantic-highlight-func-mode t)
  '(global-semantic-idle-local-symbol-highlight-mode t nil (semantic/idle))
  '(ido-mode t nil (ido))
@@ -37,6 +37,21 @@
  '(gdb-many-windows t)
  '(dabbrev-case-fold-search nil)
  '(dabbrev-case-replace nil)
+ ;; '(global-linum-mode t)
+ ;; '(linum-format "%d ")
+ '(global-whitespace-mode t)
+ '(whitespace-style '(face trailing indentation space-before-tab))
+ ;; '(whitespace-display-mappings
+ ;;   '((space-mark   ?\    [?\xB7]     [?.])	; space
+ ;;     (space-mark   ?\xA0 [?\xA4]     [?_])	; hard space
+ ;;     ;; (newline-mark ?\n   [?\xB6 ?\n] [?$ ?\n])	; end-of-line
+ ;;     ;; WARNING: the mapping below has a problem.
+ ;;     ;; When a TAB occupies exactly one column, it will display the character
+ ;;     ;; ?\xBB at that column followed by a TAB which goes to the next TAB
+ ;;     ;; column.
+ ;;     ;; If this is a problem for you, please, comment the line below.
+ ;;     (tab-mark   ?\t   [?│ ?\t] [?\\ ?\t])	; tab
+ ;;     ))
 )
 
 ;; UTF-8
