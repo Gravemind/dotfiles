@@ -35,7 +35,7 @@
   (require 'widen-window)
 
   (interactive)
-  (setq ww-ratio 0.7)
+  (setq ww-ratio 0.75)
   (add-to-list 'ww-advised-functions 'windmove-right)
   (add-to-list 'ww-advised-functions 'windmove-left)
   (add-to-list 'ww-advised-functions 'windmove-up)

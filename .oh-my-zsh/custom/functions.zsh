@@ -36,3 +36,7 @@ function agent() {
 	rm /tmp/ssh.keys
 	ssh-add
 }
+
+function mnt() {
+	sudo mount -o gid=`id -g`,uid=`id -u` "$@"
+}
