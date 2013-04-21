@@ -115,6 +115,9 @@
 (require 'filladapt)
 (setq-default filladapt-mode t)
 
+;; overwrite default buff-menu with the emacs 24.4 buff-menu for buff-menu+ compatibilty
+(load "~/.emacs.d/plugins/buff-menu.el");
+
 (require 'buff-menu+)
 
 (custom-set-variables

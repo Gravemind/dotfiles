@@ -104,6 +104,7 @@
     (if (window-system)
         (set-face-background 'default background))
 
+    ;; if we are in a windowed emacs, set the backgroud, else let it transparent for terminals
     (add-hook 'after-make-frame-functions
               (lambda (frame)
                 (select-frame frame)
