@@ -205,6 +205,7 @@
 (c-set-offset 'arglist-close 0)
 (c-set-offset 'brace-list-open 0)
 (c-set-offset 'innamespace 4)
+(c-set-offset 'member-init-intro 0) ;; indentation of ctor's initialisation list
 
 ;; Lua style
 (setq-default lua-indent-level 4)

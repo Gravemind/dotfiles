@@ -59,6 +59,6 @@ URxvt.scrollTtyKeypress:    true
 URxvt.scrollWithBuffer:     false
 
 !URxvt.perl-ext-common: default,selection,clipboard
-URxvt.cutchars: \\`"'&()*,;<=>?@[]^{|}:
+URxvt.cutchars: \\`"'&()*,;<=>?@[]^{|}:/!.
 !URxvt.selection.pattern-0: \][ ](.+)
 !URxvt.selection.pattern-1: >>>[ ]+(.+)
