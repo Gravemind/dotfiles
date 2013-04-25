@@ -39,7 +39,7 @@
  '(dabbrev-case-replace nil)
  ;; '(global-linum-mode t)
  ;; '(linum-format "%d ")
- '(global-whitespace-mode t)
+ ;; '(global-whitespace-mode t)
  '(whitespace-style '(face trailing indentation space-before-tab))
  ;; '(whitespace-display-mappings
  ;;   '((space-mark   ?\    [?\xB7]     [?.])	; space
@@ -71,6 +71,10 @@
 
 ;; Auto update dired
 (add-hook 'dired-mode-hook 'auto-revert-mode)
+
+;; White space mode
+;; seems to slow down emacs ...
+;; (add-hook 'c-mode-common-hook 'whitespace-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;

@@ -42,6 +42,7 @@
   (add-to-list 'ww-advised-functions 'windmove-down)
   (add-to-list 'ww-advised-functions 'recenter-top-bottom)
   (add-to-list 'ww-advised-functions 'compile-goto-error)
+  (add-to-list 'ww-advised-functions 'next-error)
 
   ;; (add-to-list 'ww-advised-functions 'compilation-button-map)
 
@@ -52,19 +53,26 @@
 
 (defun jo/semantic-hook ()
   (custom-set-variables
-   '(semantic-mode t)
+   ; '(semantic-mode t)
    ; '(global-semantic-decoration-mode t)
-   '(global-semantic-highlight-func-mode t)
+   ; '(global-semantic-highlight-func-mode t)
    ; '(global-semantic-idle-completions-mode t nil (semantic/idle))
-   '(global-semantic-idle-local-symbol-highlight-mode t nil (semantic/idle))
+   ; '(global-semantic-idle-local-symbol-highlight-mode t nil (semantic/idle))
    ; '(global-semantic-idle-summary-mode t)
-   '(semantic-idle-scheduler-idle-time 0.5)
+   ; '(semantic-idle-scheduler-idle-time nil)
    )
 
   (require 'yasnippet-autoloads)
-  (yas/minor-mode t)
-  (yas/initialize)
-  (yas/load-directory "~/.emacs.d/elpa/yasnippet-0.6.1/snippets")
+  ;; (setq yas-snippet-dirs '("~/.emacs.d/config/snippets" "~/.emacs.d/elpa/home/jo/.emacs.d/elpa/yasnippet-20130218.2229/snippets") )
+  (yas-minor-mode t)
+  ;; (yas/initialize)
+  (yas/load-directory "~/.emacs.d/config/snippets")
+  ;; (yas-initialize)
+
+  (require 'dropdown-list)
+  (setq yas-prompt-functions '(yas-dropdown-prompt
+                               yas-ido-prompt
+                               yas-completing-prompt))
 
   ;; Semantic shortcuts
 
@@ -147,13 +155,13 @@
       (message "subp %s" file-subpath)
       ))
 
-  (local-set-key "\C-c,d"   'semantic-ia-show-doc)
-  (local-set-key "\C-c,s"   'semantic-ia-show-summary)
+  ;; (local-set-key "\C-c,d"   'semantic-ia-show-doc)
+  ;; (local-set-key "\C-c,s"   'semantic-ia-show-summary)
   ;; (local-set-key "\C-cd"    'jo/switch-h-c)
-  (local-set-key "\C-cd"    'jo/eassist-switch-h-cpp)
+  ;; (local-set-key "\C-cd"    'eassist-switch-h-cpp)
 
   (local-set-key "\M-m"     'eassist-list-methods)
-  (local-set-key "\C-c\C-r" 'semantic-symref)
+  ;; (local-set-key "\C-c\C-r" 'semantic-symref)
 
   (auto-revert-mode t)
 

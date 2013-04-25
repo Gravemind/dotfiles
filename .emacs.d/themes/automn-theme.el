@@ -10,7 +10,7 @@
       (background "#202020")
       (foreground "#b0b0b0")
 
-      (selection  "#393939")
+      (selection  "#404040")
 
       (comment    "#909090")
 
@@ -73,7 +73,7 @@
      `(region ((t (:background ,selection))))
      `(ac-completion-face ((t (:foreground "white" :underline t))))
      `(popup-isearch-match ((t (:background "sky blue" :foreground "red"))))
-     `(semantic-tag-boundary-face ((t (:overline "#333333"))))
+     `(semantic-tag-boundary-face ((t (:overline "#303030"))))
      `(font-lock-warning-face ((t (:foreground "#B34949" :weight normal :underline nil))))
      `(compilation-warning ((t (:foreground "#66D466" :weight normal :underline nil))))
      `(compilation-info ((t (:foreground "#79B379" :weight normal :underline nil))))

@@ -1,0 +1,9 @@
+# name: #ifndef XXX; #define XXX; #endif
+# key: once
+# --
+#ifndef ${1:`(concat "FILE_" (replace-regexp-in-string "[^a-zA-Z0-9]+" "_" (upcase (file-name-nondirectory (buffer-file-name)))) "_")`}
+#define $1
+
+$0
+
+#endif /* $1 */
