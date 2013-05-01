@@ -12,9 +12,11 @@ if [[ -n "$1" ]] ; then TIME="$1" ; fi
 
 echo "$TIME" > "$SAVE"
 
-mpc -q next
+COMMAND='mpc clear; mpc load reveil; mpc next ; mpc play ; xset dpms force on ;'
 
-echo 'mpc next ; xset dpms force on ;' | at "$TIME"
+echo "$COMMAND" | sh
+
+echo "$COMMAND" | at "$TIME"
 
 at -c `atq | tail -n 1 | cut -f 1`
 

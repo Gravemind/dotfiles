@@ -116,9 +116,10 @@
 
 ;; ================================== CPP-H switch ===========================
 ;;;###autoload
-(defvar eassist-header-switches '(("h" . ("cpp" "cc" "c"))
-			     ("hpp" . ("cpp" "cc"))
+(defvar eassist-header-switches '(("h" . ("cpp" "cc" "c" "cxx"))
+			     ("hpp" . ("cpp" "cc" "cxx"))
 			     ("cpp" . ("h" "hpp"))
+			     ("cxx" . ("h" "hpp"))
 			     ("c" . ("h"))
 			     ("C" . ("H"))
 			     ("H" . ("C" "CPP" "CC"))
@@ -269,7 +270,7 @@ buffer and sets the point to a method/function, corresponding the line."
           (let ((p (string-match j i eassist-names-column)))
              (when p
                (push (make-overlay (+ pos p) (+ pos p (length j))) eassist-overlays)
-               (overlay-put (car eassist-overlays) 'face '(background-color . "yellow")))))
+               (overlay-put (car eassist-overlays) 'face '(background-color . "black")))))
         (setq pos (+ pos (length i))))
   (goto-line (/ (count-lines (point-min) (point-max)) 2)))
 
