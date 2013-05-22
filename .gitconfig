@@ -10,3 +10,7 @@
 	com = commit -m
 [push]
 	default = simple
+[merge]
+	tool = meld
+[mergetool "emerge"]
+	path = /home/jo/bin/emerge-for-git

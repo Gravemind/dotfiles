@@ -314,6 +314,9 @@
 ;; Keyborad : Global shortcuts
 ;;
 
+;; Isearch mode
+(define-key isearch-mode-map [C-backspace] 'isearch-del-char)
+
 ;; Force backspace erase tabulations
 (global-set-key [backspace] 'delete-backward-char)
 
