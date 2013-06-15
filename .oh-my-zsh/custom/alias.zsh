@@ -22,8 +22,8 @@ alias cleanhg='find . \( -name "*.orig" \) -print -delete'
 
 alias _='command sudo -E ' # ! trailing wihtespace is important
 alias lock='i3lock -c 111111'
-alias shut='sudo shutdown -h now'
-alias reboot='sudo shutdown -r now'
+alias shut='sudo systemctl poweroff'
+alias reboot='sudo systemctl reboot'
 alias disk='df -h --total'
 alias x='7z x'
 alias xl='7z l'

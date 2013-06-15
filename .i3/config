@@ -54,6 +54,9 @@ bindsym $ModK+Down  focus down
 bindsym $ModK+Up    focus up
 bindsym $ModK+Right focus right
 
+# Go to urgent window, and go back
+bindsym $ModK+BackSpace exec ~/.i3/goto_urgent_and_back.sh
+
 # Change focus output
 # bindsym $ModK+Mod1+h     focus container left
 # bindsym $ModK+Mod1+j     focus container down
@@ -193,6 +196,8 @@ assign [class="^Ekiga$"] → 4
 assign [class="(?i)^.*sflphone.*$"] → 4
 for_window [class="(?i)^.*wine.*$"] floating enable
 for_window [class="(?i)^.*steam.*$"] floating enable
+
+for_window [class="(?i)^.*hl2.*$"] floating enable
 
 for_window [class="(?i)urxvt"] border pixel 2
 for_window [class="(?i)emacs"] border pixel 2
