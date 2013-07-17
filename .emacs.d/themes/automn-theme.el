@@ -30,8 +30,9 @@
      'automn
 
      ;; Emacs
-     `(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 90 :width normal))))
+     ;; `(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 90 :width normal))))
 
+     `(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 90 :width normal))))
      ;; `(default ((t (:foreground ,foreground :weight light :weight normal
      ;;                            :height 90 :width normal :foundry "unknown" :family "DejaVu Sans Mono"
      ;;                            ))))
@@ -99,6 +100,11 @@
 
      `(diff-header ((t (:background "#BBB" :foreground "#444"))))
      `(diff-file-header ((t (:background "#BBB" :foreground "#111" ))))
+
+     `(git-gutter-fr:modified ((t (:foreground "#990"))))
+     `(git-gutter-fr:added    ((t (:foreground "#373"))))
+     `(git-gutter-fr:deleted  ((t (:foreground "#722"))))
+
      )
 
     (if (window-system)

@@ -57,6 +57,12 @@
 ;; UTF-8
 (prefer-coding-system 'utf-8)
 
+;;(prefer-coding-system 'utf-8-dos)
+;;(defun jo/encode ()
+;;  (interactive)
+;;  (revert-buffer-with-coding-system 'utf-8-dos)
+;;)
+
 ;; (setq x-select-enabled-clipboard t)
 ;; (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 

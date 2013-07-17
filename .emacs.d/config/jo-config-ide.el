@@ -178,6 +178,59 @@
 ;; (load "~/.emacs.d/plugins/nxhtml/autostart.el")
 
 
+;; magit
+
+(require 'magit)
+
+(require 'git-gutter-fringe)
+
+(add-hook 'c-mode-common-hook   'git-gutter-mode)
+
+(fringe-helper-define 'git-gutter-fr:added nil
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX...")
+
+(fringe-helper-define 'git-gutter-fr:deleted nil
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX...")
+
+(fringe-helper-define 'git-gutter-fr:modified nil
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX..."
+  "...XX...")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (provide 'jo-config-ide)
