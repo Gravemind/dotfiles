@@ -32,7 +32,8 @@
      ;; Emacs
      ;; `(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 90 :width normal))))
 
-     `(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 90 :width normal))))
+     `(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 90 :width normal))))
+
      ;; `(default ((t (:foreground ,foreground :weight light :weight normal
      ;;                            :height 90 :width normal :foundry "unknown" :family "DejaVu Sans Mono"
      ;;                            ))))

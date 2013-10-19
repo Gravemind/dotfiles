@@ -21,7 +21,7 @@ mymerge ~/.gitconfig.win .gitconfig.win
 mymerge ~/.gitignore .gitignore
 mymerge ~/.i3 .i3
 mymerge ~/.ncmpcpp .ncmpcpp
-mymerge ~/.oh-my-zsh .oh-my-zsh
+mymerge ~/.oh-my-zsh/custom .oh-my-zsh/custom
 mymerge ~/oh-my-zsh-install.sh oh-my-zsh-install.sh
 mymerge ~/.screenrc .screenrc
 mymerge ~/scripts scripts

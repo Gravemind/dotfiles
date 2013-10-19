@@ -20,6 +20,7 @@ _log_files_list_files() {
 	local ret=1
 	cd /var/log/
 	_files
+	cd -
 }
 
 _log_files() {

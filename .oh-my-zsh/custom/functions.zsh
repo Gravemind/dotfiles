@@ -40,3 +40,17 @@ function agent() {
 function mnt() {
 	sudo mount -o gid=`id -g`,uid=`id -u` "$@"
 }
+
+function bak() {
+	for f in "$@"
+	do
+		cp $f{,.bak}
+	done
+}
+
+function sbak() {
+	for f in "$@"
+	do
+		sudo cp $f{,.bak}
+	done
+}

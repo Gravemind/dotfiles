@@ -62,9 +62,12 @@
    ; '(semantic-idle-scheduler-idle-time nil)
    )
 
-  (require 'yasnippet-autoloads)
+  (require 'yasnippet)
+  (yas-global-mode 1)
+
+  ;;(require 'yasnippet-autoloads)
   ;; (setq yas-snippet-dirs '("~/.emacs.d/config/snippets" "~/.emacs.d/elpa/home/jo/.emacs.d/elpa/yasnippet-20130218.2229/snippets") )
-  (yas-minor-mode t)
+  ;;(yas-minor-mode t)
   ;; (yas/initialize)
   (yas/load-directory "~/.emacs.d/config/snippets")
   ;; (yas-initialize)

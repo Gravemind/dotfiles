@@ -24,6 +24,3 @@ export PATH="$PATH:/home/jo/bin"
 export OSTYPE=`uname -s`
 export MACHTYPE=`uname -m`
 export BROWSER='/usr/bin/firefox'
-
-export WINEARCH="win32"
-export WINEPREFIX="$HOME/win32"

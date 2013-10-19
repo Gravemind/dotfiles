@@ -12,7 +12,7 @@ if [[ -n "$1" ]] ; then TIME="$1" ; fi
 
 echo "$TIME" > "$SAVE"
 
-COMMAND='mpc clear; mpc load reveil; mpc next ; mpc play ; xset dpms force on ;'
+COMMAND='amixer sset Master 50%; mpc clear; mpc load reveil; mpc next ; mpc play ; xset dpms force on ;'
 
 echo "$COMMAND" | sh
 
