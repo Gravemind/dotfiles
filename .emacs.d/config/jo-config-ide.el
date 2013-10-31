@@ -168,6 +168,8 @@
 
   (auto-revert-mode t)
 
+  (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+
   )
 
 (add-hook 'c-mode-common-hook   'jo/semantic-hook)
@@ -233,6 +235,8 @@
   "...XX..."
   "...XX..."
   "...XX...")
+
+(setq fiplr-root-markers '(".git" ".svn" ".hg" ".bzr" "hellheaven_api"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

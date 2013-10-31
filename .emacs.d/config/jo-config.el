@@ -326,6 +326,12 @@
 ;; Force backspace erase tabulations
 (global-set-key [backspace] 'delete-backward-char)
 
+;; Bind M-i on C-tab too
+(global-set-key [C-tab]     'tab-to-tab-stop)
+
+;; Bind M-/ on C-return too
+(global-set-key [C-return]  'dabbrev-expand)
+
 ;; F3 > F9
 (global-set-key [f3]        'jo/compile)
 (global-set-key [S-f3]      'jo/compile-here)
