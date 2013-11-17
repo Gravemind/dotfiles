@@ -60,3 +60,7 @@ alias -g    ERR='2> /dev/null'
 alias -g    NULL='>& /dev/null'
 alias -g    COL='--color=always'
 alias -g	LINE='| wc -l'
+
+# overwrite git plugin
+alias gdc=gdc
+

@@ -18,9 +18,9 @@ function log() {
 
 _log_files_list_files() {
 	local ret=1
-	cd /var/log/
+	cd /var/log/ >& /dev/null
 	_files
-	cd -
+	cd - >& /dev/null
 }
 
 _log_files() {
