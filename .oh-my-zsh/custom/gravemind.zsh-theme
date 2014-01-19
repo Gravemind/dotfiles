@@ -24,7 +24,7 @@ fi
 
 PROMPT='${CBG}${CW}❰ ${CF}%n${PROMPT_SSH}%1(j. ${COK}%j.)%(?.. ${CKO}%?) ${CW}❱ ${CR}'
 
-RPS1='${CBG}${CW}❰${CB}%~$(git_prompt_info)${CW}❱${CR}'
+RPS1='${CBG}${CW}❰${CB}%~$(git_prompt_info) ${CF}%D{%H:%M}${CW}❱${CR}'
 
 PROMPT2='${CBG}  ${CF}%_ ${CW}❱ ${CR}'
 
