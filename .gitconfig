@@ -1,16 +1,37 @@
-[color]
-	diff = true
-	status = true
-	branch = true
 [alias]
+	st = status
 	ci = commit
 	co = checkout
 	br = branch
-	st = status
 	com = commit -m
+	s = status -sb
+	fco = "!sh -c 'git fetch origin $1:$1; git checkout $1 && git submodule update' -"
+
+[color]
+	branch = auto
+	diff = auto
+	interactive = auto
+	status = auto
+	log = auto
+
+[core]
+	autocrlf = true
+	# treats a carriage-return at the end of line as part of the line terminator
+	whitespace = cr-at-eol
+
 [push]
 	default = simple
 [merge]
+	conflictstyle = diff3
 	tool = meld
+
 [mergetool "emerge"]
 	path = /home/jo/bin/emerge-for-git
+
+###	WINDOWS
+#[core]
+#	editor = \"C:/Program Files (x86)/emacs-24.3/bin/emacs.exe\"
+#	eol = crlf
+#[difftool "meld"] 
+#	cmd = '/c/Program Files (x86)/Meld/meld/meld.exe' \"$LOCAL\" \"$REMOTE\"
+

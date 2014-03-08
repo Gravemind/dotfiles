@@ -177,6 +177,8 @@
 (add-hook 'scheme-mode-hook     'jo/semantic-hook)
 (add-hook 'emacs-lisp-mode-hook 'jo/semantic-hook)
 
+(add-hook 'lua-mode-hook 'auto-revert-mode)
+
 ;; nxHtml
 
 

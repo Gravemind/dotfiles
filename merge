@@ -1,10 +1,31 @@
-#!/bin/zsh
+#!/bin/bash
+
+
+
 
 function mymerge() {
+	if [ ! -e "$1" ]
+	then
+		echo "## not such file or dir: $1"
+		return
+	fi
+	if [ ! -e "$2" ]
+	then
+		echo "## not such file or dir: $2"
+		return
+	fi
+
+	MERGER="meld"
+	if [ "$OS" = "Windows_NT" ]
+	then
+		echo "You are on Windows"
+		MERGER="/c/Program Files (x86)/Meld/meld/meld.exe"
+	fi
+
     if [ -n "$(diff $1 $2)" ]
     then
-        echo "$> meld $1 $2"
-        meld $1 $2 &> /dev/null
+        echo "$> $MERGER $1 $2"
+        "$MERGER" $1 $2 # &> /dev/null
     else
         echo "## ( no diff: $1 $2 )"
     fi
