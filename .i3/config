@@ -44,6 +44,9 @@ bind $ModK+Shift+49 move scratchpad
 # Toggle scratchpad
 bind $ModK+49 scratchpad show
 
+# Go to urgent window, and go back
+bindsym $ModK+BackSpace exec --no-startup-id ~/.i3/goto_urgent_and_back.sh
+
 # Change focus
 bindsym $ModK+h     focus left
 bindsym $ModK+j     focus down
@@ -53,9 +56,6 @@ bindsym $ModK+Left  focus left
 bindsym $ModK+Down  focus down
 bindsym $ModK+Up    focus up
 bindsym $ModK+Right focus right
-
-# Go to urgent window, and go back
-bindsym $ModK+BackSpace exec ~/.i3/goto_urgent_and_back.sh
 
 # Change focus output
 # bindsym $ModK+Mod1+h     focus container left
@@ -211,43 +211,43 @@ workspace_auto_back_and_forth no
 hide_edge_borders none
 
 # Lock
-bindsym $ModK+w exec "/bin/bash --login -c 'sleep 0.5; xtrlock; exit 0'"
+bindsym $ModK+w exec --no-startup-id "/bin/bash --login -c 'sleep 0.5; xtrlock; exit 0'"
 
 # Amixer
 set $amixer_item Master
-bind $ModK+20 exec amixer sset $amixer_item 2%-
-bind $ModK+21 exec amixer sset $amixer_item 2%+
-bindsym XF86AudioLowerVolume exec amixer sset $amixer_item 2%-
-bindsym XF86AudioRaiseVolume exec amixer sset $amixer_item 2%+
-bindsym $ModK+XF86AudioLowerVolume exec amixer sset $amixer_item 2%-
-bindsym $ModK+XF86AudioRaiseVolume exec amixer sset $amixer_item 2%+
-bindsym XF86AudioMute exec amixer sset $amixer_item toggle
-bindsym $ModK+XF86AudioMute exec amixer sset $amixer_item toggle
-bind $ModK+95 exec amixer sset $amixer_item 2%-
-bind $ModK+96 exec amixer sset $amixer_item 2%+
+bind $ModK+20 exec --no-startup-id amixer sset $amixer_item 2%-
+bind $ModK+21 exec --no-startup-id amixer sset $amixer_item 2%+
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer sset $amixer_item 2%-
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer sset $amixer_item 2%+
+bindsym $ModK+XF86AudioLowerVolume exec --no-startup-id amixer sset $amixer_item 2%-
+bindsym $ModK+XF86AudioRaiseVolume exec --no-startup-id amixer sset $amixer_item 2%+
+bindsym XF86AudioMute exec --no-startup-id amixer sset $amixer_item toggle
+bindsym $ModK+XF86AudioMute exec --no-startup-id amixer sset $amixer_item toggle
+bind $ModK+95 exec --no-startup-id amixer sset $amixer_item 2%-
+bind $ModK+96 exec --no-startup-id amixer sset $amixer_item 2%+
 
 # Cmus
-# bindsym $ModK+End exec cmus-remote -u
-# bindsym $ModK+Prior exec cmus-remote -r
-# bindsym $ModK+Next exec cmus-remote -n
-# bindsym XF86AudioPlay exec cmus-remote -u #play/pause
-# bindsym XF86AudioPrev exec cmus-remote -r #prev
-# bindsym XF86AudioNext exec cmus-remote -n #next
-# bind $ModK+75 exec cmus-remote -u
-# bind $ModK+74 exec cmus-remote -r
-# bind $ModK+76 exec cmus-remote -n
+# bindsym $ModK+End exec --no-startup-id cmus-remote -u
+# bindsym $ModK+Prior exec --no-startup-id cmus-remote -r
+# bindsym $ModK+Next exec --no-startup-id cmus-remote -n
+# bindsym XF86AudioPlay exec --no-startup-id cmus-remote -u #play/pause
+# bindsym XF86AudioPrev exec --no-startup-id cmus-remote -r #prev
+# bindsym XF86AudioNext exec --no-startup-id cmus-remote -n #next
+# bind $ModK+75 exec --no-startup-id cmus-remote -u
+# bind $ModK+74 exec --no-startup-id cmus-remote -r
+# bind $ModK+76 exec --no-startup-id cmus-remote -n
 
 # MPD
-bindsym $ModK+End exec mpc -q toggle
-bindsym $ModK+Prior exec mpc -q prev
-bindsym $ModK+Next exec mpc -q next
-bindsym XF86AudioPlay exec mpc -q toggle
-bindsym XF86AudioPrev exec mpc -q prev
-bindsym XF86AudioNext exec mpc -q next
-bindsym XF86AudioStop exec mpc -q stop
-bind $ModK+75 exec mpc -q toggle
-bind $ModK+74 exec mpc -q prev
-bind $ModK+76 exec mpc -q next
+bindsym $ModK+End exec --no-startup-id mpc -q toggle
+bindsym $ModK+Prior exec --no-startup-id mpc -q prev
+bindsym $ModK+Next exec --no-startup-id mpc -q next
+bindsym XF86AudioPlay exec --no-startup-id mpc -q toggle
+bindsym XF86AudioPrev exec --no-startup-id mpc -q prev
+bindsym XF86AudioNext exec --no-startup-id mpc -q next
+bindsym XF86AudioStop exec --no-startup-id mpc -q stop
+bind $ModK+75 exec --no-startup-id mpc -q toggle
+bind $ModK+74 exec --no-startup-id mpc -q prev
+bind $ModK+76 exec --no-startup-id mpc -q next
 
 # On/Off Touchpad
 bindsym XF86TouchpadToggle exec zsh /home/jo/bin/toggletouchpad

@@ -16,6 +16,8 @@
  ;; '(fringe-mode 0 nil (fringe))
  '(global-semantic-highlight-func-mode t)
  '(global-semantic-idle-local-symbol-highlight-mode t nil (semantic/idle))
+ '(semantic-idle-scheduler-idle-time 0.5)
+ '(semantic-mode t)
  '(ido-mode t nil (ido))
  '(ido-enable-flex-matching t)
  '(ido-everywhere t)
@@ -27,14 +29,13 @@
  '(ruby-deep-arglist 4)
  '(ruby-deep-indent-paren nil)
  '(scroll-bar-mode nil)
- '(semantic-idle-scheduler-idle-time 0.5)
- '(semantic-mode t)
  '(show-paren-mode t)
  '(standard-indent 4)
  '(tool-bar-mode nil)
  '(truncate-lines t)
  '(inhibit-startup-message t)
  '(gdb-many-windows t)
+ '(gdb-create-source-file-list nil)
  '(dabbrev-case-fold-search nil)
  '(dabbrev-case-replace nil)
  ;; '(global-linum-mode t)
@@ -139,6 +140,28 @@
  '(Buffer-menu-sort 5)
  '(Buffer-menu-time-flag nil)
 )
+
+
+;; Widen window mode
+
+(defun ww-mode ()
+  (require 'bw-base)
+  (require 'widen-window)
+
+  (interactive)
+  (setq ww-ratio 0.75)
+  (add-to-list 'ww-advised-functions 'windmove-right)
+  (add-to-list 'ww-advised-functions 'windmove-left)
+  (add-to-list 'ww-advised-functions 'windmove-up)
+  (add-to-list 'ww-advised-functions 'windmove-down)
+  (add-to-list 'ww-advised-functions 'recenter-top-bottom)
+  (add-to-list 'ww-advised-functions 'compile-goto-error)
+  (add-to-list 'ww-advised-functions 'next-error)
+
+  ;; (add-to-list 'ww-advised-functions 'compilation-button-map)
+
+  (global-widen-window-mode t)
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;

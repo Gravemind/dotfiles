@@ -28,27 +28,6 @@
   (vim-modeline/do)
 )
 
-;; Widen window mode
-
-(defun ww-mode ()
-  (require 'bw-base)
-  (require 'widen-window)
-
-  (interactive)
-  (setq ww-ratio 0.7)
-  (add-to-list 'ww-advised-functions 'windmove-right)
-  (add-to-list 'ww-advised-functions 'windmove-left)
-  (add-to-list 'ww-advised-functions 'windmove-up)
-  (add-to-list 'ww-advised-functions 'windmove-down)
-  (add-to-list 'ww-advised-functions 'recenter-top-bottom)
-  (add-to-list 'ww-advised-functions 'compile-goto-error)
-  (add-to-list 'ww-advised-functions 'next-error)
-
-  ;; (add-to-list 'ww-advised-functions 'compilation-button-map)
-
-  (global-widen-window-mode t)
-  )
-
 ;; Semantic
 
 (defun jo/semantic-hook ()

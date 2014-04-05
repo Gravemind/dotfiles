@@ -2,6 +2,7 @@
 mouse_support = yes
 
 mpd_music_dir = "/home/mpd/music"
+system_encoding = utf8
 
 ##### delays #####
 playlist_disable_highlight_delay = "5"
