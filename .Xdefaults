@@ -2,10 +2,6 @@
 *background:  #202020
 *foreground:  #BBBBBB
 
-
-*background:  #101010
-*foreground:  #BBBBBB
-
 !black
 *color0:      #000000
 *color8:      #666666
