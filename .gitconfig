@@ -6,6 +6,7 @@
 	com = commit -m
 	s = status -sb
 	fco = "!sh -c 'git fetch origin $1:$1; git checkout $1 && git submodule update' -"
+	l = log --decorate --oneline --graph
 
 [color]
 	branch = auto
@@ -15,7 +16,6 @@
 	log = auto
 
 [core]
-	autocrlf = true
 	# treats a carriage-return at the end of line as part of the line terminator
 	whitespace = cr-at-eol
 
@@ -30,6 +30,7 @@
 
 ###	WINDOWS
 #[core]
+#	autocrlf = true
 #	editor = \"C:/Program Files (x86)/emacs-24.3/bin/emacs.exe\"
 #	eol = crlf
 #[difftool "meld"] 
