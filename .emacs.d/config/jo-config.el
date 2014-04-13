@@ -14,10 +14,10 @@
  '(compilation-scroll-output 0)
  '(compilation-window-height 12)
  ;; '(fringe-mode 0 nil (fringe))
- '(global-semantic-highlight-func-mode t)
- '(global-semantic-idle-local-symbol-highlight-mode t nil (semantic/idle))
- '(semantic-idle-scheduler-idle-time 0.5)
- '(semantic-mode t)
+ ;;'(global-semantic-highlight-func-mode t)
+ ;;'(global-semantic-idle-local-symbol-highlight-mode t nil (semantic/idle))
+ ;;'(semantic-idle-scheduler-idle-time 0.5)
+ ;;'(semantic-mode t)
  '(ido-mode t nil (ido))
  '(ido-enable-flex-matching t)
  '(ido-everywhere t)
@@ -330,10 +330,9 @@
 
 (add-hook 'gdb-mode-hook        (lambda () (setq tab-width 8)))
 
-(defun jo/c-set-key ()
-  (local-set-key "\C-c\C-c"  'comment-or-uncomment-region)
-  )
-(add-hook 'c-mode-common-hook 'jo/c-set-key)
+;; (defun jo/c-set-key ()
+;;   )
+;; (add-hook 'c-mode-common-hook 'jo/c-set-key)
 
 (defun _jo/enable-linum ()
   (linum-mode t)
@@ -428,6 +427,12 @@
 (global-set-key "\C-\M-w"  'delete-region)
 ;; (delete-selection-mode t)
 
+;; 
+(global-set-key "\C-c\C-c"  'comment-or-uncomment-region)
+
+;; ESC to quit
+;;(global-set-key [\e]  'keyboard-quit)
+
 (defun backward-delete-word (arg)
   "Delete characters backward until encountering the end of a word.
 With argument, do this that many times."
@@ -468,6 +473,49 @@ With argument, do this that many times."
       (error "No selection is available"))
     (insert primary))
   )
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Key chord
+;;
+
+(require 'key-chord)
+(key-chord-mode 1)
+
+(setq key-chord-two-keys-delay 0.02
+      key-chord-one-key-delay 0.01)
+
+(key-chord-define-global "xz"     'execute-extended-command)
+
+;;(key-chord-define-global "fg"     'keyboard-quit)
+
+(key-chord-define-global "go"     'goto-line)
+;(key-chord-define-global "yu"     'undo)
+
+(key-chord-define-global "ms"     'magit-status)
+(key-chord-define-global "md"     'magit-log)
+
+(key-chord-define-global "aw"     'delete-region)
+(key-chord-define-global "as"     'kill-region)
+(key-chord-define-global "ad"     'kill-ring-save)
+(key-chord-define-global "af"     'yank)
+(key-chord-define-global "ar"     'yank-pop)
+
+(key-chord-define-global "fg"     'save-buffer)
+(key-chord-define-global "fb"     'find-file)
+
+(key-chord-define-global "bv"     'ido-switch-buffer)
+(key-chord-define-global "bc"     'jo/buffer-menu)
+
+
+(key-chord-define-global "xp"     'grep)
+
+;;(key-chord-define-global "yi"     'redo)
+
+
+;;(key-chord-define-global ",."     "<>\C-b")
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;

@@ -147,16 +147,133 @@
 
   (auto-revert-mode t)
 
+  
   (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
   )
 
-(add-hook 'c-mode-common-hook   'jo/semantic-hook)
-(add-hook 'lisp-mode-hook       'jo/semantic-hook)
-(add-hook 'scheme-mode-hook     'jo/semantic-hook)
-(add-hook 'emacs-lisp-mode-hook 'jo/semantic-hook)
-
 (add-hook 'lua-mode-hook 'auto-revert-mode)
+
+(add-to-list 'load-path "~/.emacs.d/plugins/irony-mode/elisp")
+
+(defun jo/irony-hook()
+  (require 'auto-complete)
+  ;;(require 'yasnippet)
+  (require 'irony) ;Note: hit `C-c C-b' to open build menu
+
+  ;; the ac plugin will be activated in each buffer using irony-mode
+  (irony-enable 'ac)             ; hit C-RET to trigger completion
+
+  ;; be cautious, if yas is not enabled before (auto-complete-mode 1), overlays
+  ;; *may* persist after an expansion.
+  ;;(yas/minor-mode-on)
+  (auto-complete-mode 1)
+  ;;(ac-config-default)
+  (setq ac-dwim nil)
+  (setq ac-auto-show-menu t)
+  (setq ac-quick-help-delay 2)
+  (setq ac-auto-start 1)
+  (setq ac-ignore-case nil)
+  (setq-default ac-sources ())
+  (setq ac-sources ())
+
+  ;; avoid enabling irony-mode in modes that inherits c-mode, e.g: php-mode
+  (when (member major-mode irony-known-modes)
+    (irony-mode 1))
+
+)
+
+(add-to-list 'load-path "~/bin/rtags/src")
+
+;;(require 'auto-complete)
+(require 'rtags)
+
+;; (custom-set-variables
+;;  '(rtags-completion-mode 'rtags-complete-with-autocomplete)
+;;  )
+
+(defun jo/rtags-hook()
+
+  ;;(rtags-update-completion-mode)
+
+  ;;(auto-complete-mode 1)
+  ;;(ac-config-default)
+  ;; (setq ac-dwim nil)
+  ;; (setq ac-auto-show-menu t)
+  ;; (setq ac-quick-help-delay 2)
+  ;; (setq ac-auto-start 1)
+  ;; (setq ac-ignore-case nil)
+
+  ;;(setq-default ac-sources ())
+  ;;(setq ac-sources ())
+
+  ;;(rtags-enable-standard-keybindings c-mode-base-map)
+
+  ;;(setq rtags-completion-mode 'rtags-complete-with-autocomplete)
+
+
+  ;; (require 'rtags-ac)
+  ;; (auto-complete-mode 1)
+  ;; ;;(ac-config-default)
+  ;; (setq ac-dwim nil)
+  ;; (setq ac-auto-show-menu t)
+  ;; (setq ac-quick-help-delay 2)
+  ;; (setq ac-auto-start 1)
+  ;; (setq ac-ignore-case nil)
+  ;; (setq ac-sources '(ac-source-rtags))
+  ;; (setq-default ac-sources '(ac-source-rtags))
+
+  ;; (require 'company-rtags)
+
+  
+
+)
+
+;; (setq-default ac-dwim nil)
+;; (setq-default ac-auto-show-menu t)
+;; (setq-default ac-quick-help-delay 2)
+;; (setq-default ac-auto-start 1)
+;; (setq-default ac-ignore-case nil)
+
+;;(ac-config-default)
+
+;;(setq-default ac-sources ())
+;;(setq ac-sources ())
+;;(setq rtags-completion-mode 'rtags-complete-with-autocomplete)
+
+;; (add-hook 'c++-mode-hook        'jo/rtags-hook)
+;; (add-hook 'c-mode-common-hook   'jo/irony-hook)
+
+;;(add-hook 'c++-mode-hook        'jo/rtags-hook)
+;;(add-hook 'c-mode-common-hook   'jo/rtags-hook)
+
+;;(add-hook 'lisp-mode-hook       'jo/irony-hook)
+;;(add-hook 'scheme-mode-hook     'jo/irony-hook)
+;;(add-hook 'emacs-lisp-mode-hook 'jo/irony-hook)
+
+;; (add-hook 'c-mode-common-hook   'jo/semantic-hook)
+;; (add-hook 'lisp-mode-hook       'jo/semantic-hook)
+;; (add-hook 'scheme-mode-hook     'jo/semantic-hook)
+;; (add-hook 'emacs-lisp-mode-hook 'jo/semantic-hook)
+
+
+;;(key-chord-define-local "mx"     'execute-extended-command)
+
+(key-chord-define-global "rj"     'rtags-location-stack-back)
+(key-chord-define-global "rl"     'rtags-location-stack-forward)
+
+(key-chord-define-global "ry"     'rtags-find-file)
+(key-chord-define-global "ru"     'rtags-imenu)
+(key-chord-define-global "ri"     'rtags-find-symbol-at-point)
+(key-chord-define-global "ro"     'rtags-find-references-at-point)
+
+(key-chord-define-global "rk"     'rtags-taglist)
+
+(key-chord-define-global "rv"     'rtags-find-virtuals-at-point)
+
+(key-chord-define-global "rp"     'rtags-next-match)
+(key-chord-define-global "r;"     'rtags-next-match)
+
 
 ;; nxHtml
 
