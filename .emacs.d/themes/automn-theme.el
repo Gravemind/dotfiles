@@ -106,6 +106,9 @@
      `(git-gutter-fr:added    ((t (:foreground "#373"))))
      `(git-gutter-fr:deleted  ((t (:foreground "#722"))))
 
+     `(diff-added   ((t (:background "#384a36"))))
+     `(diff-removed ((t (:background "#493434"))))
+
      `(magit-diff-none ((nil ())))
      `(magit-item-highlight ((t (:background "#303030"))))
 
