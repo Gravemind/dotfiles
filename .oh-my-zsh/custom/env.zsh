@@ -20,7 +20,7 @@ export GREP_OPTIONS="--binary-files=without-match"
 export EDITOR='emacs'
 export PAGER='less'
 export LESS='-R'
-export PATH="$PATH:/home/jo/bin"
+export PATH=$HOME/bin:$PATH
 export OSTYPE=`uname -s`
 export MACHTYPE=`uname -m`
 export BROWSER='/usr/bin/firefox'
