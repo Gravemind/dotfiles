@@ -102,9 +102,9 @@
      `(diff-header ((t (:background "#BBB" :foreground "#444"))))
      `(diff-file-header ((t (:background "#BBB" :foreground "#111" ))))
 
-     `(git-gutter-fr:modified ((t (:foreground "#990"))))
-     `(git-gutter-fr:added    ((t (:foreground "#373"))))
-     `(git-gutter-fr:deleted  ((t (:foreground "#722"))))
+     `(git-gutter-fr+-modified ((t (:foreground "#990"))))
+     `(git-gutter-fr+-added    ((t (:foreground "#373"))))
+     `(git-gutter-fr+-deleted  ((t (:foreground "#722"))))
 
      `(diff-added   ((t (:background "#384a36"))))
      `(diff-removed ((t (:background "#493434"))))
