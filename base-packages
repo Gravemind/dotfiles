@@ -1,0 +1,50 @@
+# pacman
+
+nvidia
+emacs
+zsh
+xorg-utils
+xorg-server-utils
+xorg-xinit
+i3-wm
+i3lock
+git
+meld
+rxvt-unicode
+dmenu
+mpd
+firefox
+chromium
+ruby
+python
+gcc
+make
+clang
+ttf-dejavu
+openssh
+fakeroot
+feh
+cmake
+ntp
+confuse
+wireless_tools
+asciidoc
+patch
+autoconf
+automake
+libtool
+autojump
+
+# yaourt
+
+xkb-qwerty-fr
+
+# emacs rtags
+
+cd ~/bin ; git clone git@github.com:Andersbakken/rtags
+
+# i3status (with mpd)
+
+git clone git@github.com:Gravemind/i3status
+make
+sudo make install
