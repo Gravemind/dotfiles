@@ -1,13 +1,15 @@
 [Unit]
-Description=startx automatique pour l'utilisateur %I
+Description=systemd user session for user %I
 After=graphical.target systemd-user-sessions.service
+Wants=x@vt7.service
 
 [Service]
-## User=%I
-## WorkingDirectory=%h
-## PAMName=login
-Type=simple
-ExecStart=/bin/su %I -c "/bin/bash --login -c 'cd; startx;'"
+User=%I
+WorkingDirectory=/home/%I
+Environment=DISPLAY=:0
+TTYPath=/dev/tty7
+PAMName=login
+ExecStart=/bin/bash --login -c "cd; startx;"
 
 [Install]
 WantedBy=graphical.target
