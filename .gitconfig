@@ -6,7 +6,12 @@
 	com = commit -m
 	s = status -sb
 	fco = "!sh -c 'git fetch origin $1:$1; git checkout $1 && git submodule update' -"
-	l = log --decorate --oneline --graph
+	l = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold red)%d%C(reset) %C(white)%s%C(reset) %C(green)%an%C(reset) %C(blue)%ar%C(reset)' --date-order
+	la = !git l --all
+	ll = !git l --simplify-by-decoration
+	fp = fetch --all --prune --tags
+	d = diff
+	dc = diff --cached
 
 [color]
 	branch = auto
