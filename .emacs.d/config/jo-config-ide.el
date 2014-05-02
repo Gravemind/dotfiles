@@ -186,7 +186,6 @@
 (add-to-list 'load-path "~/bin/rtags/src")
 
 ;;(require 'auto-complete)
-(require 'rtags)
 
 ;; (custom-set-variables
 ;;  '(rtags-completion-mode 'rtags-complete-with-autocomplete)
@@ -225,9 +224,19 @@
 
   ;; (require 'company-rtags)
 
-  
-
 )
+
+(require 'rtags)
+
+
+(setq rtags-completions-enabled t)
+(rtags-update-completions t)
+
+;; (setq rtags-completions-enabled t)
+;; (rtags-update-completions t)
+
+;; (require 'auto-complete)
+;; (require 'rtags-ac)
 
 ;; (setq-default ac-dwim nil)
 ;; (setq-default ac-auto-show-menu t)
@@ -235,11 +244,36 @@
 ;; (setq-default ac-auto-start 1)
 ;; (setq-default ac-ignore-case nil)
 
+;; (auto-complete-mode t)
+
+;; (setq-default ac-sources '(ac-source-rtags))
+;; (setq ac-sources '(ac-source-rtags))
+
+;; (global-set-key [C-return]  'ac-complete)
+
+
+(require 'company)
+(require 'company-rtags)
+
+(global-company-mode t)
+
+(setq rtags-completions-enabled t)
+(rtags-update-completions t)
+
+(setq company-backends '(company-rtags))
+(setq-default company-backends '(companty-rtags))
+
+(add-to-list 'company-backends 'company-rtags)
+
+(global-set-key (kbd "C-S-<return>")  'company-complete)
+
+
 ;;(ac-config-default)
 
-;;(setq-default ac-sources ())
-;;(setq ac-sources ())
-;;(setq rtags-completion-mode 'rtags-complete-with-autocomplete)
+;; (setq-default ac-sources ())
+;; (setq ac-sources ())
+;; (setq rtags-completion-mode 'rtags-complete-with-autocomplete)
+
 
 ;; (add-hook 'c++-mode-hook        'jo/rtags-hook)
 ;; (add-hook 'c-mode-common-hook   'jo/irony-hook)
@@ -259,20 +293,43 @@
 
 ;;(key-chord-define-local "mx"     'execute-extended-command)
 
-(key-chord-define-global "rj"     'rtags-location-stack-back)
-(key-chord-define-global "rl"     'rtags-location-stack-forward)
+(global-set-key (kbd "C-c j")       'rtags-location-stack-back)
+(global-set-key (kbd "C-c l")       'rtags-location-stack-forward)
 
-(key-chord-define-global "ry"     'rtags-find-file)
-(key-chord-define-global "ru"     'rtags-imenu)
-(key-chord-define-global "ri"     'rtags-find-symbol-at-point)
-(key-chord-define-global "ro"     'rtags-find-references-at-point)
+(global-set-key (kbd "C-c y")       'rtags-find-file)
+(global-set-key (kbd "C-c u")       'rtags-taglist)
+(global-set-key (kbd "C-c i")       'rtags-find-symbol-at-point)
+(global-set-key (kbd "C-c o")       'rtags-find-references-at-point)
 
-(key-chord-define-global "rk"     'rtags-taglist)
+(global-set-key (kbd "C-c k")       'rtags-imenu)
 
-(key-chord-define-global "rv"     'rtags-find-virtuals-at-point)
+(global-set-key (kbd "C-c I")       'rtags-find-symbol)
+(global-set-key (kbd "C-c O")       'rtags-find-references)
 
-(key-chord-define-global "rp"     'rtags-next-match)
-(key-chord-define-global "r;"     'rtags-next-match)
+(global-set-key (kbd "C-c n")       'rtags-diagnostics)
+
+(global-set-key (kbd "C-c h")       'rtags-find-virtuals-at-point)
+(global-set-key (kbd "C-c p")       'rtags-next-match)
+(global-set-key (kbd "C-c ;")       'rtags-next-match)
+
+(global-set-key (kbd "C-c r")       'replace-string)
+(global-set-key (kbd "C-c S-r")     'query-replace)
+
+
+;; (key-chord-define-global "1j"     'rtags-location-stack-back)
+;; (key-chord-define-global "1l"     'rtags-location-stack-forward)
+
+;; (key-chord-define-global "1y"     'rtags-find-file)
+;; (key-chord-define-global "1u"     'rtags-imenu)
+;; (key-chord-define-global "1i"     'rtags-find-symbol-at-point)
+;; (key-chord-define-global "1o"     'rtags-find-references-at-point)
+
+;; (key-chord-define-global "1k"     'rtags-taglist)
+
+;; (key-chord-define-global "1h"     'rtags-find-virtuals-at-point)
+
+;; (key-chord-define-global "1p"     'rtags-next-match)
+;; (key-chord-define-global "1;"     'rtags-next-match)
 
 
 ;; nxHtml
@@ -286,8 +343,6 @@
 (require 'magit)
 
 (require 'git-gutter-fringe+)
-
-(add-hook 'c-mode-common-hook   'git-gutter+-mode)
 
 (fringe-helper-define 'git-gutter-fr+-added nil
   "...XX..."
@@ -336,6 +391,16 @@
   "...XX..."
   "...XX..."
   "...XX...")
+
+;(global-git-gutter+-mode t)
+
+(defun jo/git-gutter-hook ()
+  (git-gutter+-mode)
+  (global-set-key (kbd "M-n")     'git-gutter+-next-hunk)
+  (global-set-key (kbd "M-p")     'git-gutter+-previous-hunk)
+)
+(add-hook 'c-mode-common-hook   'jo/git-gutter-hook)
+
 
 (setq fiplr-root-markers '(".git" ".svn" ".hg" ".bzr" "hellheaven_api"))
 

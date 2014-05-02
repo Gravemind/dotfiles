@@ -79,13 +79,23 @@
      `(font-lock-warning-face ((t (:foreground "#B34949" :weight normal :underline nil))))
      `(compilation-warning ((t (:foreground "#66D466" :weight normal :underline nil))))
      `(compilation-info ((t (:foreground "#79B379" :weight normal :underline nil))))
-     `(flymake-errline ((t (:background nil :underline "#CC2222"))))
-     `(flymake-warnline ((t (:background nil :underline "#22CC22"))))
+
+     `(match ((t (:background nil :foreground "RoyalBlue2"))))
+
      `(mumamo-background-chunk-major ((t (:background "#202020"))))
      `(mumamo-background-chunk-submode1 ((t (:background "gray10"))))
      `(mumamo-background-chunk-submode2 ((t (:background "gray10"))))
      `(mumamo-background-chunk-submode3 ((t (:background "gray10"))))
      `(mumamo-background-chunk-submode4 ((t (:background "gray10"))))
+
+
+     `(flymake-errline ((t (:background nil :underline "#CC2222"))))
+     `(flymake-warnline ((t (:background nil :underline "#22CC22"))))
+
+     `(rtags-errline ((t (:background nil :underline "#CC2222"))))
+     `(rtags-warnline ((t (:background nil :underline "#22CC22"))))
+     `(rtags-fixitline ((t (:background nil :underline "#FFBB00"))))
+
      `(ebrowse-root-class ((t (:foreground "#f1aa7e" :weight normal ))))
      `(ebrowse-member-class ((t (:foreground "#f1aa7e" :weight normal ))))
 

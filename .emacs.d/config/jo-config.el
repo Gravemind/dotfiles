@@ -40,7 +40,8 @@
  '(dabbrev-case-replace nil)
  ;; '(global-linum-mode t)
  ;; '(linum-format "%d ")
- ;; '(global-whitespace-mode t)
+ '(c-hungry-delete-key t)
+ '(global-whitespace-mode t)
  '(whitespace-style '(face trailing indentation space-before-tab))
  ;; '(whitespace-display-mappings
  ;;   '((space-mark   ?\    [?\xB7]     [?.])	; space
@@ -182,6 +183,9 @@
   (add-to-list 'ww-advised-functions 'recenter-top-bottom)
   (add-to-list 'ww-advised-functions 'compile-goto-error)
   (add-to-list 'ww-advised-functions 'next-error)
+  (add-to-list 'ww-advised-functions 'previous-error)
+
+  (add-to-list 'ww-advised-functions 'rtags-select-other-window)
 
   ;; (add-to-list 'ww-advised-functions 'compilation-button-map)
 
@@ -197,12 +201,13 @@
 
 (require 'cl)
 
-(defun get-closest-pathname (file)
-  "This function walks up the current path until it finds
-  Makefile and then returns the path to it."
-  (let ((root (expand-file-name "/")))
+(defun* get-closest-pathname (&optional (file "Makefile"))
+  "Determine the pathname of the first instance of FILE starting from the current directory towards root.
+This may not do the correct thing in presence of links. If it does not find FILE, then it shall return the name
+of FILE in the current directory, suitable for creation"
+  (let ((root (expand-file-name "/"))) ; the win32 builds should translate this correctly
     (expand-file-name file
-                      (loop
+                      (loop 
                        for d = default-directory then (expand-file-name ".." d)
                        if (file-exists-p (expand-file-name file d))
                        return d
@@ -219,6 +224,10 @@
                (setq jo/compile-dir dir)))
     jo/compile-dir))
 
+(defun jo/unset-compile-dir-here ()
+  (interactive)
+  (setq jo/compile-dir nil))
+
 ;; (defun jo/get-compile-dir ()
 ;;   (let ((dir (file-name-directory (get-closest-pathname "Makefile"))))
 ;;     (progn (message "jo/set-compile-dir to %s" dir)
@@ -226,7 +235,7 @@
 
 (defun jo/set-build-command ()
   (interactive)
-  (setq jo/build-command (read-from-minibuffer "jo/build-command (%s replaced by path)? " "make -C %s emacs"))
+  (setq jo/build-command (read-from-minibuffer "jo/build-command (%s replaced by path)? " "make -j5 verbose=1 config=release_x64 "))
   )
 
 (defun jo/get-build-command ()
@@ -240,15 +249,18 @@
   "Force compile in current buffer."
   (interactive)
   (switch-to-buffer "*compilation*")
+  (jo/unset-compile-dir-here)
   ;; (cd (jo/get-compile-dir))
-  (compile (format (jo/get-build-command) (jo/get-compile-dir))))
+  (let ((default-directory (jo/get-compile-dir)))
+    (compile (format (jo/get-build-command) (jo/get-compile-dir)))))
 
 (defun jo/compile ()
   "Compile (or re-compile if compilation buffer is already open)."
   (interactive)
   (let ((current-buffer (buffer-name)))
-    (progn
-      (compile (format (jo/get-build-command) (jo/get-compile-dir)))
+    (let ((default-directory (jo/get-compile-dir)))
+      (progn
+        (compile (jo/get-build-command)))
       ;; (jo/compile-here)
       ;; (switch-to-buffer current-buffer)
       )))
@@ -319,7 +331,7 @@
   (setq c-basic-offset 4
         tab-width 4
         indent-tabs-mode t)
-  (message "jo/tab-tab %s" (buffer-name))
+  ;;(message "jo/tab-tab %s" (buffer-name))
   )
 
 (defun jo/tab-absurde ()
@@ -511,24 +523,24 @@ With argument, do this that many times."
 (setq key-chord-two-keys-delay 0.02
       key-chord-one-key-delay 0.01)
 
-(key-chord-define-global "xz"     'execute-extended-command)
+;;(key-chord-define-global "xz"     'execute-extended-command)
 
 ;;(key-chord-define-global "fg"     'keyboard-quit)
 
-(key-chord-define-global "go"     'goto-line)
+;;(key-chord-define-global "go"     'goto-line)
 ;(key-chord-define-global "yu"     'undo)
 
-(key-chord-define-global "ms"     'magit-status)
-(key-chord-define-global "md"     'magit-log)
+(key-chord-define-global "0s"     'magit-status)
+(key-chord-define-global "0d"     'magit-log)
 
-(key-chord-define-global "aw"     'delete-region)
-(key-chord-define-global "as"     'kill-region)
-(key-chord-define-global "ad"     'kill-ring-save)
-(key-chord-define-global "af"     'yank)
-(key-chord-define-global "ar"     'yank-pop)
+;; (key-chord-define-global "aw"     'delete-region)
+;; (key-chord-define-global "as"     'kill-region)
+;; (key-chord-define-global "ad"     'kill-ring-save)
+;; (key-chord-define-global "af"     'yank)
+;; (key-chord-define-global "ar"     'yank-pop)
 
-(key-chord-define-global "fg"     'save-buffer)
-(key-chord-define-global "fb"     'find-file)
+;;(key-chord-define-global "fg"     'save-buffer)
+;;(key-chord-define-global "fb"     'find-file)
 
 (key-chord-define-global "bv"     'ido-switch-buffer)
 (key-chord-define-global "bc"     'jo/buffer-menu)
