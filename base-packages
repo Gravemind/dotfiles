@@ -1,39 +1,62 @@
 # pacman
 
-nvidia
 emacs
 zsh
+openssh
+
+nvidia
 xorg-utils
 xorg-server-utils
 xorg-xinit
+ttf-dejavu
 i3-wm
 i3lock
-git
-meld
-rxvt-unicode
 dmenu
+rxvt-unicode
+
+git
 mpd
-firefox
-chromium
+ntp
+autojump
+tk
+htop
+ncmpcpp
+
 ruby
 python
 gcc
 make
 clang
-ttf-dejavu
-openssh
 fakeroot
-feh
 cmake
-ntp
-confuse
-wireless_tools
-asciidoc
-patch
 autoconf
 automake
 libtool
-autojump
+
+meld
+firefox
+chromium
+feh
+pidgin
+
+wireless_tools
+asciidoc
+patch
+
+smartmontools
+hdparm
+
+xclip
+mpv
+p7zip
+redshift
+ack
+mlocate
+
+# user groups:
+mem wheel log mpd games video power users audio
+
+# other
 
 # yaourt
 
