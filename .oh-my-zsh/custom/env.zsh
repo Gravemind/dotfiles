@@ -24,3 +24,5 @@ export PATH=$HOME/bin:$PATH
 export OSTYPE=`uname -s`
 export MACHTYPE=`uname -m`
 export BROWSER='/usr/bin/firefox'
+
+export OS=`uname -s`

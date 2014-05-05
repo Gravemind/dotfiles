@@ -47,6 +47,8 @@ enable_window_title              = "yes"
 user_interface                   = "alternative"
 progressbar_look                 = "=="
 display_volume_level             = "no"
+allow_physical_files_deletion	 = "yes"
+allow_physical_directories_deletion = "yes"
 
 # ##### visualisation #####
 # visualizer_fifo_path = "/home/barrucadu/.mpd/mpd.fifo"
