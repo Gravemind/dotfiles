@@ -105,6 +105,7 @@
                        magit
                        multiple-cursors
                        yasnippet
+                       company
                        ))
   
   (require 'package)
@@ -377,6 +378,14 @@ of FILE in the current directory, suitable for creation"
 (defun jo/enable-linum ()
   (interactive)
   (add-hook 'c-mode-common-hook '_jo/enable-linum)
+  )
+
+(defun jo/comma-indent (beg end)
+  (interactive "r")
+  (replace-regexp "\\s-+" "" nil beg end)
+  (indent-region beg end)
+  (align-regexp beg end "\\(\\s-*\\)[,(]." 1 0 t)
+  (replace-regexp ",\\([^\\s-]\\)" ", \\1" nil beg end)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

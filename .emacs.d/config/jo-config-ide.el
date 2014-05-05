@@ -42,7 +42,9 @@
    )
 
   (require 'yasnippet)
-  (yas-global-mode 1)
+  (setq yas-snippet-dirs
+        '("/home/jo/.emacs.d/config/snippets"))
+  (yas-global-mode t)
 
   ;;(require 'yasnippet-autoloads)
   ;; (setq yas-snippet-dirs '("~/.emacs.d/config/snippets" "~/.emacs.d/elpa/home/jo/.emacs.d/elpa/yasnippet-20130218.2229/snippets") )
@@ -147,7 +149,6 @@
 
   (auto-revert-mode t)
 
-  
   (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
   )
