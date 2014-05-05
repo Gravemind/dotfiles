@@ -1,0 +1,16 @@
+#!/bin/bash
+
+lockfile="/tmp/amixerlockfile"
+
+until mkdir "$lockfile" 2> /dev/null
+do
+	#echo 'wait lock'
+	sleep 0.02
+	#echo
+done
+
+trap 'rm -rf "$lockfile"; exit $?' INT TERM EXIT
+
+amixer "$@"
+
+# rm -rf "$lockfile"

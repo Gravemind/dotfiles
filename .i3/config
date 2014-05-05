@@ -44,9 +44,6 @@ bind $ModK+Shift+49 move scratchpad
 # Toggle scratchpad
 bind $ModK+49 scratchpad show
 
-# Go to urgent window, and go back
-bindsym $ModK+BackSpace exec --no-startup-id ~/.i3/goto_urgent_and_back.sh
-
 # Change focus
 bindsym $ModK+h     focus left
 bindsym $ModK+j     focus down
@@ -56,6 +53,12 @@ bindsym $ModK+Left  focus left
 bindsym $ModK+Down  focus down
 bindsym $ModK+Up    focus up
 bindsym $ModK+Right focus right
+
+# Go to urgent window, and go back
+bindsym $ModK+BackSpace exec --no-startup-id ~/.i3/goto_urgent_and_back.sh
+
+# delay the reset of urgent hint workspace focus
+force_display_urgency_hint 1000 ms
 
 # Change focus output
 # bindsym $ModK+Mod1+h     focus container left
@@ -186,16 +189,16 @@ workspace 8 output $screenR
 workspace 9 output $screenR
 workspace 10 output $screenR
 
-assign [class="^chrome"] → 10
-assign [class="^chromium"] → 10
-assign [class="^chromium-browser"] → 10
-assign [class="^Firefox$"] → 10
+# assign [class="^chrome"] → 10
+# assign [class="^chromium"] → 10
+# assign [class="^chromium-browser"] → 10
+# assign [class="^Firefox$"] → 10
 assign [class="^Pidgin$"] → 9
 assign [class="^Gimp$"] → 5
 assign [class="^Ekiga$"] → 4
 assign [class="(?i)^.*sflphone.*$"] → 4
 for_window [class="(?i)^.*wine.*$"] floating enable
-for_window [class="(?i)^.*steam.*$"] floating enable
+#for_window [class="(?i)^.*steam.*$"] floating enable
 
 for_window [class="(?i)^.*hl2.*$"] floating enable
 
@@ -203,6 +206,7 @@ for_window [class="(?i)urxvt"] border pixel 2
 for_window [class="(?i)emacs"] border pixel 2
 for_window [class="(?i)firefox"] border none
 for_window [class="(?i)mplayer"] border none
+for_window [class="(?i)mpv"] border none
 
 focus_follows_mouse no
 new_window normal
@@ -215,17 +219,20 @@ hide_edge_borders none
 bindsym $ModK+w exec --no-startup-id i3lock -c 222222
 
 # Amixer
+set $amixer ~/bin/amixerlocked -c 0
+#set $amixer amixer
 set $amixer_item Master
-bind $ModK+20 exec --no-startup-id amixer sset $amixer_item 2%-
-bind $ModK+21 exec --no-startup-id amixer sset $amixer_item 2%+
-bindsym XF86AudioLowerVolume exec --no-startup-id amixer sset $amixer_item 2%-
-bindsym XF86AudioRaiseVolume exec --no-startup-id amixer sset $amixer_item 2%+
-bindsym $ModK+XF86AudioLowerVolume exec --no-startup-id amixer sset $amixer_item 2%-
-bindsym $ModK+XF86AudioRaiseVolume exec --no-startup-id amixer sset $amixer_item 2%+
-bindsym XF86AudioMute exec --no-startup-id amixer sset $amixer_item toggle
-bindsym $ModK+XF86AudioMute exec --no-startup-id amixer sset $amixer_item toggle
-bind $ModK+95 exec --no-startup-id amixer sset $amixer_item 2%-
-bind $ModK+96 exec --no-startup-id amixer sset $amixer_item 2%+
+
+bind $ModK+20 exec --no-startup-id $amixer sset $amixer_item 2%-
+bind $ModK+21 exec --no-startup-id $amixer sset $amixer_item 2%+
+bindsym XF86AudioLowerVolume exec --no-startup-id $amixer sset $amixer_item 1%-
+bindsym XF86AudioRaiseVolume exec --no-startup-id $amixer sset $amixer_item 1%+
+bindsym $ModK+XF86AudioLowerVolume exec --no-startup-id $amixer sset $amixer_item 1%-
+bindsym $ModK+XF86AudioRaiseVolume exec --no-startup-id $amixer sset $amixer_item 1%+
+bindsym XF86AudioMute exec --no-startup-id $amixer sset $amixer_item toggle
+bindsym $ModK+XF86AudioMute exec --no-startup-id $amixer sset $amixer_item toggle
+bind $ModK+95 exec --no-startup-id $amixer sset $amixer_item 2%-
+bind $ModK+96 exec --no-startup-id $amixer sset $amixer_item 2%+
 
 # Cmus
 # bindsym $ModK+End exec --no-startup-id cmus-remote -u
@@ -264,4 +271,7 @@ bar {
 #exec ~/.i3/bar/bar.py
 exec ~/.i3/bg.py
 # exec conky -c ~/.conky/balloon/conkyrc
-exec i3lock -c 222222
+# exec i3lock -c 222222
+
+exec i3-msg workspace 1
+exec i3-msg workspace 10
