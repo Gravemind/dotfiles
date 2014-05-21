@@ -105,9 +105,11 @@
                        magit
                        multiple-cursors
                        yasnippet
-                       company
+                       popwin
+                       smex
+                       mo-git-blame
                        ))
-  
+
   (require 'package)
 
   (setq package-archives '(("ELPA" . "http://tromey.com/elpa/")
@@ -153,14 +155,12 @@
 ;; Plugins
 ;;
 
-(add-to-list 'load-path "~/.emacs.d/plugins")
-
-(require 'filladapt)
-(setq-default filladapt-mode t)
-
+;;
+;; buff-menu+
+;;
 ;; overwrite default buff-menu with the emacs 24.4 buff-menu for buff-menu+ compatibilty
+(add-to-list 'load-path "~/.emacs.d/plugins")
 (load "~/.emacs.d/plugins/buff-menu.el");
-
 (require 'buff-menu+)
 
 (custom-set-variables
@@ -168,15 +168,22 @@
  '(Buffer-menu-time-flag nil)
 )
 
+;;
+;;
+;;
+(require 'filladapt)
+(setq-default filladapt-mode t)
 
+
+;;
 ;; Widen window mode
-
+;;
 (defun ww-mode ()
+  (interactive)
+
   (require 'bw-base)
   (require 'widen-window)
-
-  (interactive)
-  (setq ww-ratio 0.75)
+  (setq ww-ratio 0.85)
   (add-to-list 'ww-advised-functions 'windmove-right)
   (add-to-list 'ww-advised-functions 'windmove-left)
   (add-to-list 'ww-advised-functions 'windmove-up)
@@ -185,13 +192,86 @@
   (add-to-list 'ww-advised-functions 'compile-goto-error)
   (add-to-list 'ww-advised-functions 'next-error)
   (add-to-list 'ww-advised-functions 'previous-error)
-
   (add-to-list 'ww-advised-functions 'rtags-select-other-window)
-
   ;; (add-to-list 'ww-advised-functions 'compilation-button-map)
+  (global-widen-window-mode t))
 
-  (global-widen-window-mode t)
-  )
+;;
+;; popwin
+;;
+(require 'popwin)
+(popwin-mode 1)
+(global-set-key (kbd "C-v") popwin:keymap)
+;; C-v then:
+;; | Key    | Command                               |
+;; |--------+---------------------------------------|
+;; | b      | popwin:popup-buffer                   |
+;; | l      | popwin:popup-last-buffer              |
+;; | o      | popwin:display-buffer                 |
+;; | C-b    | popwin:switch-to-last-buffer          |
+;; | C-p    | popwin:original-pop-to-last-buffer    |
+;; | C-o    | popwin:original-display-last-buffer   |
+;; | SPC    | popwin:select-popup-window            |
+;; | s      | popwin:stick-popup-window             |
+;; | 0      | popwin:close-popup-window             |
+;; | f, C-f | popwin:find-file                      |
+;; | e      | popwin:messages                       |
+;; | C-u    | popwin:universal-display              |
+;; | 1      | popwin:one-window                     |
+;;
+
+;;
+;; smex
+;;
+(setq smex-history-length 32
+      smex-save-file "~/.emacs.d/smex-items")
+
+;;
+;; uniquify
+;;
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'post-forward)
+
+;;
+;; mo-git-blame (autoloaded)
+;;
+;; a   -- Call 'git blame' for the file for the first ancestor of the
+;;        revision listed in the current line. Sets the content buffer to
+;;        contain the file content at the new revision.
+;; A   -- Call 'git blame' for the file for the first ancestor of the
+;;        current revision. Sets the content buffer to contain the file
+;;        content at the new revision.
+;; b   -- Call 'git blame' for the file for the revision listed in the
+;;        current line. Sets the content buffer to contain the file
+;;        content at the new revision.
+;; B   -- Call 'git blame' for the file for a specific revision read from
+;;        the minibuffer.
+;; c   -- Call 'git cat-file blob ...' for the revision listed in the
+;;        current line and show the output in the `output' buffer. The
+;;        output will not have syntax highlighting.
+;; i   -- Display the current state information (current revision, git
+;;        repository path etc) in the right window.
+;; l   -- Call 'git log' for the revision listed in the current line and
+;;        show the output in the `output' buffer.
+;; L   -- Call 'git log' for the current revision and show the output in
+;;        the `output' buffer.
+;; p   -- Call 'git blame' for the file for the revision that was shown
+;;        prior to the current one. Works only if you've used `b'
+;;        before.
+;; o   -- Overwrite the file with the content of the revision listed in
+;;        the current line. Asks for confirmation before actually
+;;        overwriting the file.
+;; O   -- Overwrite the file with the content of the current
+;;        revision. Asks for confirmation before actually overwriting the
+;;        file.
+;; q   -- Exit mo-git-blame and kill all its buffers.
+;; s   -- Call 'git show' for the revision listed in the current line and
+;;        show the output in the `output' buffer.
+;; S   -- Call 'git show' for the current revision and show the output in
+;;        the `output' buffer.
+;; TAB -- Re-display the `content' buffer in the right window if it has
+;;        replaced with the `output' buffer.
+;; RET -- Same as `s'.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -208,7 +288,7 @@ This may not do the correct thing in presence of links. If it does not find FILE
 of FILE in the current directory, suitable for creation"
   (let ((root (expand-file-name "/"))) ; the win32 builds should translate this correctly
     (expand-file-name file
-                      (loop 
+                      (loop
                        for d = default-directory then (expand-file-name ".." d)
                        if (file-exists-p (expand-file-name file d))
                        return d
@@ -396,6 +476,11 @@ of FILE in the current directory, suitable for creation"
 ;; Isearch mode
 (define-key isearch-mode-map [C-backspace] 'isearch-del-char)
 
+;; smex M-x
+(global-set-key (kbd "M-x")             'smex)
+(global-set-key (kbd "M-X")             'smex-major-mode-commands)
+(global-set-key (kbd "C-c C-c M-x")     'execute-extended-command)
+
 ;; Force backspace erase tabulations
 (global-set-key [backspace] 'delete-backward-char)
 
@@ -457,24 +542,26 @@ of FILE in the current directory, suitable for creation"
   (switch-to-buffer "*Buffer List*")
   (buffer-menu)
   )
-
-(global-set-key "\C-x\C-b"  'jo/buffer-menu)
+(global-set-key "\C-x\C-b"          'jo/buffer-menu)
 
 ;; C-x f : change frame title
-(global-set-key "\C-xf"     'set-frame-name)
+(global-set-key "\C-xf"             'set-frame-name)
 
 ;; C-c C-SPC : Goto last mark
-(global-set-key "\C-c\C- "  'pop-to-mark-command)
+(global-set-key "\C-c\C- "          'pop-to-mark-command)
 
 ;; M-k : kill whole line
-(global-set-key "\M-k"  'kill-whole-line)
+(global-set-key "\M-k"              'kill-whole-line)
 
-;; C-M-w : delete-region 
-(global-set-key "\C-\M-w"  'delete-region)
+;; C-M-w : delete-region
+(global-set-key "\C-\M-w"           'delete-region)
 ;; (delete-selection-mode t)
 
-;; 
-(global-set-key "\C-c\C-c"  'comment-or-uncomment-region)
+;; comment or uncomment
+(global-set-key (kbd "C-c C-c")     'comment-or-uncomment-region)
+
+;; comment or uncomment
+(global-set-key (kbd "C-x K")       'kill-this-buffer)
 
 ;; ESC to quit
 ;;(global-set-key [\e]  'keyboard-quit)
@@ -520,6 +607,8 @@ With argument, do this that many times."
     (insert primary))
   )
 
+;;(define-key c-mode-map     [C-S-d]     'c-hungry-delete-backwards)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -562,6 +651,18 @@ With argument, do this that many times."
 
 ;;(key-chord-define-global ",."     "<>\C-b")
 
+(defun my-keyboard-quit()
+  "Escape the minibuffer or cancel region consistently using 'Control-g'.
+Normally if the minibuffer is active but we lost focus (say, we clicked away or set the cursor into another buffer)
+we can quit by pressing 'ESC' three times. This function handles it more conveniently, as it checks for the condition 
+of not beign in the minibuffer but having it active. Otherwise simply doing the ESC or (keyboard-escape-quit) would 
+brake whatever split of windows we might have in the frame."
+  (interactive)
+  (if (not(window-minibuffer-p (selected-window)))
+      (if (or mark-active (active-minibuffer-window))
+          (keyboard-escape-quit))
+    (keyboard-quit)))
+(define-key global-map (kbd "C-g") 'my-keyboard-quit)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;

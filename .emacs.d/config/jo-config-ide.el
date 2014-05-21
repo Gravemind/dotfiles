@@ -233,6 +233,12 @@
 (setq rtags-completions-enabled t)
 (rtags-update-completions t)
 
+(defun rtags-clear-diagnostics ()
+  (interactive)
+  (rtags-stop-diagnostics)
+  (rtags-clear-diagnostics-overlays)
+)
+
 ;; (setq rtags-completions-enabled t)
 ;; (rtags-update-completions t)
 
@@ -253,21 +259,51 @@
 ;; (global-set-key [C-return]  'ac-complete)
 
 
-(require 'company)
-(require 'company-rtags)
+(defun jo/rtags-company ()
+  (interactive)
+  (require 'company)
+  (require 'company-rtags)
 
-(global-company-mode t)
+  (global-company-mode t)
 
-(setq rtags-completions-enabled t)
-(rtags-update-completions t)
+  (setq rtags-completions-enabled t)
+  (rtags-update-completions t)
 
-(setq company-backends '(company-rtags))
-(setq-default company-backends '(companty-rtags))
+  (setq company-backends '(company-rtags))
+  (setq-default company-backends '(companty-rtags))
 
-(add-to-list 'company-backends 'company-rtags)
+  (add-to-list 'company-backends 'company-rtags)
 
-(global-set-key (kbd "C-S-<return>")  'company-complete)
+  (global-set-key (kbd "C-S-<return>")  'company-complete)
 
+)
+
+(defun jo/rtags-ac ()
+  (interactive)
+
+  (require 'auto-complete)
+  (require 'rtags-ac)
+
+  (setq rtags-completions-enabled t)
+  (rtags-update-completions t)
+
+  ;;(setq rtags-completion-mode 'rtags-complete-with-autocomplete)
+
+  (setq-default ac-dwim nil)
+  (setq-default ac-auto-show-menu t)
+  (setq-default ac-quick-help-delay 2)
+  (setq-default ac-auto-start 1)
+  (setq-default ac-ignore-case nil)
+
+  (setq-default ac-sources '(ac-source-rtags))
+  (setq ac-sources '(ac-source-rtags))
+
+  (auto-complete-mode t)
+
+  (global-set-key (kbd "C-S-<return>")  'ac-complete)
+  ;;(global-set-key [C-return]  'ac-complete)
+
+)
 
 ;;(ac-config-default)
 
@@ -308,6 +344,7 @@
 (global-set-key (kbd "C-c O")       'rtags-find-references)
 
 (global-set-key (kbd "C-c n")       'rtags-diagnostics)
+(global-set-key (kbd "C-c N")       'rtags-clear-diagnostics)
 
 (global-set-key (kbd "C-c h")       'rtags-find-virtuals-at-point)
 (global-set-key (kbd "C-c p")       'rtags-next-match)
