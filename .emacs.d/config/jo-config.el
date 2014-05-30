@@ -74,10 +74,12 @@
 ;; (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
 ;; Emacs modes
-(add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.inl$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.cwp$" . c-mode))
-(add-to-list 'auto-mode-alist '("\\.cws" . c-mode))
+(add-to-list 'auto-mode-alist '("\\.cpp$"   . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.h$"     . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.hpp$"   . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.inl$"   . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.cwp$"   . c-mode))
+(add-to-list 'auto-mode-alist '("\\.cws"    . c-mode))
 
 ;; Replace yes-or-no by y-or-n
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -88,6 +90,8 @@
 ;; White space mode
 ;; seems to slow down emacs ...
 ;; (add-hook 'c-mode-common-hook 'whitespace-mode)
+
+(setq vc-handled-backends nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -183,7 +187,7 @@
 
   (require 'bw-base)
   (require 'widen-window)
-  (setq ww-ratio 0.85)
+  (setq ww-ratio 0.75)
   (add-to-list 'ww-advised-functions 'windmove-right)
   (add-to-list 'ww-advised-functions 'windmove-left)
   (add-to-list 'ww-advised-functions 'windmove-up)
@@ -194,7 +198,9 @@
   (add-to-list 'ww-advised-functions 'previous-error)
   (add-to-list 'ww-advised-functions 'rtags-select-other-window)
   ;; (add-to-list 'ww-advised-functions 'compilation-button-map)
-  (global-widen-window-mode t))
+  (global-widen-window-mode t)
+  (winner-mode)
+)
 
 ;;
 ;; popwin

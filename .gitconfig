@@ -29,6 +29,11 @@
 	# treats a carriage-return at the end of line as part of the line terminator
 	whitespace = cr-at-eol
 
+[fetch]
+	prune = true
+[pull]
+	rebase = true
+
 [push]
 	default = simple
 [merge]
@@ -45,4 +50,3 @@
 #	eol = crlf
 #[difftool "meld"] 
 #	cmd = '/c/Program Files (x86)/Meld/meld/meld.exe' \"$LOCAL\" \"$REMOTE\"
-
