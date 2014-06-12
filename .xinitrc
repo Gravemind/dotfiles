@@ -13,6 +13,8 @@ amixer sset PCM 100% &> /dev/null
 amixer sset Mono 0% &> /dev/null
 
 xset b 0 &> /dev/null
+xset s 3600 3600
+xset dmps 3600 3600 3600
 
 setxkbmap us_qwerty-fr
 
