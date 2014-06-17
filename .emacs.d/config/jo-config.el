@@ -112,6 +112,7 @@
                        popwin
                        smex
                        mo-git-blame
+                       golden-ratio
                        ))
 
   (require 'package)
@@ -178,29 +179,32 @@
 (require 'filladapt)
 (setq-default filladapt-mode t)
 
-
 ;;
 ;; Widen window mode
 ;;
-(defun ww-mode ()
-  (interactive)
 
-  (require 'bw-base)
-  (require 'widen-window)
-  (setq ww-ratio 0.75)
-  (add-to-list 'ww-advised-functions 'windmove-right)
-  (add-to-list 'ww-advised-functions 'windmove-left)
-  (add-to-list 'ww-advised-functions 'windmove-up)
-  (add-to-list 'ww-advised-functions 'windmove-down)
-  (add-to-list 'ww-advised-functions 'recenter-top-bottom)
-  (add-to-list 'ww-advised-functions 'compile-goto-error)
-  (add-to-list 'ww-advised-functions 'next-error)
-  (add-to-list 'ww-advised-functions 'previous-error)
-  (add-to-list 'ww-advised-functions 'rtags-select-other-window)
-  ;; (add-to-list 'ww-advised-functions 'compilation-button-map)
-  (global-widen-window-mode t)
-  (winner-mode)
-)
+;; ! replaced by golden-ratio
+;; golden-ratio-mode
+
+;; (defun ww-mode ()
+;;   (interactive)
+
+;;   (require 'bw-base)
+;;   (require 'widen-window)
+;;   (setq ww-ratio 0.75)
+;;   (add-to-list 'ww-advised-functions 'windmove-right)
+;;   (add-to-list 'ww-advised-functions 'windmove-left)
+;;   (add-to-list 'ww-advised-functions 'windmove-up)
+;;   (add-to-list 'ww-advised-functions 'windmove-down)
+;;   (add-to-list 'ww-advised-functions 'recenter-top-bottom)
+;;   (add-to-list 'ww-advised-functions 'compile-goto-error)
+;;   (add-to-list 'ww-advised-functions 'next-error)
+;;   (add-to-list 'ww-advised-functions 'previous-error)
+;;   (add-to-list 'ww-advised-functions 'rtags-select-other-window)
+;;   ;; (add-to-list 'ww-advised-functions 'compilation-button-map)
+;;   (global-widen-window-mode t)
+;;   (winner-mode)
+;; )
 
 ;;
 ;; popwin
@@ -322,7 +326,7 @@ of FILE in the current directory, suitable for creation"
 
 (defun jo/set-build-command ()
   (interactive)
-  (setq jo/build-command (read-from-minibuffer "jo/build-command (%s replaced by path)? " "make -j5 verbose=1 config=release_x64 "))
+  (setq jo/build-command (read-from-minibuffer "jo/build-command (%s replaced by path)? " "make -j6 verbose=1 config=release_x64 "))
   )
 
 (defun jo/get-build-command ()
