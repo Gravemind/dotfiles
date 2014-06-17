@@ -73,3 +73,16 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
+
+#
+# Execute command after loading omz, but before shell apears
+# http://www.zsh.org/mla/users/2005/msg00599.html
+#   Usage;
+#     zsh -is eval echo do something
+#
+if [[ $1 == eval ]]
+then
+	echo "Executing input command \"$@\" ..."
+	"${(q)@}"
+	#set --
+fi
