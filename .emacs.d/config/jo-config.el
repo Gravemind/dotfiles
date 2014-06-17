@@ -42,7 +42,6 @@
  ;; '(linum-format "%d ")
  '(c-hungry-delete-key t)
  '(global-whitespace-mode t)
- '(whitespace-style '(face trailing indentation space-before-tab))
  ;; '(whitespace-display-mappings
  ;;   '((space-mark   ?\    [?\xB7]     [?.])	; space
  ;;     (space-mark   ?\xA0 [?\xA4]     [?_])	; hard space
@@ -113,6 +112,7 @@
                        smex
                        mo-git-blame
                        golden-ratio
+                       flycheck-dmd-dub
                        ))
 
   (require 'package)
@@ -178,6 +178,13 @@
 ;;
 (require 'filladapt)
 (setq-default filladapt-mode t)
+
+;;
+;; winner mode : window
+;; C-c left C-C right
+;;
+(when (fboundp 'winner-mode)
+  (winner-mode 1))
 
 ;;
 ;; Widen window mode
@@ -356,6 +363,14 @@ of FILE in the current directory, suitable for creation"
       ;; (switch-to-buffer current-buffer)
       )))
 
+;;
+;; flycheck-dmd-dub
+;;
+
+(add-hook 'd-mode-hook 'flycheck-dmd-dub-set-include-path)
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Coding style
@@ -412,6 +427,7 @@ of FILE in the current directory, suitable for creation"
   (setq c-basic-offset 4
         tab-width 4
         indent-tabs-mode nil)
+  (setq whitespace-style '(face trailing indentation space-before-tab))
   (message "jo/tab-space %s" (buffer-name))
   )
 
@@ -422,6 +438,7 @@ of FILE in the current directory, suitable for creation"
   (setq c-basic-offset 4
         tab-width 4
         indent-tabs-mode t)
+  (setq whitespace-style '(face trailing indentation space-before-tab))
   ;;(message "jo/tab-tab %s" (buffer-name))
   )
 
@@ -447,6 +464,8 @@ of FILE in the current directory, suitable for creation"
 (add-hook 'ruby-mode-hook       'jo/tab-space)
 (add-hook 'text-mode-hook       'jo/tab-space)
 (add-hook 'c-mode-common-hook   'jo/tab-tab)
+;;(add-hook 'd-mode-hook          'jo/tab-tab)
+
 (add-hook 'python-mode-hook     (lambda ()
                                   (setq indent-tabs-mode t
                                         python-indent 4

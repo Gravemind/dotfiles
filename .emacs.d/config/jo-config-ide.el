@@ -234,6 +234,7 @@
 (rtags-update-completions t)
 
 (defun rtags-clear-diagnostics ()
+  (require 'rtags)
   (interactive)
   (rtags-stop-diagnostics)
   (rtags-clear-diagnostics-overlays)
