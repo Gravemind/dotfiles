@@ -21,4 +21,7 @@ urxvt -name PK_EMACS -e zsh -is eval "cd \"$PK_GMAKE\"; rtagson; emacs .  -e 'ma
 i3-msg "workspace 10; append_layout $HERE/firefox.json"
 firefox & ; disown
 
-echo "OK"
+$HERE/rtags.zsh
+
+i3-msg "workspace 1"
+i3-msg "workspace 10"

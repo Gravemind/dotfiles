@@ -79,6 +79,7 @@
 (add-to-list 'auto-mode-alist '("\\.inl$"   . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.cwp$"   . c-mode))
 (add-to-list 'auto-mode-alist '("\\.cws"    . c-mode))
+(add-to-list 'auto-mode-alist '("\\.zsh"    . sh-mode))
 
 ;; Replace yes-or-no by y-or-n
 (fset 'yes-or-no-p 'y-or-n-p)
