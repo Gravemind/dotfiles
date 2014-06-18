@@ -1,0 +1,34 @@
+// vim:ts=4:sw=4:et
+{
+    // tabbed split container with 3 children
+    "type": "con",
+    "layout": "tabbed",
+    "nodes": [
+        {
+            "type": "con",
+            "swallows": [
+               {
+               "class": "^URxvt$",
+               "instance": "^PK_EMACS$"
+               }
+            ]
+        },
+        {
+            "type": "con",
+            "swallows": [
+               {
+               "class": "^Emacs$"
+               }
+            ]
+        },
+        {
+            "type": "con",
+            "swallows": [
+               {
+               "class": "^Emacs$"
+               }
+            ]
+        }
+    ]
+}
+

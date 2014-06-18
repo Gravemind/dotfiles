@@ -52,9 +52,8 @@ plugins=( git zsh-syntax-highlighting history-substring-search autojump ) # my_l
 
 source $ZSH/oh-my-zsh.sh
 
-# Customize to your needs...
+# User configuration
 
-# export PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/core_perl"
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -83,6 +82,6 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 if [[ $1 == eval ]]
 then
 	echo "Executing input command \"$@\" ..."
-	"${(q)@}"
+	"${@}"
 	#set --
 fi

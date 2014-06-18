@@ -189,18 +189,15 @@ workspace 8 output $screenR
 workspace 9 output $screenR
 workspace 10 output $screenR
 
-# assign [class="^chrome"] → 10
-# assign [class="^chromium"] → 10
-# assign [class="^chromium-browser"] → 10
-# assign [class="^Firefox$"] → 10
+assign [window_role="^browser$"] → 10
 assign [class="^Pidgin$"] → 9
 assign [class="^Gimp$"] → 5
-assign [class="^Ekiga$"] → 4
-assign [class="(?i)^.*sflphone.*$"] → 4
-for_window [class="(?i)^.*wine.*$"] floating enable
+# assign [class="^Ekiga$"] → 4
+# assign [class="(?i)^.*sflphone.*$"] → 4
+#for_window [class="(?i)^.*wine.*$"] floating enable
 #for_window [class="(?i)^.*steam.*$"] floating enable
 
-for_window [class="(?i)^.*hl2.*$"] floating enable
+# for_window [class="(?i)^.*hl2.*$"] floating enable
 
 for_window [class="(?i)urxvt"] border pixel 2
 for_window [class="(?i)emacs"] border pixel 2
@@ -273,11 +270,10 @@ exec ~/.i3/bg.py
 # exec conky -c ~/.conky/balloon/conkyrc
 # exec i3lock -c 222222
 
-
 #
 # save a layout: http://i3wm.org/docs/layout-saving.html
 # $> i3-save-tree --workspace=2 > ~/.i3/layouts/kkuette.json
 #
-exec --no-startup-id "i3-msg 'workspace  1; append_layout /home/jo/.i3/layouts/urxvt.json'; urxvt"
-exec --no-startup-id "i3-msg 'workspace  9; append_layout /home/jo/.i3/layouts/pidgin.json'; pidgin"
-exec --no-startup-id "i3-msg 'workspace 10; append_layout /home/jo/.i3/layouts/firefox.json'; firefox"
+
+exec --no-startup-id ~/.i3/layouts/startup.zsh
+#exec --no-startup-id ~/.i3/layouts/popcorn.zsh

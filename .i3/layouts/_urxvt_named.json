@@ -2,7 +2,8 @@
 {
     "swallows": [
        {
-       "class": "^URxvt$"
+       "class": "^URxvt$",
+	   "instance": "^{{NAME}}$"
        }
     ],
     "type": "con"
