@@ -41,7 +41,7 @@
  ;; '(global-linum-mode t)
  ;; '(linum-format "%d ")
  '(c-hungry-delete-key t)
- '(global-whitespace-mode t)
+ ;;'(global-whitespace-mode t)
  ;; '(whitespace-display-mappings
  ;;   '((space-mark   ?\    [?\xB7]     [?.])	; space
  ;;     (space-mark   ?\xA0 [?\xA4]     [?_])	; hard space
@@ -368,8 +368,6 @@ of FILE in the current directory, suitable for creation"
 ;;
 
 (add-hook 'd-mode-hook 'flycheck-dmd-dub-set-include-path)
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
