@@ -1,13 +1,13 @@
 #!/bin/zsh
 
-HERE="`dirname \"$0\"`"
+HERE="$(cd "`dirname "$0"`"; pwd)"
 
 WS="$1"
 NAME="$2"
 
 TMP=`mktemp`
 
-sed "s/{{NAME}}/$NAME/g" $HERE/_urxvt_named.json > $TMP
+sed "s/{{NAME}}/$NAME/g" $HERE/urxvt.json.tpl > $TMP
 
 i3-msg "workspace $WS; append_layout $TMP;"
 

@@ -5,7 +5,8 @@ HERE="$(cd "`dirname "$0"`"; pwd)"
 WS="$1"
 if [ -z "$WS" ]
 then
-	WS=6
+	WS=9
 fi
 
-$HERE/urxvt.zsh $WS "rtags" 'cd ~/bin/rtags;'
+i3-msg "workspace $WS; append_layout $HERE/pidgin.json"
+pidgin & ; disown
