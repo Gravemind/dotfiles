@@ -14,4 +14,7 @@ $HERE/urxvt.zsh 3 "PK_ROOT" "cd \"$PK\" ; clear"
 $HERE/rtags.zsh 6
 
 i3-msg "workspace 2; append_layout $HERE/popcorn.json;"
-urxvt -name PK_EMACS_RTAGS -e zsh -is eval "cd \"$PK_GMAKE\"; rtagson; emacs .  -e 'make-frame' & ; cd \"$PK\";" & ; disown
+urxvt -name popcorn -e zsh -is eval "cd \"$PK_GMAKE\"; rtagson; emacs -name popcorn .  -e 'make-frame' & ; cd \"$PK\";" & ; disown
+
+i3-msg workspace 1
+#i3-msg workspace 10

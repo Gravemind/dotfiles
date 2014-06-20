@@ -9,7 +9,7 @@
             "swallows": [
                {
                "class": "^URxvt$",
-               "instance": "^PK_EMACS$"
+               "instance": "^popcorn$"
                }
             ]
         },
@@ -17,7 +17,8 @@
             "type": "con",
             "swallows": [
                {
-               "class": "^Emacs$"
+               "class": "^Emacs$",
+               "instance": "^popcorn$"
                }
             ]
         },

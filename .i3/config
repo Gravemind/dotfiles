@@ -282,4 +282,3 @@ exec ~/.i3/bg.py
 # http://i3wm.org/docs/layout-saving.html
 #
 exec --no-startup-id $layouts/startup.zsh
-#exec --no-startup-id $layouts/popcorn.zsh
