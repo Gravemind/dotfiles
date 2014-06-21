@@ -6,7 +6,7 @@ $HERE/pidgin.zsh 9
 
 $HERE/firefox.zsh 10
 
-$HERE/startup_popcorn.zsh
+$HERE/popcorn.zsh
 
 i3-msg workspace 1
 i3-msg workspace 10
