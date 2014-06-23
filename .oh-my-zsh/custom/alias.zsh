@@ -22,8 +22,6 @@ alias cleanhg='find . \( -name "*.orig" \) -print -delete'
 
 alias _='command sudo -E ' # ! trailing wihtespace is important
 alias lock='i3lock -c 111111'
-alias shut='sudo systemctl poweroff'
-alias reboot='sudo systemctl reboot'
 alias disk='df -h --total'
 alias x='7z x'
 alias xl='7z l'
@@ -32,6 +30,9 @@ alias untar='tar xvzf'
 alias ntpup='sudo ntpd -qg'
 alias a='echo -ne "\a"'
 compdef _pacman yaourt=pacman
+
+alias shut='systemctl poweroff'
+alias reboot='systemctl reboot'
 
 alias start='_ rc.d start'
 alias stop='_ rc.d stop'
