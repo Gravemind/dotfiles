@@ -202,7 +202,7 @@ assign [class="^Gimp$"] → 5
 # assign [class="^Ekiga$"] → 4
 # assign [class="(?i)^.*sflphone.*$"] → 4
 #for_window [class="(?i)^.*wine.*$"] floating enable
-#for_window [class="(?i)^.*steam.*$"] floating enable
+assign [class="(?i)^.*steam.*$"] → 1
 
 # for_window [class="(?i)^.*hl2.*$"] floating enable
 
