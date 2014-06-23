@@ -18,7 +18,7 @@ shift 2
 CMD="$@"
 if [ -z "$CMD" ]
 then
-	urxvt -name "$NAME" & ; disown
+	urxvt -name "$NAME" &
 else
-	urxvt -name "$NAME" -e zsh -is eval "$@" & ; disown
+	urxvt -name "$NAME" -e zsh -is eval "$@" &
 fi

@@ -9,4 +9,4 @@ then
 fi
 
 i3-msg "workspace $WS; append_layout $HERE/firefox.json"
-firefox & ; disown
+firefox &
