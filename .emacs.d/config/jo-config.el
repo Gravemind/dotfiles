@@ -69,6 +69,12 @@
   (revert-buffer-with-coding-system 'utf-8-dos)
 )
 
+(defun jo/hide-ctrl-M ()
+  "Hides the disturbing '^M' showing up in files containing mixed UNIX and DOS line endings."
+  (interactive)
+  (setq buffer-display-table (make-display-table))
+  (aset buffer-display-table ?\^M []))
+
 ;; (setq x-select-enabled-clipboard t)
 ;; (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 

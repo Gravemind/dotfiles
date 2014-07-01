@@ -21,6 +21,9 @@
       (strings    "#b2ad79")
       (otherkeyw  "#61cfd4")
 
+      (colorrem   "#B95151")
+      (coloradd   "#6AAB6A")
+
       (useless    "#602929")
 
       )
@@ -109,18 +112,29 @@
      `(buffer-menu-modified-mark ((t (:foreground ,strings))))
      `(buffer-menu-size ((t (:foreground ,color3))))
 
-     `(diff-header ((t (:background "#BBB" :foreground "#444"))))
-     `(diff-file-header ((t (:background "#BBB" :foreground "#111" ))))
-
      `(git-gutter-fr+-modified ((t (:foreground "#990"))))
      `(git-gutter-fr+-added    ((t (:foreground "#373"))))
      `(git-gutter-fr+-deleted  ((t (:foreground "#722"))))
 
-     `(diff-added   ((t (:background "#384a36"))))
-     `(diff-removed ((t (:background "#493434"))))
+
+     ;;
+     ;; diff
+     ;;
+     `(diff-header ((t (:background "#BBB" :foreground "#333"))))
+     `(diff-file-header ((t (:background "#EEE" :foreground "#333" ))))
+
+     `(diff-indicator-removed   ((t (:background ,colorrem :foreground ,background))))
+     `(diff-indicator-added     ((t (:background ,coloradd :foreground ,background))))
+
+     `(diff-removed ((t (:background nil :foreground ,colorrem))))
+     `(diff-added   ((t (:background nil :foreground ,coloradd))))
+
+     `(diff-refine-removed ((t (:background "#493434"))))
+     `(diff-refine-added   ((t (:background "#384a36"))))
 
      `(magit-diff-none ((nil ())))
-     `(magit-item-highlight ((t (:background "#303030"))))
+     ;;`(magit-item-highlight ((nil ())))
+     `(magit-item-highlight ((t (:background ,background))))
 
      )
 

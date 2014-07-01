@@ -21,23 +21,21 @@ C-c				Prefix Command
 <left-margin> <mouse-1>			gdb-mouse-set-clear-breakpoint
 <left-margin> <mouse-3>			gdb-mouse-until
 
-C-c C-w			gud-watch
-C-x SPC			gud-break
-
-C-x C-a C-b		gud-break
-C-x C-a C-d		gud-remove
-C-x C-a C-f		gud-finish
-C-x C-a TAB		gud-stepi
-C-x C-a C-j		gud-jump
-C-x C-a C-l		gud-refresh
-C-x C-a C-n		gud-next
-C-x C-a C-p		gud-print
-C-x C-a C-r		gud-cont
-C-x C-a C-s		gud-step
-C-x C-a C-t		gud-tbreak
-C-x C-a C-u		gud-until
-C-x C-a C-w		gud-watch
-C-x C-a <		gud-up
-C-x C-a >		gud-down
-
-C-c C-w			gud-watch
+C-c C-w		gud-watch
+C-x SPC		gud-break
+C-x C-a C-b	gud-break
+C-x C-a C-d	gud-remove
+C-x C-a C-f	gud-finish
+C-x C-a TAB	gud-stepi
+C-x C-a C-j	gud-jump
+C-x C-a C-l	gud-refresh
+C-x C-a C-n	gud-next
+C-x C-a C-p	gud-print
+C-x C-a C-r	gud-cont
+C-x C-a C-s	gud-step
+C-x C-a C-t	gud-tbreak
+C-x C-a C-u	gud-until
+C-x C-a C-w	gud-watch
+C-x C-a <	gud-up
+C-x C-a >	gud-down
+C-c C-w		gud-watch
