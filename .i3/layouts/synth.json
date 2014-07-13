@@ -1,0 +1,78 @@
+// vim:ts=4:sw=4:et
+{
+    // splitv split container with 3 children
+    "layout": "splitv",
+    "percent": 0.5,
+    "type": "con",
+    "nodes": [
+        {
+            "swallows": [
+               {
+               "class": "^URxvt$",
+               "instance": "^qjack$"
+               // "title": "^command\\ sudo\\ \\-E\\ qjackctl$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "swallows": [
+               {
+               "class": "^Qjackctl$",
+               "instance": "^qjackctl$",
+               "title": "^JACK Audio Connection*$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "swallows": [
+               {
+               "class": "^Qjackctl$",
+               "instance": "^qjackctl$",
+               "title": "^Messages*Status*$"
+               }
+            ],
+            "type": "con"
+        }
+    ]
+}
+
+{
+    // splitv split container with 3 children
+    "layout": "splitv",
+    "percent": 0.5,
+    "type": "con",
+    "nodes": [
+        {
+            "swallows": [
+               {
+               "class": "^URxvt$",
+               "instance": "^qsynth$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "swallows": [
+               {
+               "class": "^Qsynth$",
+               "instance": "^qsynth$",
+               "title": "^Qsynth - A fluidsynth*$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "swallows": [
+               {
+				   "class": "^Qsynth$",
+				   "instance": "^qsynth$",
+				   "title": "^Qsynth: Messages*$"
+               }
+            ],
+            "type": "con"
+        }
+    ]
+}
+
