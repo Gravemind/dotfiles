@@ -104,43 +104,7 @@
 ;; Packages
 ;;
 
-(require 'package)
-
-
-(when (>= emacs-major-version 24)
-  (setq package-list '(
-                       dropdown-list
-                       git-gutter-fringe+
-                       key-chord
-                       magit
-                       multiple-cursors
-                       yasnippet
-                       popwin
-                       smex
-                       mo-git-blame
-                       golden-ratio
-                       flycheck-dmd-dub
-                       ))
-
-  (require 'package)
-
-  (setq package-archives '(("ELPA" . "http://tromey.com/elpa/")
-                           ("melpa" . "http://melpa.milkbox.net/packages/")
-                           ("gnu" . "http://elpa.gnu.org/packages/")
-                           ("marmalade" . "http://marmalade-repo.org/packages/")))
-
-  ;; activate all the packages (in particular autoloads)
-  (package-initialize)
-
-  ;; fetch the list of packages available
-  (unless package-archive-contents
-    (package-refresh-contents))
-
-  ;; install the missing packages
-  ;; (dolist (package package-list)
-  ;;   (unless (package-installed-p package)
-  ;;     (package-install package)))
-  )
+(load "~/.emacs.d/config/elpa.el");
 
 ;; CMake mode
 (autoload 'cmake-mode "cmake-mode" t)
