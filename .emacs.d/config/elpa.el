@@ -22,6 +22,8 @@
                        impatient-mode
                        lua-mode
                        rainbow-mode
+                       csharp-mode
+
                        ))
   (require 'package)
   (setq package-archives '(("ELPA" . "http://tromey.com/elpa/")
