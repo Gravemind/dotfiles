@@ -1,3 +1,3 @@
 #!/bin/zsh
 
-export HH_SDK_ROOT=~/documents/popcorn
+export HH_SDK_ROOT=~/ps/popcorn

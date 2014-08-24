@@ -22,3 +22,4 @@
 
 (add-to-list 'load-path "~/.emacs.d/config")
 (require 'jo-config-ide)
+(put 'upcase-region 'disabled nil)
