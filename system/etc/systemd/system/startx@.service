@@ -1,15 +1,18 @@
+## https://github.com/joukewitteveen/xlogin/blob/master/xlogin%40.service#L8
 [Unit]
-Description=systemd user session for user %I
-After=graphical.target systemd-user-sessions.service
+Description=systemd user session for user %i
+After=x@vt7.service systemd-user-sessions.service
 Wants=x@vt7.service
+Conflicts=getty@tty7.service
 
 [Service]
-User=%I
-WorkingDirectory=/home/%I
-Environment=DISPLAY=:0
+User=%i
 TTYPath=/dev/tty7
 PAMName=login
-ExecStart=/bin/bash --login -c "cd; startx;"
+Environment=DISPLAY=:0
+WorkingDirectory=/home/%I
+Nice=0
+ExecStart=/bin/bash -l -c "cd; startx"
 
 [Install]
 WantedBy=graphical.target
