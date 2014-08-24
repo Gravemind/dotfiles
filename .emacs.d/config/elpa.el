@@ -23,6 +23,7 @@
                        lua-mode
                        rainbow-mode
                        csharp-mode
+                       expand-region
 
                        ))
   (require 'package)

@@ -99,6 +99,10 @@
 
 (setq vc-handled-backends nil)
 
+;; delete current selection when typing
+;; http://www.emacswiki.org/emacs/DeleteSelectionMode
+(delete-selection-mode 1)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Packages
@@ -260,6 +264,11 @@
 ;; TAB -- Re-display the `content' buffer in the right window if it has
 ;;        replaced with the `output' buffer.
 ;; RET -- Same as `s'.
+
+;;
+;; expand-mode
+;;
+(global-set-key (kbd "C-=") 'er/expand-region)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
