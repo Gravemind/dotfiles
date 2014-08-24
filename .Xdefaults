@@ -40,6 +40,7 @@
 
 URxvt*urgentOnBell:     true
 
+URxvt.saveLines:        100000
 URxvt.buffered:         true
 URxvt.cursorColor:      yellow
 URxvt.underlineColor:   #FFFFFF
