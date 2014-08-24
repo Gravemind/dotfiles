@@ -55,4 +55,8 @@ $RECYCLE.BIN/
 *.tmp
 *.bak
 
+# D
+.dub
+__*
+
 !.gitignore
