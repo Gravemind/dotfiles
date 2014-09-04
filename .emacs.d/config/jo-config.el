@@ -53,6 +53,9 @@
  ;;     ;; If this is a problem for you, please, comment the line below.
  ;;     (tab-mark   ?\t   [?│ ?\t] [?\\ ?\t])	; tab
  ;;     ))
+
+ ;; http://stackoverflow.com/questions/3311577/when-using-two-frames-in-emacs-how-do-i-prevent-the-compilation-buffer-from-sho
+ '(display-buffer-reuse-frames t)
 )
 
 ;; UTF-8
@@ -103,14 +106,39 @@
 ;; http://www.emacswiki.org/emacs/DeleteSelectionMode
 (delete-selection-mode 1)
 
+;;
+;; winner-mode (builtin)
+;;
+;; windows layout undo/redo;
+;; C-c left C-C right
+;;
+
+(when (fboundp 'winner-mode)
+  (winner-mode 1))
+
+;;
+;;
+;;
+(require 'filladapt)
+(setq-default filladapt-mode t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Packages
 ;;
 
-(load "~/.emacs.d/config/elpa.el");
+(load "~/.emacs.d/config/elpa.el")
 
+;;
+;; golden-ratio-mode
+;;
+
+(golden-ratio-mode)
+
+;;
 ;; CMake mode
+;;
+
 (autoload 'cmake-mode "cmake-mode" t)
 
 (setq-default cmake-tab-width 4)
@@ -127,70 +155,15 @@
 (global-set-key (kbd "C-M->")       'mc/mark-more-like-this-extended)
 (global-set-key (kbd "C-c C-<")     'mc/mark-all-like-this)
 
+;;
 ;; imaptient mode
+;;
 ;; (autoload 'httpd-start "impatient-mode" t)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;; Plugins
-;;
-
-;;
-;; buff-menu+
-;;
-;; overwrite default buff-menu with the emacs 24.4 buff-menu for buff-menu+ compatibilty
-(add-to-list 'load-path "~/.emacs.d/plugins")
-(load "~/.emacs.d/plugins/buff-menu.el");
-(require 'buff-menu+)
-
-(custom-set-variables
- '(Buffer-menu-sort 5)
- '(Buffer-menu-time-flag nil)
-)
-
-;;
-;;
-;;
-(require 'filladapt)
-(setq-default filladapt-mode t)
-
-;;
-;; winner mode : window
-;; C-c left C-C right
-;;
-(when (fboundp 'winner-mode)
-  (winner-mode 1))
-
-;;
-;; Widen window mode
-;;
-
-;; ! replaced by golden-ratio
-;; golden-ratio-mode
-
-;; (defun ww-mode ()
-;;   (interactive)
-
-;;   (require 'bw-base)
-;;   (require 'widen-window)
-;;   (setq ww-ratio 0.75)
-;;   (add-to-list 'ww-advised-functions 'windmove-right)
-;;   (add-to-list 'ww-advised-functions 'windmove-left)
-;;   (add-to-list 'ww-advised-functions 'windmove-up)
-;;   (add-to-list 'ww-advised-functions 'windmove-down)
-;;   (add-to-list 'ww-advised-functions 'recenter-top-bottom)
-;;   (add-to-list 'ww-advised-functions 'compile-goto-error)
-;;   (add-to-list 'ww-advised-functions 'next-error)
-;;   (add-to-list 'ww-advised-functions 'previous-error)
-;;   (add-to-list 'ww-advised-functions 'rtags-select-other-window)
-;;   ;; (add-to-list 'ww-advised-functions 'compilation-button-map)
-;;   (global-widen-window-mode t)
-;;   (winner-mode)
-;; )
 
 ;;
 ;; popwin
 ;;
+
 (require 'popwin)
 (popwin-mode 1)
 (global-set-key (kbd "C-v") popwin:keymap)
@@ -213,10 +186,15 @@
 ;;
 
 ;;
-;; smex
+;; smex ! replaced by helm
 ;;
-(setq smex-history-length 32
-      smex-save-file "~/.emacs.d/smex-items")
+;;(setq smex-history-length 32
+;;      smex-save-file "~/.emacs.d/smex-items")
+;; smex M-x
+;; (global-set-key (kbd "M-x")             'smex)
+;; (global-set-key (kbd "M-X")             'smex-major-mode-commands)
+;; (global-set-key (kbd "C-c C-c M-x")     'execute-extended-command)
+
 
 ;;
 ;; uniquify
@@ -269,6 +247,89 @@
 ;; expand-mode
 ;;
 (global-set-key (kbd "C-=") 'er/expand-region)
+
+;;
+;; helm
+;;
+;; http://tuhdo.github.io/helm-intro.html
+;;
+
+(require 'helm)
+
+;; must set before helm-config,  otherwise helm use default
+;; prefix "C-x c", which is inconvenient because you can
+;; accidentially pressed "C-x C-c"
+(setq helm-command-prefix-key "C-x c")
+
+(require 'helm-config)
+(require 'helm-eshell)
+(require 'helm-files)
+(require 'helm-grep)
+
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebihnd tab to do persistent action
+(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
+(define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+
+(define-key helm-grep-mode-map (kbd "<return>")  'helm-grep-mode-jump-other-window)
+(define-key helm-grep-mode-map (kbd "n")  'helm-grep-mode-jump-other-window-forward)
+(define-key helm-grep-mode-map (kbd "p")  'helm-grep-mode-jump-other-window-backward)
+
+(setq
+ helm-google-suggest-use-curl-p t
+ helm-scroll-amount 4 ; scroll 4 lines other window using M-<next>/M-<prior>
+ helm-quick-update t ; do not display invisible candidates
+ helm-idle-delay 0.01 ; be idle for this many seconds, before updating in delayed sources.
+ helm-input-idle-delay 0.01 ; be idle for this many seconds, before updating candidate buffer
+ helm-ff-search-library-in-sexp t ; search for library in `require' and `declare-function' sexp.
+
+ helm-split-window-default-side 'other ;; open helm buffer in another window
+ helm-split-window-in-side-p t ;; open helm buffer inside current window, not occupy whole other window
+ helm-buffers-favorite-modes (append helm-buffers-favorite-modes
+                                     '(picture-mode artist-mode))
+ helm-candidate-number-limit 200 ; limit the number of displayed canidates
+ helm-M-x-requires-pattern 0     ; show all candidates when set to 0
+ helm-boring-file-regexp-list
+ '("\\.git$" "\\.hg$" "\\.svn$" "\\.CVS$" "\\._darcs$" "\\.la$" "\\.o$" "\\.i$") ; do not show these files in helm buffer
+ helm-ff-file-name-history-use-recentf t
+ helm-move-to-line-cycle-in-source t ; move to end or beginning of source
+                                        ; when reaching top or bottom of source.
+ ido-use-virtual-buffers t      ; Needed in helm-buffers-list
+ helm-buffers-fuzzy-matching t          ; fuzzy matching buffer names when non--nil
+                                        ; useful in helm-mini that lists buffers
+ )
+
+;; Save current position to mark ring when jumping to a different place
+(add-hook 'helm-goto-line-before-hook 'helm-save-current-pos-to-mark-ring)
+
+(helm-mode 1)
+
+(global-set-key (kbd "M-x") 'helm-M-x)
+
+;;
+;; auto-highlight-symbol
+;;
+
+(custom-set-variables
+ '(ahs-idle-interval 0.1)
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Plugins
+;;
+
+;;
+;; buff-menu+
+;;
+;; overwrite default buff-menu with the emacs 24.4 buff-menu for buff-menu+ compatibilty
+(add-to-list 'load-path "~/.emacs.d/plugins")
+(load "~/.emacs.d/plugins/buff-menu.el");
+(require 'buff-menu+)
+
+(custom-set-variables
+ '(Buffer-menu-sort 5)
+ '(Buffer-menu-time-flag nil)
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -482,11 +543,6 @@ of FILE in the current directory, suitable for creation"
 
 ;; Isearch mode
 (define-key isearch-mode-map [C-backspace] 'isearch-del-char)
-
-;; smex M-x
-(global-set-key (kbd "M-x")             'smex)
-(global-set-key (kbd "M-X")             'smex-major-mode-commands)
-(global-set-key (kbd "C-c C-c M-x")     'execute-extended-command)
 
 ;; Force backspace erase tabulations
 (global-set-key [backspace] 'delete-backward-char)

@@ -12,7 +12,6 @@
                        multiple-cursors
                        yasnippet
                        popwin
-                       smex
                        mo-git-blame
                        golden-ratio
                        flycheck
@@ -24,6 +23,8 @@
                        rainbow-mode
                        csharp-mode
                        expand-region
+                       helm
+                       auto-highlight-symbol
 
                        ))
   (require 'package)

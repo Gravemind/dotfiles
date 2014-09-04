@@ -29,6 +29,10 @@
       )
 
   (progn
+
+    (setq x-use-underline-position-properties nil)
+    (setq underline-minimum-offset 4)
+
     (custom-theme-set-faces
      'automn
 
@@ -135,6 +139,14 @@
      `(magit-diff-none ((nil ())))
      ;;`(magit-item-highlight ((nil ())))
      `(magit-item-highlight ((t (:background ,background))))
+
+     ;;
+     ;; auto-highlight-symbol
+     ;;
+
+     `(ahs-plugin-defalt-face ((t (:foreground nil :background nil :underline "cyan"))))
+     `(ahs-face ((t (:foreground nil :background nil :underline "Orange1"))))
+     `(ahs-definition-face ((t (:foreground nil :background nil :underline t))))
 
      )
 

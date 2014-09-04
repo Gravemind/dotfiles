@@ -376,10 +376,24 @@
 
 ;; (load "~/.emacs.d/plugins/nxhtml/autostart.el")
 
+;;
+;; auto-highlight-symbol
+;;
 
+(defun jo/ahs-hook ()
+  (auto-highlight-symbol-mode)
+)
+(add-hook 'c-mode-common-hook   'jo/ahs-hook)
+
+;;
 ;; magit
+;;
 
-(require 'magit)
+;; (require 'magit)
+
+;;
+;; git-gutter-fringe+
+;;
 
 (require 'git-gutter-fringe+)
 
@@ -439,7 +453,6 @@
   (global-set-key (kbd "M-p")     'git-gutter+-previous-hunk)
 )
 (add-hook 'c-mode-common-hook   'jo/git-gutter-hook)
-
 
 (setq fiplr-root-markers '(".git" ".svn" ".hg" ".bzr" "hellheaven_api"))
 
