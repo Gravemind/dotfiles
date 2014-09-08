@@ -24,6 +24,7 @@
                        csharp-mode
                        expand-region
                        helm
+                       helm-ag
                        auto-highlight-symbol
 
                        ))

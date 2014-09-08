@@ -116,12 +116,6 @@
 (when (fboundp 'winner-mode)
   (winner-mode 1))
 
-;;
-;;
-;;
-(require 'filladapt)
-(setq-default filladapt-mode t)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Packages
@@ -305,6 +299,17 @@
 
 (global-set-key (kbd "M-x") 'helm-M-x)
 
+
+;;
+;; helm-ag
+;;
+
+(require 'helm-ag)
+
+(setq helm-ag-base-command "ag --nocolor --ignore-case -t -U")
+(setq helm-ag-command-option "--all-text")
+(setq helm-ag-thing-at-point 'symbol)
+
 ;;
 ;; auto-highlight-symbol
 ;;
@@ -330,6 +335,13 @@
  '(Buffer-menu-sort 5)
  '(Buffer-menu-time-flag nil)
 )
+
+;;
+;; filladapt
+;;
+
+(require 'filladapt)
+(setq-default filladapt-mode t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
