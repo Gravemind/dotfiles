@@ -1,9 +1,27 @@
 #!/bin/bash
 
+ARG1=$1
 
+if [ "$ARG1" = "-h" ]
+then
+    echo "usage:"
+    echo "    $0 [-h] [-l] [match]"
+    exit 0
+fi
 
 
 function mymerge() {
+    if [ -n "$MATCH" ]
+    then
+        if [[ "$2" = *${ARG1}* ]]
+        then
+            echo "## matching $2"
+        else
+            echo "## skip $2"
+            return
+        fi           
+    fi
+
 	if [ ! -e "$1" ]
 	then
 		echo "## not such file or dir: $1"
@@ -23,7 +41,10 @@ function mymerge() {
     if [ -n "$(diff $1 $2)" ]
     then
         echo "$> $MERGER $1 $2"
-        "$MERGER" $1 $2 # &> /dev/null
+        if [ "$ARG1" != "-l" ]
+        then
+            "$MERGER" $1 $2 # &> /dev/null
+        fi
     else
         echo "## ( no diff: $1 $2 )"
     fi
@@ -31,19 +52,18 @@ function mymerge() {
 
 mymerge oh-my-zsh-install.sh ~/.oh-my-zsh/tools/install.sh
 mymerge ~/bin bin
-mymerge ~/.conky .conky
-mymerge ~/.dzen .dzen
+#mymerge ~/.conky .conky
+#mymerge ~/.dzen .dzen
 mymerge ~/.emacs.d .emacs.d
 mymerge ~/.gitconfig .gitconfig
-mymerge ~/.gitconfig.win .gitconfig.win
 mymerge ~/.gitignore .gitignore
 mymerge ~/.i3 .i3
 mymerge ~/.ncmpcpp .ncmpcpp
 mymerge ~/.oh-my-zsh/custom .oh-my-zsh/custom
-mymerge ~/oh-my-zsh-install.sh oh-my-zsh-install.sh
+#mymerge ~/oh-my-zsh-install.sh oh-my-zsh-install.sh
 mymerge ~/.screenrc .screenrc
-mymerge ~/scripts scripts
-mymerge ~/.userscripts .userscripts
+#mymerge ~/scripts scripts
+#mymerge ~/.userscripts .userscripts
 mymerge ~/.Xdefaults .Xdefaults
 mymerge ~/.xinitrc .xinitrc
 mymerge ~/.zshrc .zshrc
