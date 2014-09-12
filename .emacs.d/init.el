@@ -1,6 +1,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; https://github.com/jwiegley/use-package
+;; https://github.com/edvorg/req-package
 ;;
 ;; http://steckerhalter.co.vu/steckemacs.html
 ;; https://github.com/seth/my-emacs-dot-d/blob/master/emacs-init.org
@@ -51,7 +53,9 @@
                          ("melpa" . "http://melpa.milkbox.net/packages/")
                          ("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")))
-(eval-when-compile (package-initialize))
+
+;;(eval-when-compile (package-initialize))
+(package-initialize)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -104,6 +108,19 @@
     (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
     ;; (load-theme 'wwombat t)
     (load-theme 'automn t)
+    ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; mouse
+;;
+
+(req-package mouse
+  :config
+  (progn
+    (setq-default mouse-yank-at-point t)                   ; Paste at cursor position
+    (setq-default scroll-preserve-screen-position t)       ; Scroll without moving cursor
+    (mouse-avoidance-mode 'jump)                   ; Mouse avoids cursor
     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -335,9 +352,11 @@ brake whatever split of windows we might have in the frame."
          ("S-<f6>" . uncomment-region)
 
          ("M-k" . kill-whole-line)
-
          ("C-x K" . kill-this-buffer)
 
+         ("S-<delete>" . clipboard-kill-region)
+         ("C-<insert>" . clipboard-kill-ring-save)
+         ("S-<insert>" . clipboard-yank)
          )
   :config
   (progn
