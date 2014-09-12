@@ -161,6 +161,10 @@
                     (set-face-background 'default "#202020"))
                 ))
 
+    (setq-default ansi-color-names-vector
+                  ["black" "tomato" "PaleGreen2" "gold1"
+                   "DeepSkyBlue1" "MediumOrchid1" "cyan" "white"])
+
     ;; (setq buffer-menu-buffer-font-lock-keywords
     ;;       '(("^....[*]Man .*Man.*"   . font-lock-variable-name-face) ; Man page
     ;;         (".*Dired.*"             . font-lock-comment-face)       ; Dired
