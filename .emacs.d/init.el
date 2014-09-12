@@ -11,35 +11,32 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Basic
+;; Startup
 ;;
 
 ;; remove frames
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-;; no startup screen
-(setq inhibit-startup-screen t)
-;; no foo~ files
-(setq make-backup-files nil)
+
+(setq-default inhibit-startup-screen t ;; no startup screen
+              make-backup-files nil ;; no foo~ files
+              truncate-lines t
+              custom-file "~/.emacs.d/custom.el"
+              vc-handled-backends nil
+              )
 
 (blink-cursor-mode -1)
 (column-number-mode t)
 
-(setq-default truncate-lines t)
-
-(setq custom-file "~/.emacs.d/custom.el")
+;; Replace yes-or-no by y-or-n
+(fset 'yes-or-no-p 'y-or-n-p)
 
 ;; UTF-8
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8)
-
-;; Replace yes-or-no by y-or-n
-(fset 'yes-or-no-p 'y-or-n-p)
-
-(setq vc-handled-backends nil)
 
 ;; delete current selection when typing
 ;; http://www.emacswiki.org/emacs/DeleteSelectionMode
@@ -54,7 +51,6 @@
                          ("melpa" . "http://melpa.milkbox.net/packages/")
                          ("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")))
-
 (eval-when-compile (package-initialize))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -99,41 +95,46 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Theme / colorization
+;; Theme
 ;;
 
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-;; (load-theme 'wwombat t)
-(load-theme 'automn t)
+(req-package custom
+  :config
+  (progn
+    (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+    ;; (load-theme 'wwombat t)
+    (load-theme 'automn t)
+    ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Base
+;; winner
+;;   windows layout undo/redo bindings;
+;;   C-c left, C-c right
 ;;
 
-;; winner-mode (builtin)
-;; windows layout undo/redo;
-;; C-c left C-C right
-(when (fboundp 'winner-mode)
-  (winner-mode 1))
+(req-package winner
+  :config (winner-mode 1))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; dired
+;; Auto update dired
+;;
 
 (req-package dired
   :require autorevert
   :config
   (progn
-   ;; Auto update dired
-   (add-hook 'dired-mode-hook 'auto-revert-mode)
-   ))
+    (add-hook 'dired-mode-hook 'auto-revert-mode)
+    ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Default
+;; Indent default 4 spaces
 ;;
 
-;; Set basic indentation to 4 spaces width
-(setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120 124 128 132 136 140 144 148 152 156 160 164 168 172 176 180))
-
-;; default is space indent
+(setq-default tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120 124 128 132 136 140 144 148 152 156 160 164 168 172 176 180))
 (setq-default c-basic-offset 4
               tab-width 4
               indent-tabs-mode nil
@@ -155,15 +156,19 @@
 ;; ido
 ;;
 
-(setq ido-enable-flex-matching t
-      ido-auto-merge-work-directories-length -1
-      ido-create-new-buffer 'always
-      ido-everywhere t
-      ido-default-buffer-method 'selected-window
-      ido-max-prospects 32
-      ido-use-filename-at-point 'guess
-      )
-(ido-mode 1)
+(req-package ido
+  :config
+  (progn
+    (setq ido-enable-flex-matching t
+          ido-auto-merge-work-directories-length -1
+          ido-create-new-buffer 'always
+          ido-everywhere t
+          ido-default-buffer-method 'selected-window
+          ido-max-prospects 32
+          ido-use-filename-at-point 'guess
+          )
+    (ido-mode 1)
+    ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -626,7 +631,6 @@ of FILE in the current directory, suitable for creation"
     (setq helm-ag-command-option "--all-text")
     (setq helm-ag-thing-at-point 'symbol)
   ))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
