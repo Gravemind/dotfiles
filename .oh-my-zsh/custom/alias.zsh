@@ -41,10 +41,6 @@ alias restart='_ rc.d restart'
 
 alias ssh-fingerprint="find . -name '*.pub' -exec ssh-keygen -l -f {} \;"
 
-alias ne='~/bin/ne -q -l ~/.emacs.d/config/jo-config.el'
-alias nw='\emacs -q -l ~/.emacs.d/config/jo-config.el -nw'
-alias ns='emacscl ns'
-
 alias rchttpd='sudo /etc/rc.d/httpd'
 alias rcmysqld='sudo /etc/rc.d/mysqld'
 alias rcsshd='sudo /etc/rc.d/sshd'
