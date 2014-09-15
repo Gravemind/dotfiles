@@ -276,10 +276,11 @@ bar {
 #exec ~/.i3/bar/bar.py
 exec ~/.i3/bg.py
 # exec conky -c ~/.conky/balloon/conkyrc
-# exec i3lock -c 222222
 
 #
 # Spawn layouts and programs
 # http://i3wm.org/docs/layout-saving.html
 #
 exec --no-startup-id $layouts/startup.zsh
+
+# exec i3lock -c 222222

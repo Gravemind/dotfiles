@@ -1,0 +1,20 @@
+#!/bin/bash
+
+check_err() {
+	echo "----- $@"
+	"$@"
+	if [ $? != 0 ]
+	then
+		echo "--- FAIL --- $@"
+	fi
+}
+
+
+
+# check_err xrandr --output DVI-I-0 --same-as HDMI-0
+check_err xrandr --output HDMI-0 --off
+
+check_err synergys -f --config ~/.config/synergy.conf
+
+check_err xrandr --output HDMI-0 --auto 
+check_err xrandr --output DVI-I-0 --left-of HDMI-0
