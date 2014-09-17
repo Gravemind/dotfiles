@@ -136,7 +136,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; dired
-;; Auto update dired
+;;   Auto-revert dired
 ;;
 
 (req-package dired
@@ -357,6 +357,10 @@ brake whatever split of windows we might have in the frame."
          ("S-<delete>" . clipboard-kill-region)
          ("C-<insert>" . clipboard-kill-ring-save)
          ("S-<insert>" . clipboard-yank)
+
+         ("C-c r" . replace-string)
+         ("C-c R" . query-replace)
+
          )
   :config
   (progn
@@ -416,8 +420,6 @@ brake whatever split of windows we might have in the frame."
                 (my-prog-whitespace)
                 ))
     ))
-
-;; @TODO rtags
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -712,6 +714,57 @@ of FILE in the current directory, suitable for creation"
                           "...XX...")
     (global-git-gutter+-mode t)
     ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; rtags (pure awsomeness)
+;;
+;;   dont use rtags elpa-package, useless without the sources
+;;   # git clone https://github.com/Andersbakken/rtags ~/bin/rtags 
+;:
+;; about c-mode-base-map bindinds:
+;;   https://www.gnu.org/software/emacs/manual/html_node/ccmode/Sample-_002eemacs-File.html
+;;
+
+(add-to-list 'load-path "~/bin/rtags/src")
+
+(defun rtags-clear-diagnostics ()
+  "Stops rtags diagnostics, and clear diagnostics overlay"
+  (interactive)
+  (rtags-stop-diagnostics)
+  (rtags-clear-diagnostics-overlays)
+)
+
+(defun my-rtags-c-initialization-hook ()
+  (require 'rtags) ;; @TODO autoload
+
+  (define-key c-mode-base-map "\C-cj" 'rtags-location-stack-back)
+  (define-key c-mode-base-map "\C-cl" 'rtags-location-stack-forward)
+
+  (define-key c-mode-base-map "\C-cp" 'rtags-next-match)
+  (define-key c-mode-base-map "\C-c;" 'rtags-next-match)
+
+  ;; ido-style all tags in file
+  (define-key c-mode-base-map "\C-ck" 'rtags-imenu)
+
+  ;; y: file
+  ;; u: tag
+  ;; i: symbol
+  ;; o: reference
+  (define-key c-mode-base-map "\C-cy" 'rtags-find-file)
+  (define-key c-mode-base-map "\C-cu" 'rtags-taglist)
+  (define-key c-mode-base-map "\C-ci" 'rtags-find-symbol-at-point)
+  (define-key c-mode-base-map "\C-cI" 'rtags-find-symbol)
+  (define-key c-mode-base-map "\C-co" 'rtags-find-references-at-point)
+  (define-key c-mode-base-map "\C-cO" 'rtags-find-references)
+
+  (define-key c-mode-base-map "\C-ch" 'rtags-find-virtuals-at-point)
+
+  (define-key c-mode-base-map "\C-cn" 'rtags-diagnostics)
+  (define-key c-mode-base-map "\C-cN" 'rtags-clear-diagnostics)
+)
+
+(add-hook 'c-initialization-hook 'my-rtags-c-initialization-hook)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
