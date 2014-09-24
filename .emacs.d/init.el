@@ -386,6 +386,14 @@ brake whatever split of windows we might have in the frame."
   '("bsd"
     ))
 
+(defun my-indent-tab()
+  (setq c-default-style "cc-style"
+        c-basic-offset 4
+        tab-width 4
+        indent-tabs-mode t)
+  (my-prog-whitespace)
+  )
+
 ;; (c-set-offset 'substatement-open 0)
 ;; (c-set-offset 'label 0)
 ;; (c-set-offset 'arglist-intro 4)
@@ -411,14 +419,7 @@ brake whatever split of windows we might have in the frame."
     ;; we dont want to start whitespace before we setq indent style
     (remove-hook 'prog-mode-hook 'my-prog-whitespace)
     (c-add-style "cc-style" cc-style)
-    (add-hook 'c-mode-common-hook
-              (defun my-cc-mode()
-                (setq c-default-style "cc-style"
-                      c-basic-offset 4
-                      tab-width 4
-                      indent-tabs-mode t)
-                (my-prog-whitespace)
-                ))
+    (add-hook 'c-mode-common-hook 'my-indent-tab)
     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -431,6 +432,7 @@ brake whatever split of windows we might have in the frame."
   :config
   (progn
     (setq-default lua-indent-level 4)
+    (add-hook 'lua-mode-hook 'my-indent-tab)
     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
