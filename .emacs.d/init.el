@@ -770,6 +770,14 @@ of FILE in the current directory, suitable for creation"
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; discover-my-major
+;;
+
+(req-package discover-my-major
+  :commands (discover-my-major))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; other misc
 ;;
 
