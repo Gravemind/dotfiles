@@ -182,7 +182,7 @@
           ido-everywhere t
           ido-default-buffer-method 'selected-window
           ido-max-prospects 32
-          ido-use-filename-at-point 'guess
+          ; ido-use-filename-at-point 'guess
           )
     (ido-mode 1)
     ))
