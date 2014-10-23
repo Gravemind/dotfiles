@@ -382,25 +382,32 @@ brake whatever split of windows we might have in the frame."
 ;; CC
 ;;
 
-(defconst cc-style
+(defconst my-c-style
   '("bsd"
+    (c-basic-offset . 4)
+    (tab-width . 4)
+    (c-indent-level . 4)
+    (indent-tabs-mode . t)
+    (c-offsets-alist
+     (substatement-open . 0)
+     ;;(label . 0)
+     (arglist-intro . 4)
+     (arglist-close . 0)
+     ;;(brace-list-open . 0)
+     ;;(innamespace . 4)
+     ;; (member-init-intro 0) ;; indentation of ctor's initialisation li. st
+     )
     ))
 
 (defun my-indent-tab()
-  (setq c-default-style "cc-style"
-        c-basic-offset 4
-        tab-width 4
-        indent-tabs-mode t)
+  (setq
+   ;;c-default-style "my-c-style"
+   c-basic-offset 4
+   tab-width 4
+   indent-tabs-mode t)
+  (c-set-style "my-c-style")
   (my-prog-whitespace)
   )
-
-;; (c-set-offset 'substatement-open 0)
-;; (c-set-offset 'label 0)
-;; (c-set-offset 'arglist-intro 4)
-;; (c-set-offset 'arglist-close 0)
-;; (c-set-offset 'brace-list-open 0)
-;; (c-set-offset 'innamespace 4)
-;; (c-set-offset 'member-init-intro 0) ;; indentation of ctor's initialisation list
 
 (req-package cc-mode
   :mode (("\\.cpp\\'" . c++-mode)
@@ -418,7 +425,7 @@ brake whatever split of windows we might have in the frame."
   (progn
     ;; we dont want to start whitespace before we setq indent style
     (remove-hook 'prog-mode-hook 'my-prog-whitespace)
-    (c-add-style "cc-style" cc-style)
+    (c-add-style "my-c-style" my-c-style)
     (add-hook 'c-mode-common-hook 'my-indent-tab)
     ))
 
