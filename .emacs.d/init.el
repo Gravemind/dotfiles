@@ -152,7 +152,7 @@
 ;; Indent default 4 spaces
 ;;
 
-(setq-default tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120 124 128 132 136 140 144 148 152 156 160 164 168 172 176 180))
+(setq tab-stop-list (number-sequence 4 180 4))
 (setq-default c-basic-offset 4
               tab-width 4
               indent-tabs-mode nil
@@ -400,13 +400,23 @@ brake whatever split of windows we might have in the frame."
      )
     ))
 
-(defun my-indent-tab()
+(defun my-c-indent-tab()
   (setq
    ;;c-default-style "my-c-style"
    c-basic-offset 4
    tab-width 4
    indent-tabs-mode t)
   (c-set-style "my-c-style")
+  (my-prog-whitespace)
+  )
+
+(defun my-jade-indent-tab()
+  (setq tab-stop-list (number-sequence 2 180 2))
+  (setq
+   ;;c-default-style "my-c-style"
+   c-basic-offset 2
+   tab-width 2
+   indent-tabs-mode t)
   (my-prog-whitespace)
   )
 
@@ -427,8 +437,16 @@ brake whatever split of windows we might have in the frame."
     ;; we dont want to start whitespace before we setq indent style
     (remove-hook 'prog-mode-hook 'my-prog-whitespace)
     (c-add-style "my-c-style" my-c-style)
-    (add-hook 'c-mode-common-hook 'my-indent-tab)
+    (add-hook 'c-mode-common-hook 'my-c-indent-tab)
     ))
+
+(req-package jade-mode
+  :mode ("\\.dt$" . jade-mode)
+  :config
+  (progn
+    (add-hook 'jade-mode-hook 'my-jade-indent-tab)
+    )
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -440,7 +458,7 @@ brake whatever split of windows we might have in the frame."
   :config
   (progn
     (setq-default lua-indent-level 4)
-    (add-hook 'lua-mode-hook 'my-indent-tab)
+    (add-hook 'lua-mode-hook 'my-c-indent-tab)
     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -652,15 +670,20 @@ of FILE in the current directory, suitable for creation"
 
   ))
 
+;;
+;; ag
+;; The Silver Searcher
+;;
+
 (req-package helm-ag
   ;; :disabled t
   :require helm
   :commands (helm-do-ag helm-ag)
   :config
   (progn
-    (setq helm-ag-base-command "ag --nocolor --ignore-case -t -U")
+    (setq helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
     (setq helm-ag-command-option "--all-text")
-    (setq helm-ag-thing-at-point 'symbol)
+    (setq helm-ag-insert-at-point 'symbol)
   ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
