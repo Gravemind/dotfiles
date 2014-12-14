@@ -480,13 +480,17 @@ brake whatever split of windows we might have in the frame."
 ;; D
 ;;
 
-(req-package d-mode)
-
-(req-package flycheck-dmd-dub
-  :require flycheck
+(req-package d-mode
+  :mode (("\\.d\\'" . d-mode))
   :config
   (progn
     (add-hook 'd-mode-hook 'flycheck-dmd-dub-set-include-path)
+    ))
+
+(req-package flycheck-dmd-dub
+  :commands (flycheck-dmd-dub-set-include-path)
+  :config
+  (progn
     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
