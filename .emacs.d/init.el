@@ -383,6 +383,16 @@ brake whatever split of windows we might have in the frame."
 ;; CC
 ;;
 
+(defun _jo/enable-linum ()
+  (linum-mode t)
+  )
+
+(defun jo/prepare-gdb ()
+  (interactive)
+  (golden-ratio-mode 0)
+  (add-hook 'c-mode-common-hook '_jo/enable-linum)
+  )
+
 (defconst my-c-style
   '("bsd"
     (c-basic-offset . 4)

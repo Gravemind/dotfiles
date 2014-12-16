@@ -1,6 +1,6 @@
 
 function gge() {
-	\emacs --eval "(progn (jo/enable-linum) (gdb \"gdb -i=mi $1\"))" &
+	\emacs --eval "(progn (jo/prepare-gdb) (gdb \"gdb -i=mi $1\"))" &
 }
 
 function ggv() {
