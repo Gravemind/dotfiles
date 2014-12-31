@@ -18,8 +18,11 @@
 
 ;; remove frames
 (menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+(if (display-graphic-p)
+    (progn
+      (tool-bar-mode -1)
+      (scroll-bar-mode -1)
+      ))
 
 (setq-default inhibit-startup-screen t ;; no startup screen
               make-backup-files nil ;; no foo~ files
