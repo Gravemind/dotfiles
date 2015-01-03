@@ -17,6 +17,7 @@ export LESS_TERMCAP_us=$'\E[01;36m'       # begin underline
 
 # deprecated:
 #export GREP_OPTIONS="--binary-files=without-match"
+export GREP_OPTIONS=
 
 export EDITOR='emacs'
 export PAGER='less'
