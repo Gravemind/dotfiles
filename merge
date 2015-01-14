@@ -66,3 +66,4 @@ mymerge ~/.screenrc .screenrc
 mymerge ~/.Xdefaults .Xdefaults
 mymerge ~/.xinitrc .xinitrc
 mymerge ~/.zshrc .zshrc
+mymerge ~/.config/MusicBrainz/Picard.conf
