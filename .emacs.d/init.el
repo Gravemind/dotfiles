@@ -47,6 +47,9 @@
 ;; http://www.emacswiki.org/emacs/DeleteSelectionMode
 (delete-selection-mode 1)
 
+;; 
+(put 'erase-buffer 'disabled nil)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Packages init
