@@ -4,10 +4,12 @@
 ;; https://github.com/jwiegley/use-package
 ;; https://github.com/edvorg/req-package
 ;;
-;; http://steckerhalter.co.vu/steckemacs.html
-;; https://github.com/seth/my-emacs-dot-d/blob/master/emacs-init.org
-;; https://github.com/edvorg/emacs-configs
-;; https://github.com/ljos/.emacs.d/blob/master/configuration.org
+;; pretty org-mode conf
+;;   https://github.com/seth/my-emacs-dot-d/blob/master/emacs-init.org
+;; req-package conf
+;;   https://github.com/edvorg/emacs-configs
+;; req-package org-mode conf
+;;   https://github.com/ljos/.emacs.d/blob/master/configuration.org
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -826,6 +828,23 @@ of FILE in the current directory, suitable for creation"
 
 (req-package discover-my-major
   :commands (discover-my-major))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; yasnippet
+;;
+
+(setq yas-snippet-dirs
+      '("~/.emacs.d/snippets"))
+
+(req-package yasnippet
+  :commands yas-global-mode
+  :config
+  (progn
+    ))
+
+(yas-global-mode t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
