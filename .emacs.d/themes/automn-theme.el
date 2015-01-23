@@ -148,6 +148,11 @@
      `(ahs-face ((t (:foreground nil :background nil :underline "Orange1"))))
      `(ahs-definition-face ((t (:foreground nil :background nil :underline t))))
 
+     ;;
+     ;; rtags
+     ;;
+     `(rtags-skippedline ((t (:background "#333"))))
+
      )
 
     (if (window-system)

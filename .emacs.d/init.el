@@ -334,7 +334,7 @@ brake whatever split of windows we might have in the frame."
 ;;
 
 (defun my-prog-whitespace ()
-  (setq whitespace-style '(face trailing indentation space-before-tab))
+  (setq whitespace-style '(face trailing space-before-tab))
   (setq show-trailing-whitespace 1)
   (whitespace-mode t)
   )
@@ -345,12 +345,21 @@ brake whatever split of windows we might have in the frame."
 (defun my-prog-ahs ()
   (auto-highlight-symbol-mode))
 
+
+(defun delete-word (arg)
+  "Delete characters backward until encountering the beginning of a word.
+With argument ARG, do this that many times."
+  (interactive "p")
+  (delete-region (point) (progn (backward-word arg) (point))))
+
 ;; prog-mode is in simple
 (req-package simple
   :require (paren auto-highlight-symbol)
   :bind (
          ;; Force backspace erase tabulations
          ("<backspace>" . delete-backward-char)
+
+         ("C-<backspace>" . delete-word)
 
          ("C-<end>" . move-end-of-line)
          ("C-<home>" . move-beginning-of-line)
@@ -471,12 +480,13 @@ brake whatever split of windows we might have in the frame."
 ;; lua
 ;;
 
+(add-hook 'lua-mode-hook 'my-c-indent-tab)
+
 (req-package lua-mode
   :mode ("\\.lua$" . lua-mode)
   :config
   (progn
     (setq-default lua-indent-level 4)
-    (add-hook 'lua-mode-hook 'my-c-indent-tab)
     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -703,9 +713,9 @@ of FILE in the current directory, suitable for creation"
   :commands (helm-do-ag helm-ag)
   :config
   (progn
-    (setq helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
     (setq helm-ag-command-option "--all-text")
-    (setq helm-ag-insert-at-point 'symbol)
+    (setq helm-ag-source-type 'file-line)
+    ;;(setq helm-ag-insert-at-point 'symbol)
   ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
