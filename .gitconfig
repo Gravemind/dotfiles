@@ -9,16 +9,44 @@
 	br = branch
 	com = commit -m
 	s = status -sb
+
+	# fetch another branch
 	fo = "!sh -c 'git fetch origin $1:$1;' -"
+
+	# fetch branch and checkout it
 	fco = "!sh -c 'git fo $1; git checkout $1 && git submodule update' -"
-	l = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold red)%d%C(reset) %C(white)%s%C(reset) %C(green)%an%C(reset) %C(blue)%ar%C(reset)' --date-order
-	lnc = log --abbrev-commit --decorate --format=format:'%h %d %s %an %ar\n' --date-order
-	la = !git l --all
-	ll = !git l --simplify-by-decoration
+
+	# fetch and prune everyting
 	fp = fetch --all --prune --tags
+
+	# working diff
 	d = diff
+
+	# staged diff
 	dc = diff --cached
+
+	# pull only if fast-forard is possible
 	pullff = pull --no-rebase --ff-only
+
+	# pretty log
+	l = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold red)%d%C(reset) %C(white)%s%C(reset) %C(green)%an%C(reset) %C(blue)%ar%C(reset)' --date-order
+	# log all
+	la = !git l --all
+	# log all simplyfied graph
+	ll = !git la --simplify-by-decoration
+
+[fetch]
+	prune = true
+[pull]
+	rebase = true
+[push]
+	default = simple
+[merge]
+	conflictstyle = diff3
+	tool = meld
+[core]
+	# treats a carriage-return at the end of line as part of the line terminator
+	whitespace = cr-at-eol
 
 [color]
 	branch = auto
@@ -26,21 +54,6 @@
 	interactive = auto
 	status = auto
 	log = auto
-
-[core]
-	# treats a carriage-return at the end of line as part of the line terminator
-	whitespace = cr-at-eol
-
-[fetch]
-	prune = true
-[pull]
-	rebase = true
-
-[push]
-	default = simple
-[merge]
-	conflictstyle = diff3
-	tool = meld
 
 [mergetool "emerge"]
 	path = /home/jo/bin/emerge-for-git
