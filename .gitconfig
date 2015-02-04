@@ -18,6 +18,7 @@
 	fp = fetch --all --prune --tags
 	d = diff
 	dc = diff --cached
+	pullff = pull --no-rebase --ff-only
 
 [color]
 	branch = auto
