@@ -34,6 +34,8 @@
 	la = !git l --all
 	# log all simplyfied graph
 	ll = !git la --simplify-by-decoration
+	# log to locate HEAD and upstream tracked branch
+	lo = !git l HEAD `git rev-parse --abbrev-ref --symbolic-full-name @{upstream}`
 
 [fetch]
 	prune = true
