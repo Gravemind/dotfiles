@@ -1,4 +1,3 @@
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; https://github.com/jwiegley/use-package
@@ -49,8 +48,11 @@
 ;; http://www.emacswiki.org/emacs/DeleteSelectionMode
 (delete-selection-mode 1)
 
-;; 
+;;
 (put 'erase-buffer 'disabled nil)
+
+;; (setq font-lock-maximum-decoration
+;;     '((c-mode . 2) (c++-mode . 2)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -60,7 +62,7 @@
 (setq package-archives '(("ELPA" . "http://tromey.com/elpa/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")
                          ("gnu" . "http://elpa.gnu.org/packages/")
-                                        ;("marmalade" . "http://marmalade-repo.org/packages/")
+                                        ; ("marmalade" . "http://marmalade-repo.org/packages/")
                          ))
 
 ;;(eval-when-compile (package-initialize))
@@ -127,9 +129,9 @@
 (req-package mouse
   :config
   (progn
-    (setq-default mouse-yank-at-point t)                   ; Paste at cursor position
-    (setq-default scroll-preserve-screen-position t)       ; Scroll without moving cursor
-    (mouse-avoidance-mode 'jump)                   ; Mouse avoids cursor
+    (setq-default mouse-yank-at-point t)           ; Paste at cursor position
+    (setq-default scroll-preserve-screen-position t)     ; Scroll without moving cursor
+    (mouse-avoidance-mode 'jump)           ; Mouse avoids cursor
     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -157,14 +159,80 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Indent default 4 spaces
+;; Indent default 4 space
 ;;
+
+(defun jo/iwb-space ()
+  "Indent whole buffer, see jo/tab-space"
+  (interactive)
+  (delete-trailing-whitespace)
+  ;;(indent-region (point-min) (point-max) nil)
+  (untabify (point-min) (point-max))
+  (indent-region (point-min) (point-max) nil)
+  (untabify (point-min) (point-max))
+  )
+
+(defun jo/iwb-tab ()
+  "Indent whole buffer, see jo/tab-tab"
+  (interactive)
+  (delete-trailing-whitespace)
+  (tabify (point-min) (point-max))
+  ;;(indent-region (point-min) (point-max) nil)
+  ;;(tabify (point-min) (point-max))
+  )
+
+(defun jo/tab-space (&optional opt-tab-width)
+  "Indent with 4 spaces"
+  (interactive)
+  (let ((tabw (if (eq opt-tab-width nil) 4 opt-tab-width)))
+    (progn
+      (setq c-basic-offset tabw
+            tab-width tabw
+            standard-indent tabw
+            indent-tabs-mode nil)))
+  (setq whitespace-style '(face trailing indentation space-before-tab))
+  (whitespace-mode 0)
+  (whitespace-mode 1)
+  (local-set-key [f5] 'jo/iwb-space)
+  (message "tab space")
+  )
+
+
+(defun jo/tab-tab (&optional opt-tab-width)
+  "Indent with 1 tabulation of 4 spaces width"
+  (interactive)
+  (let ((tabw (if (eq opt-tab-width nil) 4 opt-tab-width)))
+    (progn
+      (setq c-basic-offset tabw
+            tab-width tabw
+            standard-indent tabw
+            indent-tabs-mode t)))
+  (setq whitespace-style '(face trailing indentation space-before-tab))
+  (whitespace-mode 0)
+  (whitespace-mode 1)
+  (local-set-key [f5] 'jo/iwb-tab)
+  (message "tab tab")
+  )
+
+(defun jo/tab-absurde ()
+  "Indent absurde (4 spaces indent but replace 8 spaces by tabulation)"
+  (interactive)
+  (local-set-key [f5] 'jo/iwb-absurde)
+  (setq c-basic-offset 4
+        tab-width 8
+        standard-indent 4
+        indent-tabs-mode t)
+  (setq whitespace-style '(face trailing))
+  (whitespace-mode t)
+  )
 
 (setq tab-stop-list (number-sequence 4 180 4))
 (setq-default c-basic-offset 4
               tab-width 4
-              indent-tabs-mode nil
               standard-indent 4)
+
+(setq-default indent-tabs-mode nil)
+;;(setq-default indent-tabs-mode t)
 
 ;; @TODO iwb. test python.
 
@@ -191,7 +259,7 @@
           ido-everywhere t
           ido-default-buffer-method 'selected-window
           ido-max-prospects 32
-          ; ido-use-filename-at-point 'guess
+                                        ; ido-use-filename-at-point 'guess
           )
     (ido-mode 1)
     ))
@@ -236,18 +304,18 @@
 (req-package ibuffer
   :bind ("C-x C-b" . ibuffer))
 
-(defun my-keyboard-quit()
+(defun jo/keyboard-quit()
   "Escape the minibuffer or cancel region consistently using 'Control-g'.
 Normally if the minibuffer is active but we lost focus (say, we clicked away or set the cursor into another buffer)
-we can quit by pressing 'ESC' three times. This function handles it more conveniently, as it checks for the condition 
-of not beign in the minibuffer but having it active. Otherwise simply doing the ESC or (keyboard-escape-quit) would 
+we can quit by pressing 'ESC' three times. This function handles it more conveniently, as it checks for the condition
+of not beign in the minibuffer but having it active. Otherwise simply doing the ESC or (keyboard-escape-quit) would
 brake whatever split of windows we might have in the frame."
   (interactive)
   (if (not(window-minibuffer-p (selected-window)))
       (if (or mark-active (active-minibuffer-window))
           (keyboard-escape-quit))
     (keyboard-quit)))
-(define-key global-map (kbd "C-g") 'my-keyboard-quit)
+(define-key global-map (kbd "C-g") 'jo/keyboard-quit)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -289,23 +357,23 @@ brake whatever split of windows we might have in the frame."
   :disabled t
   :bind (("C-v" . popwin:keymap))
   :init (popwin-mode 1)
-)
+  )
 ;; C-v then:
-;; | Key    | Command                               |
+;; | Key  | Command               |
 ;; |--------+---------------------------------------|
-;; | b      | popwin:popup-buffer                   |
-;; | l      | popwin:popup-last-buffer              |
-;; | o      | popwin:display-buffer                 |
-;; | C-b    | popwin:switch-to-last-buffer          |
-;; | C-p    | popwin:original-pop-to-last-buffer    |
-;; | C-o    | popwin:original-display-last-buffer   |
-;; | SPC    | popwin:select-popup-window            |
-;; | s      | popwin:stick-popup-window             |
-;; | 0      | popwin:close-popup-window             |
-;; | f, C-f | popwin:find-file                      |
-;; | e      | popwin:messages                       |
-;; | C-u    | popwin:universal-display              |
-;; | 1      | popwin:one-window                     |
+;; | b    | popwin:popup-buffer         |
+;; | l    | popwin:popup-last-buffer        |
+;; | o    | popwin:display-buffer         |
+;; | C-b  | popwin:switch-to-last-buffer      |
+;; | C-p  | popwin:original-pop-to-last-buffer  |
+;; | C-o  | popwin:original-display-last-buffer |
+;; | SPC  | popwin:select-popup-window      |
+;; | s    | popwin:stick-popup-window       |
+;; | 0    | popwin:close-popup-window       |
+;; | f, C-f | popwin:find-file            |
+;; | e    | popwin:messages           |
+;; | C-u  | popwin:universal-display        |
+;; | 1    | popwin:one-window           |
 ;;
 
 
@@ -333,18 +401,11 @@ brake whatever split of windows we might have in the frame."
 ;; prog mode
 ;;
 
-(defun my-prog-whitespace ()
-  (setq whitespace-style '(face trailing space-before-tab))
-  (setq show-trailing-whitespace 1)
-  (whitespace-mode t)
-  )
-
 (req-package auto-highlight-symbol
   :config (setq-default ahs-idle-interval 0.1))
 
-(defun my-prog-ahs ()
+(defun jo/ahs ()
   (auto-highlight-symbol-mode))
-
 
 (defun delete-word (arg)
   "Delete characters backward until encountering the beginning of a word.
@@ -368,6 +429,7 @@ With argument ARG, do this that many times."
 
          ("<f6>" . comment-or-uncomment-region)
          ("S-<f6>" . uncomment-region)
+         ("C-c C-c" . comment-region) ;; force for eveyone
 
          ("M-k" . kill-whole-line)
          ("C-x K" . kill-this-buffer)
@@ -378,12 +440,10 @@ With argument ARG, do this that many times."
 
          ("C-c r" . replace-string)
          ("C-c R" . query-replace)
-
          )
   :config
   (progn
-    (add-hook 'prog-mode-hook 'my-prog-whitespace)
-    (add-hook 'prog-mode-hook 'my-prog-ahs)
+    (add-hook 'prog-mode-hook '(lambda() (progn (jo/tab-tab) (jo/ahs))))
     ))
 
 (req-package dabbrev
@@ -400,17 +460,31 @@ With argument ARG, do this that many times."
 ;; CC
 ;;
 
-(defun _jo/enable-linum ()
-  (linum-mode t)
+(defvar font-lock-format-specifier-face
+  'font-lock-format-specifier-face
+  "Face name to use for format specifiers.")
+
+(defface font-lock-format-specifier-face
+  '((t (:foreground "OrangeRed1")))
+  "Font Lock mode face used to highlight format specifiers."
+  :group 'font-lock-faces)
+
+(defun jo/cc-mode ()
+  ;; printf format face
+  ;; http://emacswiki.org/emacs/AddKeywords
+  (font-lock-add-keywords
+   nil
+   '(("[^%]\\(%\\([[:digit:]]+\\$\\)?[-+' #0*]*\\([[:digit:]]*\\|\\*\\|\\*[[:digit:]]+\\$\\)\\(\\.\\([[:digit:]]*\\|\\*\\|\\*[[:digit:]]+\\$\\)\\)?\\([hlLjzt]\\|ll\\|hh\\)?\\([aAbdiuoxXDOUfFeEgGcCsSpn]\\|\\[\\^?.[^]]*\\]\\)\\)"
+      1 font-lock-format-specifier-face t)
+     ("\\(%%\\)"
+      1 font-lock-format-specifier-face t)) )
+
+  (c-set-style "jo-c-style")
+  (jo/tab-tab)
+  (jo/ahs)
   )
 
-(defun jo/prepare-gdb ()
-  (interactive)
-  (golden-ratio-mode 0)
-  (add-hook 'c-mode-common-hook '_jo/enable-linum)
-  )
-
-(defconst my-c-style
+(defconst jo-c-style
   '("bsd"
     (c-basic-offset . 4)
     (tab-width . 4)
@@ -427,24 +501,15 @@ With argument ARG, do this that many times."
      )
     ))
 
-(defun my-c-indent-tab()
-  (setq
-   ;;c-default-style "my-c-style"
-   c-basic-offset 4
-   tab-width 4
-   indent-tabs-mode t)
-  (c-set-style "my-c-style")
-  (my-prog-whitespace)
-  )
-
-(defun my-jade-indent-tab()
+(defun jo/jade-indent-tab()
+  (interactive)
   (setq tab-stop-list (number-sequence 2 180 2))
   (setq
-   ;;c-default-style "my-c-style"
+   ;;c-default-style "jo-c-style"
    c-basic-offset 2
    tab-width 2
    indent-tabs-mode t)
-  (my-prog-whitespace)
+  (whitespace-mode t)
   )
 
 (req-package cc-mode
@@ -462,16 +527,15 @@ With argument ARG, do this that many times."
   :config
   (progn
     ;; we dont want to start whitespace before we setq indent style
-    (remove-hook 'prog-mode-hook 'my-prog-whitespace)
-    (c-add-style "my-c-style" my-c-style)
-    (add-hook 'c-mode-common-hook 'my-c-indent-tab)
+    (c-add-style "jo-c-style" jo-c-style)
+    (add-hook 'c-mode-common-hook 'jo/cc-mode)
     ))
 
 (req-package jade-mode
   :mode ("\\.dt$" . jade-mode)
   :config
   (progn
-    (add-hook 'jade-mode-hook 'my-jade-indent-tab)
+    (add-hook 'jade-mode-hook 'jo/jade-indent-tab)
     )
   )
 
@@ -480,7 +544,7 @@ With argument ARG, do this that many times."
 ;; lua
 ;;
 
-(add-hook 'lua-mode-hook 'my-c-indent-tab)
+(add-hook 'lua-mode-hook '(lambda () (jo/tab-tab) (jo/ahs)))
 
 (req-package lua-mode
   :mode ("\\.lua$" . lua-mode)
@@ -513,6 +577,7 @@ With argument ARG, do this that many times."
   :config
   (progn
     (add-hook 'd-mode-hook 'flycheck-dmd-dub-set-include-path)
+    (add-hook 'd-mode-hook 'jo/cc-mode)
     ))
 
 (req-package flycheck-dmd-dub
@@ -520,6 +585,20 @@ With argument ARG, do this that many times."
   :config
   (progn
     ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; lisp
+;;
+
+(req-package lisp-mode
+                                        ; :commands lisp-mode
+  :config
+  (progn
+    (add-hook 'emacs-lisp-mode-hook (lambda () (jo/tab-space 2)))
+    (add-hook 'lisp-mode-hook (lambda () (jo/tab-space 2)))
+    ))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -602,15 +681,34 @@ of FILE in the current directory, suitable for creation"
 ;; gdb
 ;;
 
-(req-package gdb-mi
-  :require
-  cc-mode
-  :config
-  (progn
-    (setq gdb-many-windows t)
-    (setq gdb-create-source-file-list nil)
-    (add-hook 'gdb-mode-hook (lambda () (setq tab-width 8)))
-    ))
+;;
+;; #!sh
+;; function gge() {
+;;    \emacs --eval "(progn (jo/prepare-gdb) (gdb \"gdb -i=mi $1\"))" &
+;; }
+;;
+
+(defun jo/prepare-gdb ()
+  (interactive)
+  (golden-ratio-mode 0)
+  (add-hook 'prog-mode-hook '(lambda () (linum-mode t)))
+  )
+
+;; does not work:
+;; (req-package gdb-mi
+;; :require
+;; cc-mode
+;; :init
+;; (progn (setq gdb-many-windows t)
+;;      (setq gdb-show-main t)))
+
+;;(setq gdb-many-windows t)
+(setq gdb-create-source-file-list nil)
+(add-hook 'gdb-mode-hook
+          (lambda ()
+            (progn (jo/tab-tab 8)
+                   (jo/ahs)
+                   )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -637,7 +735,7 @@ of FILE in the current directory, suitable for creation"
          ("C-M->" . mc/mark-more-like-this-extended)
          ("C-c C-<" . mc/mark-all-like-this)
          )
-)
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -684,14 +782,14 @@ of FILE in the current directory, suitable for creation"
      helm-buffers-favorite-modes (append helm-buffers-favorite-modes
                                          '(picture-mode artist-mode))
      helm-candidate-number-limit 200 ; limit the number of displayed canidates
-     helm-M-x-requires-pattern 0     ; show all candidates when set to 0
+     helm-M-x-requires-pattern 0   ; show all candidates when set to 0
      helm-boring-file-regexp-list
      '("\\.git$" "\\.hg$" "\\.svn$" "\\.CVS$" "\\._darcs$" "\\.la$" "\\.o$" "\\.i$") ; do not show these files in helm buffer
      helm-ff-file-name-history-use-recentf t
      helm-move-to-line-cycle-in-source t ; move to end or beginning of source
                                         ; when reaching top or bottom of source.
-     ido-use-virtual-buffers t      ; Needed in helm-buffers-list
-     helm-buffers-fuzzy-matching t          ; fuzzy matching buffer names when non--nil
+     ido-use-virtual-buffers t    ; Needed in helm-buffers-list
+     helm-buffers-fuzzy-matching t      ; fuzzy matching buffer names when non--nil
                                         ; useful in helm-mini that lists buffers
      )
 
@@ -700,7 +798,7 @@ of FILE in the current directory, suitable for creation"
 
     ;;(helm-mode 1)
 
-  ))
+    ))
 
 ;;
 ;; ag
@@ -716,7 +814,7 @@ of FILE in the current directory, suitable for creation"
     (setq helm-ag-command-option "--all-text")
     (setq helm-ag-source-type 'file-line)
     ;;(setq helm-ag-insert-at-point 'symbol)
-  ))
+    ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -725,59 +823,61 @@ of FILE in the current directory, suitable for creation"
 ;;
 
 (req-package git-gutter-fringe+
-  :bind (
-         ("M-n" . git-gutter+-next-hunk)
-         ("M-p" . git-gutter+-previous-hunk)
-         )
-  ;:init
-  :config
+  :require fringe-helper
+  :init
   (progn
+
+    (global-set-key (kbd "M-n") 'git-gutter+-next-hunk)
+    (global-set-key (kbd "M-p") 'git-gutter+-previous-hunk)
+
     (fringe-helper-define 'git-gutter-fr+-added nil
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX...")
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX...")
     (fringe-helper-define 'git-gutter-fr+-deleted nil
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX...")
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX...")
     (fringe-helper-define 'git-gutter-fr+-modified nil
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX..."
-                          "...XX...")
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX..."
+      "...XX...")
+
     (global-git-gutter+-mode t)
+
     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -785,8 +885,8 @@ of FILE in the current directory, suitable for creation"
 ;; rtags (pure awsomeness)
 ;;
 ;;   dont use rtags elpa-package, useless without the sources
-;;   # git clone https://github.com/Andersbakken/rtags ~/bin/rtags 
-;:
+;;   # git clone https://github.com/Andersbakken/rtags ~/bin/rtags
+                                        ;:
 ;; about c-mode-base-map bindinds:
 ;;   https://www.gnu.org/software/emacs/manual/html_node/ccmode/Sample-_002eemacs-File.html
 ;;
@@ -798,9 +898,9 @@ of FILE in the current directory, suitable for creation"
   (interactive)
   (rtags-stop-diagnostics)
   (rtags-clear-diagnostics-overlays)
-)
+  )
 
-(defun my-rtags-c-initialization-hook ()
+(defun jo/rtags-c-initialization-hook ()
   (require 'rtags) ;; @TODO autoload
 
   (define-key c-mode-base-map "\C-cj" 'rtags-location-stack-back)
@@ -827,9 +927,9 @@ of FILE in the current directory, suitable for creation"
 
   (define-key c-mode-base-map "\C-cn" 'rtags-diagnostics)
   (define-key c-mode-base-map "\C-cN" 'rtags-clear-diagnostics)
-)
+  )
 
-(add-hook 'c-initialization-hook 'my-rtags-c-initialization-hook)
+(add-hook 'c-initialization-hook 'jo/rtags-c-initialization-hook)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -845,16 +945,15 @@ of FILE in the current directory, suitable for creation"
 ;; yasnippet
 ;;
 
-(setq yas-snippet-dirs
-      '("~/.emacs.d/snippets"))
-
 (req-package yasnippet
   :commands yas-global-mode
-  :config
+  :idle
   (progn
+    (setq yas-snippet-dirs
+          '("~/.emacs.d/snippets"))
+    (yas-global-mode t)
     ))
 
-(yas-global-mode t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -864,26 +963,47 @@ of FILE in the current directory, suitable for creation"
 ;;(req-package impatient-mode)
 
 ;; fix specific languages
-(add-hook 'html-mode-hook (lambda () (setq indent-tabs-mode nil
-                                           tab-width 2)))
 
-(defun my-hide-ctrl-M ()
+(defun jo/hide-ctrl-M ()
   "Hides the disturbing '^M' showing up in files containing mixed UNIX and DOS line endings."
   (interactive)
   (setq buffer-display-table (make-display-table))
   (aset buffer-display-table ?\^M []))
 
-;; @TODO my-hide-ctrl-M diff-mode
+;; @TODO jo/hide-ctrl-M diff-mode
 
 (defun jo/encode-dos ()
   (interactive)
   (revert-buffer-with-coding-system 'utf-8-dos)
-)
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;
 ;;
+
+;; ;; Built-in basic types
+;; (c-lang-defconst c-primitive-type-kwds
+;;                  c++ (append '("char16_t" "char32_t")
+;;                              (c-lang-const c-primitive-type-kwds)))
+;; ;; Keywords that can prefix normal declarations of identifiers
+;; (c-lang-defconst c-modifier-kwds
+;;                  c++ (append '("thread_local" "noexcept")
+;;                              (c-lang-const c-modifier-kwds)))
+;; ;; These can occur almost anywhere in types but they don't build a type of
+;; ;; themselves.
+;; (c-lang-defconst c-type-modifier-kwds
+;;                  c++ (append '("constexpr")
+;;                              (c-lang-const c-type-modifier-kwds)))
+;; ;; Keywords that may be followed by a parenthesis expression that doesn't
+;; ;; contain type identifiers.
+;; (c-lang-defconst c-paren-nontype-kwds
+;;                  c++ (append '("decltype" "noexcept" "static_assert")
+;;                              (c-lang-const c-paren-nontype-kwds)))
+;; ;; Keywords for constants.
+;; (c-lang-defconst c-constant-kwds
+;;                  c++ (append '("nullptr")
+;;                              (c-lang-const c-constant-kwds)))
 
 (req-package-finish)
 ;;

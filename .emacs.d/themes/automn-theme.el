@@ -14,10 +14,10 @@
 
       (comment    "#909090")
 
-      (color1     "#f7bc75")
-      (color2     "#d47f54")
-      (color3     "#ab5b48")
-      (color4     "#8A423f")
+      (color1   "#f7bc75")
+      (color2   "#d47f54")
+      (color3   "#ab5b48")
+      (color4   "#8A423f")
       (strings    "#b2ad79")
       (otherkeyw  "#61cfd4")
 
@@ -42,8 +42,8 @@
      `(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 90 :width normal))))
 
      ;; `(default ((t (:foreground ,foreground :weight light :weight normal
-     ;;                            :height 90 :width normal :foundry "unknown" :family "DejaVu Sans Mono"
-     ;;                            ))))
+     ;;                :height 90 :width normal :foundry "unknown" :family "DejaVu Sans Mono"
+     ;;                ))))
      `(cursor ((t (:background "cyan"))))
 
      ;; Languages
@@ -127,11 +127,11 @@
      `(diff-header ((t (:background "#BBB" :foreground "#333"))))
      `(diff-file-header ((t (:background "#EEE" :foreground "#333" ))))
 
-     `(diff-indicator-removed   ((t (:background ,colorrem :foreground ,background))))
-     `(diff-indicator-added     ((t (:background ,coloradd :foreground ,background))))
+     `(diff-indicator-removed ((t (:background ,colorrem :foreground ,background))))
+     `(diff-indicator-added   ((t (:background ,coloradd :foreground ,background))))
 
      `(diff-removed ((t (:background nil :foreground ,colorrem))))
-     `(diff-added   ((t (:background nil :foreground ,coloradd))))
+     `(diff-added ((t (:background nil :foreground ,coloradd))))
 
      `(diff-refine-removed ((t (:background "#493434"))))
      `(diff-refine-added   ((t (:background "#384a36"))))
@@ -171,25 +171,25 @@
                    "DeepSkyBlue1" "MediumOrchid1" "cyan" "white"])
 
     ;; (setq buffer-menu-buffer-font-lock-keywords
-    ;;       '(("^....[*]Man .*Man.*"   . font-lock-variable-name-face) ; Man page
-    ;;         (".*Dired.*"             . font-lock-comment-face)       ; Dired
-    ;;         ("^....[*]shell.*"       . font-lock-preprocessor-face)  ; shell buff
-    ;;         (".*[*]scratch[*].*"     . font-lock-function-name-face) ; scratch buffer
-    ;;         ("^....[*].*"            . font-lock-string-face)        ; "*" named buffers
-    ;;         ("^..[*].*"              . font-lock-constant-face)      ; Modified
-    ;;         ("^.[%].*"               . font-lock-keyword-face)))     ; Read only
+    ;;     '(("^....[*]Man .*Man.*" . font-lock-variable-name-face) ; Man page
+    ;;       (".*Dired.*"       . font-lock-comment-face)   ; Dired
+    ;;       ("^....[*]shell.*"   . font-lock-preprocessor-face)  ; shell buff
+    ;;       (".*[*]scratch[*].*"   . font-lock-function-name-face) ; scratch buffer
+    ;;       ("^....[*].*"      . font-lock-string-face)    ; "*" named buffers
+    ;;       ("^..[*].*"        . font-lock-constant-face)    ; Modified
+    ;;       ("^.[%].*"       . font-lock-keyword-face)))   ; Read only
     ;; (defun buffer-menu-custom-font-lock  ()
     ;;   (let ((font-lock-unfontify-region-function
-    ;;          (lambda (start end)
-    ;;            (remove-text-properties start end '(font-lock-face nil)))))
+    ;;      (lambda (start end)
+    ;;        (remove-text-properties start end '(font-lock-face nil)))))
     ;;     (font-lock-unfontify-buffer)
     ;;     (set (make-local-variable 'font-lock-defaults)
-    ;;          '(buffer-menu-buffer-font-lock-keywords t))
+    ;;      '(buffer-menu-buffer-font-lock-keywords t))
     ;;     (font-lock-fontify-buffer)))
     ;; (add-hook 'buffer-menu-mode-hook 'buffer-menu-custom-font-lock)
     ;; (add-hook 'electric-buffer-menu-mode-hook 'buffer-menu-custom-font-lock)
     )
-)
+  )
 
 (provide-theme 'automn)
 
