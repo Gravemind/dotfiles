@@ -154,7 +154,7 @@
   :require autorevert
   :config
   (progn
-    (add-hook 'dired-mode-hook 'auto-revert-mode)
+    ;; (add-hook 'dired-mode-hook 'auto-revert-mode) ;; too slow
     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -496,10 +496,9 @@ With argument ARG, do this that many times."
      (arglist-intro . 4)
      (arglist-close . 0)
      ;;(brace-list-open . 0)
-     ;;(innamespace . 4)
+     (innamespace . [0]) ;; remove namespace indentation
      ;; (member-init-intro 0) ;; indentation of ctor's initialisation li. st
-     )
-    ))
+    )))
 
 (defun jo/jade-indent-tab()
   (interactive)
