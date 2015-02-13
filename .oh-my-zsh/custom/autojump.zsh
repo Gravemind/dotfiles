@@ -9,3 +9,7 @@ do
         break;
     fi
 done
+
+alias js="autojump -s"
+alias ji="autojump -i 50"
+alias jd="autojump -d 50"
