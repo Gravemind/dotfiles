@@ -498,7 +498,7 @@ With argument ARG, do this that many times."
      ;;(brace-list-open . 0)
      (innamespace . [0]) ;; remove namespace indentation
      ;; (member-init-intro 0) ;; indentation of ctor's initialisation li. st
-    )))
+     )))
 
 (defun jo/jade-indent-tab()
   (interactive)
@@ -962,6 +962,8 @@ of FILE in the current directory, suitable for creation"
 ;;(req-package impatient-mode)
 
 ;; fix specific languages
+(add-hook 'html-mode-hook (lambda () (setq indent-tabs-mode nil
+                                           tab-width 2)))
 
 (defun jo/hide-ctrl-M ()
   "Hides the disturbing '^M' showing up in files containing mixed UNIX and DOS line endings."

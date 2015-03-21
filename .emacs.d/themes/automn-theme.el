@@ -7,24 +7,24 @@
 (deftheme automn "Custom theme automn")
 
 (let (
-      (background "#202020")
-      (foreground "#b0b0b0")
+      (background   "#202020")
+      (foreground   "#b0b0b0")
 
-      (selection  "#404040")
+      (selection    "#404040")
 
-      (comment    "#909090")
+      (comment      "#909090")
 
-      (color1   "#f7bc75")
-      (color2   "#d47f54")
-      (color3   "#ab5b48")
-      (color4   "#8A423f")
-      (strings    "#b2ad79")
-      (otherkeyw  "#61cfd4")
+      (color1       "#f7bc75")
+      (color2       "#d47f54")
+      (color3       "#ab5b48")
+      (color4       "#8A423f")
+      (strings      "#b2ad79")
+      (otherkeyw    "#61cfd4")
 
-      (colorrem   "#B95151")
-      (coloradd   "#6AAB6A")
+      (colorrem     "#B95151")
+      (coloradd     "#6AAB6A")
 
-      (useless    "#602929")
+      (useless      "#602929")
 
       )
 
