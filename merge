@@ -43,6 +43,11 @@ function mymerge() {
         if [ "$ARG1" != "-l" ]
         then
             "$MERGER" $1 $2 # &> /dev/null
+            if [ $? != 0 ]
+            then
+                echo "meld exited"
+                exit 1
+            fi
         fi
     else
         echo "## ( no diff: $1 $2 )"
