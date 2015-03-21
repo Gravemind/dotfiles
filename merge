@@ -4,22 +4,22 @@ ARG1=$1
 
 if [ "$ARG1" = "-h" ]
 then
-    echo "usage:"
-    echo "    $0 [-h|-l|pattern]"
-    exit 0
+	echo "usage:"
+	echo "	  $0 [-h|-l|pattern]"
+	exit 0
 fi
 
 function mymerge() {
-    if [ -n "$ARG1" ]
-    then
-        if [[ "$2" = *${ARG1}* ]]
-        then
-            echo "## matching $2"
-        else
-            echo "## skip $2"
-            return
-        fi           
-    fi
+	if [ -n "$ARG1" ]
+	then
+		if [[ "$2" = *${ARG1}* ]]
+		then
+			echo "## matching $2"
+		else
+			echo "## skip $2"
+			return
+		fi
+	fi
 
 	if [ ! -e "$1" ]
 	then
@@ -37,21 +37,21 @@ function mymerge() {
 		MERGER="/c/Program Files (x86)/Meld/meld/meld.exe"
 	fi
 
-    if [ -n "$(diff $1 $2)" ]
-    then
-        echo "$> $MERGER $1 $2"
-        if [ "$ARG1" != "-l" ]
-        then
-            "$MERGER" $1 $2 # &> /dev/null
-            if [ $? != 0 ]
-            then
-                echo "meld exited"
-                exit 1
-            fi
-        fi
-    else
-        echo "## ( no diff: $1 $2 )"
-    fi
+	if [ -n "$(diff "$1" "$2")" ]
+	then
+		echo "$> $MERGER $1 $2"
+		if [ "$ARG1" != "-l" ]
+		then
+			"$MERGER" $1 $2 # &> /dev/null
+			if [ $? != 0 ]
+			then
+				echo "meld exited"
+				exit 1
+			fi
+		fi
+	else
+		echo "## ( no diff: $1 $2 )"
+	fi
 }
 
 mymerge oh-my-zsh-install.sh ~/.oh-my-zsh/tools/install.sh
@@ -71,5 +71,7 @@ mymerge ~/.screenrc .screenrc
 mymerge ~/.Xdefaults .Xdefaults
 mymerge ~/.xinitrc .xinitrc
 mymerge ~/.zshrc .zshrc
-mymerge ~/.config/MusicBrainz/Picard.conf
 mymerge ~/.toprc .toprc
+mymerge ~/.config/mpd/mpd.conf .config/mpd/mpd.conf
+mymerge ~/.config/systemd .config/systemd
+mymerge ~/.config/MusicBrainz/Picard.conf .config/MusicBrainz/Picard.conf
