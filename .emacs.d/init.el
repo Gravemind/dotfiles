@@ -413,6 +413,20 @@ With argument ARG, do this that many times."
   (interactive "p")
   (delete-region (point) (progn (backward-word arg) (point))))
 
+(defun jo/location-to-clipboard ()
+  "Copy \"file:linenum\" to clipboard"
+  (interactive)
+  (save-restriction
+    (widen)
+    (save-excursion
+      (beginning-of-line)
+      (let ((location (format "%s:%d"
+                              (buffer-file-name)
+                              (1+ (count-lines 1 (point))))))
+        (progn
+          (message location)
+          (x-set-selection nil location))))))
+
 ;; prog-mode is in simple
 (req-package simple
   :require (paren auto-highlight-symbol)
@@ -430,6 +444,8 @@ With argument ARG, do this that many times."
          ("<f6>" . comment-or-uncomment-region)
          ("S-<f6>" . uncomment-region)
          ("C-c C-c" . comment-region) ;; force for eveyone
+
+         ("C-x C-l" . jo/location-to-clipboard)
 
          ("M-k" . kill-whole-line)
          ("C-x K" . kill-this-buffer)
