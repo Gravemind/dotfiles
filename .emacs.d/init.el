@@ -116,9 +116,12 @@
 (req-package custom
   :config
   (progn
-    (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+    ;;(add-to-list 'custom-theme-load-path "/home/jo/.emacs.d/themes/")
+    (add-to-list 'custom-theme-load-path "/home/jo/.emacs.d/themes/emacs-theme-autumn/")
     ;; (load-theme 'wwombat t)
-    (load-theme 'automn t)
+    (load-theme 'autumn t)
+    (custom-set-faces
+     '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 90 :width normal)))))
     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
