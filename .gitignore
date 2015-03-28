@@ -34,7 +34,6 @@ __*
 *.map
 *.lastcodeanalysissucceeded
 *.exp
-*.d
 *.gch
 *.mak
 *.manifest
