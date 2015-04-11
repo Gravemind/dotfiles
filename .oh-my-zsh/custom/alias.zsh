@@ -27,7 +27,6 @@ alias x='7z x'
 alias xl='7z l'
 alias flux='xflux -l 49 -k 4000'
 alias untar='tar xvzf'
-alias ntpup='sudo ntpd -qg'
 alias a='echo -ne "\a"'
 alias pacman='pacman --color=auto '
 compdef _pacman yaourt=pacman
