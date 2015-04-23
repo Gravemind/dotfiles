@@ -651,7 +651,7 @@ of FILE in the current directory, suitable for creation"
   (setq jo/compile-dir nil))
 (defun jo/set-build-command ()
   (interactive)
-  (setq jo/build-command (read-from-minibuffer "jo/build-command (%s replaced by path)? " "make -j6 verbose=1 config=release_x64 "))
+  (setq jo/build-command (read-from-minibuffer "jo/build-command (%s replaced by path)? " "make -j4 config=release_x64 "))
   )
 
 (defun jo/get-build-command ()
