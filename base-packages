@@ -52,6 +52,7 @@ p7zip
 redshift
 ack
 mlocate
+dtrx
 
 # user groups:
 mem wheel log mpd games video power users audio

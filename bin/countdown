@@ -1,0 +1,34 @@
+#!/bin/bash
+
+time=$1
+scaleh=$2
+
+[ -n "$time" ] || time=0
+
+case "$scaleh" in
+    h)
+        scale=3600
+        ;;
+    m)
+        scale=60
+        ;;
+    s)
+        scale=1
+        ;;
+    *)
+        scaleh=s
+        scale=1
+        ;;
+esac
+
+shift
+shift
+
+while [ "$time" -gt 0 ]
+do
+    printf "\r%8d$scaleh $*" $time
+    sleep $scale
+    time=$(($time - 1))
+done
+
+echo ""
