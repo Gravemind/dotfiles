@@ -514,8 +514,9 @@ With argument ARG, do this that many times."
      ;;(label . 0)
      (arglist-intro . 4)
      (arglist-close . 0)
+     (comment-intro . 0)
      ;;(brace-list-open . 0)
-     (innamespace . [0]) ;; remove namespace indentation
+     ;; (innamespace . [0]) ;; remove namespace indentation
      ;; (member-init-intro 0) ;; indentation of ctor's initialisation li. st
      )))
 
@@ -842,7 +843,7 @@ of FILE in the current directory, suitable for creation"
 
 (req-package git-gutter-fringe+
   :require fringe-helper
-  :init
+  :config
   (progn
 
     (global-set-key (kbd "M-n") 'git-gutter+-next-hunk)
@@ -965,13 +966,27 @@ of FILE in the current directory, suitable for creation"
 
 (req-package yasnippet
   :commands yas-global-mode
-  :idle
+  :defer 3
+  :config
   (progn
     (setq yas-snippet-dirs
           '("~/.emacs.d/snippets"))
     (yas-global-mode t)
     ))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; centered-cursor-mode
+;;
+;; M-X centered-cursor-mode
+;; then,
+;; up: C-M--
+;; down :C-M-=
+
+(req-package centered-cursor-mode
+  :config
+  (progn
+    ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
