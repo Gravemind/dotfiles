@@ -20,10 +20,10 @@
 	fp = fetch --all --prune --tags
 
 	# working diff
-	d = diff
+	d = diff -M
 
 	# staged diff
-	dc = diff --cached
+	dc = diff -M --cached
 
 	# pull only if fast-forard is possible
 	pullff = pull --no-rebase --ff-only
@@ -49,6 +49,7 @@
 [core]
 	# treats a carriage-return at the end of line as part of the line terminator
 	whitespace = cr-at-eol
+    abbrev = 10
 
 [color]
 	branch = auto
