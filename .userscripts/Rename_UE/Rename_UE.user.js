@@ -4,7 +4,13 @@
 // @include     https://docs.unrealengine.com/*
 // @version     1
 // @grant       none
+// @run-at document-end
 // ==/UserScript==
+
+
+window.setTimeout(function() {
+
+
 if (document.title.substring(0, 16) == 'Unreal Engine | ') {
   document.title = '' + document.title.substring(16);
 } 
@@ -16,3 +22,5 @@ else if (document.title == 'Search') {
     document.title = "Search"
   }
 }
+  
+}, 300);

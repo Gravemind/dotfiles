@@ -32,6 +32,7 @@ cmake
 autoconf
 automake
 libtool
+lsof
 
 meld
 firefox
