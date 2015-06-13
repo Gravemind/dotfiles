@@ -49,7 +49,7 @@
 [core]
 	# treats a carriage-return at the end of line as part of the line terminator
 	whitespace = cr-at-eol
-    abbrev = 10
+	abbrev = 10
 
 [color]
 	branch = auto
