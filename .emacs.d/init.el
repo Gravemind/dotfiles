@@ -739,7 +739,12 @@ of FILE in the current directory, suitable for creation"
              magit-status
              magit-log
              magit-diff
-             ))
+             )
+  :init
+  (progn
+    (setq magit-last-seen-setup-instructions "1.4.0")
+    )
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
