@@ -37,6 +37,8 @@
 	# log to locate HEAD and upstream tracked branch
 	lo = !git l HEAD `git rev-parse --abbrev-ref --symbolic-full-name @{upstream}`
 
+	cleanbranches = !git branch -vv | grep ': gone]' | awk '{ print $1 }' | xargs -n 1 git branch -d
+
 [fetch]
 	prune = true
 [pull]
