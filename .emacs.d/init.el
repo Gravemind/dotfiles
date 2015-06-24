@@ -459,6 +459,8 @@ With argument ARG, do this that many times."
 
          ("C-c r" . replace-string)
          ("C-c R" . query-replace)
+
+         ("C-c C-k" . kill-compilation)
          )
   :config
   (progn
