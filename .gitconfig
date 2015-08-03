@@ -59,6 +59,7 @@
 	interactive = auto
 	status = auto
 	log = auto
+    ui = auto
 
 [mergetool "emerge"]
 	path = /home/jo/bin/emerge-for-git
@@ -68,5 +69,5 @@
 #	autocrlf = true
 #	editor = \"C:/Program Files (x86)/emacs-24.3/bin/emacs.exe\"
 #	eol = crlf
-#[difftool "meld"] 
+#[difftool "meld"]
 #	cmd = '/c/Program Files (x86)/Meld/meld/meld.exe' \"$LOCAL\" \"$REMOTE\"

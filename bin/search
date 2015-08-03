@@ -1,7 +1,13 @@
 #!/bin/zsh
 
 W="$1"
-[ -z "$1" ] && exit;
+
+if [ -z "$W" ]
+then
+	echo 'please specify argument'
+	exit 2
+fi
+
 shift
 if [ "$1" = "-0" ]
 then

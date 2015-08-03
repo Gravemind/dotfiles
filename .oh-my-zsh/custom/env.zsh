@@ -23,8 +23,9 @@ export EDITOR='emacs'
 export PAGER='less'
 export LESS='-R'
 export PATH=$HOME/bin:$PATH
-export OSTYPE=`uname -s`
-export MACHTYPE=`uname -m`
 export BROWSER='/usr/bin/firefox'
 
+export OSTYPE=`uname -s`
+export MACHTYPE=`uname -m`
 export OS=`uname -s`
+

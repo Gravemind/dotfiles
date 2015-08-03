@@ -416,7 +416,7 @@ With argument ARG, do this that many times."
   (interactive "p")
   (delete-region (point) (progn (backward-word arg) (point))))
 
-(defun jo/location-to-clipboard ()
+(defun jo/filenum-to-clipboard ()
   "Copy \"file:linenum\" to clipboard"
   (interactive)
   (save-restriction
@@ -426,6 +426,18 @@ With argument ARG, do this that many times."
       (let ((location (format "%s:%d"
                               (buffer-file-name)
                               (1+ (count-lines 1 (point))))))
+        (progn
+          (message location)
+          (x-set-selection nil location))))))
+
+(defun jo/file-to-clipboard ()
+  "Copy \"file:linenum\" to clipboard"
+  (interactive)
+  (save-restriction
+    (widen)
+    (save-excursion
+      (beginning-of-line)
+      (let ((location (buffer-file-name)))
         (progn
           (message location)
           (x-set-selection nil location))))))
@@ -448,7 +460,8 @@ With argument ARG, do this that many times."
          ("S-<f6>" . uncomment-region)
          ("C-c C-c" . comment-region) ;; force for eveyone
 
-         ("C-x C-l" . jo/location-to-clipboard)
+         ("C-x C-l" . jo/filenum-to-clipboard)
+         ("C-x l" . jo/file-to-clipboard)
 
          ("M-k" . kill-whole-line)
          ("C-x K" . kill-this-buffer)
@@ -652,10 +665,12 @@ of FILE in the current directory, suitable for creation"
 (defun jo/unset-compile-dir-here ()
   (interactive)
   (setq jo/compile-dir nil))
+
 (defun jo/set-build-command ()
   (interactive)
-  (setq jo/build-command (read-from-minibuffer "jo/build-command (%s replaced by path)? " "make -j4 config=release_x64 "))
-  )
+  (let ((build-command (if (eq jo/build-command nil) "make -j4 config=release_x64 " jo/build-command) ))
+    (setq jo/build-command (read-from-minibuffer "jo/build-command (%s replaced by path)? " build-command))
+    ))
 
 (defun jo/get-build-command ()
   (interactive)
@@ -687,6 +702,7 @@ of FILE in the current directory, suitable for creation"
 (req-package compile
   :bind (("<f3>" . jo/compile)
          ("S-<f3>" . jo/compile-here)
+         ("C-<f3>" . jo/set-build-command)
          ("<f4>" . next-error)
          ("S-<f4>" . previous-error)
 
