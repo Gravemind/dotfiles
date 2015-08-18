@@ -59,7 +59,7 @@
 	interactive = auto
 	status = auto
 	log = auto
-    ui = auto
+	ui = auto
 
 [mergetool "emerge"]
 	path = /home/jo/bin/emerge-for-git
