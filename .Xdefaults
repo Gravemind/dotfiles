@@ -40,22 +40,22 @@
 
 URxvt*urgentOnBell:     true
 
-URxvt.saveLines:        100000
-URxvt.buffered:         true
-URxvt.cursorColor:      yellow
-URxvt.underlineColor:   #FFFFFF
-URxvt.font:             xft:DejaVu Sans Mono:size=9
-URxvt.scrollBar_right:  false
-URxvt.scrollBar:        false
+URxvt*saveLines:        100000
+URxvt*buffered:         true
+URxvt*cursorColor:      yellow
+URxvt*underlineColor:   #FFFFFF
+URxvt*font:             xft:DejaVu Sans Mono:size=11
+URxvt*scrollBar_right:  false
+URxvt*scrollBar:        false
 
-URxvt.transparent:      true
-URxvt.shading:          15
+URxvt*transparent:      true
+URxvt*shading:          15
 
-URxvt.scrollTtyOutput:      false
-URxvt.scrollTtyKeypress:    true
-URxvt.scrollWithBuffer:     false
+URxvt*scrollTtyOutput:      false
+URxvt*scrollWithBuffer:     true
+URxvt*scrollTtyKeypress:    true
 
 !URxvt.perl-ext-common: default,selection,clipboard
-URxvt.cutchars: \\`"'&()*,;<=>?@[]^{|}:/!.
+URxvt*cutchars: \\`"'&()*,;<=>?@[]^{|}:/!
 !URxvt.selection.pattern-0: \][ ](.+)
 !URxvt.selection.pattern-1: >>>[ ]+(.+)
