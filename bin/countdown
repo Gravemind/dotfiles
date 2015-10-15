@@ -24,11 +24,15 @@ esac
 shift
 shift
 
+date
+
 while [ "$time" -gt 0 ]
 do
     printf "\r%8d$scaleh $*" $time
     sleep $scale
     time=$(($time - 1))
 done
+
+date
 
 echo ""

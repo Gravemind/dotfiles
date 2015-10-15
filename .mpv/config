@@ -1,0 +1,4 @@
+# Write your default config options here!
+vo=opengl:interpolation:swapinterval=1
+display-fps=60
+force-window=immediate

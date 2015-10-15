@@ -5,16 +5,20 @@ alias mp="mpv"
 findnextmpv() {
 	while read file
 	do
-		file=${(Q)file}
+		# file=$(echo "$file")
 		if [[ ! -e "$file" ]]
 		then
-			echo $file
-			continue
+			file="${(Q)file}"
+			if [[ ! -e "$file" ]]
+			then
+				#echo "!! INVALID \"$file\"" >&2
+				continue
+			fi
 		fi
 		mime=$(file -b --mime-type  "$file" | grep -q 'video\|audio\|directory')
 		if [[ $? == 0 ]]
 		then
-			echo $file
+			echo "$file"
 			return 1
 		fi
 	done
@@ -39,16 +43,18 @@ mpn() {
 		echo "No files in history have been found here"
 		return 1
 	fi
+	echo
+	echo "LAST ONE :: \"$FOUNDFILE\""
 
-	NEXTFILE=$(\ls | sort -fi | \grep "$FOUNDFILE" -A 100 | tail -n '+2' | findnextmpv)
-	if [[ -z "$NEXTFILE" ]]
+	NEXTFILE=$(\ls | sort -fi | \grep -F "$FOUNDFILE" -A 100 | tail -n '+2' | findnextmpv)
+	echo "$NEXTFILE"
+	if [[ ! -e "$NEXTFILE" ]]
 	then
 		echo "Did not found the next one after \"$FOUNDFILE\""
 		return 1
 	fi
 
-	echo
-	echo "mpv \"$NEXTFILE\""
+	echo "NEXT ONE :: \"$NEXTFILE\""
 	echo
 
 	#return 0
