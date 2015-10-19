@@ -4,7 +4,7 @@ HERE="$(cd "`dirname "$0"`"; pwd)"
 
 $HERE/urxvt.zsh 1 main
 
-$HERE/pidgin.zsh 9
+# $HERE/pidgin.zsh 9
 
 $HERE/firefox.zsh 10
 

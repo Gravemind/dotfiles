@@ -29,7 +29,7 @@
 	pullff = pull --no-rebase --ff-only
 
 	# pretty log
-	l = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold red)%d%C(reset) %C(white)%s%C(reset) %C(green)%an%C(reset) %C(blue)%ar%C(reset)' --date-order
+	l = log --graph --abbrev-commit --decorate --format=format:'%C(bold red)%D%C(reset) %C(bold blue)%h%C(reset) %C(white)%s%C(reset) %C(green)%an%C(reset) %C(blue)%ar%C(reset)' --date-order
 	# log all
 	la = !git l --all
 	# log all simplyfied graph
