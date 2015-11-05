@@ -9,35 +9,55 @@
 	br = branch
 	com = commit -m
 	s = status -sb
-
-	# fetch another branch
-	fo = "!sh -c 'git fetch origin $1:$1;' -"
-
-	# fetch branch and checkout it
-	fco = "!sh -c 'git fo $1; git checkout $1 && git submodule update' -"
-
-	# fetch and prune everyting
-	fp = fetch --all --prune --tags
-
-	# working diff
 	d = diff -M
-
-	# staged diff
 	dc = diff -M --cached
 
-	# pull only if fast-forard is possible
+	## Usage: git fo BRANCH
+	## Fetch BRANCH and update local ref
+	fo = "!sh -c 'git fetch origin $1:$1;' -"
+	
+	## Usage: git fco BRANCH
+	## "git fo BRANCH" then "git checkout BRANCH"
+	fco = "!sh -c 'git fo $1; git checkout $1 && git submodule update' -"
+
+	## Fetch prune all
+	fp = fetch --all --prune --tags
+
+	## Pull only if fast forward is possible (abort if conflicts)
 	pullff = pull --no-rebase --ff-only
 
-	# pretty log
-	l = log --graph --abbrev-commit --decorate --format=format:'%C(bold red)%D%C(reset) %C(bold blue)%h%C(reset) %C(white)%s%C(reset) %C(green)%an%C(reset) %C(blue)%ar%C(reset)' --date-order
-	# log all
+	## Clean deleted branches
+	cleanbranches = !git branch -vv | grep ': gone]' | awk '{ print $1 }' | xargs -n 1 git branch -d
+
+	## Usage: git magicmerge BRANCH
+	## Magic merge
+	## -c merge.renamelimit=2048	# increase "follow file rename" limit
+	## -X patience					# slower but much smarter merge
+	## -X rename-threshold=10		# 2 files with 10% similarities is a rename
+	## -X ignore-space-change		# well, ignore whitespaces
+	## --no-ff						# dont fast forward, ie always create a commit
+	## --no-commit					# dont "auto" commit after merge
+	magicmerge = !git -c merge.renamelimit=2048 merge -X patience -X rename-threshold=10 -X ignore-space-change --no-ff --no-commit
+
+	## Pertty log current branch
+	l = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold red)%d%C(reset) %C(white)%s%C(reset) %C(green)%an%C(reset) %C(bold blue)%ar%C(reset)' --date-order
+
+	## Pertty log all
 	la = !git l --all
-	# log all simplyfied graph
+
+	## Pretty log all merges only
 	ll = !git la --simplify-by-decoration
-	# log to locate HEAD and upstream tracked branch
+
+	## Pertty log current and remote branch
 	lo = !git l HEAD `git rev-parse --abbrev-ref --symbolic-full-name @{upstream}`
 
-	cleanbranches = !git branch -vv | grep ': gone]' | awk '{ print $1 }' | xargs -n 1 git branch -d
+[color]
+	branch = auto
+	diff = auto
+	interactive = auto
+	status = auto
+	log = auto
+	ui = auto
 
 [fetch]
 	prune = true
@@ -47,19 +67,24 @@
 	default = simple
 [merge]
 	conflictstyle = diff3
-	tool = meld
+[core]
+	## Increase short hash to 10 characters
+	abbrev = 10
+
+## On Windows:
+#[core]
+#	whitespace = cr-at-eol
+#	abbrev = 10
+#	autocrlf = True
+#	eol = crlf
+
+## On Linux
 [core]
 	# treats a carriage-return at the end of line as part of the line terminator
 	whitespace = cr-at-eol
-	abbrev = 10
 
-[color]
-	branch = auto
-	diff = auto
-	interactive = auto
-	status = auto
-	log = auto
-	ui = auto
+[merge]
+	tool = meld
 
 [mergetool "emerge"]
 	path = /home/jo/bin/emerge-for-git
