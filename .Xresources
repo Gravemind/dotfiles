@@ -1,4 +1,3 @@
-
 *background:  #202020
 *foreground:  #BBBBBB
 
@@ -56,6 +55,6 @@ URxvt*scrollWithBuffer:     true
 URxvt*scrollTtyKeypress:    true
 
 !URxvt.perl-ext-common: default,selection,clipboard
-URxvt*cutchars: \\`"'&()*,;<=>?@[]^{|}:/!
+URxvt*cutchars: "\\`\"'&()*,;<=>?@[]^{|}:/!"
 !URxvt.selection.pattern-0: \][ ](.+)
 !URxvt.selection.pattern-1: >>>[ ]+(.+)

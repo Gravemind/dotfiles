@@ -68,7 +68,8 @@ mymerge ~/.oh-my-zsh/custom .oh-my-zsh/custom
 mymerge ~/.screenrc .screenrc
 #mymerge ~/scripts scripts
 #mymerge ~/.userscripts .userscripts
-mymerge ~/.Xdefaults .Xdefaults
+#mymerge ~/.Xdefaults .Xdefaults
+mymerge ~/.Xresources .Xresources
 mymerge ~/.xinitrc .xinitrc
 mymerge ~/.zshrc .zshrc
 mymerge ~/.toprc .toprc
