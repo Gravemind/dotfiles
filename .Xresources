@@ -19,10 +19,8 @@
 *color11:     #fff796
 
 !blue
-!*color4:      #414171
 *color4:      #557DA1
 *color12:     #4B84B8
-! 4186be
 
 !magenta
 *color5:      #963c59
@@ -36,13 +34,13 @@
 *color7:      #bebebe
 *color15:     #ffffff
 
+URxvt*cursorColor:      yellow
 
 URxvt*urgentOnBell:     true
 
+URxvt*loginShell:       true
 URxvt*saveLines:        100000
 URxvt*buffered:         true
-URxvt*cursorColor:      yellow
-URxvt*underlineColor:   #FFFFFF
 URxvt*font:             xft:DejaVu Sans Mono:size=11
 URxvt*scrollBar_right:  false
 URxvt*scrollBar:        false
@@ -58,3 +56,8 @@ URxvt*scrollTtyKeypress:    true
 URxvt*cutchars: "\\`\"'&()*,;<=>?@[]^{|}:/!"
 !URxvt.selection.pattern-0: \][ ](.+)
 !URxvt.selection.pattern-1: >>>[ ]+(.+)
+
+! Clickable URL
+URxvt.perl-ext-common:  default,matcher,vtwheel
+URxvt.url-launcher:     /usr/bin/firefox
+URxvt.matcher.button:   1
