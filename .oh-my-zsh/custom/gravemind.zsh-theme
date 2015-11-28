@@ -8,21 +8,21 @@ COK="%{$fg_bold[green]%}"
 CKO="%{$fg_bold[red]%}"
 
 if [ $EUID -eq 0 ]; then
-    CF="%{$fg_bold[red]%}"    
+	CF="%{$fg_bold[red]%}"
 else
-    CF="%{$fg_bold[blue]%}"
+	CF="%{$fg_bold[blue]%}"
 fi
 
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=white,bold'
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
 
 if [ -n "$SSH_CONNECTION" ]; then
-    PROMPT_SSH="${COK}@$HOST"
+	PROMPT_SSH="${COK}@$HOST"
 else
-    PROMPT_SSH=""
+	PROMPT_SSH=""
 fi
 
-PROMPT='${CBG}${CW}❰ ${CF}%n${PROMPT_SSH}%1(j. ${COK}%j.)%(?.. ${CKO}%?) ${CW}❱ ${CR}'
+PROMPT='${CBG}${CW}❰ ${CF}%n${PROMPT_SSH}%1(j. ${COK}%j.)%(?.. ${CKO}%?) ${CW}❱ ${CR}${CBG}'
 
 RPS1='${CBG}${CW}❰${CB}%~$(git_prompt_info) ${CF}%D{%H:%M}${CW}❱${CR}'
 
