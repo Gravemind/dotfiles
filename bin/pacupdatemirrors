@@ -43,4 +43,6 @@ cat /etc/pacman.d/mirrorlist
 
 } || { echo "FAIL"; }
 
+$su chmod 644 /etc/pacman.d/mirrorlist
+
 rm -f "$tmpfile" "$tmpfile2"

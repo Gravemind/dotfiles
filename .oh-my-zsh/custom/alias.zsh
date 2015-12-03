@@ -28,8 +28,6 @@ alias xl='dtrx -l'
 alias flux='xflux -l 49 -k 4000'
 alias untar='tar xvzf'
 alias a='echo -ne "\a"'
-alias pacman='pacman --color=auto '
-compdef _pacman yaourt=pacman
 
 alias shut='systemctl poweroff'
 alias reboot='systemctl reboot'
