@@ -65,7 +65,7 @@ mymerge ~/.i3 .i3
 mymerge ~/.ncmpcpp/config .ncmpcpp/config
 mymerge ~/.oh-my-zsh/custom .oh-my-zsh/custom
 #mymerge ~/oh-my-zsh-install.sh oh-my-zsh-install.sh
-mymerge ~/.screenrc .screenrc
+#mymerge ~/.screenrc .screenrc
 #mymerge ~/scripts scripts
 #mymerge ~/.userscripts .userscripts
 #mymerge ~/.Xdefaults .Xdefaults
@@ -74,6 +74,6 @@ mymerge ~/.xinitrc .xinitrc
 mymerge ~/.zshrc .zshrc
 mymerge ~/.toprc .toprc
 mymerge ~/.config/mpd/mpd.conf .config/mpd/mpd.conf
-mymerge ~/.config/systemd .config/systemd
-mymerge ~/.config/MusicBrainz/Picard.conf .config/MusicBrainz/Picard.conf
+#mymerge ~/.config/systemd .config/systemd
+#mymerge ~/.config/MusicBrainz/Picard.conf .config/MusicBrainz/Picard.conf
 mymerge ~/.mpv/config .mpv/config
