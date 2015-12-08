@@ -11,33 +11,35 @@ duration2s() {
   local H=$((T/60/60%24))
   local M=$((T/60%60))
   local S=$((T%60))
-  (( $D > 0 )) && printf '%dd ' $D
-  (( $H > 0 )) && printf '%dh ' $H
-  (( $M > 0 )) && printf '%dm ' $M
-  (( $S > 0 )) && printf '%ds ' $S
+  (( $D > 0 )) && printf '%d days ' $D
+  (( $H > 0 )) && printf '%d hours ' $H
+  #(( $M > 0 )) && printf '%dm ' $M
+  #(( $S > 0 )) && printf '%ds ' $S
   printf '\n'
 }
 
 # Update mirror list if necessary
 pacupmir() {
 	local ago=$(( $(date +%s) - $(date +%s -r "$pacmirrorfile") ))
-	echo "Mirrors last updated $(duration2s $ago)ago (update every $(duration2s $pacmirrorfile_expire_sec))"
-	if [[ $since -gt $pacmirrorfile_expire_sec ]]
+	if [[ $ago -gt $pacmirrorfile_expire_sec ]]
 	then
-		sudo pacupdatemirrors
+		echo "Updating ${fg_bold[green]}$(duration2s $ago)${reset_color}old mirrorlist ..."
+		sudo pacupdatemirrors || echo "${fg_bold[red]}Mirrorlist update FAILED !!$reset_color"
+	else
+		echo "Skiped ${fg_bold[cyan]}$(duration2s $ago)${reset_color}old mirrorlist update."
 	fi
 }
 
 # Fetch only new updates
 pacup() {
 	pacupmir
-	yaourt -Syuwq --noconfirm || echo "Update FAILED !!"
+	yaourt -Syuw --noconfirm || echo "${fg_bold[red]}Update FAILED !!$reset_color"
 	echo
-	yaourt -Qu || echo "No updates."
+	yaourt -Qu || echo "${fg_bold[green]}No updates.$reset_color"
 }
 
 # Fetch and Install updates + aur
 pacupg() {
 	pacupmir
-	yaourt -Syua --noconfirm || echo "Update FAILED !!"
+	yaourt -Syua --noconfirm || echo "${fg_bold[red]}Update FAILED !!$reset_color"
 }
