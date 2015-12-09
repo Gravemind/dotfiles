@@ -760,7 +760,9 @@ of FILE in the current directory, suitable for creation"
              )
   :init
   (progn
-    (setq magit-last-seen-setup-instructions "1.4.0")
+    (setq magit-last-seen-setup-instructions "1.4.0"
+          git-commit-summary-max-length 70
+          git-commit-fill-column 80)
     )
   )
 
