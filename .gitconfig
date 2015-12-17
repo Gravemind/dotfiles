@@ -71,17 +71,17 @@
 	## Increase short hash to 10 characters
 	abbrev = 10
 
-## On Windows:
-#[core]
-#	whitespace = cr-at-eol
-#	abbrev = 10
-#	autocrlf = True
-#	eol = crlf
-
-## On Linux
 [core]
-	# treats a carriage-return at the end of line as part of the line terminator
-	whitespace = cr-at-eol
+    # default:
+	# whitespace = blank-at-eol,blank-at-eof,space-before-tab
+	whitespace = blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+    # checkout crlf, commit lf
+    # autocrlf = true
+    # checkout as is, commit lf
+    autocrlf = input
+    # checkout as is, commit as is
+    # autocrlf = false
 
 [merge]
 	tool = meld
