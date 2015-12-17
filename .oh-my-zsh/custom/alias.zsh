@@ -56,9 +56,4 @@ alias -g    NULL='>& /dev/null'
 alias -g    COL='--color=always'
 alias -g	LINE='| wc -l'
 
-alias cdr='cd "$(git rev-parse --show-toplevel)"'
-
-# overwrite git plugin
-alias gdc=gdc
-
 alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test100.zip'
