@@ -54,7 +54,7 @@ function mymerge() {
 	fi
 }
 
-mymerge oh-my-zsh-install.sh ~/.oh-my-zsh/tools/install.sh
+cp ~/.oh-my-zsh/tools/install.sh oh-my-zsh-install.sh
 mymerge ~/bin bin
 #mymerge ~/.conky .conky
 #mymerge ~/.dzen .dzen
