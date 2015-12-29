@@ -2,32 +2,52 @@
 
 ARG1=$1
 
-if [ "$ARG1" = "-h" ]
-then
+colerror="\e[1;31m"
+colok="\e[1;34m"
+colreset="\e[0m"
+list_only=0
+match=
+
+usage() {
 	echo "usage:"
 	echo "	  $0 [-h|-l|pattern]"
-	exit 0
-fi
+}
+
+while getopts hl opt; do
+	case $opt in
+		h)
+			usage
+			exit 0
+			;;
+		l)
+			list_only=1
+			;;
+		\?)
+			usage
+			exit 2
+			;;
+	esac
+done
+
+shift $((OPTIND-1))
+match=$1
 
 function mymerge() {
-	if [ -n "$ARG1" ]
+	if [[ "$2" != *${match}* ]]
 	then
-		if [[ "$2" = *${ARG1}* ]]
-		then
-			echo "## matching $2"
-		else
-			echo "## skip $2"
-			return
-		fi
+		echo "## ignored: $2"
+		return
 	fi
 
-	if [ ! -e "$1" ]
-	then
-		echo "## not such file or dir: $1"
-	fi
 	if [ ! -e "$2" ]
 	then
-		echo "## not such file or dir: $2"
+		echo -e "$colerror## not such file or dir: $2$colreset"
+		return
+	fi
+	if [ ! -e "$1" ]
+	then
+		echo -e "$colerror## not such file or dir: $1$colreset"
+		return
 	fi
 
 	MERGER="meld"
@@ -37,20 +57,20 @@ function mymerge() {
 		MERGER="/c/Program Files (x86)/Meld/meld/meld.exe"
 	fi
 
-	if [ -n "$(diff "$1" "$2")" ]
+	if [ -n "$(diff -rq -x .git "$1" "$2" 2> /dev/null)" ]
 	then
-		echo "$> $MERGER $1 $2"
-		if [ "$ARG1" != "-l" ]
+		echo "\$> merging $1 $2"
+		if [ $list_only != 1 ]
 		then
-			"$MERGER" $1 $2 # &> /dev/null
+			"$MERGER" $1 $2 &> /dev/null
 			if [ $? != 0 ]
 			then
-				echo "meld exited"
+				echo "## meld exited"
 				exit 1
 			fi
 		fi
 	else
-		echo "## ( no diff: $1 $2 )"
+		echo -e "$colok## ok: $2$colreset"
 	fi
 }
 
@@ -58,7 +78,11 @@ cp ~/.oh-my-zsh/tools/install.sh oh-my-zsh-install.sh
 mymerge ~/bin bin
 #mymerge ~/.conky .conky
 #mymerge ~/.dzen .dzen
-mymerge ~/.emacs.d .emacs.d
+
+mymerge ~/.emacs.d/init.el .emacs.d/init.el
+mymerge ~/.emacs.d/snippets .emacs.d/snippets
+mymerge ~/.emacs.d/themes .emacs.d/themes
+
 mymerge ~/.gitconfig .gitconfig
 mymerge ~/.gitignore .gitignore
 mymerge ~/.i3 .i3
