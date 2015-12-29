@@ -16,7 +16,8 @@ set $layouts ~/.i3/layouts
 ipc-socket ~/.i3/ipc.sock
 
 # Font for window titles. ISO 10646 = Unicode
-font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+#font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+font pango:DejaVu Sans Mono Bold 9
 
 # use Mouse+ModK to drag floating windows to their wanted position
 floating_modifier $ModK
@@ -230,7 +231,7 @@ bindsym $ModK+w exec --no-startup-id i3lock -c 222222
 
 # Pulse Audio
 set $pactl_vol pactl set-sink-volume 0 
-set $pactl_mult pactl set-sink-volume 0 
+set $pactl_mute pactl set-sink-mute 0 toggle
 #bindsym $ModK+= exec --no-startup-id $pactl_vol +2%
 #bindsym $ModK+- exec --no-startup-id $pactl_vol -2%
 bind $ModK+21 exec --no-startup-id $pactl_vol +2%
@@ -287,6 +288,7 @@ bindsym XF86TouchpadToggle exec zsh ~/bin/toggletouchpad
 
 bar {
     status_command i3status -c ~/.i3/i3status.conf
+    separator_symbol "   "
     # status_command ~/.i3/myi3status
     # status_command ~/documents/sandbox/ruby/bar/bar
     mode hide
