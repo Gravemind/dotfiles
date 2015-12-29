@@ -1,3 +1,7 @@
+!
+! xrdb -merge -I$HOME ~/.Xresources
+!
+
 *background:  #202020
 *foreground:  #BBBBBB
 
@@ -58,6 +62,6 @@ URxvt*cutchars: "\\`\"'&()*,;<=>?@[]^{|}:/!"
 !URxvt.selection.pattern-1: >>>[ ]+(.+)
 
 ! Clickable URL
-URxvt.perl-ext-common:  default,matcher,vtwheel
+URxvt.perl-ext-common:  default,matcher,vtwheel,selection-to-clipboard
 URxvt.url-launcher:     /usr/bin/firefox
 URxvt.matcher.button:   1
