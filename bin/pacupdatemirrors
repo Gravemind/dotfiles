@@ -1,19 +1,19 @@
 #!/bin/sh
 
 # Original source: https://gist.github.com/ByScripts/3496113
- 
+
 [ "$UID" != 0 ] && su=sudo
- 
+
 #country='USA'
 country='FR'
 #safemove="mv -i"
 safemove="mv"
 
-url="http://www.archlinux.org/mirrorlist/?country=${country}&protocol=http&protocol=https&ip_version=4&use_mirror_status=on"
-servercount=5 
+url="https://www.archlinux.org/mirrorlist/?country=${country}&protocol=http&protocol=https&ip_version=4&ip_version=6&use_mirror_status=on"
+servercount=5
 tmpfile=$(mktemp --suffix=-mirrorlist)
 tmpfile2=$(mktemp --suffix=-mirrorlist2)
- 
+
 {
 
 echo " Fetching ${country} mirrors..."
@@ -30,6 +30,7 @@ echo " Ranking and Rotating the new list into place..."
 
 # strip comments and empty lines, keep only last (fastest) $servercount servers
 grep -v -e '^#' -e '^$' "$tmpfile" | tail -n $servercount > "$tmpfile2"
+
 # rank and mirrors
 rankmirrors -n $servercount -v "$tmpfile2" > "$tmpfile"
 # save mirrorlist
@@ -38,11 +39,15 @@ $su $safemove "$tmpfile" /etc/pacman.d/mirrorlist
 } &&
 {
 
+echo " Chmoding mirrorlist"
+$su chmod 644 /etc/pacman.d/mirrorlist
+
+} &&
+{
+
 echo "OK";
 cat /etc/pacman.d/mirrorlist
 
 } || { echo "FAIL"; }
-
-$su chmod 644 /etc/pacman.d/mirrorlist
 
 rm -f "$tmpfile" "$tmpfile2"
