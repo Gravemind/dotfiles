@@ -230,16 +230,16 @@ bindsym $ModK+w exec --no-startup-id i3lock -c 222222
 
 
 # Pulse Audio
-set $pactl_vol pactl set-sink-volume 0 
-set $pactl_mute pactl set-sink-mute 0 toggle
+set $pactl_vol pactl set-sink-volume 1 
+set $pactl_mute pactl set-sink-mute 1 toggle
 #bindsym $ModK+= exec --no-startup-id $pactl_vol +2%
 #bindsym $ModK+- exec --no-startup-id $pactl_vol -2%
 bind $ModK+21 exec --no-startup-id $pactl_vol +2%
 bind $ModK+20 exec --no-startup-id $pactl_vol -2%
-bindsym XF86AudioLowerVolume exec --no-startup-id $pactl_vol +1%
-bindsym XF86AudioRaiseVolume exec --no-startup-id $pactl_vol -1%
-bindsym $ModK+XF86AudioLowerVolume exec --no-startup-id $pactl_vol +1%
-bindsym $ModK+XF86AudioRaiseVolume exec --no-startup-id $pactl_vol -1%
+bindsym XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +1%
+bindsym XF86AudioLowerVolume exec --no-startup-id $pactl_vol -1%
+bindsym $ModK+XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +1%
+bindsym $ModK+XF86AudioLowerVolume exec --no-startup-id $pactl_vol -1%
 bindsym $ModK+F12 exec --no-startup-id $pactl_vol +2%
 bindsym $ModK+F11 exec --no-startup-id $pactl_vol -2%
 bindsym XF86AudioMute exec --no-startup-id $pactl_mute
@@ -279,6 +279,10 @@ bindsym XF86AudioPlay exec --no-startup-id mpc -q toggle
 bindsym XF86AudioPrev exec --no-startup-id mpc -q prev
 bindsym XF86AudioNext exec --no-startup-id mpc -q next
 bindsym XF86AudioStop exec --no-startup-id mpc -q stop
+bindsym $ModK+XF86AudioPlay exec --no-startup-id mpc -q toggle
+bindsym $ModK+XF86AudioPrev exec --no-startup-id mpc -q prev
+bindsym $ModK+XF86AudioNext exec --no-startup-id mpc -q next
+bindsym $ModK+XF86AudioStop exec --no-startup-id mpc -q stop
 bind $ModK+75 exec --no-startup-id mpc -q toggle
 bind $ModK+74 exec --no-startup-id mpc -q prev
 bind $ModK+76 exec --no-startup-id mpc -q next
@@ -289,10 +293,7 @@ bindsym XF86TouchpadToggle exec zsh ~/bin/toggletouchpad
 bar {
     status_command i3status -c ~/.i3/i3status.conf
     separator_symbol "   "
-    # status_command ~/.i3/myi3status
-    # status_command ~/documents/sandbox/ruby/bar/bar
     mode hide
-    # position top
 }
 
 #exec ~/.i3/bar/bar.py
