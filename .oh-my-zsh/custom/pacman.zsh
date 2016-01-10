@@ -5,28 +5,40 @@ compdef _pacman yaourt=pacman
 pacmirrorfile=/etc/pacman.d/mirrorlist
 pacmirrorfile_expire_sec=$((4 * 24 * 60 * 60)) # 4 days
 
-duration2s() {
+_subdurstr() {
+  STR=""
+  (( $1 > 0 )) && STR="${STR}$1 $2"
+  (( $1 > 1 )) && STR="${STR}s"
+  (( $1 > 0 )) && STR="${STR} "
+  echo "$STR"
+}
+
+durationtostr() {
   local T=$1
   local D=$((T/60/60/24))
   local H=$((T/60/60%24))
   local M=$((T/60%60))
   local S=$((T%60))
-  (( $D > 0 )) && printf '%d days ' $D
-  (( $H > 0 )) && printf '%d hours ' $H
-  #(( $M > 0 )) && printf '%dm ' $M
-  #(( $S > 0 )) && printf '%ds ' $S
-  printf '\n'
+  STR="$(_subdurstr $D day)$(_subdurstr $H hour)"
+  if [[ -n "$STR" ]]
+  then
+	  echo "$STR$2"
+  else
+	  STR="$(_subdurstr $M min)$(_subdurstr $S second)"
+	  echo "$STR$2"
+  fi
 }
 
 # Update mirror list if necessary
 pacupmir() {
 	local ago=$(( $(date +%s) - $(date +%s -r "$pacmirrorfile") ))
+	#local ago=10000
 	if [[ $ago -gt $pacmirrorfile_expire_sec ]]
 	then
-		echo "$0: updating... (${fg_bold[green]}$(duration2s $ago)${reset_color}old)"
+		echo "$0: updating... (${fg_bold[green]}$(durationtostr $ago old)${reset_color})"
 		sudo pacupdatemirrors || echo "${fg_bold[red]}$0: update FAILED !!$reset_color"
 	else
-		echo "$0: up to date (${fg_bold[cyan]}$(duration2s $ago)${reset_color}old)"
+		echo "$0: up to date (${fg_bold[cyan]}$(durationtostr $ago old)${reset_color})"
 	fi
 }
 
