@@ -2,3 +2,4 @@
 vo=opengl:interpolation:swapinterval=1
 display-fps=60
 force-window=immediate
+sub-pos=84
