@@ -1,5 +1,8 @@
 #!/bin/zsh
 
+## unset option that nices background jobs
+unsetopt BG_NICE
+
 HERE="$(cd "`dirname "$0"`"; pwd)"
 
 $HERE/urxvt.zsh 1 main

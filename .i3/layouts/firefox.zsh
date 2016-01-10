@@ -1,5 +1,8 @@
 #!/bin/zsh
 
+## unset option that nices background jobs
+unsetopt BG_NICE
+
 HERE="$(cd "`dirname "$0"`"; pwd)"
 
 WS="$1"
@@ -10,3 +13,4 @@ fi
 
 i3-msg "workspace $WS; append_layout $HERE/firefox.json"
 firefox &
+disown
