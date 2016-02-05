@@ -659,6 +659,17 @@ of FILE in the current directory, suitable for creation"
                        if (equal d root)
                        return nil))))
 
+;; https://www.emacswiki.org/emacs/JabberEl
+(defun x-urgency-hint (frame arg &optional source)
+  (let* ((wm-hints (append (x-window-property 
+                            "WM_HINTS" frame "WM_HINTS" source nil t) nil))
+         (flags (car wm-hints)))
+    (setcar wm-hints
+            (if arg
+                (logior flags #x100)
+              (logand flags (lognot #x100))))
+    (x-change-window-property "WM_HINTS" wm-hints frame "WM_HINTS" 32 t)))
+
 (defun jo/get-compile-dir ()
   (if (eq jo/compile-dir nil)
       (let ((dir (file-name-directory (get-closest-pathname "Makefile"))))
@@ -698,10 +709,16 @@ of FILE in the current directory, suitable for creation"
   (let ((current-buffer (buffer-name)))
     (let ((default-directory (jo/get-compile-dir)))
       (progn
-        (compile (jo/get-build-command)))
+        (compile (jo/get-build-command))
+        (x-urgency-hint (selected-frame) t))
       ;; (jo/compile-here)
       ;; (switch-to-buffer current-buffer)
       )))
+
+(defun jo/compilation-finished (buffer string)
+  (message "Compilation finished")
+  (x-urgency-hint (selected-frame) t)
+  )
 
 (req-package compile
   :bind (("<f3>" . jo/compile)
@@ -715,6 +732,7 @@ of FILE in the current directory, suitable for creation"
   (progn
     (setq compilation-scroll-output 0)
     (setq compilation-window-height 12)
+    (add-hook 'compilation-finish-functions 'jo/compilation-finished)
     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
