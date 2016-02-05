@@ -271,6 +271,23 @@ bindsym $ModK+XF86AudioMute exec --no-startup-id $pactl_mute
 # bind $ModK+74 exec --no-startup-id cmus-remote -r
 # bind $ModK+76 exec --no-startup-id cmus-remote -n
 
+
+# player ctl
+# bindsym $ModK+End exec --no-startup-id playerctl play-pause
+# bindsym $ModK+Prior exec --no-startup-id playerctl previous
+# bindsym $ModK+Next exec --no-startup-id playerctl next
+# bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
+# bindsym XF86AudioPrev exec --no-startup-id playerctl previous
+# bindsym XF86AudioNext exec --no-startup-id playerctl next
+# bindsym XF86AudioStop exec --no-startup-id playerctl pause
+# bindsym $ModK+XF86AudioPlay exec --no-startup-id playerctl play-pause
+# bindsym $ModK+XF86AudioPrev exec --no-startup-id playerctl previous
+# bindsym $ModK+XF86AudioNext exec --no-startup-id playerctl next
+# bindsym $ModK+XF86AudioStop exec --no-startup-id playerctl pause
+# bind $ModK+75 exec --no-startup-id playerctl play-pause
+# bind $ModK+74 exec --no-startup-id playerctl previous
+# bind $ModK+76 exec --no-startup-id playerctl next
+
 # MPD
 bindsym $ModK+End exec --no-startup-id mpc -q toggle
 bindsym $ModK+Prior exec --no-startup-id mpc -q prev
