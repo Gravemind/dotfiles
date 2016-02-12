@@ -12,6 +12,9 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+
 (setq use-package-always-ensure nil)
 ;; uncomment to auto-install packages
 ; (setq use-package-always-ensure t)
@@ -783,10 +786,18 @@ of FILE in the current directory, suitable for creation"
   :init
   (progn
     (setq magit-last-seen-setup-instructions "1.4.0"
-          git-commit-summary-max-length 70
+          git-commit-summary-max-length 80
           git-commit-fill-column 80)
     )
-  )
+  :config
+  (progn
+    (magit-define-popup-switch
+      'magit-log-popup
+      ?i "Regexp ignore case" "--regexp-ignore-case")
+    (magit-define-popup-switch
+      'magit-log-popup
+      ?s "Sort by date" "--date-order")
+    ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
