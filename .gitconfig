@@ -42,7 +42,10 @@
 	## Pertty log current branch
 	l = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold red)%d%C(reset) %C(white)%s%C(reset) %C(green)%an%C(reset) %C(bold blue)%ar%C(reset)' --date-order
 
-	## Pertty log all
+	## Pertty log current branch, topologic
+	lt = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold red)%d%C(reset) %C(white)%s%C(reset) %C(green)%an%C(reset) %C(bold blue)%ar%C(reset)'
+
+    ## Pertty log all
 	la = !git l --all
 
 	## Pretty log all merges only
