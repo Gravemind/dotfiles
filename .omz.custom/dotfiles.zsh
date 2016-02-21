@@ -1,7 +1,8 @@
 #!/bin/zsh
 
+# toggles env GIT_DIR and GIT_WORK_TREE to home dotfiles git
+# makes git dotfiles works in magit
 function dotfiles() {
-
 	ROOT="$HOME"
 	BARE="$HOME/.dotfiles.git"
 
@@ -9,7 +10,7 @@ function dotfiles() {
 	then
 		export GIT_DIR="$BARE"
 		export GIT_WORK_TREE="$ROOT"
-		echo "git dotfiles are now ON"
+		echo "Git is now forced to $GIT_WORK_TREE ($GIT_DIR)"
 	else
 		if [[ "$GIT_DIR" != "$BARE" && "$GIT_WORK_TREE" != "$BARE" ]]
 		then
@@ -19,6 +20,6 @@ function dotfiles() {
 		fi
 		unset GIT_DIR
 		unset GIT_WORK_TREE
-		echo "git dotfiles are now OFF"
+		echo "Git is back to normal"
 	fi
 }
