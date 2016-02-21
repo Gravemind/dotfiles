@@ -4,10 +4,16 @@ Usage of bare git dotfiles:
     https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
     https://news.ycombinator.com/item?id=11071754
 
-``` 
-git clone --separate-git-dir=~/.dotfiles.git git@git ~/dotfiles-git
+```
+zsh
+git clone --separate-git-dir=~/.dotfiles.git path/to/git ~/dotfiles-git
 cp ~/dotfiles-git/.gitmodules ~/.gitmodules
-dotfiles # see ~/.omz.custom/dotfiles.zsh
+source ~/dotfiles-git/.omz.custom/dotfiles.zsh
+dotfiles
+git config --local core.worktree $HOME
+rm -rf submodules/paths/if/necessary ## cat .gitmodules
+git submodules init
+git submodules update
 git config --local status.showUntrackedFiles no
 git status -sb
 ...
