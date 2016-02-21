@@ -54,6 +54,10 @@
 	## Pertty log current and remote branch
 	lo = !git l HEAD `git rev-parse --abbrev-ref --symbolic-full-name @{upstream}`
 
+    ## show hide untracked files
+    hideuntrack = config --local status.showUntrackedFiles no
+    showuntrack = config --local status.showUntrackedFiles normal
+
 [color]
 	branch = auto
 	diff = auto
