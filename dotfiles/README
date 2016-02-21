@@ -1,16 +1,15 @@
-ArchLinux
 
-Windows manager:
-    i3-wm (v4)
-    conky-lua-arch
+Usage of bare git dotfiles:
 
-Shell:
-    zsh oh-my-zsh (install:oh-my-zsh-install.sh)
+    https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
+    https://news.ycombinator.com/item?id=11071754
 
-Editor:
-    emacs 24
-
-misc:
-    urxvt
-    git
-    cmus or mpd
+``` 
+git clone --separate-git-dir=~/.dotfiles.git git@git ~/dotfiles-git
+cp ~/dotfiles-git/.gitmodules ~/.gitmodules
+dotfiles # see ~/.omz.custom/dotfiles.zsh
+git config --local status.showUntrackedFiles no
+git status -sb
+...
+dotfiles
+```
