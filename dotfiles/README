@@ -6,15 +6,15 @@ Usage of bare git dotfiles:
 
 ```
 zsh
-git clone --separate-git-dir=~/.dotfiles.git path/to/git ~/dotfiles-git
+git clone --separate-git-dir=$HOME/.dotfiles.git path/to/git $HOME/dotfiles-git
 cp ~/dotfiles-git/.gitmodules ~/.gitmodules
 source ~/dotfiles-git/.omz.custom/dotfiles.zsh
 dotfiles
+git config --local status.showUntrackedFiles no
 git config --local core.worktree $HOME
 rm -rf submodules/paths/if/necessary ## cat .gitmodules
-git submodules init
-git submodules update
-git config --local status.showUntrackedFiles no
+git submodule init
+git submodule update
 git status -sb
 ...
 dotfiles
