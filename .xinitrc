@@ -9,7 +9,7 @@ setxkbmap -option terminate:ctrl_alt_bksp
 ## desactivate touchpad when typing
 #syndaemon -i 2 -t -k -d &
 
-xrandr --output DVI-I-1 --right-of DVI-D-0
+xrandr --output HDMI-0 --off
 
 amixer sset Master 50% &> /dev/null
 amixer sset Front 100% &> /dev/null
