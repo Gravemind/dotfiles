@@ -66,11 +66,9 @@
 ;; Packages init
 ;;
 
-(setq package-archives '(("ELPA" . "http://tromey.com/elpa/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")
-                         ("gnu" . "http://elpa.gnu.org/packages/")
-                                        ; ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ))
+(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                         ("marmalade" . "https://marmalade-repo.org/packages/")
+                         ("melpa" . "https://melpa.org/packages/")))
 
 ;;(eval-when-compile (package-initialize))
 (package-initialize)
