@@ -9,13 +9,18 @@
 	br = branch
 	com = commit -m
 	s = status -sb
+	ss = status -sb .
 	d = diff -M
 	dc = diff -M --cached
+
+	a = add
+	## "un-add"
+	ua = reset HEAD
 
 	## Usage: git fo BRANCH
 	## Fetch BRANCH and update local ref
 	fo = "!sh -c 'git fetch origin $1:$1;' -"
-	
+
 	## Usage: git fco BRANCH
 	## "git fo BRANCH" then "git checkout BRANCH"
 	fco = "!sh -c 'git fo $1; git checkout $1 && git submodule update' -"
@@ -45,7 +50,7 @@
 	## Pertty log current branch, topologic
 	lt = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold red)%d%C(reset) %C(white)%s%C(reset) %C(green)%an%C(reset) %C(bold blue)%ar%C(reset)'
 
-    ## Pertty log all
+	## Pertty log all
 	la = !git l --all
 
 	## Pretty log all merges only
@@ -54,9 +59,9 @@
 	## Pertty log current and remote branch
 	lo = !git l HEAD `git rev-parse --abbrev-ref --symbolic-full-name @{upstream}`
 
-    ## show hide untracked files
-    hideuntrack = config --local status.showUntrackedFiles no
-    showuntrack = config --local status.showUntrackedFiles normal
+	## show hide untracked files
+	hideuntrack = config --local status.showUntrackedFiles no
+	showuntrack = config --local status.showUntrackedFiles normal
 
 [color]
 	branch = auto
@@ -79,16 +84,16 @@
 	abbrev = 10
 
 [core]
-    # default:
+	# default:
 	# whitespace = blank-at-eol,blank-at-eof,space-before-tab
 	whitespace = blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 
-    # checkout crlf, commit lf
-    # autocrlf = true
-    # checkout as is, commit lf
-    autocrlf = input
-    # checkout as is, commit as is
-    # autocrlf = false
+	# checkout crlf, commit lf
+	# autocrlf = true
+	# checkout as is, commit lf
+	autocrlf = input
+	# checkout as is, commit as is
+	# autocrlf = false
 
 [merge]
 	tool = meld
