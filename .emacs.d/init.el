@@ -796,6 +796,8 @@ of FILE in the current directory, suitable for creation"
     (setq magit-last-seen-setup-instructions "1.4.0"
           git-commit-summary-max-length 80
           git-commit-fill-column 80)
+    (setq smerge-refine-ignore-whitespace nil) ;; refine show whitespace
+    (setq magit-diff-refine-hunk 'all)
     )
   :config
   (progn
