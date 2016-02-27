@@ -775,17 +775,29 @@ of FILE in the current directory, suitable for creation"
 ;; magit
 ;;
 
+;; jump to existing magit-status or opens in current window
+(defun magit-status-here-or-switch ()
+  "Don't split window."
+  (interactive)
+  (let ((pop-up-windows nil))
+    (call-interactively 'magit-status)))
+
 (req-package magit
   :commands (
              magit-status
              magit-log
              magit-diff
              )
+  :bind (
+         ("C-x g" . magit-status-here-or-switch)
+         )
   :init
   (progn
     (setq magit-last-seen-setup-instructions "1.4.0"
           git-commit-summary-max-length 80
           git-commit-fill-column 80)
+    (setq smerge-refine-ignore-whitespace nil) ;; refine show whitespace
+    (setq magit-diff-refine-hunk 'all)
     )
   :config
   (progn
