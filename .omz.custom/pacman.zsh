@@ -44,6 +44,7 @@ pacupmir() {
 
 # Fetch only new updates
 pacup() {
+	sudo echo "$0 ..."
 	pacupmir
 	echo "$0: fetching updates..."
 	yaourt -Syuw --noconfirm || echo "${fg_bold[red]}$0: update FAILED !!$reset_color"
@@ -53,6 +54,7 @@ pacup() {
 
 # Fetch and Install updates + aur
 pacupg() {
+	sudo echo "$0 ..."
 	pacupmir
 	echo "$0: upgrading..."
 	yaourt -Syua --noconfirm || echo "${fg_bold[red]}$0: Update FAILED !!$reset_color"
