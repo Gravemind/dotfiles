@@ -11,7 +11,6 @@ cp ~/dotfiles-git/.gitmodules ~/.gitmodules
 source ~/dotfiles-git/.omz.custom/dotfiles.zsh
 dotfiles
 git config --local status.showUntrackedFiles no
-git config --local core.worktree $HOME
 rm -rf submodules/paths/if/necessary ## cat .gitmodules
 git submodule init
 git submodule update
