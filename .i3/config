@@ -8,8 +8,8 @@
 # Variables
 set $ModK           Mod4
 set $resize_step    100
-set $screenR        DVI-I-1
-set $screenL        DVI-D-0
+set $screenL        LVDS1
+set $screenR        LVDS1
 
 set $layouts ~/.i3/layouts
 
