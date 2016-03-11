@@ -990,7 +990,7 @@ of FILE in the current directory, suitable for creation"
 ;;
 ;;   dont use rtags elpa-package, useless without the sources
 ;;   # git clone https://github.com/Andersbakken/rtags ~/bin/rtags
-                                        ;:
+;:
 ;; about c-mode-base-map bindinds:
 ;;   https://www.gnu.org/software/emacs/manual/html_node/ccmode/Sample-_002eemacs-File.html
 ;;
@@ -1043,7 +1043,6 @@ of FILE in the current directory, suitable for creation"
 (req-package discover-my-major
   :commands (discover-my-major))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; yasnippet
@@ -1081,13 +1080,20 @@ of FILE in the current directory, suitable for creation"
 (req-package disaster
   :bind ("C-c d" . disaster))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; helm dash (dash documentation sets)
 ;;
 
 (req-package helm-dash)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; demangle mode
+;;
+
+(req-package demangle-mode
+  :commands (demangle-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
