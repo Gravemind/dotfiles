@@ -284,9 +284,9 @@ bindsym $ModK+XF86AudioPlay exec --no-startup-id playerctl play-pause
 bindsym $ModK+XF86AudioPrev exec --no-startup-id playerctl previous
 bindsym $ModK+XF86AudioNext exec --no-startup-id playerctl next
 bindsym $ModK+XF86AudioStop exec --no-startup-id playerctl pause
-bind $ModK+75 exec --no-startup-id playerctl play-pause
-bind $ModK+74 exec --no-startup-id playerctl previous
-bind $ModK+76 exec --no-startup-id playerctl next
+# bindsym $ModK+F8 exec --no-startup-id playerctl play-pause
+# bindsym $ModK+F9 exec --no-startup-id playerctl previous
+# bindsym $ModK+F10 exec --no-startup-id playerctl next
 
 # # MPD
 # bindsym $ModK+End exec --no-startup-id mpc -q toggle
