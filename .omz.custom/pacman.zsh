@@ -1,33 +1,10 @@
+#!/bin/zsh
 
 alias pacman='pacman --color=auto '
 compdef _pacman yaourt=pacman
 
 pacmirrorfile=/etc/pacman.d/mirrorlist
 pacmirrorfile_expire_sec=$((4 * 24 * 60 * 60)) # 4 days
-
-_subdurstr() {
-  STR=""
-  (( $1 > 0 )) && STR="${STR}$1 $2"
-  (( $1 > 1 )) && STR="${STR}s"
-  (( $1 > 0 )) && STR="${STR} "
-  echo "$STR"
-}
-
-durationtostr() {
-  local T=$1
-  local D=$((T/60/60/24))
-  local H=$((T/60/60%24))
-  local M=$((T/60%60))
-  local S=$((T%60))
-  STR="$(_subdurstr $D day)$(_subdurstr $H hour)"
-  if [[ -n "$STR" ]]
-  then
-	  echo "$STR$2"
-  else
-	  STR="$(_subdurstr $M min)$(_subdurstr $S second)"
-	  echo "$STR$2"
-  fi
-}
 
 # Update mirror list if necessary
 pacupmir() {
@@ -58,4 +35,36 @@ pacupg() {
 	pacupmir
 	echo "$0: upgrading..."
 	yaourt -Syua --noconfirm || echo "${fg_bold[red]}$0: Update FAILED !!$reset_color"
+}
+
+# pkgfile wrap
+# /usr/share/doc/pkgfile/command-not-found.zsh
+pacfind() {
+	local pkgs
+	local cmd="$1"
+
+	which pkgfile > /dev/null
+	if [[ $? -ne 0 ]]
+	then
+		echo "pkgfile not installed"
+		return 125
+	fi
+
+	local cachefile="/var/cache/pkgfile/core.files"
+	local age=$(( $(date +%s) - $(date +%s -r "$cachefile") ))
+	local maxage=$((3600 * 24 * 30)) ## 30 days
+	local maxage=$((3600 * 1)) ## 1 hour
+	if [[ $age -gt $maxage ]]
+	then
+		echo "pkgfile cache is ${fg_bold[red]}$(durationtostr $age old)${reset_color} ! run ${fg_bold[red]}sudo pkgfile -u${reset_color}"
+	fi
+
+	pkgs=(${(f)"$(pkgfile -b -v -- "$cmd" 2>/dev/null)"})
+	if [[ -n "$pkgs" ]]; then
+		printf '%s may be found in the following packages:\n' "$cmd"
+		printf '  %s\n' $pkgs[@]
+		return 0
+	fi
+
+	return 127
 }
