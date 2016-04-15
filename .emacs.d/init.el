@@ -1117,6 +1117,8 @@ of FILE in the current directory, suitable for creation"
 (add-hook 'html-mode-hook (lambda () (setq indent-tabs-mode nil
                                            tab-width 2)))
 
+(add-hook 'asm-mode-hook (lambda () (progn (setq tab-width 8) (whitespace-mode 0))))
+
 (defun jo/hide-ctrl-M ()
   "Hides the disturbing '^M' showing up in files containing mixed UNIX and DOS line endings."
   (interactive)
