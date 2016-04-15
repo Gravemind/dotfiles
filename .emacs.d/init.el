@@ -782,6 +782,12 @@ of FILE in the current directory, suitable for creation"
   (let ((pop-up-windows nil))
     (call-interactively 'magit-status)))
 
+(defun my-magit-pullff (&optional args)
+  "Pull fast forward only if possible
+\n(git pull --ff-only --no-rebase)"
+  (interactive (list (magit-commit-arguments)))
+  (magit-run-git-with-editor "pull" "--ff-only" "--no-rebase"))
+
 (req-package magit
   :commands (
              magit-status
@@ -807,6 +813,9 @@ of FILE in the current directory, suitable for creation"
     (magit-define-popup-switch
       'magit-log-popup
       ?s "Sort by date" "--date-order")
+    (magit-define-popup-action
+      'magit-pull-popup
+      ?f "Pull ff only" 'my-magit-pullff)
     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
