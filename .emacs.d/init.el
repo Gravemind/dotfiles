@@ -830,6 +830,8 @@ of FILE in the current directory, suitable for creation"
 ;;   http://tuhdo.github.io/helm-intro.html
 ;;
 
+(req-package helm-command)
+
 (req-package helm
   ;; :disabled t
   :bind (

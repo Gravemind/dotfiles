@@ -300,9 +300,9 @@ bindsym $ModK+XF86AudioStop exec --no-startup-id playerctl pause
 # bindsym $ModK+XF86AudioPrev exec --no-startup-id mpc -q prev
 # bindsym $ModK+XF86AudioNext exec --no-startup-id mpc -q next
 # bindsym $ModK+XF86AudioStop exec --no-startup-id mpc -q stop
-# bind $ModK+75 exec --no-startup-id mpc -q toggle
-# bind $ModK+74 exec --no-startup-id mpc -q prev
-# bind $ModK+76 exec --no-startup-id mpc -q next
+# # bindsym $ModK+F8 exec --no-startup-id mpc -q toggle
+# # bindsym $ModK+F9 exec --no-startup-id mpc -q prev
+# # bindsym $ModK+F10 exec --no-startup-id mpc -q next
 
 # On/Off Touchpad
 bindsym XF86TouchpadToggle exec zsh ~/bin/toggletouchpad
