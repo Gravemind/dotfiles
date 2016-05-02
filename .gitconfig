@@ -13,6 +13,11 @@
 	d = diff -M
 	dc = diff -M --cached
 
+	su = !git --no-pager diff --name-only --diff-filter=U
+	sa = !git --no-pager diff --name-only --diff-filter=A
+	sm = !git --no-pager diff --name-only --diff-filter=M
+	sd = !git --no-pager diff --name-only --diff-filter=D
+
 	a = add
 	## "un-add"
 	ua = reset HEAD
@@ -39,10 +44,11 @@
 	## -c merge.renamelimit=2048	# increase "follow file rename" limit
 	## -X patience					# slower but much smarter merge
 	## -X rename-threshold=10		# 2 files with 10% similarities is a rename
-	## -X ignore-space-change		# well, ignore whitespaces
+	## # -X ignore-space-change		# well, ignore whitespaces
+	## -X ignore-space-at-eol		# well, ignore whitespaces eol
 	## --no-ff						# dont fast forward, ie always create a commit
 	## --no-commit					# dont "auto" commit after merge
-	magicmerge = !git -c merge.renamelimit=2048 merge -X patience -X rename-threshold=10 -X ignore-space-change --no-ff --no-commit
+	magicmerge = !git -c merge.renamelimit=2048 merge -X patience -X rename-threshold=10 -X ignore-space-at-eol --no-ff --no-commit
 
 	## Pertty log current branch
 	l = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold red)%d%C(reset) %C(white)%s%C(reset) %C(green)%an%C(reset) %C(bold blue)%ar%C(reset)' --date-order
