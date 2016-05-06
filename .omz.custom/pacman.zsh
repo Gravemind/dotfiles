@@ -1,6 +1,7 @@
 #!/bin/zsh
 
 alias pacman='pacman --color=auto '
+alias yaourt='yaourt '
 compdef _pacman yaourt=pacman
 
 pacmirrorfile=/etc/pacman.d/mirrorlist
@@ -21,6 +22,8 @@ pacupmir() {
 
 # Fetch only new updates
 pacup() {
+	CC=
+	CXX=
 	sudo echo "$0 ..."
 	pacupmir
 	echo "$0: fetching updates..."
@@ -31,6 +34,8 @@ pacup() {
 
 # Fetch and Install updates + aur
 pacupg() {
+	CC=
+	CXX=
 	sudo echo "$0 ..."
 	pacupmir
 	echo "$0: upgrading..."
