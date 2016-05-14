@@ -782,6 +782,12 @@ of FILE in the current directory, suitable for creation"
   (let ((pop-up-windows nil))
     (call-interactively 'magit-status)))
 
+(defun my-magit-pullff (&optional args)
+  "Pull fast forward only if possible
+\n(git pull --ff-only --no-rebase)"
+  (interactive (list (magit-commit-arguments)))
+  (magit-run-git-with-editor "pull" "--ff-only" "--no-rebase"))
+
 (req-package magit
   :commands (
              magit-status
@@ -807,6 +813,9 @@ of FILE in the current directory, suitable for creation"
     (magit-define-popup-switch
       'magit-log-popup
       ?s "Sort by date" "--date-order")
+    (magit-define-popup-action
+      'magit-pull-popup
+      ?f "Pull ff only" 'my-magit-pullff)
     ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -829,6 +838,8 @@ of FILE in the current directory, suitable for creation"
 ;; Helm
 ;;   http://tuhdo.github.io/helm-intro.html
 ;;
+
+(req-package helm-command)
 
 (req-package helm
   ;; :disabled t
@@ -990,7 +1001,7 @@ of FILE in the current directory, suitable for creation"
 ;;
 ;;   dont use rtags elpa-package, useless without the sources
 ;;   # git clone https://github.com/Andersbakken/rtags ~/bin/rtags
-                                        ;:
+;:
 ;; about c-mode-base-map bindinds:
 ;;   https://www.gnu.org/software/emacs/manual/html_node/ccmode/Sample-_002eemacs-File.html
 ;;
@@ -1043,7 +1054,6 @@ of FILE in the current directory, suitable for creation"
 (req-package discover-my-major
   :commands (discover-my-major))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; yasnippet
@@ -1081,13 +1091,20 @@ of FILE in the current directory, suitable for creation"
 (req-package disaster
   :bind ("C-c d" . disaster))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; helm dash (dash documentation sets)
 ;;
 
 (req-package helm-dash)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; demangle mode
+;;
+
+(req-package demangle-mode
+  :commands (demangle-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -1099,6 +1116,8 @@ of FILE in the current directory, suitable for creation"
 ;; fix specific languages
 (add-hook 'html-mode-hook (lambda () (setq indent-tabs-mode nil
                                            tab-width 2)))
+
+(add-hook 'asm-mode-hook (lambda () (progn (setq tab-width 8) (whitespace-mode 0))))
 
 (defun jo/hide-ctrl-M ()
   "Hides the disturbing '^M' showing up in files containing mixed UNIX and DOS line endings."

@@ -6,7 +6,7 @@ Usage of bare git dotfiles:
 
 ```
 zsh
-git clone --separate-git-dir=$HOME/.dotfiles.git path/to/git $HOME/dotfiles-git
+git clone --separate-git-dir=$HOME/.dotfiles.git https://github.com/Gravemind/dotfiles.git $HOME/dotfiles-git
 cp ~/dotfiles-git/.gitmodules ~/.gitmodules
 source ~/dotfiles-git/.omz.custom/dotfiles.zsh
 dotfiles
