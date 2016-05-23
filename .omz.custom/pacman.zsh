@@ -1,7 +1,18 @@
 #!/bin/zsh
 
 alias pacman='pacman --color=auto '
+alias pac='pacaur '
 alias yaourt='yaourt '
+
+_pacman_with_aur='pacman'
+
+if which pacaur > /dev/null
+then
+	_pacman_with_aur=pacaur
+else
+	echo "${fg_bold[red]}pacaur not found${reset_color}"
+fi
+
 compdef _pacman yaourt=pacman
 
 pacmirrorfile=/etc/pacman.d/mirrorlist
@@ -27,9 +38,9 @@ pacup() {
 	sudo echo "$0 ..."
 	pacupmir
 	echo "$0: fetching updates..."
-	yaourt -Syuw --noconfirm || echo "${fg_bold[red]}$0: update FAILED !!$reset_color"
+	$_pacman_with_aur -Syuw --noconfirm || echo "${fg_bold[red]}$0: update FAILED !!$reset_color"
 	echo
-	yaourt -Qu || echo "${fg_bold[green]}$0: no updates.$reset_color"
+	$_pacman_with_aur -Qu || echo "${fg_bold[green]}$0: no updates.$reset_color"
 }
 
 # Fetch and Install updates + aur
@@ -39,7 +50,7 @@ pacupg() {
 	sudo echo "$0 ..."
 	pacupmir
 	echo "$0: upgrading..."
-	yaourt -Syua --noconfirm || echo "${fg_bold[red]}$0: Update FAILED !!$reset_color"
+	$_pacman_with_aur -Syu --noconfirm || echo "${fg_bold[red]}$0: Update FAILED !!$reset_color"
 }
 
 # pkgfile wrap
