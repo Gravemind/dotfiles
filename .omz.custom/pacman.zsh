@@ -1,19 +1,13 @@
 #!/bin/zsh
 
-alias pacman='pacman --color=auto '
-alias pac='pacaur '
-alias yaourt='yaourt '
+alias pacman='CC= CXX= CPP= pacman'
+alias pacaur='CC= CXX= CPP= pacaur'
+alias pac='CC= CXX= CPP= pacaur'
 
-_pacman_with_aur='pacman'
-
-if which pacaur > /dev/null
+if ! command which pacaur > /dev/null
 then
-	_pacman_with_aur=pacaur
-else
 	echo "${fg_bold[red]}pacaur not found${reset_color}"
 fi
-
-compdef _pacman yaourt=pacman
 
 pacmirrorfile=/etc/pacman.d/mirrorlist
 pacmirrorfile_expire_sec=$((4 * 24 * 60 * 60)) # 4 days
@@ -33,24 +27,20 @@ pacupmir() {
 
 # Fetch only new updates
 pacup() {
-	CC=
-	CXX=
 	sudo echo "$0 ..."
 	pacupmir
 	echo "$0: fetching updates..."
-	$_pacman_with_aur -Syuw --noconfirm || echo "${fg_bold[red]}$0: update FAILED !!$reset_color"
+	pacaur -Syuw --noconfirm --noedit || echo "${fg_bold[red]}$0: update FAILED !!$reset_color"
 	echo
-	$_pacman_with_aur -Qu || echo "${fg_bold[green]}$0: no updates.$reset_color"
+	pacaur -Qu || echo "${fg_bold[green]}$0: no updates.$reset_color"
 }
 
 # Fetch and Install updates + aur
 pacupg() {
-	CC=
-	CXX=
 	sudo echo "$0 ..."
 	pacupmir
 	echo "$0: upgrading..."
-	$_pacman_with_aur -Syu --noconfirm || echo "${fg_bold[red]}$0: Update FAILED !!$reset_color"
+	pacaur -Syu --noconfirm --noedit || echo "${fg_bold[red]}$0: Update FAILED !!$reset_color"
 }
 
 # pkgfile wrap
