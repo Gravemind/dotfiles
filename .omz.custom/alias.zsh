@@ -20,7 +20,10 @@ alias cleansvn='find . -name ".svn" -execdir rm -rf {} \;'
 alias cleandhcp='sudo rm -rf /var/lib/dhcp3/*.lease'
 alias cleanhg='find . \( -name "*.orig" \) -print -delete'
 
-alias _='command sudo -E ' # ! trailing wihtespace is important
+# trailing whitespace will make it resolve aliases !
+alias _='command sudo -E '
+alias sudo='command sudo -E '
+
 alias lock='i3lock -c 111111'
 alias disk='df -h --total'
 alias x='dtrx -v'
