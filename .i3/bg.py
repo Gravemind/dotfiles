@@ -22,4 +22,6 @@ for line in bgs_file:
         else:
             wallpapers[0:0] = files
 
-os.system('feh --bg-fill ' + escape(random.choice(wallpapers)))
+bg = random.choice(wallpapers)
+print(bg)
+os.system('feh --bg-fill ' + escape(bg))

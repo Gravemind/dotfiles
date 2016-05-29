@@ -63,7 +63,7 @@
 	ll = !git la --simplify-by-decoration
 
 	## Pertty log current and remote branch
-	lo = !git l HEAD `git rev-parse --abbrev-ref --symbolic-full-name @{upstream}`
+	lo = !git l @..@{upstream}
 
 	## show hide untracked files
 	hideuntrack = config --local status.showUntrackedFiles no
