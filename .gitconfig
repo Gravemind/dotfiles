@@ -65,6 +65,13 @@
 	## Pertty log current and remote branch
 	lo = !git l @..@{upstream}
 
+	## Pertty log all not merged in HEAD
+	loa = !git l --all --not @
+
+	## git cont REV
+	## shows branch containing REV
+	cont = branch -a --contains
+
 	## show hide untracked files
 	hideuntrack = config --local status.showUntrackedFiles no
 	showuntrack = config --local status.showUntrackedFiles normal
@@ -76,6 +83,19 @@
 	status = auto
 	log = auto
 	ui = auto
+[color "branch"]
+	current = bold green
+	local = bold yellow
+	remote = bold cyan
+[color "status"]
+	header = bold white
+	added = bold green
+	changed = bold blue
+	untracked = red
+	unmerged = bold red
+	branch = yellow
+[column]
+	ui = auto column dense
 
 [fetch]
 	prune = true
