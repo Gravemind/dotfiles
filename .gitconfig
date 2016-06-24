@@ -94,8 +94,9 @@
 	untracked = red
 	unmerged = bold red
 	branch = yellow
-[column]
-	ui = auto column dense
+
+#[column]
+#	ui = auto column dense
 
 [fetch]
 	prune = true
