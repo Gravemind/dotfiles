@@ -19,6 +19,8 @@
 ;; uncomment to auto-install packages
 ; (setq use-package-always-ensure t)
 
+(setq electric-indent-mode nil)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Startup
