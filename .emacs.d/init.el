@@ -19,6 +19,8 @@
 ;; uncomment to auto-install packages
 ; (setq use-package-always-ensure t)
 
+(setq electric-indent-mode nil)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Startup
@@ -775,6 +777,11 @@ of FILE in the current directory, suitable for creation"
 ;; magit
 ;;
 
+(defun jo/magit-log-upstream (&optional args files)
+  "Show log for `@{upstream}'."
+  (interactive (magit-log-arguments))
+  (magit-log (list "@{upstream}") args files))
+
 ;; jump to existing magit-status or opens in current window
 (defun magit-status-here-or-switch ()
   "Don't split window."
@@ -813,6 +820,9 @@ of FILE in the current directory, suitable for creation"
     (magit-define-popup-switch
       'magit-log-popup
       ?s "Sort by date" "--date-order")
+    (magit-define-popup-action
+      'magit-log-popup
+      ?u "Log upstream" 'jo/magit-log-upstream)
     (magit-define-popup-action
       'magit-pull-popup
       ?f "Pull ff only" 'my-magit-pullff)
