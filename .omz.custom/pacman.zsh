@@ -16,7 +16,7 @@ pacmirrorfile_expire_sec=$((4 * 24 * 60 * 60)) # 4 days
 pacupmir() {
 	local ago=$(( $(date +%s) - $(date +%s -r "$pacmirrorfile") ))
 	#local ago=10000
-	if [[ $ago -gt $pacmirrorfile_expire_sec ]]
+	if [[ "$1" = "-f" || $ago -gt $pacmirrorfile_expire_sec ]]
 	then
 		echo "$0: updating... (${fg_bold[green]}$(durationtostr $ago old)${reset_color})"
 		sudo pacupdatemirrors || echo "${fg_bold[red]}$0: update FAILED !!$reset_color"
