@@ -33,3 +33,12 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="${CR}"
 ZSH_THEME_GIT_PROMPT_DIRTY="${CKO}✕"
 ZSH_THEME_GIT_PROMPT_CLEAN="${COK}✓"
 ZSH_THEME_GIT_PROMPT_UNTRACKED="${CKO}?"
+
+## refresh prompt every 60 sec
+## builtin TRAPALRM called every TMOUT
+## http://stackoverflow.com/questions/13125825/zsh-update-prompt-with-current-time-when-a-command-is-started
+TMOUT=$(( 5 + 60 - $(date '+%s') % 60 ))
+TRAPALRM() {
+	zle reset-prompt
+	TMOUT=$(( 5 + 60 - $(date '+%s') % 60 ))
+}
