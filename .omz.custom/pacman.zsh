@@ -1,8 +1,8 @@
 #!/bin/zsh
 
-alias pacman='CC= CXX= CPP= pacman'
-alias pacaur='CC= CXX= CPP= pacaur'
-alias pac='CC= CXX= CPP= pacaur'
+alias pacman='CC=cc CXX=c++ CPP=c++ pacman'
+alias pacaur='CC=cc CXX=c++ CPP=c++ pacaur'
+alias pac='CC=cc CXX=c++ CPP=c++ pacaur'
 
 if ! command which pacaur > /dev/null
 then
