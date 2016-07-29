@@ -98,6 +98,9 @@
 #[column]
 #	ui = auto column dense
 
+[tag]
+    sort = version:refname
+
 [fetch]
 	prune = true
 [pull]
