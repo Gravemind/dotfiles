@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 # Original source: https://gist.github.com/ByScripts/3496113
 
 [ "$UID" != 0 ] && su=sudo
@@ -10,21 +12,21 @@ country='FR'
 safemove="mv"
 
 url="https://www.archlinux.org/mirrorlist/?country=${country}&protocol=http&protocol=https&ip_version=4&ip_version=6&use_mirror_status=on"
-servercount=5
+servercount=7
 tmpfile=$(mktemp --suffix=-mirrorlist)
 tmpfile2=$(mktemp --suffix=-mirrorlist2)
-
-{
 
 echo " Fetching ${country} mirrors..."
 wget -qO- "$url" | sed 's/^#Server/Server/g' > "$tmpfile"
 
-} && {
+if [ ! -s "$tmpfile" ]
+then
+	echo " Error: fetched empty mirror list"
+	exit 1
+fi
 
 echo " Backing up the original mirrorlist..."
 $su $safemove /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig;
-
-} && {
 
 echo " Ranking and Rotating the new list into place..."
 
@@ -36,18 +38,10 @@ rankmirrors -n $servercount -v "$tmpfile2" > "$tmpfile"
 # save mirrorlist
 $su $safemove "$tmpfile" /etc/pacman.d/mirrorlist
 
-} &&
-{
-
 echo " Chmoding mirrorlist"
 $su chmod 644 /etc/pacman.d/mirrorlist
 
-} &&
-{
-
 echo "OK";
 cat /etc/pacman.d/mirrorlist
-
-} || { echo "FAIL"; }
 
 rm -f "$tmpfile" "$tmpfile2"
