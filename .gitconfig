@@ -6,12 +6,17 @@
 	st = status
 	ci = commit
 	co = checkout
-	br = branch
 	com = commit -m
 	s = status -sb
 	ss = status -sb .
 	d = diff -M
 	dc = diff -M --cached
+
+	## branches
+	b = branch --sort=version:refname
+	ba = branch --sort=version:refname --all
+	## git cont REV # shows branch containing REV
+	cont = branch --sort=version:refname --all --contains
 
 	su = !git --no-pager diff --name-only --diff-filter=U
 	sa = !git --no-pager diff --name-only --diff-filter=A
@@ -68,10 +73,6 @@
 	## Pertty log all not merged in HEAD
 	loa = !git l --all --not @
 
-	## git cont REV
-	## shows branch containing REV
-	cont = branch -a --contains
-
 	## show hide untracked files
 	hideuntrack = config --local status.showUntrackedFiles no
 	showuntrack = config --local status.showUntrackedFiles normal
@@ -97,6 +98,9 @@
 
 #[column]
 #	ui = auto column dense
+
+[tag]
+	sort = version:refname
 
 [fetch]
 	prune = true
