@@ -56,22 +56,22 @@
 	magicmerge = !git -c merge.renamelimit=2048 merge -X patience -X rename-threshold=10 -X ignore-space-at-eol --no-ff --no-commit
 
 	## Log current branch
-	l =  log --graph --date-order
+	l = log --pretty=my --graph --date-order
 
 	## Log current branch, topologic
-	lt = log --graph --topo-order
+	lt = log --pretty=my --graph --topo-order
 
 	## Log all
-	la = log --graph --date-order --all
+	la = log --pretty=my --graph --date-order --all
 
 	## Log all merge commit only
-	ll = log --graph --date-order --all --simplify-by-decoration
+	ll = log --pretty=my --graph --date-order --all --simplify-by-decoration
 
 	## Log upstream not yet pulled
-	lo = log --graph --date-order @..@{upstream}
+	lo = log --pretty=my --graph --date-order @..@{upstream}
 
 	## Log all not merged in HEAD
-	loa = log --graph --date-order --all --not @
+	loa = log --pretty=my --graph --date-order --all --not @
 
 	## Show hide untracked files
 	hideuntrack = config --local status.showUntrackedFiles no
@@ -79,11 +79,11 @@
 
 ## Pretty log format
 [pretty]
-	mypretty = "%C(bold blue)%h%C(bold red)% D%Creset %C(white)%s %C(green)%an %C(bold blue)%ar%C(reset)"
+	my = "%C(bold blue)%h%C(bold red)% D%Creset %C(white)%s %C(green)%an %C(bold blue)%ar%C(reset)"
 
 [format]
 	## default pretty format for log/show/whatchanged
-	pretty = mypretty
+	#pretty = my
 
 [color]
 	branch = auto
