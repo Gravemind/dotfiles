@@ -55,27 +55,35 @@
 	## --no-commit					# dont "auto" commit after merge
 	magicmerge = !git -c merge.renamelimit=2048 merge -X patience -X rename-threshold=10 -X ignore-space-at-eol --no-ff --no-commit
 
-	## Pertty log current branch
-	l = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold red)%d%C(reset) %C(white)%s%C(reset) %C(green)%an%C(reset) %C(bold blue)%ar%C(reset)' --date-order
+	## Log current branch
+	l =  log --graph --date-order
 
-	## Pertty log current branch, topologic
-	lt = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold red)%d%C(reset) %C(white)%s%C(reset) %C(green)%an%C(reset) %C(bold blue)%ar%C(reset)'
+	## Log current branch, topologic
+	lt = log --graph --topo-order
 
-	## Pertty log all
-	la = !git l --all
+	## Log all
+	la = log --graph --date-order --all
 
-	## Pretty log all merges only
-	ll = !git la --simplify-by-decoration
+	## Log all merge commit only
+	ll = log --graph --date-order --all --simplify-by-decoration
 
-	## Pertty log current and remote branch
-	lo = !git l @..@{upstream}
+	## Log upstream not yet pulled
+	lo = log --graph --date-order @..@{upstream}
 
-	## Pertty log all not merged in HEAD
-	loa = !git l --all --not @
+	## Log all not merged in HEAD
+	loa = log --graph --date-order --all --not @
 
-	## show hide untracked files
+	## Show hide untracked files
 	hideuntrack = config --local status.showUntrackedFiles no
 	showuntrack = config --local status.showUntrackedFiles normal
+
+## Pretty log format
+[pretty]
+	mypretty = "%C(bold blue)%h%C(bold red)% D%Creset %C(white)%s %C(green)%an %C(bold blue)%ar%C(reset)"
+
+[format]
+	## default pretty format for log/show/whatchanged
+	pretty = mypretty
 
 [color]
 	branch = auto
