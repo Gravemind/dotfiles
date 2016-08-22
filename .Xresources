@@ -38,6 +38,9 @@
 *color7:      #bebebe
 *color15:     #ffffff
 
+! fixes font spacing
+URxvt.letterSpace:      -1
+
 URxvt*cursorColor:      yellow
 
 URxvt*urgentOnBell:     true
