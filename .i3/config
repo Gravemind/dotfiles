@@ -230,12 +230,12 @@ bindsym $ModK+w exec --no-startup-id i3lock -c 222222
 
 
 # Pulse Audio
-set $pactl_vol pactl set-sink-volume 1
-set $pactl_mute pactl set-sink-mute 1 toggle
-#bindsym $ModK+= exec --no-startup-id $pactl_vol +2%
-#bindsym $ModK+- exec --no-startup-id $pactl_vol -2%
+set $pactl_vol pactl set-sink-volume '@DEFAULT_SINK@'
+set $pactl_mute pactl set-sink-mute '@DEFAULT_SINK@' toggle
 bind $ModK+21 exec --no-startup-id $pactl_vol +2%
 bind $ModK+20 exec --no-startup-id $pactl_vol -2%
+bind $ModK+Shift+21 exec --no-startup-id $pactl_vol +10%
+bind $ModK+Shift+20 exec --no-startup-id $pactl_vol -10%
 bindsym XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +1%
 bindsym XF86AudioLowerVolume exec --no-startup-id $pactl_vol -1%
 bindsym $ModK+XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +1%
