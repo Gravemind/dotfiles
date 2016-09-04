@@ -38,7 +38,7 @@ bindsym $ModK+Ctrl+Return exec ~/bin/ne ~/TODO.org
 # Spawn with layout
 #bindsym $ModK+F6 exec $layouts/rtags.zsh 6
 #bindsym $ModK+F9 exec $layouts/pidgin.zsh 9
-bindsym $ModK+F10 exec $layouts/palemoon.zsh 10
+bindsym $ModK+F10 exec $layouts/icecat.zsh 10
 
 bindsym $ModK+F5 exec qalculate-gtk
 
@@ -215,6 +215,7 @@ for_window [class="(?i)urxvt"] border pixel 2
 for_window [class="(?i)emacs"] border pixel 2
 for_window [class="(?i)firefox"] border none
 for_window [class="(?i)pale moon"] border none
+for_window [class="(?i)icecat"] border none
 for_window [class="(?i)mplayer"] border none
 for_window [class="(?i)mpv"] border none
 
@@ -257,7 +258,6 @@ bindsym $ModK+XF86AudioMute exec --no-startup-id $pactl_mute
 # bind $ModK+75 exec --no-startup-id cmus-remote -u
 # bind $ModK+74 exec --no-startup-id cmus-remote -r
 # bind $ModK+76 exec --no-startup-id cmus-remote -n
-
 
 # player ctl
 # bindsym $ModK+End exec --no-startup-id playerctl play-pause
