@@ -11,10 +11,7 @@ setxkbmap -option terminate:ctrl_alt_bksp
 
 xrandr --output DVI-I-1 --right-of DVI-D-0
 
-amixer sset Master 50% &> /dev/null
-amixer sset Front 100% &> /dev/null
-amixer sset PCM 100% &> /dev/null
-amixer sset Mono 0% &> /dev/null
+pactl set-sink-volume @DEFAULT_SINK@ 50%
 
 xset b 0 &> /dev/null
 #xset s 3600 3600
