@@ -782,13 +782,6 @@ of FILE in the current directory, suitable for creation"
   (interactive (magit-log-arguments))
   (magit-log (list "@{upstream}") args files))
 
-;; jump to existing magit-status or opens in current window
-(defun magit-status-here-or-switch ()
-  "Don't split window."
-  (interactive)
-  (let ((pop-up-windows nil))
-    (call-interactively 'magit-status)))
-
 (defun my-magit-pullff (&optional args)
   "Pull fast forward only if possible
 \n(git pull --ff-only --no-rebase)"
@@ -802,10 +795,11 @@ of FILE in the current directory, suitable for creation"
              magit-diff
              )
   :bind (
-         ("C-x g" . magit-status-here-or-switch)
+         ("C-x g" . magit-status)
          )
   :init
   (progn
+    (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
     (setq magit-last-seen-setup-instructions "1.4.0"
           git-commit-summary-max-length 80
           git-commit-fill-column 80)
