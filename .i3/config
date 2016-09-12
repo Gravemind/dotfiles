@@ -214,6 +214,8 @@ assign [class="(?i)^.*steam.*$"] → 1
 for_window [class="(?i)urxvt"] border pixel 2
 for_window [class="(?i)emacs"] border pixel 2
 for_window [class="(?i)firefox"] border none
+for_window [class="(?i)pale moon"] border none
+for_window [class="(?i)icecat"] border none
 for_window [class="(?i)mplayer"] border none
 for_window [class="(?i)mpv"] border none
 
