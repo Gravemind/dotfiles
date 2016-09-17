@@ -1,5 +1,5 @@
 !
-! xrdb -merge -I$HOME ~/.Xresources
+! xrdb -merge ~/.Xresources
 !
 
 *background:  #202020
@@ -48,7 +48,7 @@ URxvt*urgentOnBell:     true
 URxvt*loginShell:       true
 URxvt*saveLines:        100000
 URxvt*buffered:         true
-URxvt*font:             xft:DejaVu Sans Mono:size=11
+URxvt*font:             xft:DejaVu Sans Mono:size=10
 URxvt*scrollBar_right:  false
 URxvt*scrollBar:        false
 
@@ -69,3 +69,10 @@ URxvt*cutchars: "\\`\"'&()*,;<=>?@[]^{|}:/!"
 URxvt.perl-ext-common:  default,matcher,vtwheel,selection-to-clipboard
 URxvt.url-launcher:     /usr/bin/firefox
 URxvt.matcher.button:   2
+
+Xft.autohint:       0
+Xft.antialias:      1
+Xft.hinting:        1
+Xft.hintstyle:      hintmedium
+Xft.rgba:           none
+Xft.lcdfilter:      lcdnone
