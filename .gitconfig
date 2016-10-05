@@ -3,14 +3,20 @@
 #	name =
 
 [alias]
-	st = status
 	ci = commit
 	co = checkout
 	com = commit -m
+
+	st = status
 	s = status -sb
 	ss = status -sb .
+
 	d = diff -M
 	dc = diff -M --cached
+	dw = diff --word-diff=color -M
+	dcw = diff --word-diff=color -M --cached
+
+	dule = submodule
 
 	## branches
 	b = branch --sort=version:refname
