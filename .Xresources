@@ -70,9 +70,9 @@ URxvt.perl-ext-common:  default,matcher,vtwheel,selection-to-clipboard
 URxvt.url-launcher:     /usr/bin/firefox
 URxvt.matcher.button:   2
 
-Xft.autohint:       0
+Xft.autohint:       1
 Xft.antialias:      1
 Xft.hinting:        1
-Xft.hintstyle:      hintmedium
+Xft.hintstyle:      hintfull
 Xft.rgba:           none
 Xft.lcdfilter:      lcdnone
