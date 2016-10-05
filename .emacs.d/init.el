@@ -511,14 +511,19 @@ With argument ARG, do this that many times."
   :group 'font-lock-faces)
 
 (defun jo/cc-mode ()
-  ;; printf format face
-  ;; http://emacswiki.org/emacs/AddKeywords
   (font-lock-add-keywords
    nil
-   '(("[^%]\\(%\\([[:digit:]]+\\$\\)?[-+' #0*]*\\([[:digit:]]*\\|\\*\\|\\*[[:digit:]]+\\$\\)\\(\\.\\([[:digit:]]*\\|\\*\\|\\*[[:digit:]]+\\$\\)\\)?\\([hlLjzt]\\|ll\\|hh\\)?\\([aAbdiuoxXDOUfFeEgGcCsSpn]\\|\\[\\^?.[^]]*\\]\\)\\)"
+   '(
+     ;; printf format face
+     ;; http://emacswiki.org/emacs/AddKeywords
+     ("[^%]\\(%\\([[:digit:]]+\\$\\)?[-+' #0*]*\\([[:digit:]]*\\|\\*\\|\\*[[:digit:]]+\\$\\)\\(\\.\\([[:digit:]]*\\|\\*\\|\\*[[:digit:]]+\\$\\)\\)?\\([hlLjzt]\\|ll\\|hh\\)?\\([aAbdiuoxXDOUfFeEgGcCsSpn]\\|\\[\\^?.[^]]*\\]\\)\\)"
       1 font-lock-format-specifier-face t)
      ("\\(%%\\)"
-      1 font-lock-format-specifier-face t)) )
+      1 font-lock-format-specifier-face t)
+     ;;
+     ("\\<\\(FIXME\\|TODO\\\)\\>" 1 font-lock-warning-face prepend)
+     ("\\<\\(null\\)\\>" 1 font-lock-keyword-face)
+     ))
 
   (c-set-style "jo-c-style")
   (jo/tab-tab)
