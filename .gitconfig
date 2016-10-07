@@ -45,7 +45,7 @@
 	fp = fetch --all --prune --tags
 
 	## Pull only if fast forward is possible (abort if conflicts)
-	pullff = pull --no-rebase --ff-only
+	puff = pull --no-rebase --ff-only
 
 	## Clean deleted branches
 	cleanbranches = !git branch -vv | grep ': gone]' | awk '{ print $1 }' | xargs -n 1 git branch -d
