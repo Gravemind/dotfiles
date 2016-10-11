@@ -1,11 +1,7 @@
 hr-seek=yes
-
-#vo=opengl-hq
-#vo=opengl-hq:swapinterval=1
-vo=opengl-hq:interpolation:tscale-param1=0.0:swapinterval=1
-video-sync=display-resample
-#hwdec=vda
-display-fps=60
-
 #force-window=immediate
 sub-pos=84
+
+vo=opengl-hq:swapinterval=1:interpolation:tscale=oversample
+video-sync=display-resample
+#display-fps=60
