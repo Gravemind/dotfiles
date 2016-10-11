@@ -19,7 +19,7 @@ pacupmir() {
 	if [[ "$1" = "-f" || $ago -gt $pacmirrorfile_expire_sec ]]
 	then
 		echo "$0: updating... (${fg_bold[green]}$(durationtostr $ago old)${reset_color})"
-		sudo pacupdatemirrors || { echo "${fg_bold[red]}$0: update FAILED !!$reset_color"; return 1 }
+		sudo pacupdatemirrors || { echo "${fg_bold[red]}$0: pacupdatemirrors failed !!$reset_color"; return 1 }
 	else
 		echo "$0: up to date (${fg_bold[cyan]}$(durationtostr $ago old)${reset_color})"
 	fi
@@ -27,20 +27,18 @@ pacupmir() {
 
 # Fetch only new updates
 pacup() {
-	sudo echo "$0 ..."
-	pacupmir || { echo "$0: pacupmir FAILED"; return 1; }
+	pacupmir || { echo "$0: pacupmir failed"; return 1; }
 	echo "$0: fetching updates..."
-	pacaur -Syuw --noconfirm --noedit || { echo "${fg_bold[red]}$0: update FAILED !!$reset_color"; return 1; }
+	pacaur -Syuw --noconfirm --noedit || { echo "${fg_bold[red]}$0: fetch updates failed !!$reset_color"; return 1; }
 	echo
 	pacaur -Qu || { echo "${fg_bold[green]}$0: no updates.$reset_color" ; return 1; }
 }
 
 # Fetch and Install updates + aur
 pacupg() {
-	sudo echo "$0 ..."
-	pacupmir || { echo "$0: pacupmir FAILED"; return 1; }
+	pacupmir || { echo "$0: pacupmir failed"; return 1; }
 	echo "$0: upgrading..."
-	pacaur -Syu --noconfirm --noedit || { echo "${fg_bold[red]}$0: Update FAILED !!$reset_color"; return 1; }
+	pacaur -Syu --noconfirm --noedit || { echo "${fg_bold[red]}$0: upgrade failed !!$reset_color"; return 1; }
 }
 
 # pkgfile wrap

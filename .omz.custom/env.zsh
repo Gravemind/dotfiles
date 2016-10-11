@@ -21,7 +21,7 @@ export GREP_OPTIONS=
 
 export EDITOR='emacs'
 export PAGER='less'
-export LESS='-R'
+export LESS='-R -i -S -M -j5'
 export PATH=$HOME/bin:$PATH
 export BROWSER="$(which icecat)"
 

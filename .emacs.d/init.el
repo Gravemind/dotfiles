@@ -511,14 +511,19 @@ With argument ARG, do this that many times."
   :group 'font-lock-faces)
 
 (defun jo/cc-mode ()
-  ;; printf format face
-  ;; http://emacswiki.org/emacs/AddKeywords
   (font-lock-add-keywords
    nil
-   '(("[^%]\\(%\\([[:digit:]]+\\$\\)?[-+' #0*]*\\([[:digit:]]*\\|\\*\\|\\*[[:digit:]]+\\$\\)\\(\\.\\([[:digit:]]*\\|\\*\\|\\*[[:digit:]]+\\$\\)\\)?\\([hlLjzt]\\|ll\\|hh\\)?\\([aAbdiuoxXDOUfFeEgGcCsSpn]\\|\\[\\^?.[^]]*\\]\\)\\)"
+   '(
+     ;; printf format face
+     ;; http://emacswiki.org/emacs/AddKeywords
+     ("[^%]\\(%\\([[:digit:]]+\\$\\)?[-+' #0*]*\\([[:digit:]]*\\|\\*\\|\\*[[:digit:]]+\\$\\)\\(\\.\\([[:digit:]]*\\|\\*\\|\\*[[:digit:]]+\\$\\)\\)?\\([hlLjzt]\\|ll\\|hh\\)?\\([aAbdiuoxXDOUfFeEgGcCsSpn]\\|\\[\\^?.[^]]*\\]\\)\\)"
       1 font-lock-format-specifier-face t)
      ("\\(%%\\)"
-      1 font-lock-format-specifier-face t)) )
+      1 font-lock-format-specifier-face t)
+     ;;
+     ("\\<\\(FIXME\\|TODO\\\)\\>" 1 font-lock-warning-face prepend)
+     ("\\<\\(null\\)\\>" 1 font-lock-keyword-face)
+     ))
 
   (c-set-style "jo-c-style")
   (jo/tab-tab)
@@ -801,8 +806,8 @@ of FILE in the current directory, suitable for creation"
   (progn
     (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
     (setq magit-last-seen-setup-instructions "1.4.0"
-          git-commit-summary-max-length 80
-          git-commit-fill-column 80)
+          git-commit-summary-max-length 50
+          git-commit-fill-column 70)
     (setq smerge-refine-ignore-whitespace nil) ;; refine show whitespace
     (setq magit-diff-refine-hunk 'all)
     )
