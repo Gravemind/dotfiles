@@ -22,7 +22,7 @@ function red() {
 	fi
 	cola=6500
 	bria=100
-	colstep=400
+	colstep=350
 	bristep=10
 	i=0
 	while read -s -k c
