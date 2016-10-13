@@ -38,6 +38,10 @@ pacup() {
 pacupg() {
 	pacupmir || { echo "$0: pacupmir failed"; return 1; }
 	echo "$0: upgrading..."
+	## `pacaur -Syu` does not catch pacman errors and continues with AUR packages silently
+	## and `pacaur -Syur` exits 1 ?
+	sudo pacman -Syu --noconfirm || { echo "${fg_bold[red]}$0: Update FAILED !!$reset_color"; return 1; }
+	echo "$0: upgrading..."
 	pacaur -Syu --noconfirm --noedit || { echo "${fg_bold[red]}$0: upgrade failed !!$reset_color"; return 1; }
 }
 
