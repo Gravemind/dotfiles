@@ -2,6 +2,9 @@ hr-seek=yes
 #force-window=immediate
 sub-pos=84
 
-vo=opengl-hq:swapinterval=1:interpolation:tscale=oversample
+profile=opengl-hq
+opengl-swapinterval=1
+interpolation=yes
+tscale=oversample
 video-sync=display-resample
 #display-fps=60
