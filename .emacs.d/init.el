@@ -418,10 +418,16 @@ brake whatever split of windows we might have in the frame."
   (auto-highlight-symbol-mode))
 
 (defun delete-word (arg)
-  "Delete characters backward until encountering the beginning of a word.
-With argument ARG, do this that many times."
+  "Delete characters forward until encountering the end of a word.
+With argument, do this that many times."
   (interactive "p")
-  (delete-region (point) (progn (backward-word arg) (point))))
+  (delete-region (point) (progn (forward-word arg) (point))))
+
+(defun backward-delete-word (arg)
+  "Delete characters backward until encountering the end of a word.
+With argument, do this that many times."
+  (interactive "p")
+  (delete-word (- arg)))
 
 (defun jo/filenum-to-clipboard ()
   "Copy \"file:linenum\" to clipboard"
@@ -435,7 +441,7 @@ With argument ARG, do this that many times."
                               (1+ (count-lines 1 (point))))))
         (progn
           (message location)
-          (x-set-selection nil location))))))
+          (gui-set-selection nil location))))))
 
 (defun jo/file-to-clipboard ()
   "Copy \"file:linenum\" to clipboard"
@@ -447,16 +453,24 @@ With argument ARG, do this that many times."
       (let ((location (buffer-file-name)))
         (progn
           (message location)
-          (x-set-selection nil location))))))
+          (gui-set-selection nil location))))))
+
+(defun insert-from-primary ()
+  "Insert the text from the current x-selection."
+  (interactive)
+  (insert (gui-get-selection nil)))
 
 ;; prog-mode is in simple
 (req-package simple
   :require (paren auto-highlight-symbol)
   :bind (
-         ;; Force backspace erase tabulations
-         ("<backspace>" . delete-backward-char)
+         ("<backspace>" . delete-backward-char)     ;; Force delete entire tabulation.
+         ("C-<backspace>" . backward-delete-word)   ;; do not save it to kill-ring/clipboard.
+         ("M-<backspace>" . backward-kill-word)     ;; save it.
 
-         ("C-<backspace>" . delete-word)
+         ("<delete>" . delete-char)                 ;; Force delete entire tabulation.
+         ("M-<delete>" . kill-word)                 ;; do not save it to kill-ring/clipboard.
+         ("C-<delete>" . delete-word)               ;; save it.
 
          ("C-<end>" . move-end-of-line)
          ("C-<home>" . move-beginning-of-line)
@@ -473,9 +487,9 @@ With argument ARG, do this that many times."
          ("M-k" . kill-whole-line)
          ("C-x K" . kill-this-buffer)
 
-         ("S-<delete>" . clipboard-kill-region)
-         ("C-<insert>" . clipboard-kill-ring-save)
-         ("S-<insert>" . clipboard-yank)
+         ;("S-<delete>" . clipboard-kill-region)
+         ;("C-<insert>" . clipboard-kill-ring-save)
+         ("S-<insert>" . insert-from-primary)
 
          ("C-c r" . replace-string)
          ("C-c R" . query-replace)
