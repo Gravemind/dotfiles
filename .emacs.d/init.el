@@ -1038,8 +1038,17 @@ of FILE in the current directory, suitable for creation"
   (rtags-clear-diagnostics-overlays)
   )
 
+(custom-set-variables
+ '(rtags-jump-to-first-match nil)
+ '(rtags-enable-unsaved-reparsing t)
+ )
+
 (defun jo/rtags-c-initialization-hook ()
+
   (require 'rtags) ;; @TODO autoload
+  (require 'rtags-helm) ;; @TODO autoload
+
+  (setq rtags-use-helm t)
 
   (define-key c-mode-base-map "\C-cj" 'rtags-location-stack-back)
   (define-key c-mode-base-map "\C-cl" 'rtags-location-stack-forward)
