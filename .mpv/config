@@ -9,4 +9,6 @@ tscale=oversample
 video-sync=display-resample
 #display-fps=60
 
-ytdl-format=bestvideo[height<=?1080]+bestaudio/best
+cache-secs=60
+
+ytdl-format=bestvideo[height<=?720]+bestaudio/best
