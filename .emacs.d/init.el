@@ -12,37 +12,33 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq custom-file "~/.emacs.d/custom.el")
+(custom-set-variables '(custom-file "~/.emacs.d/custom.el"))
 (load custom-file)
 
-(setq use-package-always-ensure nil)
 ;; uncomment to auto-install packages
 ; (setq use-package-always-ensure t)
-
-(setq electric-indent-mode nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Startup
 ;;
 
-;; remove frames
-(menu-bar-mode -1)
-(if (display-graphic-p)
-    (progn
-      (tool-bar-mode -1)
-      (scroll-bar-mode -1)
-      ))
-
-(setq-default inhibit-startup-screen t ;; no startup screen
-              make-backup-files nil ;; no foo~ files
-              truncate-lines t
-              custom-file "~/.emacs.d/custom.el"
-              vc-handled-backends nil
-              )
-
-(blink-cursor-mode -1)
-(column-number-mode t)
+(custom-set-variables
+ '(blink-cursor-mode nil)
+ '(column-number-mode t)
+ '(use-package-always-ensure nil)
+ '(electric-indent-mode nil)
+ '(menu-bar-mode nil)
+ '(tool-bar-mode nil)
+ '(scroll-bar-mode nil)
+ '(inhibit-startup-screen t) ;; no startup screen
+ '(make-backup-files nil) ;; no foo~ files
+ '(truncate-lines t)
+ '(vc-handled-backends nil)
+ '(recentf-max-saved-items 92)
+ '(delete-selection-mode t) ;; delete current selection when typing http://www.emacswiki.org/emacs/DeleteSelectionMode
+ '(Man-width 100)
+ )
 
 ;; Replace yes-or-no by y-or-n
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -52,10 +48,6 @@
 (set-keyboard-coding-system 'utf-8)
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8)
-
-;; delete current selection when typing
-;; http://www.emacswiki.org/emacs/DeleteSelectionMode
-(delete-selection-mode 1)
 
 ;;
 (put 'erase-buffer 'disabled nil)
