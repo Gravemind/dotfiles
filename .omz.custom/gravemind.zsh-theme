@@ -27,12 +27,11 @@ unset PROMPT_USER
 function gravemind_git_prompt_info_short() {
   local toplevel="$(command git rev-parse --show-toplevel 2>/dev/null)"
   if [[ -z "$toplevel" ]]; then
-	  echo "%F{blue}%1~/"
+	  echo "%F{blue}%30>…>%1~%<</"
 	  return
   fi
   if [[ "$(command git config --get oh-my-zsh.hide-status 2>/dev/null)" = "1" ]]; then
-#	  echo "%F{black}%1~ %F{white}%{∶%G%} %F{black}(oh-my-zsh.hide-status)"
-	  echo "%F{blue}%1~/"
+	  echo "%F{blue}%30>…>%1~%<</"
 	  return
   fi
   ## FIXME when pwd is outside toplevel
@@ -40,18 +39,16 @@ function gravemind_git_prompt_info_short() {
   local subgit="${$(pwd)#$toplevel}"
   local shortsubgit=""
   if [[ -z "$subgit" ]]; then
-	  shortsubgit="/"
+	  shortsubgit=""
   else
 	  local subgitlast="$(basename "$subgit")"
 	  if [[ "$subgit" = "/$subgitlast" ]]; then
-		  shortsubgit="/$subgitlast/"
+		  shortsubgit="/$subgitlast"
 	  else
-		  shortsubgit="/%{…%G%}/$subgitlast/"
-#		  shortsubgit="/.../$subgitlast/"
+		  shortsubgit="/%{…%G%}/$subgitlast"
 	  fi
   fi
-  echo "%F{blue}⌥ $gitrootname%F{black}$shortsubgit"
-#  echo "%F{blue}$gitrootname%F{black}$shortsubgit %F{white}%{∶%G%} %F{blue}$(git_current_branch)"
+  echo "%F{blue}⌥ %20>…>$gitrootname%<<%F{black}%20>…>$shortsubgit%<</"
 }
 
 function gravemind_git_prompt_info_long() {
@@ -70,7 +67,6 @@ function gravemind_git_prompt_info_long() {
   local pwdbegin="${toplevelparent/#$HOME\//~/}"
   local pwdgit="$toplevelbase"
   local pwdend="${$(pwd)#$toplevel}"
-#  echo "%F{black}$pwdbegin%F{blue}$pwdgit%F{black}$pwdend %F{white}%{∶%G%} %F{blue}$(git_current_branch)"
   echo "%F{blue}$(git_current_branch) %F{white}%{∶%G%} %F{black}$pwdbegin%F{blue}$pwdgit%F{black}$pwdend"
 }
 
