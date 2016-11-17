@@ -43,6 +43,29 @@ pacupg() {
 	sudo pacman -Syu --noconfirm || { echo "${fg_bold[red]}$0: Update FAILED !!$reset_color"; return 1; }
 	echo "\n${fg_bold[green]}$0: upgrading offical+AUR...$reset_color\n"
 	pacaur -Syu --noconfirm --noedit || { echo "${fg_bold[red]}$0: upgrade failed !!$reset_color"; return 1; }
+	checkpacnew
+}
+
+checkpacnew() {
+	local pacnews=""
+	local pacnewcount=0
+	grep pacnew /var/log/pacman.log | \
+		sed -n -E 's#^.* ([^ ]+\.pacnew)$#\1#gp' | \
+		sort -u | \
+		while read pacnew
+		do
+			if [[ -f "$pacnew" ]]
+			then
+				pacnews="$pacnews $pacnew"
+				pacnewcount=$(($pacnewcount + 1))
+			fi
+		done
+	if [[ pacnewcount -gt 0 ]]
+	then
+		echo
+		echo "${fg_bold[red]}/!\\ Found $pacnewcount pacnew$([[ $pacnewcount = 1 ]] || echo s):$pacnews$reset_color"
+		echo
+	fi
 }
 
 # pkgfile wrap
