@@ -1,5 +1,7 @@
 # pacman
 
+base-devel
+
 emacs
 zsh
 openssh
@@ -13,14 +15,13 @@ i3-wm
 i3lock
 dmenu
 rxvt-unicode
+xterm
 
 git
 mpd
+ncmpcpp
 ntp
 autojump
-tk
-htop
-ncmpcpp
 
 ruby
 python
@@ -33,16 +34,27 @@ autoconf
 automake
 libtool
 lsof
+asciidoc
+patch
+diffutils
+dos2unix
+gdb
+
+ldns
+iftop
+iotop
+dnsmasq
 
 meld
 firefox
 chromium
 feh
-pidgin
+qalculate-gtk
+evince
+xautolock
+xdiskusage
 
 wireless_tools
-asciidoc
-patch
 
 smartmontools
 hdparm
@@ -51,19 +63,24 @@ xclip
 mpv
 p7zip
 redshift
-ack
+the_silver_searcher
 mlocate
 dtrx
 
-# user groups:
-mem wheel log mpd games video power users audio
-
-# other
-
-# yaourt
-
 xkb-qwerty-fr
 lostfiles
+
+# pacaur
+./pacaur-install.sh
+
+# omz
+./oh-my-zsh-install.sh
+
+# AUR
+xlogin-git
+
+# user groups:
+mem wheel log mpd games video power users audio optical storage
 
 # emacs rtags
 
