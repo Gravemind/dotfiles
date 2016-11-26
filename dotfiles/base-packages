@@ -91,3 +91,10 @@ cd ~/bin ; git clone git@github.com:Andersbakken/rtags
 git clone git@github.com:Gravemind/i3status
 make
 sudo make install
+
+# linux-ck
+[repo-ck]
+Server = https://mirror.archlinux.no/repo-ck/os/$arch
+Server = http://repo-ck.com/$arch
+
+_ pacman-key --lsign-key 5EE46C4C
