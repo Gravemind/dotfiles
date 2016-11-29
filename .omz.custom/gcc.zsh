@@ -53,7 +53,8 @@ function rtagson() {
 	whichCC
 }
 
-#gcclast
-clanglast
+export CC=clang
+export CXX=clang++
+export CPP=$CXX
 
-# rtagson
+#rtagson

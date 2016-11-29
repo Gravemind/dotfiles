@@ -15,4 +15,4 @@ netodo() {
     ne "$TODOFILE"
 }
 
-todo;
+# todo;
