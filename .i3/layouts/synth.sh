@@ -1,7 +1,4 @@
-#!/bin/zsh
-
-## unset option that nices background jobs
-unsetopt BG_NICE
+#!/bin/bash
 
 HERE="$(cd "`dirname "$0"`"; pwd)"
 
