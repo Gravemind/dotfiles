@@ -98,6 +98,7 @@
 	status = auto
 	log = auto
 	ui = auto
+	grep = auto
 [color "branch"]
 	current = bold green
 	local = bold yellow
@@ -108,7 +109,7 @@
 	changed = bold blue
 	untracked = red
 	unmerged = bold red
-	branch = yellow
+	branch = bold yellow
 
 #[column]
 #	ui = auto column dense
