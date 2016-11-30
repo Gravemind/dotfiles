@@ -36,9 +36,7 @@ bindsym $ModK+Ctrl+Return exec ~/bin/ne ~/TODO.org
 #bindsym $ModK+F4 exec ~/bin/emacscl four
 
 # Spawn with layout
-#bindsym $ModK+F6 exec $layouts/rtags.zsh 6
-#bindsym $ModK+F9 exec $layouts/pidgin.zsh 9
-bindsym $ModK+F10 exec $layouts/firefox.zsh 10
+bindsym $ModK+F10 exec $layouts/browser.sh firefox 10
 
 bindsym $ModK+F5 exec qalculate-gtk
 
@@ -309,7 +307,7 @@ exec ~/.i3/bg.py
 # Spawn layouts and programs
 # http://i3wm.org/docs/layout-saving.html
 #
-exec --no-startup-id $layouts/startup.zsh
+exec --no-startup-id $layouts/startup.sh
 
 set $hook_idle_time_min 10
 exec --no-startup-id xautolock -detectsleep -time $hook_idle_time_min -locker "~/bin/hooks/onidle" -noclose

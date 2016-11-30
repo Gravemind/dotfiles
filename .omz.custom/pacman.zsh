@@ -32,6 +32,7 @@ pacup() {
 	pacaur -Syuw --noconfirm --noedit || { echo "${fg_bold[red]}$0: fetch updates failed !!$reset_color"; return 1; }
 	echo
 	pacaur -Qu || { echo "${fg_bold[green]}$0: no updates.$reset_color" ; return 1; }
+	echo "${fg_bold[green]}$0: fetching OK$reset_color"
 }
 
 # Fetch and Install updates + aur
@@ -43,6 +44,7 @@ pacupg() {
 	sudo pacman -Syu --noconfirm || { echo "${fg_bold[red]}$0: Update FAILED !!$reset_color"; return 1; }
 	echo "\n${fg_bold[green]}$0: upgrading offical+AUR...$reset_color\n"
 	pacaur -Syu --noconfirm --noedit || { echo "${fg_bold[red]}$0: upgrade failed !!$reset_color"; return 1; }
+	echo "${fg_bold[green]}$0: upgrading OK$reset_color"
 	checkpacnew
 }
 
