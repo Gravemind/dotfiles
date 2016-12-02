@@ -1043,7 +1043,9 @@ of FILE in the current directory, suitable for creation"
   (setq rtags-use-helm t)
 
   (define-key c-mode-base-map "\C-cj" 'rtags-location-stack-back)
+  (define-key c-mode-base-map "\C-c\C-j" 'rtags-location-stack-back)
   (define-key c-mode-base-map "\C-cl" 'rtags-location-stack-forward)
+  (define-key c-mode-base-map "\C-c\C-l" 'rtags-location-stack-forward)
 
   (define-key c-mode-base-map "\C-cp" 'rtags-next-match)
   (define-key c-mode-base-map "\C-c;" 'rtags-next-match)
@@ -1085,7 +1087,7 @@ of FILE in the current directory, suitable for creation"
 
 (req-package yasnippet
   :commands yas-global-mode
-  :defer 3
+  :defer 2
   :config
   (progn
     (setq yas-snippet-dirs
