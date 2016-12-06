@@ -1,2 +1,2 @@
 
-zstyle ':completion:*' show-ambiguity "1;4;$color[fg-red]"
+zstyle ':completion:*' show-ambiguity "1;$color[fg-white]"
