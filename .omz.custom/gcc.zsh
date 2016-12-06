@@ -77,6 +77,6 @@ ccacheon() {
 	whichcc
 }
 
-ENABLE_RTAGS=1
-ENABLE_CCACHE=1
-clanglast
+ENABLE_RTAGS=0
+ENABLE_CCACHE=0
+gcclast
