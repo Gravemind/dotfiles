@@ -1158,6 +1158,31 @@ of FILE in the current directory, suitable for creation"
   (revert-buffer-with-coding-system 'utf-8-dos)
   )
 
+;; https://www.emacswiki.org/emacs/RevertBuffer#toc2
+(defun revert-all-buffers ()
+  "Iterate through the list of buffers and revert them, e.g. after a
+    new branch has been checked out."
+  (interactive)
+  (when (yes-or-no-p "Are you sure - any changes in open buffers will be lost! ")
+    (let ((frm1 (selected-frame)))
+      (make-frame)
+      (let ((frm2 (next-frame frm1)))
+        (select-frame frm2)
+        (make-frame-invisible)
+        (dolist (x (buffer-list))
+          (let ((test-buffer (buffer-name x)))
+            (when (not (string-match "\*" test-buffer))
+              (when (not (file-exists-p (buffer-file-name x)))
+                (select-frame frm1)
+                (when (yes-or-no-p (concat "File no longer exists (" (buffer-name x) "). Close buffer? "))
+                  (kill-buffer (buffer-name x)))
+                (select-frame frm2))
+              (when (file-exists-p (buffer-file-name x))
+                (switch-to-buffer (buffer-name x))
+                (revert-buffer t t t)))))
+        (select-frame frm1)
+        (delete-frame frm2)))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;
