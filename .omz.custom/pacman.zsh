@@ -32,8 +32,12 @@ pacup() {
 	pacaur -Sy || { echo "${fg_bold[red]}$0: pacaur -Sy failed !!$reset_color"; return 1; }
 	pacaur -Qu || { echo "${fg_bold[green]}$0: no updates.$reset_color" ; return 1; }
 
+	## `pacaur` does not catch pacman errors and continues with AUR packages silently, so run pacman alone
+	echo "\n${fg_bold[green]}$0: pacman -Suw ...$reset_color\n"
+	sudo pacman -Suw --noconfirm || { echo "${fg_bold[red]}$0: pacman -Suw failed !!$reset_color"; return 1; }
 	echo "\n${fg_bold[green]}$0: pacaur -Suw ...$reset_color\n"
 	pacaur -Suw --noconfirm --noedit || { echo "${fg_bold[red]}$0: pacaur -Suw failed !!$reset_color"; return 1; }
+
 	echo
 	pacaur -Qu || { echo "${fg_bold[green]}$0: no updates.$reset_color" ; return 1; }
 	echo "${fg_bold[green]}$0: pacaur -Suw OK$reset_color"
@@ -47,7 +51,7 @@ pacupg() {
 	pacaur -Sy || { echo "${fg_bold[red]}$0: pacaur -Sy failed !!$reset_color"; return 1; }
 	pacaur -Qu || { echo "${fg_bold[green]}$0: no updates.$reset_color" ; return 1; }
 
-	## `pacaur -Syu` does not catch pacman errors and continues with AUR packages silently
+	## `pacaur` does not catch pacman errors and continues with AUR packages silently, so run pacman alone
 	## and `pacaur -Syur` exits 1 ?
 	echo "\n${fg_bold[green]}$0: pacman -Su...$reset_color\n"
 	sudo pacman -Su --noconfirm || { echo "${fg_bold[red]}$0: pacman -Su failed !!$reset_color"; return 1; }
