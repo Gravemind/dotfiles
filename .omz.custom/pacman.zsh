@@ -9,11 +9,10 @@ then
 	echo "${fg_bold[red]}pacaur not found${reset_color}"
 fi
 
-pacmirrorfile=/etc/pacman.d/mirrorlist
-pacmirrorfile_expire_sec=$((4 * 24 * 60 * 60)) # 4 days
-
 # Update mirror list if necessary
 pacupmir() {
+	local pacmirrorfile=/etc/pacman.d/mirrorlist
+	local pacmirrorfile_expire_sec=$((4 * 24 * 60 * 60)) # 4 days
 	local ago=$(( $(date +%s) - $(date +%s -r "$pacmirrorfile") ))
 	#local ago=10000
 	if [[ "$1" = "-f" || $ago -gt $pacmirrorfile_expire_sec ]]
@@ -28,23 +27,34 @@ pacupmir() {
 # Fetch only new updates
 pacup() {
 	pacupmir || { echo "$0: pacupmir failed"; return 1; }
-	echo "\n${fg_bold[green]}$0: fetching updates...$reset_color\n"
-	pacaur -Syuw --noconfirm --noedit || { echo "${fg_bold[red]}$0: fetch updates failed !!$reset_color"; return 1; }
+
+	echo "\n${fg_bold[green]}$0: pacaur -Sy ...$reset_color\n"
+	pacaur -Sy || { echo "${fg_bold[red]}$0: pacaur -Sy failed !!$reset_color"; return 1; }
+	pacaur -Qu || { echo "${fg_bold[green]}$0: no updates.$reset_color" ; return 1; }
+
+	echo "\n${fg_bold[green]}$0: pacaur -Suw ...$reset_color\n"
+	pacaur -Suw --noconfirm --noedit || { echo "${fg_bold[red]}$0: pacaur -Suw failed !!$reset_color"; return 1; }
 	echo
 	pacaur -Qu || { echo "${fg_bold[green]}$0: no updates.$reset_color" ; return 1; }
-	echo "${fg_bold[green]}$0: fetching OK$reset_color"
+	echo "${fg_bold[green]}$0: pacaur -Suw OK$reset_color"
 }
 
 # Fetch and Install updates + aur
 pacupg() {
 	pacupmir || { echo "$0: pacupmir failed"; return 1; }
-	echo "\n${fg_bold[green]}$0: upgrading offical...$reset_color\n"
+
+	echo "\n${fg_bold[green]}$0: pacaur -Sy ...$reset_color\n"
+	pacaur -Sy || { echo "${fg_bold[red]}$0: pacaur -Sy failed !!$reset_color"; return 1; }
+	pacaur -Qu || { echo "${fg_bold[green]}$0: no updates.$reset_color" ; return 1; }
+
 	## `pacaur -Syu` does not catch pacman errors and continues with AUR packages silently
 	## and `pacaur -Syur` exits 1 ?
-	sudo pacman -Syu --noconfirm || { echo "${fg_bold[red]}$0: Update FAILED !!$reset_color"; return 1; }
-	echo "\n${fg_bold[green]}$0: upgrading offical+AUR...$reset_color\n"
-	pacaur -Syu --noconfirm --noedit || { echo "${fg_bold[red]}$0: upgrade failed !!$reset_color"; return 1; }
-	echo "${fg_bold[green]}$0: upgrading OK$reset_color"
+	echo "\n${fg_bold[green]}$0: pacman -Su...$reset_color\n"
+	sudo pacman -Su --noconfirm || { echo "${fg_bold[red]}$0: pacman -Su failed !!$reset_color"; return 1; }
+	echo "\n${fg_bold[green]}$0: pacaur -Su...$reset_color\n"
+	pacaur -Su --noconfirm --noedit || { echo "${fg_bold[red]}$0: pacaur -Su failed !!$reset_color"; return 1; }
+	echo "${fg_bold[green]}$0: pacaur -Su OK$reset_color"
+
 	checkpacnew
 }
 
