@@ -10,6 +10,7 @@ setxkbmap -option terminate:ctrl_alt_bksp
 #syndaemon -i 2 -t -k -d &
 
 xrandr --output HDMI-0 --off
+xrandr --dpi 96
 
 pactl set-sink-volume @DEFAULT_SINK@ 50%
 
