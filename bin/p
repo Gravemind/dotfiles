@@ -12,7 +12,7 @@ if [[ -n "$1" ]] ; then TIME="$1" ; fi
 
 echo "$TIME" > "$SAVE"
 
-COMMAND='pactl set-sink-volume @DEFAULT_SINK@ 50%; mpc clear; mpc load reveil; mpc repeat on; mpc shuffle; mpc next ; mpc play ; xset dpms force on ;'
+COMMAND='pactl set-sink-volume @DEFAULT_SINK@ 70%; mpc clear; mpc load reveil; mpc repeat on; mpc shuffle; mpc next ; mpc play ; xset dpms force on ;'
 
 echo "$COMMAND" | sh
 

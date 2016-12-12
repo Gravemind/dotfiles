@@ -1132,6 +1132,15 @@ of FILE in the current directory, suitable for creation"
 (req-package demangle-mode
   :commands (demangle-mode))
 
+(req-package rainbow-mode
+  :commands (rainbow-mode)
+  :config
+  (progn
+    (add-to-list 'rainbow-hexadecimal-colors-font-lock-keywords
+                 '("QColor(\s*\\([0-9]\\{1,3\\}\\(?:\s*%\\)?\\)\s*,\s*\\([0-9]\\{1,3\\}\\(?:\s*%\\)?\\)\s*,\s*\\([0-9]\\{1,3\\}\\(?:\s*%\\)?\\)\s*)" (0 (rainbow-colorize-rgb))))
+    )
+)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; other misc
