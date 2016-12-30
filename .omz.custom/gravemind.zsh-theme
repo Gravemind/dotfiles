@@ -18,7 +18,7 @@ fi
 
 PROMPT='%K{black}%B%F{white}%{❰%G%}'"${PROMPT_USER}"' $(gravemind_git_prompt_info_short)%1(j. %F{white}%{∶%G%} %F{green}%j.)%(?.. %F{white}%{∶%G%} %F{red}%?) %F{white}%{❱%G%} %f%b%K{black}'
 
-RPS1='%K{black}%B%F{white}%{❰%G%} $(gravemind_git_prompt_info_long) %F{white}%{∶%G%} %F{black}!%h %F{blue}%D{%H:%M} %F{white}%{❱%G%}%f%b%k'
+RPS1='%K{black}%B%F{white}%{❰%G%} $(gravemind_git_prompt_info_long) %F{white}%{∶%G%} %F{blue}%D{%H:%M} %F{white}%{❱%G%}%f%b%k'
 
 PROMPT2='%K{black}%B  %F{blue}%_ %F{white}%{❱%G%} %f%b%k'
 
