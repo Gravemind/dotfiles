@@ -70,6 +70,13 @@ function gravemind_git_prompt_info_long() {
   echo "%F{blue}$(git_current_branch) %F{white}%{∶%G%} %F{black}$pwdbegin%F{blue}$pwdgit%F{black}$pwdend"
 }
 
+function gravemind_alert_precmd() {
+	## .Xresource: URxvt*urgentOnBell: true
+	echo -ne '\a'
+}
+## prepend
+precmd_functions=(gravemind_alert_precmd "${precmd_functions[@]}")
+
 ## refresh prompt every 60 sec
 ## builtin TRAPALRM called every TMOUT
 ## http://stackoverflow.com/questions/13125825/zsh-update-prompt-with-current-time-when-a-command-is-started
