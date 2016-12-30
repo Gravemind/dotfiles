@@ -1,29 +1,27 @@
 #!/usr/bin/env bash
 
+nextwid_file="$HOME/.i3/last_focus"
+
 get_curr_id() {
-	HEX=`xprop -root _NET_ACTIVE_WINDOW | sed -r 's/.*0x([0-9a-f]+)$/\1/g'`
-	CURR=`echo "obase=10; ibase=16; $HEX" | bc`
+	HEX="$(xprop -root _NET_ACTIVE_WINDOW | sed -r 's/.*0x([0-9a-f]+)$/\1/g')"
+	CURR="$(printf "%d\n" "0x$HEX")"
 	echo $CURR
 }
 
-CURR_WID=`get_curr_id`
+old_wid="$(get_curr_id)"
+echo "$0: current window is $old_wid"
 
-i3-msg '[urgent="oldest"] focus'
+next_wid="$(cat $nextwid_file 2> /dev/null)"
+echo -n "$old_wid" > $nextwid_file
 
-sleep 0.1
-
-NEW_WID=`get_curr_id`
-
-OUTF="$HOME/.i3/last_focus"
-
-if [ "$CURR_WID" = "$NEW_WID" ]
+res="$(i3-msg '[urgent="oldest"] focus' 2> /dev/null)"
+if [[ "$res" == *"\"success\":true"* ]]
 then
-	if [ -f "$OUTF" ]
-	then
-		ID=`cat $OUTF`
-		rm $OUTF
-		i3-msg "[id=\"$ID\"] focus"
-	fi
+	echo "$0: focused urgent window"
 else
-	echo -n "$CURR_WID" > "$OUTF"
+	if [[ -n "$next_wid" ]]
+	then
+		echo "$0: focusing window $next_wid"
+		i3-msg "[id=\"$next_wid\"] focus" > /dev/null
+	fi
 fi
