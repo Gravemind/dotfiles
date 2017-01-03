@@ -18,7 +18,7 @@ fi
 
 PROMPT='%K{black}%B%F{white}%{❰%G%}'"${PROMPT_USER}"' $(gravemind_git_prompt_info_short)%1(j. %F{white}%{∶%G%} %F{green}%j.)%(?.. %F{white}%{∶%G%} %F{red}%?) %F{white}%{❱%G%} %f%b%K{black}'
 
-RPS1='%K{black}%B%F{white}%{❰%G%} $(gravemind_git_prompt_info_long) %F{white}%{∶%G%} %F{black}!%h %F{blue}%D{%H:%M} %F{white}%{❱%G%}%f%b%k'
+RPS1='%K{black}%B%F{white}%{❰%G%} $(gravemind_git_prompt_info_long) %F{white}%{∶%G%} %F{blue}%D{%H:%M} %F{white}%{❱%G%}%f%b%k'
 
 PROMPT2='%K{black}%B  %F{blue}%_ %F{white}%{❱%G%} %f%b%k'
 
@@ -69,6 +69,13 @@ function gravemind_git_prompt_info_long() {
   local pwdend="${$(pwd)#$toplevel}"
   echo "%F{blue}$(git_current_branch) %F{white}%{∶%G%} %F{black}$pwdbegin%F{blue}$pwdgit%F{black}$pwdend"
 }
+
+function gravemind_alert_precmd() {
+	## .Xresource: URxvt*urgentOnBell: true
+	echo -ne '\a'
+}
+## prepend
+precmd_functions=(gravemind_alert_precmd "${precmd_functions[@]}")
 
 ## refresh prompt every 60 sec
 ## builtin TRAPALRM called every TMOUT
