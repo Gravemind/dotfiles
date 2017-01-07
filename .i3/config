@@ -296,6 +296,11 @@ bar {
     status_command i3status -c ~/.i3/i3status.conf
     separator_symbol "   "
     mode hide
+    position bottom
+    colors {
+        background #101010
+        statusline #E0E0E0
+    }
 }
 
 #exec ~/.i3/bar/bar.py
