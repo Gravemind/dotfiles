@@ -3,14 +3,13 @@
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
 
 nvidia-settings --load-config-only &
+# xrandr --output DVI-I-1  --auto --primary --right-of DVI-D-0
+# xrandr --dpi 94
 
 setxkbmap -option terminate:ctrl_alt_bksp
 
 ## desactivate touchpad when typing
 #syndaemon -i 2 -t -k -d &
-
-xrandr --output DVI-I-1  --auto --primary --right-of DVI-D-0
-xrandr --dpi 94
 
 pactl set-sink-volume @DEFAULT_SINK@ 50%
 
