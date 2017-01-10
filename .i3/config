@@ -122,7 +122,7 @@ bindsym $ModK+space focus mode_toggle
 # Reload the configuration file
 bindsym $ModK+Shift+w reload
 # Exit i3 (logs you out of your X session)
-bindsym $ModK+Shift+e exit
+bindsym $ModK+Escape exit
 # Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $ModK+Shift+r restart
 
@@ -298,6 +298,11 @@ bar {
     status_command i3status -c ~/.i3/i3status.conf
     separator_symbol "   "
     mode hide
+    position bottom
+    colors {
+        background #101010
+        statusline #E0E0E0
+    }
 }
 
 #exec ~/.i3/bar/bar.py

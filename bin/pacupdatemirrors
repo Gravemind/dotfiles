@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -eo pipefail
 
 # Original source: https://gist.github.com/ByScripts/3496113
 
@@ -40,6 +40,12 @@ $su $safemove "$tmpfile" /etc/pacman.d/mirrorlist
 
 echo " Chmoding mirrorlist"
 $su chmod 644 /etc/pacman.d/mirrorlist
+
+if [[ -f /etc/pacman.d/mirrorlist.pacnew ]]
+then
+	echo " Removing /etc/pacman.d/mirrorlist.pacnew"
+	rm /etc/pacman.d/mirrorlist.pacnew
+fi
 
 echo "OK";
 cat /etc/pacman.d/mirrorlist

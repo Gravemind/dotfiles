@@ -28,15 +28,11 @@ pacupmir() {
 pacup() {
 	pacupmir || { echo "$0: pacupmir failed"; return 1; }
 
-	echo "\n${fg_bold[green]}$0: pacaur -Sy ...$reset_color\n"
-	pacaur -Sy || { echo "${fg_bold[red]}$0: pacaur -Sy failed !!$reset_color"; return 1; }
-	pacaur -Qu || { echo "${fg_bold[green]}$0: no updates.$reset_color" ; return 1; }
-
 	## `pacaur` does not catch pacman errors and continues with AUR packages silently, so run pacman alone
 	echo "\n${fg_bold[green]}$0: pacman -Suw ...$reset_color\n"
-	sudo pacman -Suw --noconfirm || { echo "${fg_bold[red]}$0: pacman -Suw failed !!$reset_color"; return 1; }
+	sudo pacman -Syuw --noconfirm || { echo "${fg_bold[red]}$0: pacman -Suw failed !!$reset_color"; return 1; }
 	echo "\n${fg_bold[green]}$0: pacaur --aur -Suw ...$reset_color\n"
-	pacaur --aur -Suw --noconfirm --noedit || { echo "${fg_bold[red]}$0: pacaur -Suw failed !!$reset_color"; return 1; }
+	pacaur --aur -Syuw --noconfirm --noedit || { echo "${fg_bold[red]}$0: pacaur -Suw failed !!$reset_color"; return 1; }
 
 	echo
 	pacaur -Qu || { echo "${fg_bold[green]}$0: no updates.$reset_color" ; return 1; }
@@ -47,16 +43,12 @@ pacup() {
 pacupg() {
 	pacupmir || { echo "$0: pacupmir failed"; return 1; }
 
-	echo "\n${fg_bold[green]}$0: pacaur -Sy ...$reset_color\n"
-	pacaur -Sy || { echo "${fg_bold[red]}$0: pacaur -Sy failed !!$reset_color"; return 1; }
-	pacaur -Qu || { echo "${fg_bold[green]}$0: no updates.$reset_color" ; return 1; }
-
 	## `pacaur` does not catch pacman errors and continues with AUR packages silently, so run pacman alone
 	## and `pacaur -Syur` exits 1 ?
 	echo "\n${fg_bold[green]}$0: pacman -Su...$reset_color\n"
-	sudo pacman -Su --noconfirm || { echo "${fg_bold[red]}$0: pacman -Su failed !!$reset_color"; return 1; }
+	sudo pacman -Syu --noconfirm || { echo "${fg_bold[red]}$0: pacman -Su failed !!$reset_color"; return 1; }
 	echo "\n${fg_bold[green]}$0: pacaur --aur -Su...$reset_color\n"
-	pacaur --aur -Su --noconfirm --noedit || { echo "${fg_bold[red]}$0: pacaur -Su failed !!$reset_color"; return 1; }
+	pacaur --aur -Syu --noconfirm --noedit || { echo "${fg_bold[red]}$0: pacaur -Su failed !!$reset_color"; return 1; }
 	echo "${fg_bold[green]}$0: pacaur -Su OK$reset_color"
 
 	checkpacnew
