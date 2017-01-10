@@ -3,14 +3,13 @@
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
 
 nvidia-settings --load-config-only &
+#xrandr --output HDMI-0 --off
+#xrandr --dpi 96
 
 setxkbmap -option terminate:ctrl_alt_bksp
 
 ## desactivate touchpad when typing
 #syndaemon -i 2 -t -k -d &
-
-xrandr --output HDMI-0 --off
-xrandr --dpi 96
 
 pactl set-sink-volume @DEFAULT_SINK@ 50%
 
