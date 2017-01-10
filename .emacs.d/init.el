@@ -38,6 +38,7 @@
  '(recentf-max-saved-items 92)
  '(delete-selection-mode t) ;; delete current selection when typing http://www.emacswiki.org/emacs/DeleteSelectionMode
  '(Man-width 100)
+ '(org-startup-folded (quote showeverything))
  )
 
 ;; Replace yes-or-no by y-or-n
@@ -744,6 +745,15 @@ of FILE in the current directory, suitable for creation"
          )
   :config
   (progn
+
+    ;; Strip ansi colors
+    ;; http://stackoverflow.com/questions/3072648/cucumbers-ansi-colors-messing-up-emacs-compilation-buffer
+    (require 'ansi-color)
+    (defun colorize-compilation-buffer ()
+      (let ((inhibit-read-only t))
+        (ansi-color-apply-on-region (point-min) (point-max))))
+    (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+
     (setq compilation-scroll-output 0)
     (setq compilation-window-height 12)
     (add-hook 'compilation-finish-functions 'jo/compilation-finished)
