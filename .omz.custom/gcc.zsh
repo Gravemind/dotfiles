@@ -3,22 +3,6 @@
 ENABLE_RTAGS=0
 ENABLE_CCACHE=0
 
-whichcc() {
-	_pathaddorremove "$ENABLE_CCACHE" "$HOME/bin/ccache_bin"
-	_pathaddorremove "$ENABLE_RTAGS" "$HOME/bin/rtags_bin"
-	rehash
-
-	## echo gcc g++ $(g++ --version | sed -nr 's/[^0-9.]*([0-9]+(\.[0-9]+)+).*/\1/p') $(which gcc g++)
-	## echo clang clang++ $(clang++ --version | sed -nr 's/[^0-9.]*([0-9]+(\.[0-9]+)+).*/\1/p') $(which clang clang++)
-	local cc="${CC:-cc}"
-	echo -n "CC: $cc, "
-	local allcc=$(which -a $cc)
-	if [[ "$allcc" == *rtags_bin* ]]; then echo -n "$fg_bold[green]rtags ON$reset_color"; else; echo -n "$fg_bold[black]rtags OFF$reset_color"; fi
-	echo -n ', '
-	if [[ "$allcc" == *ccache_bin* ]]; then echo -n "$fg_bold[green]ccache ON$reset_color"; else; echo -n "$fg_bold[black]cache OFF$reset_color"; fi
-	echo
-}
-
 _pathaddorremove() {
 	local enable="$1"
 	local mypath="$2"
@@ -27,6 +11,37 @@ _pathaddorremove() {
 	then
 		export PATH="${mypath}:$PATH"
 	fi
+}
+
+whichcc() {
+	_pathaddorremove "$ENABLE_CCACHE" "$HOME/bin/ccache_bin"
+	_pathaddorremove "$ENABLE_RTAGS" "$HOME/bin/rtags_bin"
+	rehash
+
+	local cc="${CC:-cc}"
+	local allcc=$(which -a $cc)
+
+	[[ ! "$allcc" == *rtags_bin* ]]
+	local hasrtags=$?
+	[[ ! "$allcc" == *ccache_bin* ]]
+	local hasccache=$?
+
+	if [[ "$hasccache" != "$ENABLE_CCACHE" ]]
+	then
+		echo ccache not correctly setup !
+		ENABLE_CCACHE=$hasccache
+	fi
+	if [[ "$hasrtags" != "$ENABLE_RTAGS" ]]
+	then
+		echo rtags not correctly setup !
+		ENABLE_RTAGS=$hasrtags
+	fi
+
+	echo -n "CC: $cc, "
+	if [[ "$ENABLE_RTAGS" = "1" ]]; then echo -n "$fg_bold[green]rtags ON$reset_color"; else; echo -n "$fg_bold[black]rtags OFF$reset_color"; fi
+	echo -n ', '
+	if [[ "$ENABLE_CCACHE" = "1" ]]; then echo -n "$fg_bold[green]ccache ON$reset_color"; else; echo -n "$fg_bold[black]cache OFF$reset_color"; fi
+	echo
 }
 
 gcc48() {
@@ -77,6 +92,8 @@ ccacheon() {
 	whichcc
 }
 
-ENABLE_RTAGS=0
-ENABLE_CCACHE=0
-gcclast
+ENABLE_RTAGS=1
+ENABLE_CCACHE=1
+clanglast
+
+export CFLAGS="-Wno-undefined-var-template"

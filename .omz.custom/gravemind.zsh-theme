@@ -18,7 +18,7 @@ fi
 
 PROMPT='%K{black}%B%F{white}%{❰%G%}'"${PROMPT_USER}"' $(gravemind_git_prompt_info_short)%1(j. %F{white}%{∶%G%} %F{green}%j.)%(?.. %F{white}%{∶%G%} %F{red}%?) %F{white}%{❱%G%} %f%b%K{black}'
 
-RPS1='%K{black}%B%F{white}%{❰%G%} $(gravemind_git_prompt_info_long) %F{white}%{∶%G%} %F{blue}%D{%H:%M} %F{white}%{❱%G%}%f%b%k'
+RPS1='%K{black}%B%F{white}%{❰%G%} $(gravemind_git_prompt_info_long) %F{white}%{∶%G%} $(gravemind_promt_cc) %F{white}%{∶%G%} %F{blue}%D{%H:%M} %F{white}%{❱%G%}%f%b%k'
 
 PROMPT2='%K{black}%B  %F{blue}%_ %F{white}%{❱%G%} %f%b%k'
 
@@ -27,11 +27,11 @@ unset PROMPT_USER
 function gravemind_git_prompt_info_short() {
   local toplevel="$(command git rev-parse --show-toplevel 2>/dev/null)"
   if [[ -z "$toplevel" ]]; then
-	  echo "%F{blue}%30>…>%1~%<</"
+	  echo -n "%F{blue}%30>…>%1~%<</"
 	  return
   fi
   if [[ "$(command git config --get oh-my-zsh.hide-status 2>/dev/null)" = "1" ]]; then
-	  echo "%F{blue}%30>…>%1~%<</"
+	  echo -n "%F{blue}%30>…>%1~%<</"
 	  return
   fi
   ## FIXME when pwd is outside toplevel
@@ -48,17 +48,17 @@ function gravemind_git_prompt_info_short() {
 		  shortsubgit="/%{…%G%}/$subgitlast"
 	  fi
   fi
-  echo "%F{blue}⌥ %20>…>$gitrootname%<<%F{black}%20>…>$shortsubgit%<</"
+  echo -n "%F{blue}⌥ %20>…>$gitrootname%<<%F{black}%20>…>$shortsubgit%<</"
 }
 
 function gravemind_git_prompt_info_long() {
   local toplevel="$(command git rev-parse --show-toplevel 2>/dev/null)"
   if [[ -z "$toplevel" ]]; then
-	  echo "%F{black}%~"
+	  echo -n "%F{black}%~"
 	  return
   fi
   if [[ "$(command git config --get oh-my-zsh.hide-status 2>/dev/null)" = "1" ]]; then
-	  echo "%F{black}%~ %F{white}%{∶%G%} %F{black}(oh-my-zsh.hide-status)"
+	  echo -n "%F{black}%~ %F{white}%{∶%G%} %F{black}(oh-my-zsh.hide-status)"
 	  return
   fi
   ## FIXME when pwd is outside toplevel
@@ -67,7 +67,24 @@ function gravemind_git_prompt_info_long() {
   local pwdbegin="${toplevelparent/#$HOME\//~/}"
   local pwdgit="$toplevelbase"
   local pwdend="${$(pwd)#$toplevel}"
-  echo "%F{blue}$(git_current_branch) %F{white}%{∶%G%} %F{black}$pwdbegin%F{blue}$pwdgit%F{black}$pwdend"
+  echo -n "%F{blue}$(git_current_branch) %F{white}%{∶%G%} %F{black}$pwdbegin%F{blue}$pwdgit%F{black}$pwdend"
+}
+
+function gravemind_promt_cc() {
+	local str=""
+	if [[ "$ENABLE_RTAGS" == "1" ]]; then
+	   str+='%F{blue}R'
+	else
+	   str+='%F{black}R'
+	fi
+	if [[ "$ENABLE_CCACHE" == "1" ]]; then
+	   str+='%F{blue}C'
+	else
+	   str+='%F{black}C'
+	fi
+	local cc="${CC:-cc}"
+	local ccname="$(basename "$cc")"
+	echo -n "%F{black}$ccname $str"
 }
 
 function gravemind_alert_precmd() {
