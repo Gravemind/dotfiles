@@ -38,6 +38,7 @@
  '(recentf-max-saved-items 92)
  '(delete-selection-mode t) ;; delete current selection when typing http://www.emacswiki.org/emacs/DeleteSelectionMode
  '(Man-width 100)
+ '(org-startup-folded (quote showeverything))
  )
 
 ;; Replace yes-or-no by y-or-n
@@ -744,6 +745,15 @@ of FILE in the current directory, suitable for creation"
          )
   :config
   (progn
+
+    ;; Strip ansi colors
+    ;; http://stackoverflow.com/questions/3072648/cucumbers-ansi-colors-messing-up-emacs-compilation-buffer
+    (require 'ansi-color)
+    (defun colorize-compilation-buffer ()
+      (let ((inhibit-read-only t))
+        (ansi-color-apply-on-region (point-min) (point-max))))
+    (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+
     (setq compilation-scroll-output 0)
     (setq compilation-window-height 12)
     (add-hook 'compilation-finish-functions 'jo/compilation-finished)
@@ -1169,28 +1179,15 @@ of FILE in the current directory, suitable for creation"
 
 ;; https://www.emacswiki.org/emacs/RevertBuffer#toc2
 (defun revert-all-buffers ()
-  "Iterate through the list of buffers and revert them, e.g. after a
-    new branch has been checked out."
+  "Refreshes all open buffers from their respective files."
   (interactive)
-  (when (yes-or-no-p "Are you sure - any changes in open buffers will be lost! ")
-    (let ((frm1 (selected-frame)))
-      (make-frame)
-      (let ((frm2 (next-frame frm1)))
-        (select-frame frm2)
-        (make-frame-invisible)
-        (dolist (x (buffer-list))
-          (let ((test-buffer (buffer-name x)))
-            (when (not (string-match "\*" test-buffer))
-              (when (not (file-exists-p (buffer-file-name x)))
-                (select-frame frm1)
-                (when (yes-or-no-p (concat "File no longer exists (" (buffer-name x) "). Close buffer? "))
-                  (kill-buffer (buffer-name x)))
-                (select-frame frm2))
-              (when (file-exists-p (buffer-file-name x))
-                (switch-to-buffer (buffer-name x))
-                (revert-buffer t t t)))))
-        (select-frame frm1)
-        (delete-frame frm2)))))
+  (dolist (buf (buffer-list))
+    (with-current-buffer buf
+      ;; (when (and (buffer-file-name) (file-exists-p (buffer-file-name)) (not (buffer-modified-p)))
+      ;; PATCH: revert even if modified !
+      (when (and (buffer-file-name) (file-exists-p (buffer-file-name)))
+        (revert-buffer t t t) )))
+  (message "Refreshed open files.") )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;

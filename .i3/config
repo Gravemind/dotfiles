@@ -207,8 +207,6 @@ assign [class="^Pidgin$"] → 9
 #for_window [class="(?i)^.*wine.*$"] floating enable
 assign [class="(?i)^.*steam.*$"] → 1
 
-# for_window [class="(?i)^.*hl2.*$"] floating enable
-
 for_window [class="(?i)urxvt"] border pixel 2
 for_window [class="(?i)emacs"] border pixel 2
 for_window [class="(?i)firefox"] border none
@@ -216,6 +214,9 @@ for_window [class="(?i)pale moon"] border none
 for_window [class="(?i)icecat"] border none
 for_window [class="(?i)mplayer"] border none
 for_window [class="(?i)mpv"] border none
+
+# for_window [class="(?i)^UE4Editor$$"] floating enable
+assign [class="(?i)^UE4Editor$"] → 8
 
 focus_follows_mouse yes
 new_window normal
@@ -314,6 +315,6 @@ exec ~/.i3/bg.py
 exec --no-startup-id $layouts/startup.sh
 
 set $hook_idle_time_min 10
-# exec --no-startup-id xautolock -detectsleep -time $hook_idle_time_min -locker "~/bin/hooks/onidle" -noclose
+exec --no-startup-id xautolock -detectsleep -time $hook_idle_time_min -locker "~/bin/hooks/onidle" -noclose
 
-# exec i3lock -c 222222
+exec i3lock -c 222222
