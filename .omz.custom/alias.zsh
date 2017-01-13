@@ -13,6 +13,8 @@ alias rcp='cp -r'
 alias c='clear'
 alias e='exit'
 
+alias rgg='noglob rg --files -g'
+
 alias clean='find . \( -name "*~" -or -name "#*#" \) -print -delete'
 alias fclean='find . \( -name "*~" -or -name "#*#" -or -name "*.o" -or -name "*.pyc" \) -print -delete'
 alias cleansvn='find . -name ".svn" -execdir rm -rf {} \;'
@@ -35,9 +37,9 @@ alias a='echo -ne "\a"'
 alias shut='systemctl poweroff'
 alias reboot='systemctl reboot'
 
-alias start='_ rc.d start'
-alias stop='_ rc.d stop'
-alias restart='_ rc.d restart'
+alias start='_ systemctl start'
+alias stop='_ systemctl stop'
+alias restart='_ systemctl restart'
 
 alias ssh-fingerprint="find . -name '*.pub' -exec ssh-keygen -l -f {} \;"
 
