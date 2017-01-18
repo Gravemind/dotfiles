@@ -92,8 +92,8 @@ ccacheon() {
 	whichcc
 }
 
-ENABLE_RTAGS=1
-ENABLE_CCACHE=1
+ENABLE_RTAGS=0
+ENABLE_CCACHE=0
 clanglast
 
-export CFLAGS="-Wno-undefined-var-template"
+#export CFLAGS="-Wno-undefined-var-template"
