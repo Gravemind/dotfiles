@@ -39,6 +39,11 @@
  '(delete-selection-mode t) ;; delete current selection when typing http://www.emacswiki.org/emacs/DeleteSelectionMode
  '(Man-width 100)
  '(org-startup-folded (quote showeverything))
+
+ ;; Save minibuffer history (of compile)
+ '(savehist-mode t)
+ '(savehist-additional-variables (quote (compile-command)))
+
  )
 
 ;; Replace yes-or-no by y-or-n

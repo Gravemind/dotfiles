@@ -47,6 +47,9 @@
 	## Pull only if fast forward is possible (abort if conflicts)
 	pulf = pull --no-rebase --ff-only
 
+	## Pull rebase with autostash
+	pulr = pull --rebase --autostash
+
 	## Clean deleted branches
 	cleanbranches = !git branch -vv | grep ': gone]' | awk '{ print $1 }' | xargs -n 1 git branch -d
 
@@ -61,6 +64,9 @@
 	## --no-commit					# dont "auto" commit after merge
 	magicmerge = !git -c merge.renamelimit=2048 merge -X patience -X rename-threshold=10 -X ignore-space-at-eol --no-ff --no-commit
 
+	mnf = merge --no-ff
+	mnfc = merge --no-ff --no-commit
+
 	## Log current branch
 	l = log --pretty=my --graph --date-order
 
@@ -73,8 +79,8 @@
 	## Log all merge commit only
 	ll = log --pretty=my --graph --date-order --all --simplify-by-decoration
 
-	## Log upstream not yet pulled
-	lo = log --pretty=my --graph --date-order @..@{upstream}
+	## Log HEAD and its upstream
+	lu = log --pretty=my --graph --date-order @ @{upstream}
 
 	## Log all not merged in HEAD
 	loa = log --pretty=my --graph --date-order --all --not @
