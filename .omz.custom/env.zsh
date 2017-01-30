@@ -23,7 +23,11 @@ export EDITOR='emacs'
 export PAGER='less'
 export LESS='-R -i -S -M -j5'
 export PATH=$HOME/bin:$PATH
-export BROWSER="$(which firefox)"
+
+if type firefox >& /dev/null
+then
+	export BROWSER="firefox"
+fi
 
 export OSTYPE=`uname -s`
 export MACHTYPE=`uname -m`
