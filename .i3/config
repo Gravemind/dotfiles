@@ -2,8 +2,6 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 #
-# Jordan Galby's i3wm v4 config file
-#
 
 # Variables
 set $ModK           Mod4
@@ -67,7 +65,13 @@ bindsym $ModK+Right focus right
 # Go to urgent window, and go back
 bindsym $ModK+BackSpace exec --no-startup-id ~/.i3/goto_urgent_and_back.sh
 
-# delay the reset of urgent hint workspace focus
+# Redshift
+bindsym $ModK+o exec --no-startup-id ~/bin/red +1
+bindsym $ModK+p exec --no-startup-id ~/bin/red -1
+bindsym $ModK+Shift+o exec --no-startup-id ~/bin/red -c +1
+bindsym $ModK+Shift+p exec --no-startup-id ~/bin/red -c -1
+
+# Delay the reset of urgent hint workspace focus
 force_display_urgency_hint 1000 ms
 
 # Change focus output

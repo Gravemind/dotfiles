@@ -1,0 +1,144 @@
+#!/bin/bash
+
+# https://github.com/maandree/redshift-adjust/blob/master/src/redshift-adjust
+
+set -euo pipefail
+
+usage() {
+	echo "usage: $0 [-h] [-c] +|-|=NUM
+    -h     : this
+    -c     : apply to currently active output only
+    [=]NUM : set redshifting value (ranges from 0 to 9)
+    +|-NUM : inc/dec redshifting value (ranges from 0 to 9)"
+}
+
+error() {
+	echo "$0: error: $@" >&2
+	exit 1
+}
+
+file_prefix="/tmp/.red.${UID}.${DISPLAY}"
+
+cola=6500	# starting temperature
+bria=100	# starting brightness
+colstep=350	# temperature step
+bristep=10	# brightness step
+
+enable_current_output=0
+
+if [[ "${1-}" = '-h' || "${1-}" = '--help' ]]
+then
+	usage
+	exit 0
+fi
+if [[ "${1-}" = '-c' ]]
+then
+	enable_current_output=1
+	shift
+fi
+arg_raw="${1-=0}"
+
+OFFSET_RE="([-\+][0-9]+)\s*([-\+][0-9]+)"
+
+## gather all outputs and their crtc
+
+outputs=()
+set +u
+while read name width height xoff yoff crtc
+do
+	crtc=$(($crtc))
+	[[ -z "${outputs[$crtc]}" ]] || error "2 xrandr output with same crtc $crtc: $name and ${outputs[$crtc]}"
+	outputs[$crtc]="$crtc $name $width $height $xoff $yoff"
+done < <(xrandr --verbose |
+			 awk '/^[-_0-9A-Z]+.*/ { output=$0; } /CRTC:/ { print output " CRTC:" $2 }' |
+			 sed -r "s/^(\S+).*\b([-0-9]+)x([-0-9]+)$OFFSET_RE.*CRTC:([0-9]+)\b.*$/\1 \2 \3 \4 \5 \6/")
+set -u
+[[ ${#outputs[@]} != 0 ]] || error "no xrandr output found"
+echo "$0: found ${#outputs[@]} outputs"
+
+## find current output crtc from current/active window position
+
+current_crtc=
+current_winpos=($(xwininfo -id $(xdotool getactivewindow) |
+					  sed -nr "s/^\s*Corners:\s+$OFFSET_RE\s+.*$/\1 \2/p"))
+while read crtc name width height xoff yoff
+do
+	#echo $crtc $name $width $height $xoff $yoff
+	if [[ "${current_winpos[0]}" -ge "$xoff" &&
+			  "${current_winpos[1]}" -ge "$yoff" &&
+			  "${current_winpos[0]}" -lt "$(($xoff+$width))" &&
+			  "${current_winpos[1]}" -lt "$(($yoff+$height))" ]]
+	then
+		current_crtc=$crtc
+		break
+	fi
+done < <(printf '%s\n' "${outputs[@]}")
+[[ -n "$current_crtc" ]] || error "could not find current output from active window"
+echo "$0: current output: ${outputs[$current_crtc]}"
+
+## get old output value and parse arg NUM
+
+value=0
+old_value=0
+
+current_file="$file_prefix.$current_crtc"
+if [[ -e "$current_file" ]]
+then
+	old_value=$(("$(cat "$current_file")"))
+	[[ -n "old_value" ]] || old_value=0
+fi
+case "${arg_raw:0:1}"
+in
+	\-)
+		value=$(("$old_value" - "${arg_raw:1}"))
+		;;
+	\+)
+		value=$(("$old_value" + "${arg_raw:1}"))
+		;;
+	\=)
+		value=$(("${arg_raw:1}"))
+		;;
+	[0-9])
+		value=$(("${arg_raw}"))
+		;;
+	*)
+		error "invalid value argument \"$arg_raw\""
+		;;
+esac
+[[ -n "$value" ]] || error "invalid value argument \"$arg_raw\""
+
+if [[ $value -lt 0 ]]
+then
+	value=0
+elif [[ $value -gt 9 ]]
+then
+	value=9
+fi
+
+## save value(s)
+
+redopt=
+if [[ $enable_current_output = 1 ]]
+then
+	redopt="-mrandr:crtc=$current_crtc"
+	echo "$value" > "$current_file"
+else
+	while read crtc name width height xoff yoff
+	do
+		echo "$value" > "$file_prefix.$crtc"
+	done < <(printf '%s\n' "${outputs[@]}")
+fi
+
+## redshift
+
+if [[ $value -gt 0 ]]
+then
+	col=$((- $value * $colstep + $cola))
+	bri=$((- $value * $bristep + $bria))
+	bri=$(echo "scale=3; $bri / 100.0" | bc)
+	echo "$0: redshifting to $value: $col $bri $redopt"
+	redshift -O $col -b $bri $redopt
+else
+	echo "$0: redshifting reset $redopt"
+	redshift -x $redopt
+fi
