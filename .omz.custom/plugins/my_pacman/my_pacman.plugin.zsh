@@ -11,8 +11,10 @@ fi
 
 # Update mirror list if necessary
 pacupmir() {
+	local pacmirrorfile_expire_days=9
+
 	local pacmirrorfile=/etc/pacman.d/mirrorlist
-	local pacmirrorfile_expire_sec=$((4 * 24 * 60 * 60)) # 4 days
+	local pacmirrorfile_expire_sec=$(($pacmirrorfile_expire_days * 24 * 60 * 60))
 	local ago=$(( $(date +%s) - $(date +%s -r "$pacmirrorfile") ))
 	#local ago=10000
 	if [[ "$1" = "-f" || $ago -gt $pacmirrorfile_expire_sec ]]
