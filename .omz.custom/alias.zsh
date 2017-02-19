@@ -39,6 +39,7 @@ alias start='_ systemctl start'
 alias stop='_ systemctl stop'
 alias restart='_ systemctl restart'
 alias reload='_ systemctl reload'
+alias status='_ systemctl status'
 
 alias ssh-fingerprint="find . -name '*.pub' -exec ssh-keygen -l -f {} \;"
 
