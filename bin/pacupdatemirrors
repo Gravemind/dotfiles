@@ -6,48 +6,62 @@ set -eo pipefail
 
 [ "$UID" != 0 ] && su=sudo
 
-#country='USA'
-country='FR'
+countries='country=FI&country=FR&country=DE&country=LU&country=NL&country=PL&country=SE'
 #safemove="mv -i"
 safemove="mv"
 
-url="https://www.archlinux.org/mirrorlist/?country=${country}&protocol=http&protocol=https&ip_version=4&ip_version=6&use_mirror_status=on"
-servercount=7
+url="https://www.archlinux.org/mirrorlist/?${countries}&protocol=https&ip_version=4&ip_version=6&use_mirror_status=on"
+servercount=4
 tmpfile=$(mktemp --suffix=-mirrorlist)
 tmpfile2=$(mktemp --suffix=-mirrorlist2)
 
-echo " Fetching ${country} mirrors..."
+echo "$0: fetching ${url}"
+
 wget -qO- "$url" | sed 's/^#Server/Server/g' > "$tmpfile"
 
-if [ ! -s "$tmpfile" ]
+# strip comments and empty lines, keep only last (better ranking) $servercount servers
+(grep -v -e '^#' -e '^$' "$tmpfile" || true) | tail -n $servercount > "$tmpfile2"
+
+count="$(\cat "$tmpfile2" | wc -l || true)"
+if [[ -z "$count" || "$count" -le "0" ]]
 then
-	echo " Error: fetched empty mirror list"
+	echo "$0: error: could not find new mirrors, here is what I got:"
+	cat "$tmpfile"
 	exit 1
 fi
 
-echo " Backing up the original mirrorlist..."
-$su $safemove /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig;
+echo "$0: ranking the new $count mirrors..."
 
-echo " Ranking and Rotating the new list into place..."
+rm -f "$tmpfile"
+rankmirrors -n 0 -v "$tmpfile2" > "$tmpfile"
 
-# strip comments and empty lines, keep only last (fastest) $servercount servers
-grep -v -e '^#' -e '^$' "$tmpfile" | tail -n $servercount > "$tmpfile2"
+if [[ ! -s "$tmpfile" ]]
+then
+	echo "$0: error: ranking mirrors failed, reading list:"
+	cat "$tmpfile2"
+	exit 1
+fi
 
-# rank and mirrors
-rankmirrors -n $servercount -v "$tmpfile2" > "$tmpfile"
-# save mirrorlist
+echo "$0: backing up and Saving new mirrorlist..."
+
+$su $safemove /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig
 $su $safemove "$tmpfile" /etc/pacman.d/mirrorlist
-
-echo " Chmoding mirrorlist"
 $su chmod 644 /etc/pacman.d/mirrorlist
 
 if [[ -f /etc/pacman.d/mirrorlist.pacnew ]]
 then
-	echo " Removing /etc/pacman.d/mirrorlist.pacnew"
-	rm /etc/pacman.d/mirrorlist.pacnew
+	echo "$0: removing /etc/pacman.d/mirrorlist.pacnew"
+	$su rm /etc/pacman.d/mirrorlist.pacnew
 fi
 
-echo "OK";
+echo "$0: here is the new mirrorlist:";
 cat /etc/pacman.d/mirrorlist
-
 rm -f "$tmpfile" "$tmpfile2"
+
+echo "$0: OK, now refreshing packages";
+if command -v pacaur >/dev/null 2>&1
+then
+	pacaur -Syy
+else
+	$su pacman -Syy
+fi
