@@ -47,31 +47,26 @@ whichcc() {
 gcc48() {
 	export CC=gcc-4.8
 	export CXX=g++-4.8
-	export CPP=$CXX
 	whichcc
 }
 
 gcc49() {
 	export CC=gcc-4.9
 	export CXX=g++-4.9
-	export CPP=$CXX
 	whichcc
 }
 
 gcclast() {
 	unset CC
 	unset CXX
-	unset CPP
 	export CC
 	export CXX
-	export CPP
 	whichcc
 }
 
 clanglast() {
 	export CC=clang
 	export CXX=clang++
-	export CPP=$CXX
 	whichcc
 }
 
