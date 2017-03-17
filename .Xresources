@@ -60,15 +60,12 @@ URxvt*scrollTtyOutput:      false
 URxvt*scrollWithBuffer:     true
 URxvt*scrollTtyKeypress:    true
 
-!URxvt.perl-ext-common: default,selection,clipboard
-URxvt*cutchars: "\\`\"'&()*,;<=>?@[]^{|}:/!"
-!URxvt.selection.pattern-0: \][ ](.+)
-!URxvt.selection.pattern-1: >>>[ ]+(.+)
+URxvt*cutchars:             ":\\`\"'&()*,;<=>?@[]^{|}/! "
 
-! Clickable URL
-URxvt.perl-ext-common:  default,matcher,vtwheel,selection-to-clipboard
-URxvt.url-launcher:     /usr/bin/firefox
+! Clickable URL (matcher)
+URxvt.perl-ext-common:  default,matcher
 URxvt.matcher.button:   2
+URxvt.url-launcher:     /usr/bin/firefox
 
 Xft.autohint:       1
 Xft.antialias:      1
