@@ -3,8 +3,8 @@
 #	name =
 
 [alias]
-	ci = commit
 	co = checkout
+	ci = commit
 	com = commit -m
 
 	st = status
@@ -21,8 +21,11 @@
 	## branches
 	b = branch --sort=version:refname
 	ba = branch --sort=version:refname --all
+
 	## git cont REV # shows branch containing REV
 	cont = branch --sort=version:refname --all --contains
+	## ditto tag
+	contt = tag --contains
 
 	su = !git --no-pager diff --name-only --diff-filter=U
 	sa = !git --no-pager diff --name-only --diff-filter=A
@@ -105,6 +108,7 @@
 	log = auto
 	ui = auto
 	grep = auto
+
 [color "branch"]
 	current = bold green
 	local = bold yellow
@@ -122,7 +126,6 @@
 
 [tag]
 	sort = version:refname
-
 [fetch]
 	prune = true
 [pull]
@@ -134,6 +137,10 @@
 [core]
 	## Increase short hash to 10 characters
 	abbrev = 10
+[diff]
+	# git 2.11: experimental better diff
+	# https://github.com/git/git/commit/433860f3d0beb0c6f205290bd16cda413148f098
+	indentHeuristic = true
 
 [core]
 	# default:
@@ -143,14 +150,9 @@
 	# checkout crlf, commit lf
 	# autocrlf = true
 	# checkout as is, commit lf
-	autocrlf = input
+	# autocrlf = input
 	# checkout as is, commit as is
-	# autocrlf = false
-
-[diff]
-	# git 2.11: experimental better diff
-	# https://github.com/git/git/commit/433860f3d0beb0c6f205290bd16cda413148f098
-	indentHeuristic = true
+	autocrlf = false
 
 [merge]
 	tool = meld
