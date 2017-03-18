@@ -20,7 +20,7 @@ pacupmir() {
 	if [[ "$1" = "-f" || $ago -gt $pacmirrorfile_expire_sec ]]
 	then
 		echo "$0: updating... (${fg_bold[green]}$(durationtostr $ago old)${reset_color})"
-		sudo pacupdatemirrors || { echo "${fg_bold[red]}$0: pacupdatemirrors failed !!$reset_color"; return 1 }
+		pacupdatemirrors || { echo "${fg_bold[red]}$0: pacupdatemirrors failed !!$reset_color"; return 1 }
 	else
 		echo "$0: up to date (${fg_bold[cyan]}$(durationtostr $ago old)${reset_color})"
 	fi
