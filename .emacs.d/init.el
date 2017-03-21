@@ -231,7 +231,8 @@
         standard-indent 4
         indent-tabs-mode t)
   (setq whitespace-style '(face trailing))
-  (whitespace-mode t)
+  (whitespace-mode 0)
+  (whitespace-mode 1)
   )
 
 (setq tab-stop-list (number-sequence 4 180 4))
@@ -616,11 +617,16 @@ With argument, do this that many times."
 ;; ruby
 ;;
 
+(defun jo/ruby-mode ()
+  (jo/tab-absurde)
+  )
+
 (req-package ruby-mode
   :mode (("Rakefile\\'" . ruby-mode)
          ("rb\\'" . ruby-mode))
   :config
   (progn
+    (add-hook 'ruby-mode-hook 'jo/ruby-mode)
     (setq-default ruby-deep-arglist 4)
     (setq-default ruby-deep-indent-paren nil)
     ))
