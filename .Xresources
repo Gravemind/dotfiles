@@ -54,7 +54,7 @@ URxvt*scrollBar:        false
 
 URxvt*inheritPixmap:    true
 URxvt*transparent:      true
-URxvt*shading:          25
+URxvt*shading:          10
 
 URxvt*scrollTtyOutput:      false
 URxvt*scrollWithBuffer:     true
