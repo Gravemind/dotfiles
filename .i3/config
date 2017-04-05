@@ -265,36 +265,36 @@ bindsym $ModK+XF86AudioMute exec --no-startup-id $pactl_mute
 # bind $ModK+76 exec --no-startup-id cmus-remote -n
 
 # player ctl
-# bindsym $ModK+End exec --no-startup-id playerctl play-pause
-# bindsym $ModK+Prior exec --no-startup-id playerctl previous
-# bindsym $ModK+Next exec --no-startup-id playerctl next
-# bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
-# bindsym XF86AudioPrev exec --no-startup-id playerctl previous
-# bindsym XF86AudioNext exec --no-startup-id playerctl next
-# bindsym XF86AudioStop exec --no-startup-id playerctl pause
-# bindsym $ModK+XF86AudioPlay exec --no-startup-id playerctl play-pause
-# bindsym $ModK+XF86AudioPrev exec --no-startup-id playerctl previous
-# bindsym $ModK+XF86AudioNext exec --no-startup-id playerctl next
-# bindsym $ModK+XF86AudioStop exec --no-startup-id playerctl pause
-# # bindsym $ModK+F8 exec --no-startup-id playerctl play-pause
-# # bindsym $ModK+F9 exec --no-startup-id playerctl previous
-# # bindsym $ModK+F10 exec --no-startup-id playerctl next
+bindsym $ModK+End exec --no-startup-id playerctl play-pause
+bindsym $ModK+Prior exec --no-startup-id playerctl previous
+bindsym $ModK+Next exec --no-startup-id playerctl next
+bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous
+bindsym XF86AudioNext exec --no-startup-id playerctl next
+bindsym XF86AudioStop exec --no-startup-id playerctl pause
+bindsym $ModK+XF86AudioPlay exec --no-startup-id playerctl play-pause
+bindsym $ModK+XF86AudioPrev exec --no-startup-id playerctl previous
+bindsym $ModK+XF86AudioNext exec --no-startup-id playerctl next
+bindsym $ModK+XF86AudioStop exec --no-startup-id playerctl pause
+# bindsym $ModK+F8 exec --no-startup-id playerctl play-pause
+# bindsym $ModK+F9 exec --no-startup-id playerctl previous
+# bindsym $ModK+F10 exec --no-startup-id playerctl next
 
 # # MPD
-bindsym $ModK+End exec --no-startup-id mpc -q toggle
-bindsym $ModK+Prior exec --no-startup-id mpc -q prev
-bindsym $ModK+Next exec --no-startup-id mpc -q next
-bindsym XF86AudioPlay exec --no-startup-id mpc -q toggle
-bindsym XF86AudioPrev exec --no-startup-id mpc -q prev
-bindsym XF86AudioNext exec --no-startup-id mpc -q next
-bindsym XF86AudioStop exec --no-startup-id mpc -q stop
-bindsym $ModK+XF86AudioPlay exec --no-startup-id mpc -q toggle
-bindsym $ModK+XF86AudioPrev exec --no-startup-id mpc -q prev
-bindsym $ModK+XF86AudioNext exec --no-startup-id mpc -q next
-bindsym $ModK+XF86AudioStop exec --no-startup-id mpc -q stop
-# bindsym $ModK+F8 exec --no-startup-id mpc -q toggle
-# bindsym $ModK+F9 exec --no-startup-id mpc -q prev
-# bindsym $ModK+F10 exec --no-startup-id mpc -q next
+# bindsym $ModK+End exec --no-startup-id mpc -q toggle
+# bindsym $ModK+Prior exec --no-startup-id mpc -q prev
+# bindsym $ModK+Next exec --no-startup-id mpc -q next
+# bindsym XF86AudioPlay exec --no-startup-id mpc -q toggle
+# bindsym XF86AudioPrev exec --no-startup-id mpc -q prev
+# bindsym XF86AudioNext exec --no-startup-id mpc -q next
+# bindsym XF86AudioStop exec --no-startup-id mpc -q stop
+# bindsym $ModK+XF86AudioPlay exec --no-startup-id mpc -q toggle
+# bindsym $ModK+XF86AudioPrev exec --no-startup-id mpc -q prev
+# bindsym $ModK+XF86AudioNext exec --no-startup-id mpc -q next
+# bindsym $ModK+XF86AudioStop exec --no-startup-id mpc -q stop
+# # bindsym $ModK+F8 exec --no-startup-id mpc -q toggle
+# # bindsym $ModK+F9 exec --no-startup-id mpc -q prev
+# # bindsym $ModK+F10 exec --no-startup-id mpc -q next
 
 # On/Off Touchpad
 bindsym XF86TouchpadToggle exec zsh ~/bin/toggletouchpad
