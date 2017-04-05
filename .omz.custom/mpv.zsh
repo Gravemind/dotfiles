@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-alias mp="mpv"
+alias mpw="mpv --force-window=immediate "
 
 findnextmpv() {
 	while read file
