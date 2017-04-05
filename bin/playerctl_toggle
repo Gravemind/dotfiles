@@ -1,0 +1,25 @@
+#!/bin/bash
+
+## Toggle play pause looking to stop ALL players
+
+status="$(playerctl status)"
+
+ALL_PLAYERS=($(playerctl --list-all))
+
+playerctl_all() {
+	for player in "${ALL_PLAYERS[@]}"; do
+		playerctl "--player=$player" "$@"
+	done
+}
+
+playerctl_all status | grep "Playing" > /dev/null
+was_playing=$(( $? == 0 ))
+
+playerctl_all pause
+
+if [[ $was_playing -eq 0 ]]; then
+	playerctl play
+	echo $0: playing
+else
+	echo $0: stopped
+fi
