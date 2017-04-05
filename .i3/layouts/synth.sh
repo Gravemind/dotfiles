@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HERE="$(cd "`dirname "$0"`"; pwd)"
+here="${0%/*}"
 
 WS="$1"
 if [ -z "$WS" ]
@@ -8,7 +8,7 @@ then
 	WS=4
 fi
 
-i3-msg "workspace $WS; append_layout $HERE/synth.json"
+i3-msg "workspace $WS; append_layout $here/synth.json"
 
 urxvt -name qjack -e zsh -is eval "qjackctl &" &
 disown

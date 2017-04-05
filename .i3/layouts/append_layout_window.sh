@@ -4,7 +4,7 @@ layout="$1"
 ws="${2:-}"
 if [[ -z "$layout" || ! -f "$layout" ]]
 then
-	echo no such layout "\"$layout\""
+	echo $0: no such layout "\"$layout\""
 	echo usage: $0 layout [force_ws]
 	exit 1
 fi

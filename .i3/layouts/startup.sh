@@ -1,9 +1,9 @@
 #!/bin/bash
 
-HERE="$(cd "`dirname "$0"`"; pwd)"
+here="${0%/*}"
 
-$HERE/urxvt.sh 1 main
-$HERE/browser.sh firefox 10
+$here/launch.sh -w 1 -- urxvt
+$here/launch.sh -w 10 -- firefox
 
 i3-msg workspace 1
 i3-msg workspace 10

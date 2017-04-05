@@ -21,11 +21,11 @@ font pango:DejaVu Sans Mono Bold 9
 floating_modifier $ModK
 
 # Start a terminal
-bindsym $ModK+Return exec /usr/bin/urxvt
+bindsym $ModK+Return exec $layouts/launch.sh urxvt
 
 # Start emacs
-bindsym $ModK+Shift+Return exec ~/bin/ne
-bindsym $ModK+Ctrl+Return exec ~/bin/ne ~/TODO.org
+bindsym $ModK+Shift+Return exec $layouts/launch.sh -- emacs
+bindsym $ModK+Ctrl+Return exec $layouts/launch.sh -- emacs ~/TODO.org
 #bindsym $ModK+Shift+Return exec ~/bin/emacscl main
 #bindsym $ModK+Ctrl+Return exec ~/bin/emacscl main ~/TODO.org
 #bindsym $ModK+F1 exec ~/bin/emacscl one
@@ -34,7 +34,7 @@ bindsym $ModK+Ctrl+Return exec ~/bin/ne ~/TODO.org
 #bindsym $ModK+F4 exec ~/bin/emacscl four
 
 # Spawn with layout
-bindsym $ModK+F10 exec $layouts/browser.sh firefox 10
+bindsym $ModK+F10 exec $layouts/launch.sh -w 10 firefox
 
 bindsym $ModK+F5 exec qalculate-gtk
 
