@@ -238,12 +238,8 @@
 (setq tab-stop-list (number-sequence 4 180 4))
 (setq-default c-basic-offset 4
               tab-width 4
-              standard-indent 4)
-
-(setq-default indent-tabs-mode nil)
-;;(setq-default indent-tabs-mode t)
-
-;; @TODO iwb. test python.
+              standard-indent 4
+              indent-tabs-mode nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -497,7 +493,7 @@ With argument, do this that many times."
          )
   :config
   (progn
-    (add-hook 'prog-mode-hook '(lambda() (progn (jo/tab-tab) (jo/ahs))))
+    (add-hook 'prog-mode-hook '(lambda() (progn (jo/tab-space) (jo/ahs))))
     ))
 
 (req-package dabbrev
