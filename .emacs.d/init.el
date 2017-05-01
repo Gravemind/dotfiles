@@ -43,8 +43,10 @@
  ;; Save minibuffer history (of compile)
  '(savehist-mode t)
  '(savehist-additional-variables (quote (compile-command)))
-
  )
+
+(set-terminal-parameter nil 'background-mode 'dark)
+(setq-default frame-background-mode 'dark)
 
 ;; Replace yes-or-no by y-or-n
 (fset 'yes-or-no-p 'y-or-n-p)
