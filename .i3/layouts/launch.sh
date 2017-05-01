@@ -6,13 +6,13 @@ class=
 instance=
 
 usage() {
-	echo "usage: $0 [-w WORKSPACE] [-c WIN_CLASS] [-i WIN_INSTANCE] -- command [args...]"
+	echo "usage: $0 [-w WORKSPACE] [-c WIN_CLASS] [-i WIN_INSTANCE] [--] command [args...]"
 	echo "  Spawns a i3 placeholder for command \"command\""
 	echo "    -w WORKSPACE	    : move placeholder to workspace WORKSPACE (default: current)"
 	echo "    -c WIN_CLASS	    : placeholder window's \"class\" to match (default: command)"
 	echo "    -i WIN_INSTANCE   : placeholder window's \"instance\" to match (no default)"
 }
-options=`getopt -o "+hw:c:i:" -n "$0" -- "$@"`
+options=`getopt -o "+hfw:c:i:" -n "$0" -- "$@"`
 eval set -- "$options"
 while true; do
 	case "$1" in
@@ -21,7 +21,7 @@ while true; do
 		-c) class="$2"; shift ;;
 		-i) instance="$2"; shift ;;
 		--) shift; break ;;
-		*) echo $0: invalid argument "$1"; exit 1;;
+		*) break ;; ## no flags after first non-flag arg
 	esac
 	shift
 done
@@ -50,8 +50,10 @@ fi
 tmp=`mktemp`
 trap "{ rm -f $tmp; }" EXIT
 
+layout_win_name="[[ ${name} ]]"
+
 sponge $tmp <<EOF
-{ "name": "[[ ${name} ]]",
+{ "name": "$layout_win_name",
   "swallows": [ {
 	"class": "(?i)^${class}\$"
 	${instance_line}
@@ -62,29 +64,20 @@ EOF
 
 echo $0: launching "$prog" class "$class" "$instance"
 
-early_placeholder=$([[ -z "$workspace" ]] || echo true)
-if [ "x$early_placeholder" = "xtrue" ] ; then
-	$here/append_layout_window.sh $tmp $workspace
-fi
+$here/append_layout_window.sh $tmp $workspace > /dev/null
 
-"$prog" "${prog_args[@]}" &
-prog_pid=$!
+"$prog" "${prog_args[@]}"
 
-sleep 0.3
-ps $prog_pid > /dev/null
-if [[ $? -ne 0 ]]
-then
-	echo $0: program "$prog" not running !
-	exit 1
-else
-	disown
-	if [ "x$early_placeholder" != "xtrue" ] ; then
-		xdotool search --pid $prog_pid > /dev/null
-		if [[ $? -ne 0 ]]
-		then
-			$here/append_layout_window.sh $tmp $workspace
-		else
-			echo "$0: $prog window already opened"
-		fi
+res=$?
+
+if [[ $res -ne 0 ]]; then
+	winid="$(xwininfo -name "$layout_win_name" -int | sed -nE 's/.*Window id: ([0-9]+) .*/\1/gp')"
+	if [[ $? -eq 0 ]]; then
+		echo "$0: $prog exited $res (closing placeholder $winid)"
+		xkill -id "$winid" > /dev/null
+	else
+		echo "$0: $prog exited $res (no more placeholder)"
 	fi
 fi
+
+exit $res
