@@ -36,7 +36,7 @@ bindsym $ModK+Ctrl+Return exec $layouts/launch.sh -- emacs ~/TODO.org
 # Spawn with layout
 bindsym $ModK+F10 exec $layouts/launch.sh -w 10 firefox
 
-bindsym $ModK+F5 exec qalculate-gtk
+bindsym $ModK+F5 exec $layouts/launch.sh qalculate-gtk -n
 
 # Toggle border decoration
 bindsym $ModK+e border toggle
@@ -311,7 +311,7 @@ bar {
 }
 
 #exec ~/.i3/bar/bar.py
-exec ~/.i3/bg.py
+exec --no-startup-id ~/.i3/bg.py
 # exec conky -c ~/.conky/balloon/conkyrc
 
 #
