@@ -44,19 +44,7 @@ whichcc() {
 	echo
 }
 
-gcc48() {
-	export CC=gcc-4.8
-	export CXX=g++-4.8
-	whichcc
-}
-
-gcc49() {
-	export CC=gcc-4.9
-	export CXX=g++-4.9
-	whichcc
-}
-
-gcclast() {
+usegcc() {
 	unset CC
 	unset CXX
 	export CC
@@ -64,9 +52,33 @@ gcclast() {
 	whichcc
 }
 
-clanglast() {
+usegcc48() {
+	export CC=gcc-4.8
+	export CXX=g++-4.8
+	whichcc
+}
+
+usegcc49() {
+	export CC=gcc-4.9
+	export CXX=g++-4.9
+	whichcc
+}
+
+usegcc5() {
+	export CC=gcc-5
+	export CXX=g++-5
+	whichcc
+}
+
+useclang() {
 	export CC=clang
 	export CXX=clang++
+	whichcc
+}
+
+useclang35() {
+	export CC=clang-3.5
+	export CXX=clang++-3.5
 	whichcc
 }
 
@@ -89,6 +101,7 @@ ccacheon() {
 
 ENABLE_RTAGS=0
 ENABLE_CCACHE=0
-clanglast
+
+useclang
 
 #export CFLAGS="-Wno-undefined-var-template"
