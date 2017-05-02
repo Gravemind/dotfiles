@@ -22,8 +22,8 @@ alias cleandhcp='sudo rm -rf /var/lib/dhcp3/*.lease'
 alias cleanhg='find . \( -name "*.orig" \) -print -delete'
 
 # trailing whitespace will make it resolve aliases !
-alias _='sudo -E '
 alias sudo='sudo -E '
+alias _='sudo'
 
 alias lock='i3lock -c 111111'
 alias disk='df -h --total'
