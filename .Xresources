@@ -73,3 +73,12 @@ Xft.hinting:        1
 Xft.hintstyle:      hintfull
 Xft.rgba:           none
 Xft.lcdfilter:      lcdnone
+
+! Fixes emacs flashing bars at startup
+! evaluated much sooner than init.el
+emacs.menuBar:              off
+emacs.toolBar:              off
+emacs.verticalScrollBars:   off
+emacs.font:                 DejaVu Sans Mono-9
+emacs.background:           #000000
+emacs.cursorBlink:          off
