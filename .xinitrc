@@ -23,9 +23,7 @@ setxkbmap us_qwerty-fr
 # xmodmap -e 'keycode 135 = Super_R'
 
 ## ssh agent
-ssh-agent -s > /tmp/ssh.keys
-.  /tmp/ssh.keys
-rm  /tmp/ssh.keys
+eval "$(ssh-agent)"
 
 numlockx on
 
