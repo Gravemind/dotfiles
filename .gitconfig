@@ -169,4 +169,4 @@
 #	cmd = '/c/Program Files (x86)/Meld/meld/meld.exe' \"$LOCAL\" \"$REMOTE\"
 
 [include]
-    path = ~/.gitconfig.me
+    path = ~/.gitconfig.local
