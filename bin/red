@@ -21,8 +21,8 @@ file_prefix="/tmp/.red.${UID}.${DISPLAY}"
 
 cola=6500	# starting temperature
 bria=100	# starting brightness
-colstep=350	# temperature step
-bristep=10	# brightness step
+colstep=550	# temperature step
+bristep=15	# brightness step
 
 enable_current_output=0
 
@@ -136,9 +136,9 @@ then
 	col=$((- $value * $colstep + $cola))
 	bri=$((- $value * $bristep + $bria))
 	bri=$(echo "scale=3; $bri / 100.0" | bc)
-	echo "$0: redshifting to $value: $col $bri $redopt"
+	echo "$0: redshifting to $value: redshift -O $col -b $bri $redopt"
 	redshift -O $col -b $bri $redopt
 else
-	echo "$0: redshifting reset $redopt"
+	echo "$0: redshifting reset: redshift -x $redopt"
 	redshift -x $redopt
 fi
