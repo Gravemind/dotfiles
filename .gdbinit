@@ -19,3 +19,5 @@ set python print-stack full
 
 handle SIGPWR nostop
 handle SIGXCPU nostop
+
+source ~/.gdbinit.local
