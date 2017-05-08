@@ -9,7 +9,7 @@ then
 	echo "${fg_bold[red]}pacaur not found${reset_color}"
 fi
 
-# Update mirror list if necessary
+# Update mirror list if out dated
 pacupmir() {
 	local pacmirrorfile_expire_days=9
 
@@ -19,39 +19,40 @@ pacupmir() {
 	#local ago=10000
 	if [[ "$1" = "-f" || $ago -gt $pacmirrorfile_expire_sec ]]
 	then
-		echo "$0: updating... (${fg_bold[green]}$(durationtostr $ago old)${reset_color})"
+		echo "$0: mirrorlist is $(durationtostr $ago old), updating:"
 		pacupdatemirrors || { echo "${fg_bold[red]}$0: pacupdatemirrors failed !!$reset_color"; return 1 }
 	else
-		echo "$0: up to date (${fg_bold[cyan]}$(durationtostr $ago old)${reset_color})"
+		echo "$0: mirrorlist is $(durationtostr $ago old), not updating yet"
 	fi
 }
 
-# Fetch only new updates
+# Download only new upgrades
 pacup() {
 	pacupmir || { echo "$0: pacupmir failed"; return 1; }
 
 	## `pacaur` does not catch pacman errors and continues with AUR packages silently, so run pacman alone
-	echo "\n${fg_bold[green]}$0: pacman -Syuw ...$reset_color\n"
-	sudo pacman -Syuw --noconfirm || { echo "${fg_bold[red]}$0: pacman -Syuw failed !!$reset_color"; return 1; }
-	echo "\n${fg_bold[green]}$0: pacaur --aur -Syuw ...$reset_color\n"
-	pacaur --aur -Syuw --noconfirm --noedit || { echo "${fg_bold[red]}$0: pacaur --aur -Syuw failed !!$reset_color"; return 1; }
+	sudo pacman -Syuw --noconfirm "$@" || { echo "${fg_bold[red]}$0: pacman -Syuw failed !!$reset_color"; return 1; }
+	pacaur --aur -Syuw --noconfirm --noedit "$@" || { echo "${fg_bold[red]}$0: pacaur --aur -Syuw failed !!$reset_color"; return 1; }
 
-	echo
-	pacaur -Qu || { echo "${fg_bold[green]}$0: no updates.$reset_color" ; return 1; }
-	echo "${fg_bold[green]}$0: pacaur -Syuw OK$reset_color"
+	pacaur -Qu
+	if [[ $? -eq 0 ]]
+	then
+		echo "${fg_bold[green]}$0: pending upgrades downloaded$reset_color"
+	else
+		echo "${fg_bold[green]}$0: no pending upgrades$reset_color"
+	fi
 }
 
-# Fetch and Install updates + aur
+# Download and Install upgrades
 pacupg() {
 	pacupmir || { echo "$0: pacupmir failed"; return 1; }
 
 	## `pacaur` does not catch pacman errors and continues with AUR packages silently, so run pacman alone
 	## and `pacaur -Syur` exits 1 ?
-	echo "\n${fg_bold[green]}$0: pacman -Syu...$reset_color\n"
-	sudo pacman -Syu --noconfirm || { echo "${fg_bold[red]}$0: pacman -Syu failed !!$reset_color"; return 1; }
-	echo "\n${fg_bold[green]}$0: pacaur --aur -Syu...$reset_color\n"
-	pacaur --aur -Syu --noconfirm --noedit || { echo "${fg_bold[red]}$0: pacaur --aur -Syu failed !!$reset_color"; return 1; }
-	echo "${fg_bold[green]}$0: pacaur -Syu OK$reset_color"
+	sudo pacman -Syu --noconfirm "$@" || { echo "${fg_bold[red]}$0: pacman -Syu failed !!$reset_color"; return 1; }
+	pacaur --aur -Syu --noconfirm --noedit "$@" || { echo "${fg_bold[red]}$0: pacaur --aur -Syu failed !!$reset_color"; return 1; }
+
+	echo "${fg_bold[green]}$0: upgraded$reset_color"
 
 	checkpacnew
 }
@@ -72,9 +73,7 @@ checkpacnew() {
 		done
 	if [[ pacnewcount -gt 0 ]]
 	then
-		echo
-		echo "${fg_bold[red]}/!\\ Found $pacnewcount pacnew$([[ $pacnewcount = 1 ]] || echo s):$pacnews$reset_color"
-		echo
+		echo "${fg_bold[red]}$0: found $pacnewcount pacnew:$reset_color$pacnews"
 	fi
 }
 
@@ -87,7 +86,7 @@ pacfind() {
 	which pkgfile > /dev/null
 	if [[ $? -ne 0 ]]
 	then
-		echo "pkgfile not installed"
+		echo "$0: pkgfile not installed"
 		return 125
 	fi
 
@@ -97,7 +96,7 @@ pacfind() {
 	local maxage=$((3600 * 1)) ## 1 hour
 	if [[ $age -gt $maxage ]]
 	then
-		echo "pkgfile cache is ${fg_bold[red]}$(durationtostr $age old)${reset_color} ! run ${fg_bold[red]}sudo pkgfile -u${reset_color}"
+		echo "$0: pkgfile cache is ${fg_bold[red]}$(durationtostr $age old)${reset_color} ! run ${fg_bold[red]}sudo pkgfile -u${reset_color}"
 	fi
 
 	pkgs=(${(f)"$(pkgfile -b -v -- "$cmd" 2>/dev/null)"})
