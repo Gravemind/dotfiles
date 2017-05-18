@@ -914,6 +914,25 @@ With argument, do this that many times."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; wgrep
+;;   write in grep buffers C-c C-p
+;;
+
+;; @FIXME why wgrep gets loaded when helm is loaded (eg on M-x)
+
+(req-package wgrep
+  :bind (:map grep-mode-map
+              ("C-c C-p" . wgrep-change-to-wgrep-mode))
+  )
+
+(req-package wgrep-helm
+  :require (wgrep helm)
+  :bind-keymap (:map helm-grep-mode-map
+                ("C-c C-p" . wgrep-change-to-wgrep-mode))
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; git-gutter-fringe+
 ;;   show git diffs in fringe margin
 ;;
