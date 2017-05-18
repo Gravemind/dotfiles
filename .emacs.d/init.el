@@ -814,8 +814,8 @@ With argument, do this that many times."
 ;;
 
 (req-package helm
+  ;;:disabled
   ;; :require helm-command
-  ;; :disabled t
   :bind (("M-x" . helm-M-x)
          )
   :config
@@ -892,7 +892,7 @@ With argument, do this that many times."
 ;;
 
 (req-package helm-ag
-  ;; :disabled t
+  ;;:disabled
   :require helm
   :commands (helm-do-ag helm-ag)
   :config
@@ -908,6 +908,7 @@ With argument, do this that many times."
 ;;
 
 (req-package helm-dash
+  ;;:disabled
   :require helm
   :commands (helm-dash helm-dash-activate-docset))
 
@@ -918,7 +919,7 @@ With argument, do this that many times."
 ;;
 
 (req-package git-gutter-fringe
-  ;;:disable t
+  ;;:disabled
   :demand
   :bind (("M-n" . git-gutter:next-hunk)
          ("M-p" . git-gutter:previous-hunk))
@@ -978,7 +979,7 @@ With argument, do this that many times."
 )
 
 (req-package git-gutter-fringe+
-  :disable t
+  :disabled
   :demand
   ;;:defer 1
   :bind (("M-n" . git-gutter+-next-hunk)
