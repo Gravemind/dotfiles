@@ -48,7 +48,7 @@ URxvt*urgentOnBell:     true
 URxvt*loginShell:       true
 URxvt*saveLines:        100000
 URxvt*buffered:         true
-URxvt*font:             xft:DejaVu Sans Mono:size=10
+URxvt*font:             xft:DejaVu Sans Mono:size=9
 URxvt*scrollBar_right:  false
 URxvt*scrollBar:        false
 
