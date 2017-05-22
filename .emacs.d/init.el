@@ -1071,8 +1071,13 @@ With argument, do this that many times."
 
 (add-to-list 'load-path "~/bin/rtags/src")
 
+(req-package rtags-helm
+  :loader :path
+  :defer t)
+
 (req-package rtags
   :loader :path
+  ;;:require rtags-helm
   :commands (
              rtags-location-stack-back
              rtags-location-stack-back
@@ -1125,6 +1130,7 @@ With argument, do this that many times."
      )
     )
   :config
+  (require helm-rtags)
   (defun rtags-clear-diagnostics ()
     "Stops rtags diagnostics, and clear diagnostics overlay."
     (interactive)
@@ -1136,7 +1142,6 @@ With argument, do this that many times."
    rtags-enable-unsaved-reparsing t
    rtags-use-helm t
    )
-  (require helm-rtags)
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
