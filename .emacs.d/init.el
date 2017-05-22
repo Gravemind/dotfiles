@@ -790,9 +790,15 @@ With argument, do this that many times."
   (magit-define-popup-action
     'magit-log-popup
     ?u "Log upstream" 'my-magit-log-upstream)
+
+  (magit-define-popup-switch
+    'magit-diff-refresh-popup
+    ?W "Function context" "-W")
+
   (magit-define-popup-action
     'magit-pull-popup
     ?f "Pull ff only" 'my-magit-pullff)
+
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
