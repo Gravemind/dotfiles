@@ -641,7 +641,7 @@ With argument, do this that many times."
                        for d = default-directory then (expand-file-name ".." d)
                        if (file-exists-p (expand-file-name file d))
                        return d
-                       if (equal d root)
+                       if (or (equal d (expand-file-name ".." d)) (equal (concat d "..") (expand-file-name ".." d)))
                        return nil))))
 
 ;; https://www.emacswiki.org/emacs/JabberEl
