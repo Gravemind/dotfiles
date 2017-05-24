@@ -94,7 +94,8 @@
  scroll-preserve-screen-position t)
 
 ;; Make mouse jump to avoid cursor
-(mouse-avoidance-mode 'animate)
+(mouse-avoidance-mode 'jump)
+;;(mouse-avoidance-mode 'animate)
 
 ;; Replace yes-or-no by y-or-n
 (fset 'yes-or-no-p 'y-or-n-p)
