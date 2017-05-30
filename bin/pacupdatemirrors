@@ -2,33 +2,16 @@
 
 set -eo pipefail
 
-# Original source: https://gist.github.com/ByScripts/3496113
-
-[ "$UID" != 0 ] && su=sudo
-
-countries='country=FI&country=FR&country=DE&country=LU&country=NL&country=PL&country=SE'
-#safemove="mv -i"
-safemove="mv"
-
-url="https://www.archlinux.org/mirrorlist/?${countries}&protocol=https&ip_version=4&ip_version=6&use_mirror_status=on"
+countries=(-c fi -c fr -c de -c lu -c nl -c pl -c se)
 servercount=4
+safemove="mv"
 tmpfile=$(mktemp --suffix=-mirrorlist)
 tmpfile2=$(mktemp --suffix=-mirrorlist2)
 
-echo "$0: fetching ${url}"
+echo "$0: fetch mirrors..."
 
-wget -qO- "$url" | sed 's/^#Server/Server/g' > "$tmpfile"
-
-# strip comments and empty lines, keep only last (better ranking) $servercount servers
-(grep -v -e '^#' -e '^$' "$tmpfile" || true) | tail -n $servercount > "$tmpfile2"
-
-count="$(\cat "$tmpfile2" | wc -l || true)"
-if [[ -z "$count" || "$count" -le "0" ]]
-then
-	echo "$0: error: could not find new mirrors, here is what I got:"
-	cat "$tmpfile"
-	exit 1
-fi
+reflector --verbose -p https "${countries[@]}" --sort score --age 24 \
+    | grep '^Server = ' | tail -n $servercount > "$tmpfile2"
 
 echo "$0: ranking the new $count mirrors..."
 
@@ -43,6 +26,8 @@ then
 fi
 
 echo "$0: backing up and Saving new mirrorlist..."
+
+[ "$UID" != 0 ] && su=sudo
 
 $su $safemove /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig
 $su $safemove "$tmpfile" /etc/pacman.d/mirrorlist
