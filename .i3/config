@@ -243,10 +243,10 @@ bind $ModK+21 exec --no-startup-id $pactl_vol +2%
 bind $ModK+20 exec --no-startup-id $pactl_vol -2%
 bind $ModK+Shift+21 exec --no-startup-id $pactl_vol +10%
 bind $ModK+Shift+20 exec --no-startup-id $pactl_vol -10%
-bindsym XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +1%
-bindsym XF86AudioLowerVolume exec --no-startup-id $pactl_vol -1%
-bindsym $ModK+XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +1%
-bindsym $ModK+XF86AudioLowerVolume exec --no-startup-id $pactl_vol -1%
+bindsym XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +2%
+bindsym XF86AudioLowerVolume exec --no-startup-id $pactl_vol -2%
+bindsym $ModK+XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +2%
+bindsym $ModK+XF86AudioLowerVolume exec --no-startup-id $pactl_vol -2%
 bindsym $ModK+F12 exec --no-startup-id $pactl_vol +2%
 bindsym $ModK+F11 exec --no-startup-id $pactl_vol -2%
 bindsym XF86AudioMute exec --no-startup-id $pactl_mute
