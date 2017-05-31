@@ -6,6 +6,8 @@ nvidia-settings --load-config-only &
 # xrandr --output DVI-I-1  --auto --primary --right-of DVI-D-0
 # xrandr --dpi 94
 
+export __GL_YIELD="USLEEP"
+
 setxkbmap -option terminate:ctrl_alt_bksp
 
 ## desactivate touchpad when typing
