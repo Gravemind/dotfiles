@@ -3,18 +3,18 @@
 #	name =
 
 [alias]
-	co = checkout
-	ci = commit
+	co  = checkout
+	ci  = commit
 	com = commit -m
 
-	st = status
-	s = status -sb
-	ss = status -sb .
+	st  = status
+	s   = status -sb
+	ss  = status -sb .
 
-	d = diff -M
-	dc = diff -M --cached
-	dw = diff --word-diff=color -M
-	dcw = diff --word-diff=color -M --cached
+	d   = diff -M
+	dc  = diff -M --cached
+	dw  = diff --word-diff=color '--word-diff-regex=\\w+|[^[:space:]]' -M
+	dcw = diff --word-diff=color '--word-diff-regex=\\w+|[^[:space:]]' -M --cached
 
 	dule = submodule
 
