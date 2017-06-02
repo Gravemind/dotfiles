@@ -582,7 +582,7 @@ With argument, do this that many times."
   :mode (("Rakefile\\'" . ruby-mode)
          ("\\.rb\\'" . ruby-mode))
   :config
-  (add-hook 'lua-mode-hook (lambda () (jo/tab-space)))
+  (add-hook 'ruby-mode-hook (lambda () (jo/tab-space)))
   ;(setq-default ruby-deep-arglist 4)
   ;(setq-default ruby-deep-indent-paren nil)
   )
