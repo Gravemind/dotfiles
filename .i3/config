@@ -221,8 +221,8 @@ for_window [class="(?i)icecat"] border none
 for_window [class="(?i)mplayer"] border none
 for_window [class="(?i)mpv"] border none
 
-# for_window [class="(?i)^UE4Editor$$"] floating enable
-assign [class="(?i)^UE4Editor$"] → 8
+# for_window [class="(?i)^UE4Editor.*$"] floating enable
+assign [class="(?i)^UE4Editor.*$"] → 8
 
 focus_follows_mouse yes
 new_window normal
