@@ -1141,18 +1141,18 @@ With argument, do this that many times."
      )
     )
   :config
-  (require helm-rtags)
+  (setq-default
+   rtags-jump-to-first-match nil
+   rtags-enable-unsaved-reparsing t
+   rtags-use-helm t
+   rtags-display-result-backend 'helm
+   )
   (defun rtags-clear-diagnostics ()
     "Stops rtags diagnostics, and clear diagnostics overlay."
     (interactive)
     (rtags-stop-diagnostics)
     (rtags-clear-diagnostics-overlays)
     )
-  (setq-default
-   rtags-jump-to-first-match nil
-   rtags-enable-unsaved-reparsing t
-   rtags-use-helm t
-   )
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
