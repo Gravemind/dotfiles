@@ -36,3 +36,5 @@ export OSTYPE=`uname -s`
 export MACHTYPE=`uname -m`
 export OS=`uname -s`
 
+export HISTSIZE=100000
+export SAVEHIST=100000
