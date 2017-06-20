@@ -46,7 +46,7 @@ URxvt*cursorColor:      yellow
 URxvt*urgentOnBell:     true
 
 URxvt*loginShell:       true
-URxvt*saveLines:        100000
+URxvt*saveLines:        300000  ! 600M RAM usage `cat -e /dev/urandom`
 URxvt*buffered:         true
 URxvt*font:             xft:DejaVu Sans Mono:size=9
 URxvt*scrollBar_right:  false
