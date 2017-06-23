@@ -864,7 +864,8 @@ With argument, do this that many times."
 
   (helm-autoresize-mode t)
 
-  (setq
+  (setq-default
+
    helm-google-suggest-use-curl-p t
    helm-scroll-amount 8 ; scroll 4 lines other window using M-<next>/M-<prior>
    helm-quick-update t ; do not display invisible candidates
@@ -901,23 +902,14 @@ With argument, do this that many times."
 
   ;;(helm-mode 1)
 
-  )
-
-;;
-;; helm ag
-;; The Silver Searcher
-;;
-
-(req-package helm-ag
-  ;;:disabled
-  :require helm
-  :commands (helm-do-ag helm-ag)
-  :config
+  ;;
+  ;; use ripgrep
+  ;;    https://github.com/BurntSushi/ripgrep
+  ;;
   (setq-default
-   helm-ag-command-option "--all-text"
-   helm-ag-source-type 'file-line
-   ;; helm-ag-insert-at-point 'symbol
-   )
+   helm-grep-ag-command "rg --color=always --smart-case --no-heading --line-number %s %s %s")
+  (defalias 'helm-do-grep-rg 'helm-do-grep-ag)
+
   )
 
 ;;
