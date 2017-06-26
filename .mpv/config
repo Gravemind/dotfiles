@@ -11,4 +11,4 @@ video-sync=display-resample
 
 cache-secs=300
 
-ytdl-format=bestvideo[height<=?720]+bestaudio/best
+ytdl-format=(bestvideo[height<=?720]+bestaudio)[protocol=https]/best
