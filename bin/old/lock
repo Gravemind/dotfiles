@@ -1,4 +1,0 @@
-#!/bin/zsh
-
-sh -c "sleep 1; /usr/bin/xtrlock" & ; disown
-echo ''

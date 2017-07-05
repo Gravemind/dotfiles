@@ -1,8 +1,0 @@
-#!/bin/bash
-#
-# /etc/rc.local: Local multi-user start-up script.
-#
-
-echo auto > /sys/class/drm/card0/device/power_profile
-/usr/bin/numlockx on
-{ ntpd -qg; hwclock -w; } &

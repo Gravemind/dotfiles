@@ -1,14 +1,21 @@
-pcm.pulse {
-    type pulse
-}
-ctl.pulse {
-    type pulse
-}
-pcm.!default {
-    type pulse
-}
-ctl.!default {
-    type pulse
+# https://wiki.archlinux.org/index.php/Steam/Troubleshooting#Text_is_corrupt_or_missing
+
+ctl.dmixer {
+  type pulse
 }
 
-pcm.!default pulse
+pcm.pulse {
+  type pulse
+}
+
+ctl.pulse {
+  type pulse
+}
+
+pcm.!default {
+  type pulse
+}
+
+ctl.!default {
+  type pulse
+}

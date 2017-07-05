@@ -4,9 +4,11 @@
 
 nvidia-settings --load-config-only &
 # xrandr --output DVI-I-1  --auto --primary --right-of DVI-D-0
-# xrandr --dpi 94
+xrandr --dpi 94
 
 export __GL_YIELD="USLEEP"
+export __GL_SYNC_DISPLAY_DEVICE=DP-4
+export VDPAU_NVIDIA_SYNC_DISPLAY_DEVICE=DP-4
 
 setxkbmap -option terminate:ctrl_alt_bksp
 
