@@ -2,77 +2,100 @@
 
 base-devel
 
-emacs
-zsh
 openssh
-
-nvidia
-xorg-utils
-xorg-server-utils
-xorg-xinit
-ttf-dejavu
-i3-wm
-i3lock
-dmenu
-rxvt-unicode
-xterm
-
+zsh
 git
-mpd
-ncmpcpp
-ntp
+linux-tools
+mlocate
 autojump
+moreutils
+readline
+bc
 
-ruby
-python
-gcc
-make
-clang
-fakeroot
-cmake
-autoconf
-automake
-libtool
-lsof
-asciidoc
-patch
-diffutils
-dos2unix
-gdb
+xorg
 
-ldns
-iftop
-iotop
-dnsmasq
+emacs
 
-meld
-firefox
-chromium
+cower
+pacaur
+reflector
+
+i3
+dmenu
+mesa-demos
+xterm
+rxvt-unicode
+ttf-dejavu
+numlockx
 feh
 qalculate-gtk
-evince
+meld
+tk
 xautolock
 xdiskusage
+xlogin-git
 
-wireless_tools
+nvidia
+nvidia-settings
+
+clang
+clang-tools-extra
+dlang
+ruby
+python
+ldns
+bind-tools
+iftop
+iotop
+gdb
+asciidoc
+dos2unix
+
+chromium
+
+lm_sensors
+
+synergy
+
+lib32-nvidia-utils
+steam
+steam-fonts
+
+pulseaudio
+pavucontrol
 
 smartmontools
 hdparm
 
 xclip
+xdotool
+
 mpv
+libva-vdpau-driver
 p7zip
 redshift
-the_silver_searcher
-mlocate
+ripgrep
 dtrx
+
+xkb-qwerty-fr
+
+at
+nfs-utils
+
+spotify
+youtube-dl
+
+ssmtp
+net-tools
+
+autojump
+rsync
+sysstat
+wget
 
 # Screenshot
 maim
 slop
-
-xkb-qwerty-fr
-lostfiles
 
 # pacaur
 ./pacaur-install.sh
@@ -80,18 +103,10 @@ lostfiles
 # omz
 ./oh-my-zsh-install.sh
 
-# AUR
-xlogin-git
-
-# user groups:
-mem wheel log mpd games video power users audio optical storage
-
 # emacs rtags
-
 cd ~/bin ; git clone git@github.com:Andersbakken/rtags
 
 # i3status (with mpd)
-
 git clone git@github.com:Gravemind/i3status
 make
 sudo make install
