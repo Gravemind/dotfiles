@@ -2,13 +2,9 @@
 
 [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
 
-xrandr --setprovideroutputsource modesetting NVIDIA-0
-# xrandr --setprovideroutputsource Intel
-xrandr --auto
-
 nvidia-settings --load-config-only &
 # xrandr --output DVI-I-1  --auto --primary --right-of DVI-D-0
-xrandr --dpi 96
+# xrandr --dpi 94
 
 export __GL_YIELD="USLEEP"
 
@@ -26,12 +22,12 @@ xset b 0 &> /dev/null
 setxkbmap us_qwerty-fr
 
 ## 'Menu' key as Windows key
-xmodmap -e 'keycode 135 = Super_R'
+# xmodmap -e 'keycode 135 = Super_R'
 
 ## ssh agent
 eval "$(ssh-agent)"
 
-# numlockx on
+numlockx on
 
 mv ~/.i3/log ~/.i3/log.1
 exec i3 >& ~/.i3/log
