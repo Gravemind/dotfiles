@@ -991,6 +991,7 @@ With argument, do this that many times."
     "...XX..."
     "...XX..."
     "...XX..."
+    "...XX..."
     "...XX...")
   (fringe-helper-define 'git-gutter-fr:deleted nil
     "...XX..."
@@ -1006,8 +1007,10 @@ With argument, do this that many times."
     "...XX..."
     "...XX..."
     "...XX..."
+    "...XX..."
     "...XX...")
   (fringe-helper-define 'git-gutter-fr:modified nil
+    "...XX..."
     "...XX..."
     "...XX..."
     "...XX..."
@@ -1046,6 +1049,8 @@ With argument, do this that many times."
     "...XX..."
     "...XX..."
     "...XX..."
+    "...XX..."
+    "...XX..."
     "...XX...")
   (fringe-helper-define 'git-gutter-fr+-deleted nil
     "...XX..."
@@ -1061,8 +1066,12 @@ With argument, do this that many times."
     "...XX..."
     "...XX..."
     "...XX..."
+    "...XX..."
+    "...XX..."
     "...XX...")
   (fringe-helper-define 'git-gutter-fr+-modified nil
+    "...XX..."
+    "...XX..."
     "...XX..."
     "...XX..."
     "...XX..."
