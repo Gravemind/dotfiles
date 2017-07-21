@@ -3,7 +3,7 @@
 set -eo pipefail
 
 countries=(-c fi -c fr -c de -c lu -c nl -c pl -c se)
-servercount=4
+servercount=5
 safemove="mv"
 tmpfile=$(mktemp --suffix=-mirrorlist)
 tmpfile2=$(mktemp --suffix=-mirrorlist2)
