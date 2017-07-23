@@ -75,6 +75,9 @@
 
  ;; Log *Messages* if the use-package takes longer than 0.1s to load
  use-package-verbose t
+
+ ;tramp-verbose 10
+ tramp-connection-timeout 10
  )
 
 ;;
