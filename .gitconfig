@@ -67,26 +67,26 @@
 	## --no-commit					# dont "auto" commit after merge
 	magicmerge = !git -c merge.renamelimit=2048 merge -X patience -X rename-threshold=10 -X ignore-space-at-eol --no-ff --no-commit
 
+	## Merge non fast-forward (create a commit)
 	mnf = merge --no-ff
+
+	## Merge non fast-forward (create a commit), and don't commit
 	mnfc = merge --no-ff --no-commit
 
 	## Log current branch
-	l = log --pretty=my --graph --date-order
+	l  = log --pretty=my --graph --full-history --simplify-merges --date-order
 
 	## Log current branch, topologic
-	lt = log --pretty=my --graph --topo-order
+	lt = log --pretty=my --graph --full-history --simplify-merges --topo-order
 
 	## Log all
-	la = log --pretty=my --graph --date-order --all
-
-	## Log all merge commit only
-	ll = log --pretty=my --graph --date-order --all --simplify-by-decoration
+	la = log --pretty=my --graph --full-history --simplify-merges --date-order --all
 
 	## Log HEAD and its upstream
-	lu = log --pretty=my --graph --date-order @ @{upstream}
+	lu = log --pretty=my --graph --full-history --simplify-merges --date-order @ @{upstream}
 
-	## Log all not merged in HEAD
-	loa = log --pretty=my --graph --date-order --all --not @
+	## Note: By default `git log -- path/to/file` will omit commit if "the end result is the same"
+	##       `--full-history --simplify-merges` disables that.
 
 	## Show hide untracked files
 	hideuntrack = config --local status.showUntrackedFiles no
