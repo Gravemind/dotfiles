@@ -7,10 +7,10 @@ instance=
 
 usage() {
 	echo "usage: $0 [-w WORKSPACE] [-c WIN_CLASS] [-i WIN_INSTANCE] [--] command [args...]"
-	echo "  Spawns a i3 placeholder for command \"command\""
-	echo "    -w WORKSPACE	    : move placeholder to workspace WORKSPACE (default: current)"
-	echo "    -c WIN_CLASS	    : placeholder window's \"class\" to match (default: command)"
-	echo "    -i WIN_INSTANCE   : placeholder window's \"instance\" to match (no default)"
+	echo "	Spawns a i3 placeholder for command \"command\""
+	echo "	  -w WORKSPACE		: move placeholder to workspace WORKSPACE (default: current)"
+	echo "	  -c WIN_CLASS		: placeholder window's \"class\" to match (default: command)"
+	echo "	  -i WIN_INSTANCE	: placeholder window's \"instance\" to match (no default)"
 }
 options=`getopt -o "+hfw:c:i:" -n "$0" -- "$@"`
 eval set -- "$options"
@@ -62,7 +62,7 @@ sponge $tmp <<EOF
 }
 EOF
 
-echo $0: launching "$prog" class "$class" "$instance"
+echo "$0: launching \"$prog\" class \"$class\" \"$instance\""
 
 $here/append_layout_window.sh $tmp $workspace > /dev/null
 
@@ -70,14 +70,19 @@ $here/append_layout_window.sh $tmp $workspace > /dev/null
 
 res=$?
 
-if [[ $res -ne 0 ]]; then
-	winid="$(xwininfo -name "$layout_win_name" -int | sed -nE 's/.*Window id: ([0-9]+) .*/\1/gp')"
-	if [[ $? -eq 0 ]]; then
+## command failed !? close the placeholder if necessary
+if [[ $res -ne 0 ]]
+then
+	winid="$(xwininfo -name "$layout_win_name" -int 2> /dev/null | sed -nE 's/.*Window id: ([0-9]+) .*/\1/gp')"
+	if [[ -n "$winid" ]]
+	then
 		echo "$0: $prog exited $res (closing placeholder $winid)"
 		xkill -id "$winid" > /dev/null
 	else
 		echo "$0: $prog exited $res (no more placeholder)"
 	fi
+else
+	echo "$0: $prog exited $res"
 fi
 
 exit $res
