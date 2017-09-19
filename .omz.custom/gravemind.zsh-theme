@@ -24,6 +24,25 @@ PROMPT2='%K{black}%B  %F{blue}%_ %F{white}%{❱%G%} %f%b%k'
 
 unset PROMPT_USER
 
+GRAVEMIND_PROMPT_USE_GITFAST=true
+if $GRAVEMIND_PROMPT_USE_GITFAST
+then
+    #GIT_PS1_SHOWDIRTYSTATE=true ## a bit slow
+    #GIT_PS1_SHOWCOLORHINTS=true
+    #GIT_PS1_SHOWUNTRACKEDFILES=true ## quite slow
+    #GIT_PS1_SHOWUPSTREAM="verbose"
+    source $ZSH/plugins/gitfast/git-prompt.sh
+fi
+
+function gravemind_git_prompt_current_branch() {
+    if $GRAVEMIND_PROMPT_USE_GITFAST
+    then
+        __git_ps1 "%s"
+    else
+        git_current_branch
+    fi
+}
+
 function gravemind_git_prompt_info_short() {
   local toplevel="$(command git rev-parse --show-toplevel 2>/dev/null)"
   if [[ -z "$toplevel" ]]; then
@@ -67,7 +86,7 @@ function gravemind_git_prompt_info_long() {
   local pwdbegin="${toplevelparent/#$HOME\//~/}"
   local pwdgit="$toplevelbase"
   local pwdend="${$(pwd)#$toplevel}"
-  echo -n "%F{blue}$(git_current_branch) %F{white}%{∶%G%} %F{black}$pwdbegin%F{blue}$pwdgit%F{black}$pwdend"
+  echo -n "%F{blue}$(gravemind_git_prompt_current_branch) %F{white}%{∶%G%} %F{black}$pwdbegin%F{blue}$pwdgit%F{black}$pwdend"
 }
 
 function gravemind_promt_cc() {
