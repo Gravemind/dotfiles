@@ -4,6 +4,12 @@ set print object on
 set print static-members off
 set print array on
 set print array-indexes on
+set print vtbl on
+set print demangle on
+set print asm-demangle on
+set demangle-style gnu-v3
+
+set print inferior-events on
 
 set confirm off
 #set pagination off
