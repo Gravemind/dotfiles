@@ -141,6 +141,7 @@
 	# git 2.11: experimental better diff
 	# https://github.com/git/git/commit/433860f3d0beb0c6f205290bd16cda413148f098
 	indentHeuristic = true
+	#algorithm = patience
 
 [core]
 	# default:
@@ -169,4 +170,4 @@
 #	cmd = '/c/Program Files (x86)/Meld/meld/meld.exe' \"$LOCAL\" \"$REMOTE\"
 
 [include]
-    path = ~/.gitconfig.local
+	path = ~/.gitconfig.local
