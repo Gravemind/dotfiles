@@ -1130,78 +1130,139 @@ With argument, do this that many times."
 
 (add-to-list 'load-path "~/bin/rtags/src")
 
-(req-package rtags-helm
-  :loader :path
-  :defer t)
+;;
+;; FIXME: doesnt work properly with req-package (diagnositic and/or helm issues)
+;;
 
-(req-package rtags
-  :loader :path
-  ;;:require rtags-helm
-  :commands (
-             rtags-location-stack-back
-             rtags-location-stack-back
-             rtags-location-stack-forward
-             rtags-location-stack-forward
-             rtags-next-match
-             rtags-next-match
-             rtags-imenu
-             rtags-find-file
-             rtags-taglist
-             rtags-find-symbol-at-point
-             rtags-find-symbol
-             rtags-find-references-at-point
-             rtags-find-references
-             rtags-find-virtuals-at-point
-             rtags-diagnostics
-             rtags-clear-diagnostics
-             )
-  :require cc-mode
-  :init
-  (with-eval-after-load 'cc-mode
-    (bind-keys
-     :map c-mode-base-map
-     ("C-c j" . rtags-location-stack-back)
-     ("C-c C-j" . rtags-location-stack-back)
-     ("C-c l" . rtags-location-stack-forward)
-     ("C-c C-l" . rtags-location-stack-forward)
+(setq-default
+ rtags-jump-to-first-match nil
+ ;rtags-enable-unsaved-reparsing t
+ rtags-use-helm t
+ rtags-display-result-backend 'helm
+ )
 
-     ("C-c p" . rtags-next-match)
-     ("C-c ;" . rtags-next-match)
+(require 'rtags)
 
-     ;; ido-style all tags in file
-     ("C-c k" . rtags-imenu)
+(defun rtags-clear-diagnostics ()
+  "Stops rtags diagnostics, and clear diagnostics overlay."
+  (interactive)
+  (rtags-stop-diagnostics)
+  (rtags-clear-diagnostics-overlays)
+  )
 
-     ;; y: file
-     ;; u: tag
-     ;; i: symbol
-     ;; o: reference
-     ("C-c y" . rtags-find-file)
-     ("C-c u" . rtags-taglist)
-     ("C-c i" . rtags-find-symbol-at-point)
-     ("C-c I" . rtags-find-symbol)
-     ("C-c o" . rtags-find-references-at-point)
-     ("C-c O" . rtags-find-references)
+;; (require 'flycheck-rtags)
+;; (defun my-flycheck-rtags-setup ()
+;;   (flycheck-select-checker 'rtags)
+;;   (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
+;;   (setq-local flycheck-check-syntax-automatically nil))
+;; (add-hook 'c-mode-hook #'my-flycheck-rtags-setup)
+;; (add-hook 'c++-mode-hook #'my-flycheck-rtags-setup)
+;; (add-hook 'objc-mode-hook #'my-flycheck-rtags-setup)
 
-     ("C-c h" . rtags-find-virtuals-at-point)
+(bind-keys
+ :map c-mode-base-map
+ ("C-c j" . rtags-location-stack-back)
+ ("C-c C-j" . rtags-location-stack-back)
+ ("C-c l" . rtags-location-stack-forward)
+ ("C-c C-l" . rtags-location-stack-forward)
 
-     ("C-c n" . rtags-diagnostics)
-     ("C-c N" . rtags-clear-diagnostics)
-     )
-    )
-  :config
-  (setq-default
-   rtags-jump-to-first-match nil
-   rtags-enable-unsaved-reparsing t
-   rtags-use-helm t
-   rtags-display-result-backend 'helm
-   )
-  (defun rtags-clear-diagnostics ()
-    "Stops rtags diagnostics, and clear diagnostics overlay."
-    (interactive)
-    (rtags-stop-diagnostics)
-    (rtags-clear-diagnostics-overlays)
-    )
-)
+ ("C-c p" . rtags-next-match)
+ ("C-c ;" . rtags-next-match)
+
+ ;; ido-style all tags in file
+ ("C-c k" . rtags-imenu)
+
+ ;; y: file
+ ;; u: tag
+ ;; i: symbol
+ ;; o: reference
+ ("C-c y" . rtags-find-file)
+ ("C-c u" . rtags-taglist)
+ ("C-c i" . rtags-find-symbol-at-point)
+ ("C-c I" . rtags-find-symbol)
+ ("C-c o" . rtags-find-references-at-point)
+ ("C-c O" . rtags-find-references)
+
+ ("C-c h" . rtags-find-virtuals-at-point)
+
+ ("C-c n" . rtags-diagnostics)
+ ("C-c N" . rtags-clear-diagnostics)
+ )
+
+;; (req-package rtags-helm
+;;   :loader :path
+;;   :defer t)
+
+;; (req-package rtags
+;;   :loader :path
+;;   ;;:require rtags-helm
+;;   ;; :commands (
+;;   ;;            rtags-location-stack-back
+;;   ;;            rtags-location-stack-back
+;;   ;;            rtags-location-stack-forward
+;;   ;;            rtags-location-stack-forward
+;;   ;;            rtags-next-match
+;;   ;;            rtags-next-match
+;;   ;;            rtags-imenu
+;;   ;;            rtags-find-file
+;;   ;;            rtags-taglist
+;;   ;;            rtags-find-symbol-at-point
+;;   ;;            rtags-find-symbol
+;;   ;;            rtags-find-references-at-point
+;;   ;;            rtags-find-references
+;;   ;;            rtags-find-virtuals-at-point
+;;   ;;            rtags-diagnostics
+;;   ;;            rtags-clear-diagnostics
+;;   ;;            )
+;;   :require cc-mode
+;;   :init
+;;   (with-eval-after-load 'cc-mode
+;;     (bind-keys
+;;      :map c-mode-base-map
+;;      ("C-c j" . rtags-location-stack-back)
+;;      ("C-c C-j" . rtags-location-stack-back)
+;;      ("C-c l" . rtags-location-stack-forward)
+;;      ("C-c C-l" . rtags-location-stack-forward)
+
+;;      ("C-c p" . rtags-next-match)
+;;      ("C-c ;" . rtags-next-match)
+
+;;      ;; ido-style all tags in file
+;;      ("C-c k" . rtags-imenu)
+
+;;      ;; y: file
+;;      ;; u: tag
+;;      ;; i: symbol
+;;      ;; o: reference
+;;      ("C-c y" . rtags-find-file)
+;;      ("C-c u" . rtags-taglist)
+;;      ("C-c i" . rtags-find-symbol-at-point)
+;;      ("C-c I" . rtags-find-symbol)
+;;      ("C-c o" . rtags-find-references-at-point)
+;;      ("C-c O" . rtags-find-references)
+
+;;      ("C-c h" . rtags-find-virtuals-at-point)
+
+;;      ("C-c n" . rtags-diagnostics)
+;;      ("C-c N" . rtags-clear-diagnostics)
+;;      )
+;;     )
+;;   (setq-default
+;;    rtags-jump-to-first-match nil
+;;    ;rtags-enable-unsaved-reparsing t
+;;    rtags-use-helm t
+;;    rtags-display-result-backend 'helm
+;;    )
+;;   (require 'rtags)
+;;   ;(require 'flycheck-rtags)
+;;   (defun rtags-clear-diagnostics ()
+;;     "Stops rtags diagnostics, and clear diagnostics overlay."
+;;     (interactive)
+;;     (rtags-stop-diagnostics)
+;;     (rtags-clear-diagnostics-overlays)
+;;     )
+;;   :config
+;; )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
