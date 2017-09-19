@@ -142,6 +142,22 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; isearch
+;;
+
+(bind-keys
+ :map isearch-mode-map
+ ("C-<backspace>" . isearch-del-char))
+
+;; FIXME:
+;;(req-package isearch
+;;  :bind-keymap
+;;  (:map isearch-mode-map
+;;        ("C-<backspace>" . isearch-del-char))
+;;  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; savehist
 ;;   save minibuffer history
 ;;
