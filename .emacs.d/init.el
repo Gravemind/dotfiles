@@ -828,6 +828,7 @@ With argument, do this that many times."
    git-commit-summary-max-length 50
    git-commit-fill-column 70
    smerge-refine-ignore-whitespace nil ;; refine show whitespace
+   ;magit-diff-refine-hunk t
    magit-diff-refine-hunk 'all
    )
 
@@ -848,6 +849,13 @@ With argument, do this that many times."
   (magit-define-popup-action
     'magit-pull-popup
     ?f "Pull ff only" 'my-magit-pullff)
+
+  ;(magit-define-popup-switch
+  ;  'magit-diff-popup
+  ;  ?W "Ignore changes in whitespace at EOL" "--ignore-space-at-eol")
+  (magit-define-popup-switch
+    'magit-diff-popup
+    ?b "Ignore changes in amount of whitespace" "--ignore-space-change")
 
   )
 
