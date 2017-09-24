@@ -2,13 +2,14 @@ hr-seek=yes
 #force-window=immediate
 sub-pos=84
 
-profile=opengl-hq
+#profile=opengl-hq
 opengl-swapinterval=1
 interpolation=yes
 tscale=oversample
 video-sync=display-resample
+video-sync=display-adrop
 #display-fps=60
 
 cache-secs=300
 
-ytdl-format=(bestvideo[height<=?720]+bestaudio)[protocol=https]/best
+ytdl-format=(bestvideo[height<=?1080]+bestaudio)[protocol=https]/best
