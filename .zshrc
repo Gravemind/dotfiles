@@ -4,8 +4,17 @@ export PATH=$HOME/bin:$PATH
 ## emacs tramp
 if [[ "$TERM" == "dumb" ]]
 then
-  PS1='$ '
-  return
+	unsetopt zle
+	unsetopt prompt_cr
+	unsetopt prompt_subst
+	if whence -w precmd >/dev/null; then
+		unfunction precmd
+	fi
+	if whence -w preexec >/dev/null; then
+		unfunction preexec
+	fi
+	PS1='$ '
+	return
 fi
 
 # Path to your oh-my-zsh installation.
