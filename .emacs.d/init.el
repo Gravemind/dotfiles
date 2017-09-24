@@ -175,6 +175,9 @@
  standard-indent 4
  indent-tabs-mode nil)
 
+(setq-default whitespace-style '(face trailing indentation space-before-tab))
+(add-hook 'prog-mode-hook (lambda () (whitespace-mode 1)))
+
 (defun jo/iwb-space ()
   "Indent whole buffer, see jo/tab-space."
   (interactive)
