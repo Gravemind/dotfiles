@@ -8,6 +8,12 @@ safemove="mv"
 tmpfile=$(mktemp --suffix=-mirrorlist)
 tmpfile2=$(mktemp --suffix=-mirrorlist2)
 
+if [ "$UID" != 0 ]
+then
+    su=sudo
+    sudo echo -n
+fi
+
 echo "$0: fetch mirrors..."
 
 reflector --verbose -p https "${countries[@]}" --sort score --age 24 \
@@ -26,8 +32,6 @@ then
 fi
 
 echo "$0: backing up and Saving new mirrorlist..."
-
-[ "$UID" != 0 ] && su=sudo
 
 $su $safemove /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig
 $su $safemove "$tmpfile" /etc/pacman.d/mirrorlist
