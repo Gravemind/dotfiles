@@ -78,6 +78,7 @@
 
  ;tramp-verbose 10
  tramp-connection-timeout 10
+ password-cache-expiry nil
  )
 
 ;;
