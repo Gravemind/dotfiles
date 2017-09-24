@@ -50,12 +50,15 @@
 
 ;; Already setup in ~/.Xresources emacs.*
 (menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
 (blink-cursor-mode -1)
 (electric-indent-mode -1)
 (column-number-mode 1)
 (delete-selection-mode 1)
+
+(if window-system
+    (progn (tool-bar-mode -1)
+           (scroll-bar-mode -1)
+           ))
 
 (setq-default
  inhibit-startup-screen t
