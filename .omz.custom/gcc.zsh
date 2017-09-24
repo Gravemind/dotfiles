@@ -99,7 +99,7 @@ ccacheon() {
 	whichcc
 }
 
-ENABLE_RTAGS=0
+ENABLE_RTAGS=1
 ENABLE_CCACHE=0
 
 useclang

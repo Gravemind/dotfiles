@@ -2,7 +2,7 @@
 
 alias mpw="mpv --force-window=immediate "
 
-findnextmpv() {
+getfirstvalidfile() {
 	while read file
 	do
 		# file=$(echo "$file")
@@ -15,7 +15,7 @@ findnextmpv() {
 				continue
 			fi
 		fi
-		mime=$(file -b --mime-type  "$file" | grep -q 'video\|audio\|directory')
+		mime=$(file -b --mime-type	"$file" | grep -q 'video\|audio\|directory')
 		if [[ $? == 0 ]]
 		then
 			echo "$file"
@@ -26,17 +26,11 @@ findnextmpv() {
 }
 
 mpn() {
-	MAXFILES=1000
-
-	takefirst() {
-		echo "$1"
-	}
-
 	FOUNDFILE=$(
-		history | \
-			tail -n $MAXFILES | sort -r | \
+		history | grep mpv | \
+			sort -r | \
 			sed -rn 's/\s*[0-9]+\s+mpv\s+(.*)/\1/gp' | \
-			findnextmpv
+			getfirstvalidfile
 			 )
 	if [[ -z "$FOUNDFILE" ]]
 	then
@@ -44,28 +38,30 @@ mpn() {
 		return 1
 	fi
 	echo
-	echo "LAST ONE :: \"$FOUNDFILE\""
+	echo "( Last played: \"$FOUNDFILE\" )"
 
-	NEXTFILE=$(\ls | sort -fi | \grep -F "$FOUNDFILE" -A 100 | tail -n '+2' | findnextmpv)
-	echo "$NEXTFILE"
+	NEXTFILE=$(\ls | sort -fi | \grep -F "$FOUNDFILE" -A 100 | tail -n '+2' | getfirstvalidfile)
+
 	if [[ ! -e "$NEXTFILE" ]]
 	then
-		echo "Did not found the next one after \"$FOUNDFILE\""
+		echo
+		echo "Did not found a next one after \"$FOUNDFILE\""
+		echo
 		return 1
 	fi
 
-	echo "NEXT ONE :: \"$NEXTFILE\""
+	echo
+	echo "Playing \"$NEXTFILE\""
 	echo
 
 	#return 0
 
 	mpv "$NEXTFILE" && \
 		print -s "mpv \"$NEXTFILE\""
-
 }
 
 mpf() {
-	FIRST="$(ls | sort -fi | findnextmpv)"
+	FIRST="$(ls | sort -fi | getfirstvalidfile)"
 	mpv "$FIRST" && \
 		print -s "mpv \"$FIRST\""
 }

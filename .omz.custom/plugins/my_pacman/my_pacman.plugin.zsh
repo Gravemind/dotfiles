@@ -93,10 +93,12 @@ pacfind() {
 	local cachefile="/var/cache/pkgfile/core.files"
 	local age=$(( $(date +%s) - $(date +%s -r "$cachefile") ))
 	local maxage=$((3600 * 24 * 30)) ## 30 days
-	local maxage=$((3600 * 1)) ## 1 hour
 	if [[ $age -gt $maxage ]]
 	then
-		echo "$0: pkgfile cache is ${fg_bold[red]}$(durationtostr $age old)${reset_color} ! run ${fg_bold[red]}sudo pkgfile -u${reset_color}"
+		echo "$0: pkgfile cache is ${fg_bold[red]}$(durationtostr $age old)${reset_color} ! running sudo pkgfile -u:"
+		sudo pkgfile -u
+	else
+		echo "$0: pkgfile cache is $(durationtostr $age old) (updating at $(durationtostr $maxage old))"
 	fi
 
 	pkgs=(${(f)"$(pkgfile -b -v -- "$cmd" 2>/dev/null)"})
@@ -104,6 +106,9 @@ pacfind() {
 		printf '%s may be found in the following packages:\n' "$cmd"
 		printf '  %s\n' $pkgs[@]
 		return 0
+	else
+		printf '%s not found.\n' "$cmd"
+		return 1
 	fi
 
 	return 127

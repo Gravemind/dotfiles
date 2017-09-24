@@ -25,7 +25,6 @@ export S_COLORS=true
 export EDITOR='emacs'
 export PAGER='less'
 export LESS='-R -i -S -M -j5'
-export PATH=$HOME/bin:$PATH
 
 if type firefox >& /dev/null
 then
