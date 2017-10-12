@@ -101,9 +101,13 @@ function gravemind_promt_cc() {
 	else
 	   str+='%F{black}C'
 	fi
-	local cc="${CC:-cc}"
-	local ccname="$(basename "$cc")"
-	echo -n "%F{black}$ccname $str"
+	if [[ -z "$CC" ]]
+	then
+		echo -n "%F{black}cc $str"
+	else
+		local ccname="$(basename "$CC")"
+		echo -n "%F{blue}$ccname $str"
+	fi
 }
 
 function gravemind_alert_precmd() {
