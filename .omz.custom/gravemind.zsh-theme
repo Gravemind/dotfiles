@@ -27,20 +27,20 @@ unset PROMPT_USER
 GRAVEMIND_PROMPT_USE_GITFAST=true
 if $GRAVEMIND_PROMPT_USE_GITFAST
 then
-    #GIT_PS1_SHOWDIRTYSTATE=true ## a bit slow
-    #GIT_PS1_SHOWCOLORHINTS=true
-    #GIT_PS1_SHOWUNTRACKEDFILES=true ## quite slow
-    #GIT_PS1_SHOWUPSTREAM="verbose"
-    source $ZSH/plugins/gitfast/git-prompt.sh
+	#GIT_PS1_SHOWDIRTYSTATE=true ## a bit slow
+	#GIT_PS1_SHOWCOLORHINTS=true
+	#GIT_PS1_SHOWUNTRACKEDFILES=true ## quite slow
+	#GIT_PS1_SHOWUPSTREAM="verbose"
+	source $ZSH/plugins/gitfast/git-prompt.sh
 fi
 
 function gravemind_git_prompt_current_branch() {
-    if $GRAVEMIND_PROMPT_USE_GITFAST
-    then
-        __git_ps1 "%s"
-    else
-        git_current_branch
-    fi
+	if $GRAVEMIND_PROMPT_USE_GITFAST
+	then
+		__git_ps1 "%s"
+	else
+		git_current_branch
+	fi
 }
 
 function gravemind_git_prompt_info_short() {
