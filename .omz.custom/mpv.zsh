@@ -27,6 +27,7 @@ getfirstvalidfile() {
 }
 
 mpn() {
+	echo
 	FOUNDFILE=$(
 		history | grep mpv | \
 			sort -r | \
@@ -36,23 +37,21 @@ mpn() {
 	if [[ -z "$FOUNDFILE" ]]
 	then
 		echo "No files in history have been found here"
+		echo
 		return 1
 	fi
-	echo
-	echo "( Last played: \"$FOUNDFILE\" )"
 
 	NEXTFILE=$(\ls | sort -fi | \grep -F "$FOUNDFILE" -A 100 | tail -n '+2' | getfirstvalidfile)
 
 	if [[ ! -e "$NEXTFILE" ]]
 	then
-		echo
 		echo "Did not found a next one after \"$FOUNDFILE\""
 		echo
 		return 1
 	fi
 
-	echo
-	echo "Playing \"$NEXTFILE\""
+	echo "  Last played: \"$FOUNDFILE\""
+	echo "  Now playing: \"$NEXTFILE\""
 	echo
 
 	#return 0
@@ -64,7 +63,7 @@ mpn() {
 mpf() {
 	FIRST="$(ls | sort -fi | getfirstvalidfile)"
 	echo
-	echo "Playing \"$FIRST\""
+	echo "  Now playing: \"$FIRST\""
 	echo
 	mpv "$FIRST" && \
 		print -s "mpv \"$FIRST\""
