@@ -12,4 +12,4 @@ video-sync=display-adrop
 
 cache-secs=300
 
-ytdl-format=(bestvideo[height<=?1080]+bestaudio)[protocol=https]/best
+ytdl-format=(bestvideo[height<=?1080]+bestaudio/best)[protocol=https]

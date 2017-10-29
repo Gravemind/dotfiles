@@ -1,6 +1,7 @@
 #!/bin/zsh
 
 alias mpw="mpv --force-window=immediate "
+alias mpa="mpv --no-video "
 
 getfirstvalidfile() {
 	while read file
@@ -62,6 +63,9 @@ mpn() {
 
 mpf() {
 	FIRST="$(ls | sort -fi | getfirstvalidfile)"
+	echo
+	echo "Playing \"$FIRST\""
+	echo
 	mpv "$FIRST" && \
 		print -s "mpv \"$FIRST\""
 }
