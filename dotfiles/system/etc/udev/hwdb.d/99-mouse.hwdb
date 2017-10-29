@@ -1,0 +1,15 @@
+##
+## libinput doc:
+##   https://wayland.freedesktop.org/libinput/doc/latest/motion_normalization.html
+## systemd's hwdb:
+##   https://cgit.freedesktop.org/systemd/systemd/tree/hwdb/70-mouse.hwdb
+##
+## hot reload with:
+##   sudo udevadm hwdb --update ; sudo udevadm trigger ;
+##
+
+# Logitech G700 Laser Mouse (Wired)
+mouse:usb:v046dpc06b:name:Logitech G700 Laser Mouse:
+# Logitech G700 Laser Mouse (Wireless)
+mouse:usb:v046dpc531:name:Logitech USB Receiver:
+ MOUSE_DPI=1000@500 3800@500 500@1000 1500@1000 *2000@1000
