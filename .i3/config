@@ -9,6 +9,11 @@ set $resize_step    100
 set $screenR        DP-4
 set $screenL        DVI-D-0
 
+set $keyLeft    j
+set $keyRight   l
+set $keyUp      i
+set $keyDown    k
+
 set $layouts ~/.i3/layouts
 
 ipc-socket ~/.i3/ipc.sock
@@ -53,14 +58,14 @@ bind $ModK+Shift+49 move scratchpad
 bind $ModK+49 scratchpad show
 
 # Change focus
-bindsym $ModK+h     focus left
-bindsym $ModK+j     focus down
-bindsym $ModK+k     focus up
-bindsym $ModK+l     focus right
-bindsym $ModK+Left  focus left
-bindsym $ModK+Down  focus down
-bindsym $ModK+Up    focus up
-bindsym $ModK+Right focus right
+bindsym $ModK+$keyLeft  focus left
+bindsym $ModK+$keyDown  focus down
+bindsym $ModK+$keyUp    focus up
+bindsym $ModK+$keyRight focus right
+bindsym $ModK+Left      focus left
+bindsym $ModK+Down      focus down
+bindsym $ModK+Up        focus up
+bindsym $ModK+Right     focus right
 
 # Go to urgent window, and go back
 bindsym $ModK+BackSpace exec --no-startup-id ~/.i3/goto_urgent_and_back.sh
@@ -75,27 +80,27 @@ bindsym $ModK+Shift+p exec --no-startup-id ~/bin/red -c -1
 force_display_urgency_hint 1000 ms
 
 # Change focus output
-# bindsym $ModK+Mod1+h     focus container left
-# bindsym $ModK+Mod1+j     focus container down
-# bindsym $ModK+Mod1+k     focus container up
-# bindsym $ModK+Mod1+l     focus container right
-# bindsym $ModK+Mod1+Left  focus container left
-# bindsym $ModK+Mod1+Down  focus container down
-# bindsym $ModK+Mod1+Up    focus container up
-# bindsym $ModK+Mod1+Right focus container right
+# bindsym $ModK+Mod1+$keyLeft   focus container left
+# bindsym $ModK+Mod1+$keyDown   focus container down
+# bindsym $ModK+Mod1+$keyUp     focus container up
+# bindsym $ModK+Mod1+$keyRight  focus container right
+# bindsym $ModK+Mod1+Left       focus container left
+# bindsym $ModK+Mod1+Down       focus container down
+# bindsym $ModK+Mod1+Up         focus container up
+# bindsym $ModK+Mod1+Right      focus container right
 
 # Focus other output (when multi screen)
 bindsym $ModK+Tab        focus output right
 
 # Move focused window
-bindsym $ModK+Shift+h     move left
-bindsym $ModK+Shift+j     move down
-bindsym $ModK+Shift+k     move up
-bindsym $ModK+Shift+l     move right
-bindsym $ModK+Shift+Left  move left
-bindsym $ModK+Shift+Down  move down
-bindsym $ModK+Shift+Up    move up
-bindsym $ModK+Shift+Right move right
+bindsym $ModK+Shift+$keyLeft    move left
+bindsym $ModK+Shift+$keyDown    move down
+bindsym $ModK+Shift+$keyUp      move up
+bindsym $ModK+Shift+$keyRight   move right
+bindsym $ModK+Shift+Left        move left
+bindsym $ModK+Shift+Down        move down
+bindsym $ModK+Shift+Up          move up
+bindsym $ModK+Shift+Right       move right
 
 # Split in vertical orientation
 bindsym $ModK+v split v
@@ -132,14 +137,14 @@ bindsym $ModK+Shift+r restart
 
 # Resize window (you can also use the mouse for that)
 mode "resize" {
-    bindsym h           resize shrink left  $resize_step px
-    bindsym Shift+h     resize grow   left  $resize_step px
-    bindsym j           resize shrink down  $resize_step px
-    bindsym Shift+j     resize grow   down  $resize_step px
-    bindsym k           resize shrink up    $resize_step px
-    bindsym Shift+k     resize grow   up    $resize_step px
-    bindsym l           resize shrink right $resize_step px
-    bindsym Shift+l     resize grow   right $resize_step px
+    bindsym $keyLeft        resize shrink left  $resize_step px
+    bindsym Shift+$keyLeft  resize grow   left  $resize_step px
+    bindsym $keyDown        resize shrink down  $resize_step px
+    bindsym Shift+$keyDown  resize grow   down  $resize_step px
+    bindsym $keyUp          resize shrink up    $resize_step px
+    bindsym Shift+$keyUp    resize grow   up    $resize_step px
+    bindsym $keyRight       resize shrink right $resize_step px
+    bindsym Shift+$keyRight resize grow   right $resize_step px
     
     bindsym Left        resize shrink left  $resize_step px
     bindsym Shift+Left  resize grow   left  $resize_step px
