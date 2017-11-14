@@ -1,0 +1,184 @@
+#!/bin/bash
+
+set -euo pipefail
+
+C_RED="\033[1;31m"
+C_YELLOW="\033[1;33m"
+C_BLUE="\033[1;34m"
+C_CYAN="\033[1;36m"
+C_WHITE="\033[1;37m"
+C_GREEN="\033[1;32m"
+C_RESET="$(tput sgr0)"
+
+C_ERROR="$C_RED"
+C_OK="$C_GREEN"
+C_PULL="$C_YELLOW"
+C_PUSH="$C_YELLOW"
+C_LOCAL="$C_RED"
+C_STAGE="$C_GREEN"
+
+root="."
+
+FETCHALL=0
+
+tmpdir="$(mktemp -d -t gitstatuses.XXXXXXXXXX)"
+trap "{ rm -rf $tmpdir; }" EXIT
+
+logdeb() {
+    echo "$@" 1>&2
+}
+
+fetchrepo() {
+    local repoi="$1"
+    local repo="$2"
+    cd "$repo"
+
+    if [[ "$FETCHALL" == "1" ]]
+    then
+        (
+            git fetch
+        ) 1>&2 || echo -ne "${C_ERROR}fetch failed${C_RESET} "
+        #logdeb "$repo: fetched"
+    fi
+
+    git update-index -q --refresh 2>&1 >/dev/null || echo -ne "${C_ERROR}update-index failed${C_RESET} "
+
+    local count_ahead=0
+    local count_behind=0
+    local count_local_M=0
+    local count_local_D=0
+    local count_stage_A=0
+    local count_stage_M=0
+    local count_stage_D=0
+    local count_U=0
+    local count_Q=0
+
+    local i=0
+    local status=
+    while IFS= read -r -u3 -d $'\0' status
+    do
+        if [[ $i -eq 0 ]]
+        then
+            if [[ "$status" =~ ahead\ ([0-9]+) ]]
+            then
+                count_ahead="${BASH_REMATCH[1]}"
+            fi
+            if [[ "$status" =~ behind\ ([0-9]+) ]]
+            then
+                count_behind="${BASH_REMATCH[1]}"
+            fi
+        else
+            local s="${status:0:1}"
+            local l="${status:1:1}"
+            case $l in
+                D) ((++count_local_D)) ;;
+                M) ((++count_local_M)) ;;
+                U) ((++count_U)) ;;
+                \?) ((++count_Q)) ;;
+                \ ) ;;
+                ?) logdeb "$repo: unkown local status \"$s\" in \"$status\""
+            esac
+            case $s in
+                A) ((++count_stage_A)) ;;
+                D) ((++count_stage_D)) ;;
+                M) ((++count_stage_M)) ;;
+                \ ) ;;
+                \?) ;;
+                ?) logdeb "$repo: unkown stage status \"$s\" in \"$status\""
+            esac
+        fi
+        ((++i))
+    done 3< <( git status -z --branch --porcelain=v1 )
+
+    printf "${C_LOCAL}"
+    #printf "%1s" "$([[ "$count_Q" -gt 0 ]] && echo -n "?")"
+    local count_local=$(( $count_local_M + $count_local_D ))
+    if [[ "$count_U" -gt 0 ]]; then
+        echo -n "✖"
+    elif [[ "$count_local" -gt 0 ]]; then
+        echo -n "●"
+    else
+        echo -n " "
+    fi
+    #printf "%1s" "$([[ "$count_local_M" -gt 0 ]] && echo -n "M")"
+    #printf "%1s" "$([[ "$count_local_D" -gt 0 ]] && echo -n "D")"
+    #printf "%1s" "$([[ "$count_U" -gt 0 ]] && echo -n "U")"
+
+    printf "${C_STAGE}"
+    local count_stage=$(( $count_stage_M + $count_stage_A + $count_stage_D ))
+    printf "%1s" "$([[ "$count_stage" -gt 0 ]] && echo -n "●")"
+    #printf "%1s" "$([[ "$count_stage_M" -gt 0 ]] && echo -n "M")"
+    #printf "%1s" "$([[ "$count_stage_A" -gt 0 ]] && echo -n "A")"
+    #printf "%1s" "$([[ "$count_stage_D" -gt 0 ]] && echo -n "D")"
+
+    printf "${C_PUSH}"
+    #printf "%1s"  "$([[ "$count_ahead" -gt 0 ]] && echo -n "↑")"
+    #printf "%-3s" "$([[ "$count_ahead" -gt 0 ]] && echo -n "$count_ahead")"
+    printf "%1s" "$([[ "$count_ahead" -gt 0 ]] && echo -n "↑")"
+
+    printf "${C_PULL}"
+    #printf "%1s"  "$([[ "$count_behind" -gt 0 ]] && echo -n "↓")"
+    #printf "%-3s" "$([[ "$count_behind" -gt 0 ]] && echo -n "$count_behind")"
+    printf "%1s" "$([[ "$count_behind" -gt 0 ]] && echo -n "↓")"
+
+    printf "${C_RESET}"
+
+    #logdeb "$repo: done"
+}
+
+declare -a repos
+i=0
+while IFS= read -r -u3 -d $'\0' file
+do
+    repos[i++]="$(dirname "$file")"
+done 3< <(find "$root" -name .git -type d -print0 | sort -z)
+
+i=0
+if [[ "$#" -ge 1 ]]
+then
+    if [[ "$1" = "-f" ]]
+    then
+        logdeb fetching
+        FETCHALL=1
+    else
+        declare -a selectedrepos
+        while [[ "$1" =~ ^[0-9]+$ ]]
+        do
+            repoid="$1"
+            shift
+            repo="${repos[$repoid]}"
+            if [[ -z "$repo" ]]
+            then
+                echo invalid repo index $repoid 1>&2
+                exit 1
+            fi
+            selectedrepos[i++]="$repo"
+        done
+        for repo in "${selectedrepos[@]}"
+        do
+            echo "$repo; $@"
+            ( cd "$repo" ; "$@" )
+        done
+        exit 0
+    fi
+fi
+
+declare -a results
+i=0
+for repo in "${repos[@]}"
+do
+    ( fetchrepo $i "$repo" > "$tmpdir/$i" ) &
+    ((++i))
+done
+
+wait
+
+i=0
+for repo in "${repos[@]}"
+do
+    res="$(cat "$tmpdir/$i")"
+    echo -n "$res"
+    printf "%3d %s\n" "$i" "$repo"
+    ((++i))
+done
+
