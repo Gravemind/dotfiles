@@ -29,15 +29,6 @@ setxkbmap us_qwerty-fr
 numlockx on
 
 ##
-## Mouse
-##
-
-# "flat" acceleration profile (no mouse acceleration) (`1 0` to enable accel)
-xinput set-prop 13 'libinput Accel Profile Enabled' 0 1
-# speed [-1;1]
-xinput set-prop 13 'libinput Accel Speed' -0.7
-
-##
 ## Sound
 ##
 
