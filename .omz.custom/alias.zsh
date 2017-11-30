@@ -32,8 +32,14 @@ alias xl='dtrx -l'
 alias untar='tar xvzf'
 alias a='echo -ne "\a"'
 
-alias shut='systemctl poweroff'
-alias reboot='systemctl reboot'
+shut() {
+    ( sleep 1 ; systemctl poweroff ) &
+    disown
+}
+reboot() {
+    ( sleep 1 ; systemctl reboot ) &
+    disown
+}
 
 alias start='_ systemctl start'
 alias stop='_ systemctl stop'
