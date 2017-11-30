@@ -126,12 +126,22 @@ fetchrepo() {
     #logdeb "$repo: done"
 }
 
+waitmaxbgjobs() {
+    local maxjobs=$1
+    while [[ $(jobs -p | wc -l) -ge $maxjobs ]]
+    do
+        sleep 0.2
+    done
+}
+
 declare -a repos
 i=0
 while IFS= read -r -u3 -d $'\0' file
 do
     repos[i++]="$(dirname "$file")"
 done 3< <(find "$root" -name .git -type d -print0 | sort -z)
+
+echo "Processing ${#repos} repos ..."
 
 i=0
 if [[ "$#" -ge 1 ]]
@@ -163,10 +173,18 @@ then
     fi
 fi
 
+if [[ "$FETCHALL" == "1" ]]
+then
+    maxjobs=6 # limit at 6 fetches at the same time
+else
+    maxjobs=$(nproc)
+fi
+
 declare -a results
 i=0
 for repo in "${repos[@]}"
 do
+    waitmaxbgjobs $maxjobs
     ( fetchrepo $i "$repo" > "$tmpdir/$i" ) &
     ((++i))
 done
