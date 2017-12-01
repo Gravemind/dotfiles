@@ -525,7 +525,14 @@ With argument, do this that many times."
 ;;
 
 (req-package expand-region
-  :bind ("C-=" . er/expand-region))
+  :bind ("C-=" . er/expand-region)
+  :config
+  ;; https://github.com/magnars/expand-region.el/issues/229
+  (global-set-key (kbd "C-SPC") #'(lambda (arg)
+                                    (interactive "P")
+                                    (setq transient-mark-mode t)
+                                    (set-mark-command arg)))
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
