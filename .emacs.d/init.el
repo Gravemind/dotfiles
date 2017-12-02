@@ -537,7 +537,13 @@ With argument, do this that many times."
   :init
   (add-hook 'prog-mode-hook (lambda () (auto-highlight-symbol-mode)))
   :config
-  (setq-default ahs-idle-interval 0.1))
+  (setq-default ahs-idle-interval 0.1
+                ahs-case-fold-search nil
+                ;; Removed "$" to match "aaa" in "$aaa" and "${aaa}"
+                ahs-include "^[0-9A-Za-z/_.,:;*+=&%|#@!^?-]+$"
+                ;ahs-include "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?-]+$" ;; default
+                )
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
