@@ -15,6 +15,9 @@ alias e='exit'
 
 alias rgg='noglob rg --files -g'
 
+alias gdiff='git diff --no-index'
+alias gdiffw='git dw --no-index'
+
 alias clean='find . \( -name "*~" -or -name "#*#" \) -print -delete'
 alias fclean='find . \( -name "*~" -or -name "#*#" -or -name "*.o" -or -name "*.pyc" \) -print -delete'
 alias cleansvn='find . -name ".svn" -execdir rm -rf {} \;'

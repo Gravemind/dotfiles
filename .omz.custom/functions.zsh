@@ -42,3 +42,23 @@ function sbak() {
 		sudo cp $f{,.bak}
 	done
 }
+
+## $> tmp COMMAND
+## $> COMMAND | tmp
+## sponges COMMAND stdout to a temp file, then prints this temp file path
+## example: git diff --no-index $(tmp ls a) $(tmp ls b)
+function tmp() {
+	local tmpfile="$(mktemp /tmp/tmptmpouput.XXXXXXXXXX)"
+	if [[ "$#" -gt 0 ]]
+	then
+		"$@" > "$tmpfile"
+	else
+		sponge "$tmpfile"
+	fi
+	echo "$tmpfile"
+}
+
+## rm all temp files created by `tmp`
+function cleantmp() {
+	rm -f /tmp/tmptmpouput.*
+}
