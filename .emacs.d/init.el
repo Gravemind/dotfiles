@@ -731,18 +731,20 @@ With argument, do this that many times."
   (interactive)
   (setq jo/compile-dir nil))
 
-(defun jo/set-build-command ()
-  (interactive)
-  (let ((build-command (if (eq jo/build-command nil) "make -j4 config=release_x64 " jo/build-command) ))
-    (setq jo/build-command (read-from-minibuffer "jo/build-command (%s replaced by path)? " build-command))
-    ))
-
 (defun jo/get-build-command ()
   (interactive)
   (if (eq jo/build-command nil)
-      (jo/set-build-command)
-    jo/build-command)
-  )
+      (let ((build-command (if (eq jo/build-command nil) "make " jo/build-command) ))
+        (setq jo/build-command (read-from-minibuffer "jo/build-command (%s replaced by path)? " build-command))
+        )
+    jo/build-command))
+
+(defun jo/compile-reset ()
+  "Reset compile dir and command, then compile."
+  (interactive)
+  (jo/unset-compile-dir-here)
+  (setq jo/build-command nil)
+  (jo/compile))
 
 (defun jo/compile-here ()
   "Force compile in current buffer."
@@ -773,7 +775,7 @@ With argument, do this that many times."
 (req-package compile
   :bind (("<f3>" . jo/compile)
          ("S-<f3>" . jo/compile-here)
-         ("C-<f3>" . jo/set-build-command)
+         ("C-<f3>" . jo/compile-reset)
          ("<f4>" . next-error)
          ("S-<f4>" . previous-error)
          )
