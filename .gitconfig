@@ -134,6 +134,8 @@
 	default = simple
 [merge]
 	conflictstyle = diff3
+[pager]
+	tag = false
 [core]
 	## Increase short hash to 10 characters
 	abbrev = 10
