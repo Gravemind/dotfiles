@@ -1317,7 +1317,11 @@ With argument, do this that many times."
   :commands (rainbow-mode)
   :config
   (add-to-list 'rainbow-hexadecimal-colors-font-lock-keywords
-               '("QColor(\s*\\([0-9]\\{1,3\\}\\(?:\s*%\\)?\\)\s*,\s*\\([0-9]\\{1,3\\}\\(?:\s*%\\)?\\)\s*,\s*\\([0-9]\\{1,3\\}\\(?:\s*%\\)?\\)\s*)" (0 (rainbow-colorize-rgb))))
+               '("QColor(\s*\\([0-9]\\{1,3\\}\\(?:\s*%\\)?\\)\s*,\s*\\([0-9]\\{1,3\\}\\(?:\s*%\\)?\\)\s*,\s*\\([0-9]\\{1,3\\}\\(?:\s*%\\)?\\)\s*)"
+                 (0 (rainbow-colorize-rgb))))
+  (add-to-list 'rainbow-hexadecimal-colors-font-lock-keywords
+               '("QRgb[0-9]*(\s*0x\\(\\(?:[0-9a-fA-F]\\{3\\}\\)+\\{1,4\\}\\)\s*)"
+                 (0 (rainbow-colorize-hexadecimal-without-sharp))))
 
   )
 
