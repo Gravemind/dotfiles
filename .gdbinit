@@ -26,4 +26,15 @@ set python print-stack full
 handle SIGPWR nostop
 handle SIGXCPU nostop
 
+## still requires debug libs:
+## $> export LD_LIBRARY_PATH=$VULKAN_SDK/../source/lib:$LD_LIBRARY_PATH
+python
+import os
+vksdk = os.environ.get('VULKAN_SDK')
+if vksdk is not None:
+    gdb.execute('directory ' + vksdk + '/../source/layers')
+    gdb.execute('directory ' + vksdk + '/../source/loader')
+    gdb.execute('directory ' + vksdk + '/../examples')
+end
+
 source ~/.gdbinit.local
