@@ -872,9 +872,10 @@ With argument, do this that many times."
     'magit-pull-popup
     ?a "Auto stash" "--autostash")
 
-  ;(magit-define-popup-switch
-  ;  'magit-diff-popup
-  ;  ?W "Ignore changes in whitespace at EOL" "--ignore-space-at-eol")
+  (magit-define-popup-switch
+    'magit-diff-popup
+    ?W "Ignore changes in whitespace at EOL" "--ignore-space-at-eol")
+
   (magit-define-popup-switch
     'magit-diff-popup
     ?b "Ignore changes in amount of whitespace" "--ignore-space-change")
