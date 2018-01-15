@@ -15,6 +15,9 @@ export LESS_TERMCAP_so=$'\E[1;37m'      # begin standout-mode - info box
 export LESS_TERMCAP_ue=$'\E[0m'           # end underline
 export LESS_TERMCAP_us=$'\E[01;36m'       # begin underline
 
+export LESSBINFMT='*u<%02X>'
+export LESS='-R -i -S -M -j5'
+
 # deprecated:
 #export GREP_OPTIONS="--binary-files=without-match"
 export GREP_OPTIONS=
@@ -24,7 +27,6 @@ export S_COLORS=true
 
 export EDITOR='emacs'
 export PAGER='less'
-export LESS='-R -i -S -M -j5'
 
 if type firefox >& /dev/null
 then
