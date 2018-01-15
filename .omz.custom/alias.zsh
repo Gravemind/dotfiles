@@ -14,6 +14,7 @@ alias c='clear'
 alias e='exit'
 
 alias rgg='noglob rg --files -g'
+alias rggg='noglob rg -uuui --files -g'
 
 alias gdiff='git diff --no-index'
 alias gdiffw='git dw --no-index'
