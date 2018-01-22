@@ -14,11 +14,11 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (add-to-list 'load-path "~/documents/clones/benchmark-init-el")
-;; (require 'benchmark-init-loaddefs)
-;; (benchmark-init/activate)
-
-(require 'package)
+;; Benchmark init https://github.com/dholm/benchmark-init-el
+;; - Install:
+;;   $> cd ~/.emacs.d && git clone https://github.com/dholm/benchmark-init-el.git && cd benchmark-init-el && make
+;; - Uncomment:
+;;(add-to-list 'load-path "~/.emacs.d/benchmark-init-el/") (require 'benchmark-init-loaddefs) (benchmark-init/activate)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -34,6 +34,44 @@
 ;; Dark
 (setq-default frame-background-mode 'dark)
 (set-terminal-parameter nil 'background-mode 'dark)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Packages init
+;;
+
+(setq-default package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                                 ;;("marmalade" . "https://marmalade-repo.org/packages/")
+                                 ("melpa" . "https://melpa.org/packages/"))
+                                 ;;("melpa-stable" . "https://stable.melpa.org/packages/"))
+              )
+
+(require 'package)
+(eval-when-compile (package-initialize))
+;;(package-initialize)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Bootstrap req-package
+;;
+;;   https://github.com/edvorg/emacs-configs/blob/master/init-real.el
+;;
+
+(setq-default
+ ;; Log *Messages* if the use-package takes longer than 0.1s to load
+ use-package-verbose t
+ use-package-always-ensure t
+)
+
+(if (null (require 'req-package "req-package" t))
+    (progn
+      (message "Installing req-package ...")
+      (package-initialize)
+      (package-refresh-contents)
+      (package-install 'el-get)
+      ;(package-install 'use-package)
+      (package-install 'req-package)
+      (require 'req-package)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -76,9 +114,6 @@
  dabbrev-case-fold-search nil
  dabbrev-case-replace nil
 
- ;; Log *Messages* if the use-package takes longer than 0.1s to load
- use-package-verbose t
-
  ;tramp-verbose 10
  tramp-connection-timeout 10
  password-cache-expiry nil
@@ -93,7 +128,6 @@
 ;;
 ;; Mouse
 ;;
-
 (setq-default
  ;; Mouse paste at cursor position (not mouse position)
  mouse-yank-at-point t
@@ -107,7 +141,9 @@
 ;; Replace yes-or-no by y-or-n
 (fset 'yes-or-no-p 'y-or-n-p)
 
+;;
 ;; UTF-8
+;;
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (set-language-environment "UTF-8")
@@ -118,30 +154,6 @@
 
 ;; (setq-default font-lock-maximum-decoration
 ;;     '((c-mode . 2) (c++-mode . 2)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;; Packages init
-;;
-
-(setq-default package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                                 ;;("marmalade" . "https://marmalade-repo.org/packages/")
-                                 ("melpa" . "https://melpa.org/packages/")))
-(eval-when-compile (package-initialize))
-;;(package-initialize)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;; Bootstrap req-package
-;;
-;;   https://github.com/edvorg/emacs-configs/blob/master/init-real.el
-;;
-
-(if (null (require 'req-package "req-package" t))
-    (progn
-      (package-refresh-contents)
-      (package-install 'req-package)
-      (require 'req-package)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -280,7 +292,8 @@
 ;;
 
 (req-package golden-ratio
-  :init (golden-ratio-mode))
+  :commands (golden-ratio-mode)
+  :init (golden-ratio-mode 1))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -508,7 +521,6 @@ With argument, do this that many times."
 ;; | 1    | popwin:one-window           |
 ;;
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; uniquify
@@ -516,8 +528,8 @@ With argument, do this that many times."
 ;;   append to buffer names "|parent_dir" to files with the same name
 ;;
 
-(req-package uniquify
-  :init (setq-default uniquify-buffer-name-style 'post-forward))
+;; uniquify now included in emacs
+(setq-default uniquify-buffer-name-style 'post-forward)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -547,7 +559,7 @@ With argument, do this that many times."
   (setq-default ahs-idle-interval 0.1
                 ahs-case-fold-search nil
                 ;; Removed "$" to match "aaa" in "$aaa" and "${aaa}"
-                ahs-include "^[0-9A-Za-z/_.,:;*+=&%|#@!^?-]+$"
+                ahs-include  "^[0-9A-Za-z/_.,:;*+=&%|#@!^?-]+$"
                 ;ahs-include "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?-]+$" ;; default
                 )
   )
@@ -663,12 +675,13 @@ With argument, do this that many times."
 ;; lisp
 ;;
 
-(req-package lisp-mode
-  :defer t
-  :config
+;; lisp-mode not a package anymore ?
+;; (req-package lisp-mode
+;;   :pin manual
+;;   :config
   (add-hook 'emacs-lisp-mode-hook (lambda () (jo/tab-space 2)))
   (add-hook 'lisp-mode-hook (lambda () (jo/tab-space 2)))
-  )
+  ;; )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -904,6 +917,8 @@ With argument, do this that many times."
   ;;:disabled
   ;; :require helm-command
   :bind (("M-x" . helm-M-x)
+         :map helm-grep-mode-map
+         ("C-c C-p" . wgrep-change-to-wgrep-mode)
          )
   :config
   ;; http://tuhdo.github.io/helm-intro.html
@@ -1000,14 +1015,11 @@ With argument, do this that many times."
 ;; @FIXME why wgrep gets loaded when helm is loaded (eg on M-x)
 
 (req-package wgrep
-  :bind (:map grep-mode-map
-              ("C-c C-p" . wgrep-change-to-wgrep-mode))
+  :commands (wgrep-change-to-wgrep-mode)
   )
 
 (req-package wgrep-helm
-  :require (wgrep helm)
-  :bind-keymap (:map helm-grep-mode-map
-                ("C-c C-p" . wgrep-change-to-wgrep-mode))
+  :commands (helm-do-grep-ag helm-do-grep-rg wgrep-change-to-wgrep-mode)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1079,66 +1091,66 @@ With argument, do this that many times."
   (global-git-gutter-mode)
 )
 
-(req-package git-gutter-fringe+
-  :disabled
-  :demand
-  ;;:defer 1
-  :bind (("M-n" . git-gutter+-next-hunk)
-         ("M-p" . git-gutter+-previous-hunk))
-  :config
-  (fringe-helper-define 'git-gutter-fr+-added nil
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX...")
-  (fringe-helper-define 'git-gutter-fr+-deleted nil
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX...")
-  (fringe-helper-define 'git-gutter-fr+-modified nil
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX..."
-    "...XX...")
-  (global-git-gutter+-mode t)
-  )
+;; (req-package git-gutter-fringe+
+;;   :disabled
+;;   :demand
+;;   ;;:defer 1
+;;   :bind (("M-n" . git-gutter+-next-hunk)
+;;          ("M-p" . git-gutter+-previous-hunk))
+;;   :config
+;;   (fringe-helper-define 'git-gutter-fr+-added nil
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX...")
+;;   (fringe-helper-define 'git-gutter-fr+-deleted nil
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX...")
+;;   (fringe-helper-define 'git-gutter-fr+-modified nil
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX..."
+;;     "...XX...")
+;;   (global-git-gutter+-mode t)
+;;   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -1323,7 +1335,6 @@ With argument, do this that many times."
   (add-to-list 'rainbow-hexadecimal-colors-font-lock-keywords
                '("QRgb[0-9]*(\s*0x\\(\\(?:[0-9a-fA-F]\\{3\\}\\)+\\{1,4\\}\\)\s*)"
                  (0 (rainbow-colorize-hexadecimal-without-sharp))))
-
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
