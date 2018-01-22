@@ -857,12 +857,16 @@ With argument, do this that many times."
   (setq-default
    magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1
    magit-last-seen-setup-instructions "1.4.0"
-   git-commit-summary-max-length 50
-   git-commit-fill-column 70
    smerge-refine-ignore-whitespace nil ;; refine show whitespace
    ;magit-diff-refine-hunk t
    magit-diff-refine-hunk 'all
+   git-commit-summary-max-length 50
+   git-commit-fill-column 72
+   git-commit-turn-on-flyspell t
    )
+
+  ;(setq-default git-commit-turn-on-auto-fill nil)
+  ;(add-hook 'git-commit-mode-hook 'turn-off-auto-fill)
 
   (magit-define-popup-switch
     'magit-log-popup
