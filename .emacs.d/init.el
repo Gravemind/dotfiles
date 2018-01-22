@@ -992,8 +992,8 @@ With argument, do this that many times."
   ;; use ripgrep
   ;;    https://github.com/BurntSushi/ripgrep
   ;;
-  (setq-default
-   helm-grep-ag-command "rg --color=always --smart-case --no-heading --line-number %s %s %s")
+  (setq-default helm-grep-ag-command "rg --color=always --colors 'match:fg:white' --colors 'match:style:bold' --smart-case --no-heading --line-number %s %s %s")
+  (setq-default helm-grep-ag-pipe-cmd-switches '("--colors 'match:fg:white'" "--colors 'match:style:bold'"))
   (defalias 'helm-do-grep-rg 'helm-do-grep-ag)
 
   )
