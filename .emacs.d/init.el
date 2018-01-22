@@ -755,7 +755,8 @@ With argument, do this that many times."
 (defun jo/compile-reset ()
   "Reset compile dir and command, then compile."
   (interactive)
-  (jo/unset-compile-dir-here)
+  (switch-to-buffer "*compilation*")
+  (setq jo/compile-dir nil)
   (setq jo/build-command nil)
   (jo/compile))
 
@@ -763,7 +764,7 @@ With argument, do this that many times."
   "Force compile in current buffer."
   (interactive)
   (switch-to-buffer "*compilation*")
-  (jo/unset-compile-dir-here)
+  (setq jo/compile-dir nil)
   ;; (cd (jo/get-compile-dir))
   (let ((default-directory (jo/get-compile-dir)))
     (compile (format (jo/get-build-command) (jo/get-compile-dir)))))
