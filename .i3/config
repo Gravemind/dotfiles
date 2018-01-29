@@ -9,39 +9,118 @@ set $resize_step    100
 set $screenR        DP-4
 set $screenL        DVI-D-0
 
-set $keyLeft    j
-set $keyRight   l
-set $keyUp      i
-set $keyDown    k
+set $keyLeft        j
+set $keyRight       l
+set $keyUp          i
+set $keyDown        k
 
-set $layouts ~/.i3/layouts
+set $layouts        ~/.i3/layouts
 
 ipc-socket ~/.i3/ipc.sock
 
-# Font for window titles. ISO 10646 = Unicode
-#font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+#
+# Style and behaviors
+#
+
+# Font for window titles
 font pango:DejaVu Sans Mono Bold 9
 
-# use Mouse+ModK to drag floating windows to their wanted position
+# hide boarder if single window/container in output
+hide_edge_borders smart
+
+# Delay the reset of urgent hint workspace focus
+force_display_urgency_hint 500 ms
+
+focus_follows_mouse yes
+default_orientation auto
+workspace_auto_back_and_forth no
+#mouse_warping none
+
+# Default border style: normal[px]|pixel[px]|none
+new_window pixel 2
+new_float normal 2
+
+# Default border for programs
+#for_window [class="^.*"] border pixel 2
+#for_window [class="(?i)urxvt"] border pixel 2
+#for_window [class="(?i)emacs"] border pixel 2
+#for_window [class="(?i)firefox"] border none
+#for_window [class="(?i)chromium"] border none
+#for_window [class="(?i)pale moon"] border none
+#for_window [class="(?i)icecat"] border none
+#for_window [class="(?i)mplayer"] border none
+#for_window [class="(?i)mpv"] border none
+
+# Colors
+# class                 border  backgr. text    indicator child_border
+client.focused          #285577 #285577 #dddddd #2e9ef4   #285577
+client.focused_inactive #282828 #282828 #888888 #303030   #282828
+client.unfocused        #101010 #101010 #555555 #181818   #101010
+client.urgent           #900000 #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #202020 #888888 #000000   #000000   # borders & indicator ignored
+client.background       #202020
+
+#
+# Workspaces and outputs
+#
+
+# Switch to workspace
+bindsym $ModK+1 workspace 1
+bindsym $ModK+2 workspace 2
+bindsym $ModK+3 workspace 3
+bindsym $ModK+4 workspace 4
+bindsym $ModK+5 workspace 5
+bindsym $ModK+6 workspace 6
+bindsym $ModK+7 workspace 7
+bindsym $ModK+8 workspace 8
+bindsym $ModK+9 workspace 9
+bindsym $ModK+0 workspace 10
+
+# Move focused container to workspace
+bindsym $ModK+Shift+1 move workspace 1
+bindsym $ModK+Shift+2 move workspace 2
+bindsym $ModK+Shift+3 move workspace 3
+bindsym $ModK+Shift+4 move workspace 4
+bindsym $ModK+Shift+5 move workspace 5
+bindsym $ModK+Shift+6 move workspace 6
+bindsym $ModK+Shift+7 move workspace 7
+bindsym $ModK+Shift+8 move workspace 8
+bindsym $ModK+Shift+9 move workspace 9
+bindsym $ModK+Shift+0 move workspace 10
+
+# Assign workspace to output
+workspace 1 output $screenL
+workspace 2 output $screenL
+workspace 3 output $screenL
+workspace 4 output $screenL
+workspace 5 output $screenL
+workspace 6 output $screenR
+workspace 7 output $screenR
+workspace 8 output $screenR
+workspace 9 output $screenR
+workspace 10 output $screenR
+
+# Default workspace assignment for programs
+#assign [window_role="^browser$"] → 10
+#assign [class="^Pidgin$"] → 9
+#for_window [class="(?i)^.*wine.*$"] floating enable
+assign [class="(?i)^.*steam.*$"] → 1
+#for_window [class="(?i)^UE4Editor.*$"] floating enable
+#assign [class="(?i)^UE4Editor.*$"] → 8
+
+#
+# Bindings
+#
+
+# Use Mouse+ModK to drag floating windows to their wanted position
 floating_modifier $ModK
 
-# Start a terminal
-bindsym $ModK+Return exec $layouts/launch.sh urxvt
-
-# Start emacs
-bindsym $ModK+Shift+Return exec $layouts/launch.sh -- emacs
-bindsym $ModK+Ctrl+Return exec $layouts/launch.sh -- emacs ~/TODO.org
-#bindsym $ModK+Shift+Return exec ~/bin/emacscl main
-#bindsym $ModK+Ctrl+Return exec ~/bin/emacscl main ~/TODO.org
-#bindsym $ModK+F1 exec ~/bin/emacscl one
-#bindsym $ModK+F2 exec ~/bin/emacscl two
-#bindsym $ModK+F3 exec ~/bin/emacscl three
-#bindsym $ModK+F4 exec ~/bin/emacscl four
-
-# Spawn with layout
-bindsym $ModK+F10 exec $layouts/launch.sh -w 10 firefox
-
-bindsym $ModK+F5 exec $layouts/launch.sh qalculate-gtk -n
+# Reload i3 configuration file
+bindsym $ModK+Shift+w reload
+# Exit i3 (logs you out of your X session)
+bindsym $ModK+Escape exit
+# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $ModK+Shift+r restart
 
 # Toggle border decoration
 bindsym $ModK+e border toggle
@@ -49,48 +128,20 @@ bindsym $ModK+e border toggle
 # Kill focused window
 bindsym $ModK+q kill
 
-# Start dmenu
-bindsym $ModK+z exec dmenu_run -b -p ">>" -nb '#222222' -nf '#CCCCCC' -sb '#4c7899' -sf '#FFFFFF'
-
 # Move to scrathpad
 bind $ModK+Shift+49 move scratchpad
 # Toggle scratchpad
 bind $ModK+49 scratchpad show
 
 # Change focus
-bindsym $ModK+$keyLeft  focus left
-bindsym $ModK+$keyDown  focus down
-bindsym $ModK+$keyUp    focus up
-bindsym $ModK+$keyRight focus right
-bindsym $ModK+Left      focus left
-bindsym $ModK+Down      focus down
-bindsym $ModK+Up        focus up
-bindsym $ModK+Right     focus right
-
-# Go to urgent window, and go back
-bindsym $ModK+BackSpace exec --no-startup-id ~/.i3/goto_urgent_and_back.sh
-
-# Redshift
-bindsym $ModK+o exec --no-startup-id ~/bin/red +1
-bindsym $ModK+p exec --no-startup-id ~/bin/red -1
-bindsym $ModK+Shift+o exec --no-startup-id ~/bin/red -c +1
-bindsym $ModK+Shift+p exec --no-startup-id ~/bin/red -c -1
-
-# Delay the reset of urgent hint workspace focus
-force_display_urgency_hint 1000 ms
-
-# Change focus output
-# bindsym $ModK+Mod1+$keyLeft   focus container left
-# bindsym $ModK+Mod1+$keyDown   focus container down
-# bindsym $ModK+Mod1+$keyUp     focus container up
-# bindsym $ModK+Mod1+$keyRight  focus container right
-# bindsym $ModK+Mod1+Left       focus container left
-# bindsym $ModK+Mod1+Down       focus container down
-# bindsym $ModK+Mod1+Up         focus container up
-# bindsym $ModK+Mod1+Right      focus container right
-
-# Focus other output (when multi screen)
-bindsym $ModK+Tab        focus output right
+bindsym $ModK+$keyLeft          focus left
+bindsym $ModK+$keyDown          focus down
+bindsym $ModK+$keyUp            focus up
+bindsym $ModK+$keyRight         focus right
+bindsym $ModK+Left              focus left
+bindsym $ModK+Down              focus down
+bindsym $ModK+Up                focus up
+bindsym $ModK+Right             focus right
 
 # Move focused window
 bindsym $ModK+Shift+$keyLeft    move left
@@ -101,6 +152,9 @@ bindsym $ModK+Shift+Left        move left
 bindsym $ModK+Shift+Down        move down
 bindsym $ModK+Shift+Up          move up
 bindsym $ModK+Shift+Right       move right
+
+# Focus other output (when multi screen)
+bindsym $ModK+Tab focus output right
 
 # Split in vertical orientation
 bindsym $ModK+v split v
@@ -128,13 +182,6 @@ bindsym $ModK+Shift+space floating toggle
 # Change focus between tiling / floating windows
 bindsym $ModK+space focus mode_toggle
 
-# Reload the configuration file
-bindsym $ModK+Shift+w reload
-# Exit i3 (logs you out of your X session)
-bindsym $ModK+Escape exit
-# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $ModK+Shift+r restart
-
 # Resize window (you can also use the mouse for that)
 mode "resize" {
     bindsym $keyLeft        resize shrink left  $resize_step px
@@ -145,101 +192,25 @@ mode "resize" {
     bindsym Shift+$keyUp    resize grow   up    $resize_step px
     bindsym $keyRight       resize shrink right $resize_step px
     bindsym Shift+$keyRight resize grow   right $resize_step px
-    
-    bindsym Left        resize shrink left  $resize_step px
-    bindsym Shift+Left  resize grow   left  $resize_step px
-    bindsym Down        resize shrink down  $resize_step px
-    bindsym Shift+Down  resize grow   down  $resize_step px
-    bindsym Up          resize shrink up    $resize_step px
-    bindsym Shift+Up    resize grow   up    $resize_step px
-    bindsym Right       resize shrink right $resize_step px
-    bindsym Shift+Right resize grow   right $resize_step px
-    
+    bindsym Left            resize shrink left  $resize_step px
+    bindsym Shift+Left      resize grow   left  $resize_step px
+    bindsym Down            resize shrink down  $resize_step px
+    bindsym Shift+Down      resize grow   down  $resize_step px
+    bindsym Up              resize shrink up    $resize_step px
+    bindsym Shift+Up        resize grow   up    $resize_step px
+    bindsym Right           resize shrink right $resize_step px
+    bindsym Shift+Right     resize grow   right $resize_step px
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 bindsym $ModK+r mode "resize"
 
-# Colors
-# class                 border  backgr. text    indicator
-client.focused          #000000 #285577 #dddddd #0099ff
-client.focused_inactive #000000 #333333 #888888 #484e50
-client.unfocused        #000000 #000000 #555555 #292d2e
-client.urgent           #2f343a #900000 #ffffff #900000
+#
+# Bindings to launch programs
+#
 
-# Def
-# client.focused          #4c7899 #285577 #ffffff #2e9ef4
-# client.focused_inactive #333333 #5f676a #ffffff #484e50
-# client.unfocused        #333333 #222222 #888888 #292d2e
-# client.urgent           #2f343a #900000 #ffffff #900000
-
-# Switch to workspace
-bindsym $ModK+1 workspace 1
-bindsym $ModK+2 workspace 2
-bindsym $ModK+3 workspace 3
-bindsym $ModK+4 workspace 4
-bindsym $ModK+5 workspace 5
-bindsym $ModK+6 workspace 6
-bindsym $ModK+7 workspace 7
-bindsym $ModK+8 workspace 8
-bindsym $ModK+9 workspace 9
-bindsym $ModK+0 workspace 10
-
-# Move focused container to workspace
-bindsym $ModK+Shift+1 move workspace 1
-bindsym $ModK+Shift+2 move workspace 2
-bindsym $ModK+Shift+3 move workspace 3
-bindsym $ModK+Shift+4 move workspace 4
-bindsym $ModK+Shift+5 move workspace 5
-bindsym $ModK+Shift+6 move workspace 6
-bindsym $ModK+Shift+7 move workspace 7
-bindsym $ModK+Shift+8 move workspace 8
-bindsym $ModK+Shift+9 move workspace 9
-bindsym $ModK+Shift+0 move workspace 10
-
-workspace 1 output $screenL
-workspace 2 output $screenL
-workspace 3 output $screenL
-workspace 4 output $screenL
-workspace 5 output $screenL
-workspace 6 output $screenR
-workspace 7 output $screenR
-workspace 8 output $screenR
-workspace 9 output $screenR
-workspace 10 output $screenR
-
-assign [window_role="^browser$"] → 10
-assign [class="^Pidgin$"] → 9
-# assign [class="^Gimp$"] → 5
-# assign [class="^Ekiga$"] → 4
-# assign [class="(?i)^.*sflphone.*$"] → 4
-#for_window [class="(?i)^.*wine.*$"] floating enable
-assign [class="(?i)^.*steam.*$"] → 1
-
-for_window [class="(?i)urxvt"] border pixel 2
-for_window [class="(?i)emacs"] border pixel 2
-for_window [class="(?i)firefox"] border none
-
-for_window [class="(?i)chromium"] border none
-for_window [class="(?i)pale moon"] border none
-for_window [class="(?i)icecat"] border none
-for_window [class="(?i)mplayer"] border none
-for_window [class="(?i)mpv"] border none
-
-# for_window [class="(?i)^UE4Editor.*$"] floating enable
-assign [class="(?i)^UE4Editor.*$"] → 8
-
-focus_follows_mouse yes
-new_window normal
-default_orientation auto
-workspace_auto_back_and_forth no
-hide_edge_borders none
-#mouse_warping output
-
-# Lock
-#bindsym $ModK+w exec --no-startup-id "/bin/bash --login -c 'sleep 0.5; xtrlock; exit 0'"
-bindsym $ModK+w exec --no-startup-id i3lock -c 222222
-
+# Start dmenu
+bindsym $ModK+z exec dmenu_run -b -p ">>" -nb '#222222' -nf '#CCCCCC' -sb '#4c7899' -sf '#FFFFFF'
 
 # Pulse Audio
 set $pactl_vol pactl set-sink-volume '@DEFAULT_SINK@'
@@ -257,19 +228,7 @@ bindsym $ModK+F11 exec --no-startup-id $pactl_vol -2%
 bindsym XF86AudioMute exec --no-startup-id $pactl_mute
 bindsym $ModK+XF86AudioMute exec --no-startup-id $pactl_mute
 
-
-# Cmus
-# bindsym $ModK+End exec --no-startup-id cmus-remote -u
-# bindsym $ModK+Prior exec --no-startup-id cmus-remote -r
-# bindsym $ModK+Next exec --no-startup-id cmus-remote -n
-# bindsym XF86AudioPlay exec --no-startup-id cmus-remote -u #play/pause
-# bindsym XF86AudioPrev exec --no-startup-id cmus-remote -r #prev
-# bindsym XF86AudioNext exec --no-startup-id cmus-remote -n #next
-# bind $ModK+75 exec --no-startup-id cmus-remote -u
-# bind $ModK+74 exec --no-startup-id cmus-remote -r
-# bind $ModK+76 exec --no-startup-id cmus-remote -n
-
-# player ctl
+# Playerctl
 bindsym $ModK+End exec --no-startup-id playerctl play-pause
 bindsym $ModK+Prior exec --no-startup-id playerctl previous
 bindsym $ModK+Next exec --no-startup-id playerctl next
@@ -281,30 +240,62 @@ bindsym $ModK+XF86AudioPlay exec --no-startup-id playerctl play-pause
 bindsym $ModK+XF86AudioPrev exec --no-startup-id playerctl previous
 bindsym $ModK+XF86AudioNext exec --no-startup-id playerctl next
 bindsym $ModK+XF86AudioStop exec --no-startup-id playerctl pause
-# bindsym $ModK+F8 exec --no-startup-id playerctl play-pause
-# bindsym $ModK+F9 exec --no-startup-id playerctl previous
-# bindsym $ModK+F10 exec --no-startup-id playerctl next
+#bindsym $ModK+F8 exec --no-startup-id playerctl play-pause
+#bindsym $ModK+F9 exec --no-startup-id playerctl previous
+#bindsym $ModK+F10 exec --no-startup-id playerctl next
 
-# # MPD
-# bindsym $ModK+End exec --no-startup-id mpc -q toggle
-# bindsym $ModK+Prior exec --no-startup-id mpc -q prev
-# bindsym $ModK+Next exec --no-startup-id mpc -q next
-# bindsym XF86AudioPlay exec --no-startup-id mpc -q toggle
-# bindsym XF86AudioPrev exec --no-startup-id mpc -q prev
-# bindsym XF86AudioNext exec --no-startup-id mpc -q next
-# bindsym XF86AudioStop exec --no-startup-id mpc -q stop
-# bindsym $ModK+XF86AudioPlay exec --no-startup-id mpc -q toggle
-# bindsym $ModK+XF86AudioPrev exec --no-startup-id mpc -q prev
-# bindsym $ModK+XF86AudioNext exec --no-startup-id mpc -q next
-# bindsym $ModK+XF86AudioStop exec --no-startup-id mpc -q stop
-# # bindsym $ModK+F8 exec --no-startup-id mpc -q toggle
-# # bindsym $ModK+F9 exec --no-startup-id mpc -q prev
-# # bindsym $ModK+F10 exec --no-startup-id mpc -q next
+# MPD
+#bindsym $ModK+End exec --no-startup-id mpc -q toggle
+#bindsym $ModK+Prior exec --no-startup-id mpc -q prev
+#bindsym $ModK+Next exec --no-startup-id mpc -q next
+#bindsym XF86AudioPlay exec --no-startup-id mpc -q toggle
+#bindsym XF86AudioPrev exec --no-startup-id mpc -q prev
+#bindsym XF86AudioNext exec --no-startup-id mpc -q next
+#bindsym XF86AudioStop exec --no-startup-id mpc -q stop
+#bindsym $ModK+XF86AudioPlay exec --no-startup-id mpc -q toggle
+#bindsym $ModK+XF86AudioPrev exec --no-startup-id mpc -q prev
+#bindsym $ModK+XF86AudioNext exec --no-startup-id mpc -q next
+#bindsym $ModK+XF86AudioStop exec --no-startup-id mpc -q stop
+##bindsym $ModK+F8 exec --no-startup-id mpc -q toggle
+##bindsym $ModK+F9 exec --no-startup-id mpc -q prev
+##bindsym $ModK+F10 exec --no-startup-id mpc -q next
 
 # On/Off Touchpad
 bindsym XF86TouchpadToggle exec zsh ~/bin/toggletouchpad
 
-bar {
+# Lock
+#bindsym $ModK+w exec --no-startup-id "/bin/bash --login -c 'sleep 0.5; xtrlock; exit 0'"
+bindsym $ModK+w exec --no-startup-id i3lock -c 222222
+
+# Terminal
+#bindsym $ModK+Return exec $layouts/launch.sh urxvt
+bindsym $ModK+Return exec urxvt
+
+# Emacs
+bindsym $ModK+Shift+Return exec $layouts/launch.sh -- emacs
+bindsym $ModK+Ctrl+Return exec $layouts/launch.sh -- emacs ~/TODO.org
+
+# Firefox
+bindsym $ModK+F10 exec $layouts/launch.sh -w 10 firefox
+
+# Qalculate
+bindsym $ModK+F5 exec $layouts/launch.sh qalculate-gtk -n
+
+# Redshift
+bindsym $ModK+o exec --no-startup-id ~/bin/red +1
+bindsym $ModK+p exec --no-startup-id ~/bin/red -1
+bindsym $ModK+Shift+o exec --no-startup-id ~/bin/red -c +1
+bindsym $ModK+Shift+p exec --no-startup-id ~/bin/red -c -1
+
+# Go to urgent window, and go back
+bindsym $ModK+BackSpace exec --no-startup-id ~/.i3/goto_urgent_and_back.sh
+
+#
+# Bar
+#
+
+# Bar
+bar { # bar
     status_command i3status -c ~/.i3/i3status.conf
     separator_symbol "   "
     mode hide
@@ -315,9 +306,13 @@ bar {
     }
 }
 
+#
+# Run at startup
+#
+
 #exec ~/.i3/bar/bar.py
 exec --no-startup-id ~/.i3/bg.py
-# exec conky -c ~/.conky/balloon/conkyrc
+#exec conky -c ~/.conky/balloon/conkyrc
 
 #
 # Spawn layouts and programs
@@ -328,4 +323,4 @@ exec --no-startup-id $layouts/startup.sh
 set $hook_idle_time_min 10
 exec --no-startup-id xautolock -detectsleep -time $hook_idle_time_min -locker "~/bin/hooks/onidle" -noclose
 
-# exec i3lock -c 222222
+#exec i3lock -c 222222
