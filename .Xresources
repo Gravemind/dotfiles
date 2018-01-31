@@ -52,7 +52,6 @@ URxvt*font:             xft:DejaVu Sans Mono:size=9
 URxvt*scrollBar_right:  false
 URxvt*scrollBar:        false
 
-URxvt*inheritPixmap:    true
 URxvt*transparent:      true
 URxvt*shading:          25
 
