@@ -21,6 +21,10 @@ root="."
 
 FETCHALL=0
 
+# Fetch only if last fetch was before
+FETCH_IF_OLDER_THAN=$(( "$(date "+%s")" - 60 * 5 )) # 5 minutes ago
+# usage: -F to force
+
 tmpdir="$(mktemp -d -t gitstatuses.XXXXXXXXXX)"
 trap "{ rm -rf $tmpdir; }" EXIT
 
@@ -35,10 +39,17 @@ fetchrepo() {
 
     if [[ "$FETCHALL" == "1" ]]
     then
-        (
-            git fetch
-        ) 1>&2 || echo -ne "${C_ERROR}fetch failed${C_RESET} "
-        #logdeb "$repo: fetched"
+        last_fetched="$(stat -c %Y .git/FETCH_HEAD)"
+        if [[ "$last_fetched" -le "$FETCH_IF_OLDER_THAN" ]]
+        then
+            (
+                git fetch
+            ) 1>&2 || echo -ne "${C_ERROR}fetch failed${C_RESET} "
+            logdeb "$repo: fetched"
+        else
+            true
+            #logdeb "$repo: NOT fetched"
+        fi
     fi
 
     git update-index -q --refresh 2>&1 >/dev/null || echo -ne "${C_ERROR}update-index failed${C_RESET} "
@@ -148,8 +159,13 @@ if [[ "$#" -ge 1 ]]
 then
     if [[ "$1" = "-f" ]]
     then
-        logdeb fetching
+        logdeb fetching all
         FETCHALL=1
+    elif [[ "$1" = "-F" ]]
+    then
+        logdeb Force fetching all
+        FETCHALL=1
+        FETCH_IF_OLDER_THAN=9999999999
     else
         declare -a selectedrepos
         while [[ "$1" =~ ^[0-9]+$ ]]
