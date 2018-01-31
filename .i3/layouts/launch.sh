@@ -62,7 +62,7 @@ sponge $tmp <<EOF
 }
 EOF
 
-echo "$0: launching \"$prog\" class \"$class\" \"$instance\""
+echo "$0: launching \"$prog\" class \"$class\" instance \"$instance\""
 
 $here/append_layout_window.sh $tmp $workspace > /dev/null
 
