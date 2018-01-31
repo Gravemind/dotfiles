@@ -6,6 +6,10 @@ sub-color=1.0/0.2
 #exact|fuzzy|all
 sub-auto=fuzzy
 
+#af=rubberband
+#af=scaletempo=stride=20:search=20:overlap=.30
+af=scaletempo=stride=12:search=12:overlap=1
+
 #profile=opengl-hq
 opengl-swapinterval=1
 interpolation=yes
