@@ -36,6 +36,10 @@
 	## "un-add"
 	ua = reset HEAD
 
+	## Usage: git fclean PATH
+	## Force clean PATH to HEAD state
+	fclean = "!f() { cd \"$GIT_PREFIX\" && git checkout @ -- \"$@\" && git clean -xdf -- \"$@\" && echo \"Cleaned $@\"; }; f"
+
 	## Usage: git fo BRANCH
 	## Fetch BRANCH and update local ref
 	fo = "!sh -c 'git fetch origin $1:$1;' -"
