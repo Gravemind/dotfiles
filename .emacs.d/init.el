@@ -291,9 +291,14 @@
 ;;   auto resize windows
 ;;
 
-(req-package golden-ratio
-  :commands (golden-ratio-mode)
-  :init (golden-ratio-mode 1))
+;; (req-package golden-ratio
+;;   :commands (golden-ratio-mode)
+;;   :init (golden-ratio-mode 1))
+
+(req-package zoom
+  :commands (zoom-mode)
+  :init (setq-default zoom-size '(0.618 . 0.618))
+  :config (zoom-mode t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -821,7 +826,7 @@ With argument, do this that many times."
 
 (defun jo/prepare-gdb ()
   (interactive)
-  (golden-ratio-mode 0)
+  (zoom-mode 0)
   (add-hook 'prog-mode-hook (lambda () (linum-mode t)))
   )
 
@@ -939,10 +944,10 @@ With argument, do this that many times."
   (require 'helm-grep)
 
   ;; Golden-ratio compat
-  (defun pl/helm-alive-p ()
-    (if (boundp 'helm-alive-p)
-        (symbol-value 'helm-alive-p)))
-  (add-to-list 'golden-ratio-inhibit-functions 'pl/helm-alive-p)
+  ;; (defun pl/helm-alive-p ()
+  ;;   (if (boundp 'helm-alive-p)
+  ;;       (symbol-value 'helm-alive-p)))
+  ;; (add-to-list 'golden-ratio-inhibit-functions 'pl/helm-alive-p)
 
   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebihnd tab to do persistent action
   (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
