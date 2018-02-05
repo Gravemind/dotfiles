@@ -760,7 +760,8 @@ With argument, do this that many times."
 (defun jo/compile-reset ()
   "Reset compile dir and command, then compile."
   (interactive)
-  (switch-to-buffer "*compilation*")
+  ;;(kill-buffer "*compilation*")
+  ;;(switch-to-buffer "*compilation*")
   (setq jo/compile-dir nil)
   (setq jo/build-command nil)
   (jo/compile))
@@ -790,6 +791,9 @@ With argument, do this that many times."
   (message "Compilation finished")
   (x-urgency-hint (selected-frame) t)
   )
+
+(add-to-list 'display-buffer-alist
+             '("." nil (reusable-frames . t)))
 
 (req-package compile
   :bind (("<f3>" . jo/compile)
