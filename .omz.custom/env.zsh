@@ -16,6 +16,15 @@ export LESS_TERMCAP_ue=$'\E[0m'           # end underline
 export LESS_TERMCAP_us=$'\E[01;36m'       # begin underline
 
 export LESSBINFMT='*u<%02X>'
+
+# -F : --quit-if-one-screen
+# -R : --RAW-CONTROL-CHARS: allow ANSI "color" escape sequences
+# -X : --no-init : no termcap clear on quit
+# -i : smart ignore case
+# -I : always ignore case
+# -S : --chop-long-lines : truncate lines
+# -M : --LONG-PROMPT
+# -jn : --jump-target=n
 export LESS='-R -i -S -M -j5'
 
 # deprecated:
