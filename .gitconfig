@@ -38,7 +38,7 @@
 
 	## Usage: git fclean PATH
 	## Force clean PATH to HEAD state
-	fclean = "!f() { cd \"$GIT_PREFIX\" && git checkout @ -- \"$@\" && git clean -xdf -- \"$@\" && echo \"Cleaned $@\"; }; f"
+	fclean = "!f() { [[ \"$#\" -gt 0 ]] && cd \"$GIT_PREFIX\" && ls -d \"$@\" && git checkout @ -- \"$@\" && git clean -xdf -- \"$@\" && echo \"Cleaned $@\"; }; f"
 
 	## Usage: git fo BRANCH
 	## Fetch BRANCH and update local ref
