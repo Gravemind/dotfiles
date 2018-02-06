@@ -128,6 +128,17 @@
 #[column]
 #	ui = auto column dense
 
+[core]
+    pager = less
+[pager]
+    # If $LESS exists, git will use it instead of the default "less -FRX"
+    # So here, restore "FRX" only for those commands.
+    # -F : --quit-if-one-screen
+    # -R : --RAW-CONTROL-CHARS: allow ANSI "color" escape sequences
+    # -X : --no-init : no termcap clear on quit
+	tag = "less -FRX"
+	branch = "less -FRX"
+
 [tag]
 	sort = version:refname
 [fetch]
@@ -138,8 +149,6 @@
 	default = simple
 [merge]
 	conflictstyle = diff3
-[pager]
-	tag = false
 [core]
 	## Increase short hash to 10 characters
 	abbrev = 10
