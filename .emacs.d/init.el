@@ -297,8 +297,9 @@
 
 (req-package zoom
   :commands (zoom-mode)
-  :init (setq-default zoom-size '(0.618 . 0.618))
-  :config (zoom-mode t))
+  :init
+  (setq-default zoom-size '(0.618 . 0.618))
+  (zoom-mode t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
