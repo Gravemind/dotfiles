@@ -60,6 +60,9 @@
 	## Clean deleted branches
 	cleanbranches = !git branch -vv | grep ': gone]' | awk '{ print $1 }' | xargs -n 1 git branch -d
 
+	## Short merge base of HEAD and $1
+	mb = "!f() { git rev-parse --short $(git merge-base @ \"$1\"); }; f"
+
 	## Usage: git magicmerge BRANCH
 	## Magic merge
 	## -c merge.renamelimit=2048	# increase "follow file rename" limit
@@ -129,13 +132,13 @@
 #	ui = auto column dense
 
 [core]
-    pager = less
+	pager = less
 [pager]
-    # If $LESS exists, git will use it instead of the default "less -FRX"
-    # So here, restore "FRX" only for those commands.
-    # -F : --quit-if-one-screen
-    # -R : --RAW-CONTROL-CHARS: allow ANSI "color" escape sequences
-    # -X : --no-init : no termcap clear on quit
+	# If $LESS exists, git will use it instead of the default "less -FRX"
+	# So here, restore "FRX" only for those commands.
+	# -F : --quit-if-one-screen
+	# -R : --RAW-CONTROL-CHARS: allow ANSI "color" escape sequences
+	# -X : --no-init : no termcap clear on quit
 	tag = "less -FRX"
 	branch = "less -FRX"
 
