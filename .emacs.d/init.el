@@ -142,6 +142,19 @@
 ;; Replace yes-or-no by y-or-n
 (fset 'yes-or-no-p 'y-or-n-p)
 
+;; This code adds , for revert:
+;; https://stackoverflow.com/questions/10041284/how-to-not-save-changes-in-file-and-in-temp-buffer-too#10043197
+(when (boundp 'save-some-buffers-action-alist)
+  (setq save-some-buffers-action-alist
+        (cons
+         (list
+          ?,
+          #'(lambda (buf)
+              (with-current-buffer buf
+                (revert-buffer t))
+              nil)
+          "revert buffer.")
+         save-some-buffers-action-alist)))
 ;;
 ;; UTF-8
 ;;
