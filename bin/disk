@@ -1,0 +1,130 @@
+#!/usr/bin/env python
+
+import json
+import subprocess
+
+import pprint
+pp = pprint.PrettyPrinter(indent=4).pprint
+
+lsblk_proc = subprocess.run(["lsblk", "--json", "-pb", "--output", "NAME,SIZE,TRAN,VENDOR,MODEL,TYPE,PARTLABEL,FSTYPE,MOUNTPOINT,UUID,LABEL"], stdout=subprocess.PIPE)
+lsblk_json = json.loads(lsblk_proc.stdout)
+#pp(lsblk_json)
+assert lsblk_json['blockdevices'] is not None
+assert len(lsblk_json) == 1
+lsblk_devices = lsblk_json['blockdevices']
+
+df_columns=['source', 'fstype', 'size', 'used', 'avail', 'target', 'pcent']
+df_proc = subprocess.run(['df', '--output='+','.join(df_columns), '--si'], stdout=subprocess.PIPE)
+
+df_lines = str(df_proc.stdout, 'utf-8').splitlines()
+#pp(df_lines)
+assert len(df_lines) > 2, "Unexpected df output"
+df_lines = df_lines[1:] # discard header
+df_lines = [ l.strip() for l in df_lines ]
+
+global df_by_source
+df_by_source = dict()
+for df_line in df_lines:
+    disk = df_line.split(maxsplit=len(df_columns))
+    assert len(disk) == len(df_columns)
+    disk_dict = dict()
+    for i, col in enumerate(df_columns):
+        disk_dict[col] = disk[i]
+    df_by_source[disk_dict["source"]] = disk_dict
+
+def sep(s):
+    if s is not None and len(s) > 0:
+        return " " + s
+    return ""
+
+def sinum(n):
+    fmt = "%.3g"
+    scale = [
+        (1e3, 1, ''),
+        (1e6, 1e3, 'k'),
+        (1e9, 1e6, 'M'),
+        (1e12, 1e9, 'G'),
+    ]
+    for s in scale:
+        if n < s[0]:
+            return (fmt % (n / s[1])) + s[2]
+    return fmt % (n / 1e12) + "T"
+
+
+def print_devices(outtable, lsblks, depth=0):
+    global df_by_source
+
+    for lsblki, lsblk in enumerate(lsblks):
+        pref = ""
+        d = depth
+        if d > 0:
+            while d > 1:
+                pref += "   "
+                d -= 1
+            if lsblki < len(lsblks) - 1:
+                pref += "├"
+            else:
+                pref += "└"
+            pref += "─ "
+
+        df = df_by_source.get(lsblk['name'])
+
+        for k, v in lsblk.items():
+            if v is None:
+                lsblk[k] = ""
+            elif hasattr(v, 'strip'):
+                lsblk[k] = v.strip()
+
+        outcols = []
+
+        outcols.append(pref+lsblk["name"])
+        outcols.append(lsblk['mountpoint'])
+        #outcols.append(lsblk['type'])
+
+        maindesc = ""
+        #maindesc += lsblk['type']
+        maindesc += sep(lsblk['tran'])
+        maindesc += sep(lsblk["vendor"])
+        maindesc += sep(lsblk["model"])
+        maindesc += sep(lsblk["partlabel"])
+        maindesc += sep(lsblk["label"])
+        maindesc += sep(lsblk["fstype"])
+        outcols.append(pref + maindesc.strip())
+
+        outcols.append(pref + sinum(int(lsblk['size'])))
+
+        if df:
+            assert df['target'] == lsblk['mountpoint']
+            outcols.append(df['pcent'])
+            outcols.append(df['used'])
+            outcols.append(df['avail'])
+        else:
+            outcols.append('')
+            outcols.append('')
+            outcols.append('')
+
+        outtable.append(outcols)
+
+        outcols.append(lsblk['uuid'])
+
+        if "children" in lsblk:
+            print_devices(outtable, lsblk['children'], depth + 1)
+
+
+table = []
+table.append([ 'Name', 'Mount', 'Info', 'Size', 'Used%', 'Used', 'Avail', 'UUID' ])
+print_devices(table, lsblk_devices)
+
+maxw = []
+for row in table:
+    if len(maxw) < len(row):
+        maxw += [ 0 for _ in range(len(row) - len(maxw)) ]
+    for coli, col in enumerate(row):
+        maxw[coli] = max(maxw[coli], len(col))
+
+for row in table:
+    out = ""
+    for coli, col in enumerate(row):
+        w = maxw[coli]
+        out += col.ljust(w) + " "
+    print(out)
