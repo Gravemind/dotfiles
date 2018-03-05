@@ -1,10 +1,10 @@
 
 ! State:           'bg',       'fg',     'bgalt',    'hlbg',     'hlfg'
-rofi.color-normal: #00000000,  #285577,  #00000000,  #00000000,  #eee8d5
-rofi.color-urgent: #00000000,  #285577,  #00000000,  #00000000,  #fdf6e3
-rofi.color-active: #00000000,  #285577,  #00000000,  #00000000,  #fdf6e3
+rofi.color-normal: #00000000,  #4B86B3,  #00000000,  #00000000,  #ffffff
+rofi.color-urgent: #00000000,  #4B86B3,  #00000000,  #00000000,  #777777
+rofi.color-active: #00000000,  #4B86B3,  #00000000,  #00000000,  #777777
 !                  'background', 'border', 'separator'
-rofi.color-window: #f0000000,  #f0000000,  #285577
+rofi.color-window: #e0000000,  #e0000000,  #4B86B3
 
 ! "Enabled modi" Set from: Default
 ! rofi.modi:                           window,run,ssh
@@ -15,7 +15,7 @@ rofi.color-window: #f0000000,  #f0000000,  #285577
 ! "Number of columns" Set from: Default
 ! rofi.columns:                        1
 ! "Font to use" Set from: Default
-rofi.font:                           DejaVuSansMono 9
+rofi.font:                           DejaVuSansMono 10
 ! "Border width" Set from: Default
 ! rofi.bw:                             1
 ! "Location on screen" Set from: Default
