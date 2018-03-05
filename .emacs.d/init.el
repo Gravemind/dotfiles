@@ -115,7 +115,8 @@
  dabbrev-case-replace nil
 
  ;tramp-verbose 10
- tramp-connection-timeout 10
+ ;tramp-connection-timeout 10
+ tramp-connection-timeout 14400 ; 4h
  password-cache-expiry nil
  )
 
