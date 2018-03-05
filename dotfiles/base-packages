@@ -22,6 +22,7 @@ reflector
 
 i3
 dmenu
+rofi
 mesa-demos
 xterm
 rxvt-unicode
