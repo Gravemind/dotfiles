@@ -4,7 +4,7 @@
 --restrict-filenames
 # visual-quality-wise: av01 (av1) >= vp9 > avc1 (h264) > vp8
 # (youtube-dl's default bestvideo prefers avc1 over vp9)
---format (bestvideo[vcodec^=av01]+bestaudio/bestvideo[vcodec^=vp9]+bestaudio/bestvideo+bestaudio/best)[height<=?1440][protocol=https]
+--format (bestvideo[vcodec^=av01]+bestaudio/bestvideo[vcodec^=vp9]+bestaudio/bestvideo+bestaudio/best)[height<=?720][protocol=https]
 --prefer-free-formats
 
 --embed-subs

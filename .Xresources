@@ -49,7 +49,7 @@ URxvt*scrollBar_right:  false
 URxvt*scrollBar:        false
 
 URxvt*transparent:      true
-URxvt*shading:          18
+URxvt*shading:          10
 URxvt*blurRadius:       17
 
 URxvt*scrollTtyOutput:      false
@@ -79,7 +79,7 @@ Xft.rgba:           none
 ! Dpi for some programs (emacs, urxvt, firefox !?)
 ! For others, see ~/.config/fontconfig/conf.d, and X11/xrandr
 ! ("110x110" is an invalid format)
-Xft.dpi:            110
+Xft.dpi:            94
 
 ! Nice flicker-free emacs startup !
 ! (evaluated much sooner than init.el)

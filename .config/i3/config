@@ -5,8 +5,8 @@
 
 # Variables
 set $ModK        Mod4
-set $screenL     DP-4
-set $screenR     DP-2
+set $screenL     LVDS-1-1
+set $screenR     LVDS-1-1
 
 set $keyLeft     j
 set $keyRight    l
@@ -19,13 +19,13 @@ set $launcher    ~/.config/i3/layouts/launch.sh -q
 
 set $Alt         Mod1
 
-# N * [2560, 1440] / 8
-set $move_step_x   320
-set $move_step_y   180
-set $resize_step_x 320
-set $resize_step_y 180
-set $float_w       640
-set $float_h       720
+#
+set $move_step_x   171
+set $move_step_y   128
+set $resize_step_x 171
+set $resize_step_y 128
+set $float_w       683
+set $float_h       512
 
 ipc-socket $here/ipc.sock
 
@@ -473,11 +473,10 @@ bar {
 #
 
 # Device manager (auto user mount, umount, notify)
-exec_always --no-startup-id systemctl --user restart daemon_devmon.service
-#exec_always --no-startup-id systemctl --user restart daemon_battery.service
+#exec_always --no-startup-id systemctl --user restart daemon_devmon.service
+exec_always --no-startup-id systemctl --user restart daemon_battery.service
 
-#exec --no-startup-id $locker
-#exec conky -c ~/.conky/balloon/conkyrc
+exec --no-startup-id $locker
 
 set $hook_idle_time_min 10
 exec --no-startup-id xautolock -detectsleep -time $hook_idle_time_min -locker "~/bin/hooks/onidle" -noclose

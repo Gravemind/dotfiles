@@ -83,7 +83,7 @@ plugins=(
 	autojump
 	safe-paste
 	my_pacman
-	# my_laptop
+	my_laptop
 )
 
 source $ZSH/oh-my-zsh.sh

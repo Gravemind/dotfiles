@@ -8,4 +8,4 @@ disown
 #disown
 
 i3-msg workspace 1
-i3-msg workspace 10
+#i3-msg workspace 10

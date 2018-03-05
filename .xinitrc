@@ -16,6 +16,13 @@ fi
 
 #xrandr --output DVI-I-1  --auto --primary --right-of DVI-D-0
 #xrandr --dpi 94
+
+xrandr --setprovideroutputsource modesetting NVIDIA-0 --output VGA-0 --off --output LVDS-1-1 --auto
+xrandr --dpi 94
+
+# Fix mouse trail
+xrandr --output LVDS-1-1 --set "PRIME Synchronization" 1
+
 #export __GL_THREADED_OPTIMIZATIONS=1
 #export __GL_YIELD="USLEEP"
 export __GL_SYNC_DISPLAY_DEVICE=DP-4
@@ -47,8 +54,8 @@ export PROTON_DUMP_DEBUG_COMMANDS=1
 #syndaemon -i 2 -t -k -d &
 setxkbmap us_qwerty-fr
 # 'Menu' key as Windows key
-#xmodmap -e 'keycode 135 = Super_R'
-numlockx on
+xmodmap -e 'keycode 135 = Super_R'
+#numlockx on
 
 ##
 ## Sound
