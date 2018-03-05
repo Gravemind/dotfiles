@@ -214,6 +214,10 @@ bindsym $ModK+r mode "resize"
 #bindsym $ModK+z exec rofi -show run
 bindsym $ModK+z exec --no-startup-id "rofi -show combi -combi-modi 'run,ssh,window' -modi combi"
 
+# Cliboard Manager
+bindsym $ModK+Insert exec CM_LAUNCHER=rofi clipmenu -p clip
+exec --no-startup-id clipmenud
+
 # Pulse Audio
 set $pactl_vol pactl set-sink-volume '@DEFAULT_SINK@'
 set $pactl_mute pactl set-sink-mute '@DEFAULT_SINK@' toggle
