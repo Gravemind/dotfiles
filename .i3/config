@@ -210,7 +210,9 @@ bindsym $ModK+r mode "resize"
 #
 
 # Start dmenu
-bindsym $ModK+z exec dmenu_run -b -p ">>" -nb '#222222' -nf '#CCCCCC' -sb '#4c7899' -sf '#FFFFFF'
+#bindsym $ModK+z exec dmenu_run -b -p ">>" -nb '#222222' -nf '#CCCCCC' -sb '#4c7899' -sf '#FFFFFF'
+#bindsym $ModK+z exec rofi -show run
+bindsym $ModK+z exec --no-startup-id "rofi -show combi -combi-modi 'run,ssh,window' -modi combi"
 
 # Pulse Audio
 set $pactl_vol pactl set-sink-volume '@DEFAULT_SINK@'
