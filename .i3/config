@@ -218,6 +218,11 @@ bindsym $ModK+z exec --no-startup-id "rofi -show combi -combi-modi 'run,ssh,wind
 bindsym $ModK+Insert exec CM_LAUNCHER=rofi clipmenu -p clip
 exec --no-startup-id clipmenud
 
+# Overriding Shift-Insert to type what's in primary clipboard (selection)
+# (xdotool bugge ? seems to type while Shift is pressed ?)
+#bindsym Shift+Insert exec --no-startup-id "bash -c 'xdotool type \\"$(xclip -selection primary -o)\\"'
+bindsym Shift+Insert exec --no-startup-id "bash -c 'xclip -selection primary -o | xvkbd -xsendevent -delay 1 -file -'"
+
 # Pulse Audio
 set $pactl_vol pactl set-sink-volume '@DEFAULT_SINK@'
 set $pactl_mute pactl set-sink-mute '@DEFAULT_SINK@' toggle
