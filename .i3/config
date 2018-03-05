@@ -220,8 +220,8 @@ exec --no-startup-id clipmenud
 
 # Overriding Shift-Insert to type what's in primary clipboard (selection)
 # (xdotool bugge ? seems to type while Shift is pressed ?)
-#bindsym Shift+Insert exec --no-startup-id "bash -c 'xdotool type \\"$(xclip -selection primary -o)\\"'
-bindsym Shift+Insert exec --no-startup-id "bash -c 'xclip -selection primary -o | xvkbd -xsendevent -delay 1 -file -'"
+#bindsym Shift+Insert exec --no-startup-id "bash -c 'xdotool type \\"$(xclip -selection primary -o -r)\\"'
+bindsym Shift+Insert exec --no-startup-id "bash -c 'xclip -selection primary -o -r | xvkbd -xsendevent -delay 1 -file -'"
 
 # Pulse Audio
 set $pactl_vol pactl set-sink-volume '@DEFAULT_SINK@'
