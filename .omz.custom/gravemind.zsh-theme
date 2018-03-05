@@ -1,20 +1,28 @@
 #!/bin/zsh
 
+## http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
+
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=white,bold'
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
 
 PROMPT_USER=""
-if [[ $EUID -ne 1000 || -n "$SSH_CONNECTION" ]]; then
-	PROMPT_USER="%(!.%F{red}.%F{blue})%n"
+# level (shell recursion depth)
+export OMZLVL="$((${OMZLVL:--1} + 1))"
+if [[ "$OMZLVL" -gt 0 ]]; then
+	PROMPT_USER="${PROMPT_USER} %F{yellow}$OMZLVL"
 fi
+# user
+if [[ $EUID -ne 1000 || -n "$SSH_CONNECTION" ]]; then
+	PROMPT_USER="${PROMPT_USER} %(!.%F{red}.%F{blue})%n"
+fi
+# @host
 if [[ -n "$SSH_CONNECTION" ]]; then
 	PROMPT_USER="${PROMPT_USER}%F{green}@$HOST"
 fi
+# end separator
 if [[ -n "$PROMPT_USER" ]]; then
-	PROMPT_USER=" $PROMPT_USER %F{white}%{∶%G%}"
+	PROMPT_USER="$PROMPT_USER %F{white}%{∶%G%}"
 fi
-
-## http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
 
 PROMPT='%K{black}%B%F{white}%{❰%G%}'"${PROMPT_USER}"' $(gravemind_git_prompt_info_short)%1(j. %F{white}%{∶%G%} %F{green}%j.)%(?.. %F{white}%{∶%G%} %F{red}%?) %F{white}%{❱%G%} %f%b%K{black}'
 
