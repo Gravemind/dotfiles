@@ -118,6 +118,11 @@
  ;tramp-connection-timeout 10
  tramp-connection-timeout 14400 ; 4h
  password-cache-expiry nil
+
+ ;; Faster cursor ?
+ ;; https://emacs.stackexchange.com/questions/28736/emacs-pointcursor-movement-lag/28746
+ auto-window-vscroll nil
+
  )
 
 ;;
