@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import json
 import subprocess
@@ -87,8 +87,8 @@ def print_devices(outtable, lsblks, depth=0):
         maindesc += sep(lsblk["vendor"])
         maindesc += sep(lsblk["model"])
         maindesc += sep(lsblk["partlabel"])
-        maindesc += sep(lsblk["label"])
         maindesc += sep(lsblk["fstype"])
+        maindesc += sep(lsblk["label"])
         outcols.append(pref + maindesc.strip())
 
         outcols.append(pref + sinum(int(lsblk['size'])))
