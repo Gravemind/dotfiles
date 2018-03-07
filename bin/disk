@@ -6,7 +6,7 @@ import subprocess
 import pprint
 pp = pprint.PrettyPrinter(indent=4).pprint
 
-lsblk_proc = subprocess.run(["lsblk", "--json", "-pb", "--output", "NAME,SIZE,TRAN,VENDOR,MODEL,TYPE,PARTLABEL,FSTYPE,MOUNTPOINT,UUID,LABEL"], stdout=subprocess.PIPE)
+lsblk_proc = subprocess.run(["lsblk", "--json", "-pb", "--output", "NAME,SIZE,TRAN,VENDOR,MODEL,TYPE,PARTLABEL,FSTYPE,MOUNTPOINT,UUID,LABEL,SERIAL"], stdout=subprocess.PIPE)
 lsblk_json = json.loads(lsblk_proc.stdout)
 #pp(lsblk_json)
 assert lsblk_json['blockdevices'] is not None
@@ -105,14 +105,18 @@ def print_devices(outtable, lsblks, depth=0):
 
         outtable.append(outcols)
 
-        outcols.append(lsblk['uuid'])
+        serialuuid = ""
+        serialuuid += lsblk['serial']
+        serialuuid += " "
+        serialuuid += lsblk['uuid']
+        outcols.append(serialuuid)
 
         if "children" in lsblk:
             print_devices(outtable, lsblk['children'], depth + 1)
 
 
 table = []
-table.append([ 'Name', 'Mount', 'Info', 'Size', 'Used%', 'Used', 'Avail', 'UUID' ])
+table.append([ 'Name', 'Mount', 'Info', 'Size', 'Used%', 'Used', 'Avail', 'Serial UUID' ])
 print_devices(table, lsblk_devices)
 
 maxw = []
