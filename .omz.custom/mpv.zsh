@@ -31,7 +31,9 @@ mpn() {
 	FOUNDFILE=$(
 		history | grep mpv | \
 			sort -r | \
-			sed -rn 's/\s*[0-9]+\s+mpv\s+(.*)/\1/gp' | \
+			# extract mpv's entire parameters, and also print just the filename if found "/" \
+			awk '/\s*[0-9]+\s+mpv\s+(.*)\s*/ { $1=""; $2=""; $0=$0; $1=$1; print $0; } /\// { sub(/.*\//,""); print $0; }' | \
+			#sed -rn 's/\s*[0-9]+\s+mpv\s+(.*)/\1/gp' | \
 			getfirstvalidfile
 			 )
 	if [[ -z "$FOUNDFILE" ]]
