@@ -101,7 +101,7 @@
 
 ## Pretty log format
 [pretty]
-	my = "%C(bold blue)%h%C(bold red)% D%Creset %C(white)%s %C(green)%an %C(bold blue)%ar%C(reset)"
+	my = "%C(bold blue)%h%C(bold red)% D%Creset %s %C(green)%an %C(bold blue)%ar%C(reset)"
 
 [format]
 	## default pretty format for log/show/whatchanged

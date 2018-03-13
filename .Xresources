@@ -3,7 +3,7 @@
 !
 
 *background:  #202020
-*foreground:  #B0B0B0
+*foreground:  #b0b0b0
 
 !black
 *color0:      #000000
@@ -35,8 +35,8 @@
 *color14:     #71bebe
 
 !white
-*color7:      #bebebe
-*color15:     #ffffff
+*color7:      #e8e8e8
+*color15:     #e8e8e8
 
 ! fixes font spacing
 URxvt.letterSpace:      -1
