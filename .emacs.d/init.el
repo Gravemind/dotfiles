@@ -594,6 +594,9 @@ With argument, do this that many times."
 ;; CC
 ;;
 
+(defalias 'cpp-mode 'c++-mode)
+(defalias 'c-cpp-menu 'c-c++-menu)
+
 (defvar font-lock-format-specifier-face
   'font-lock-format-specifier-face
   "Face name to use for format specifiers.")
@@ -646,6 +649,7 @@ With argument, do this that many times."
          ("\\.c\\'" . c-mode)
          ("\\.cwp\\'" . c-mode)
          ("\\.cws\\'" . c-mode)
+         ("\\.ino\\'" . c++-mode) ; arduino ide
          )
   :config
   (c-add-style "cc-style" cc-style)
