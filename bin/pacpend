@@ -1,0 +1,358 @@
+#!/usr/bin/env python3
+
+import sys
+import itertools
+import re
+import argparse
+import time
+
+# https://git.archlinux.org/pyalpm.git/
+# pacman -S pyalpm
+import pyalpm
+import pycman.config
+
+import pprint
+pp = pprint.PrettyPrinter(indent=4).pprint
+
+handle = None
+
+ISATTY=sys.stdout.isatty()
+def coloriftty(c):
+	return c if ISATTY else str()
+C_RED=coloriftty("\033[31m")
+C_BRED=coloriftty("\033[1;31m")
+C_MAG=coloriftty("\033[35m")
+C_BMAG=coloriftty("\033[1;35m")
+C_YELLOW=coloriftty("\033[33m")
+C_BYELLOW=coloriftty("\033[1;33m")
+C_BLUE=coloriftty("\033[34m")
+C_BBLUE=coloriftty("\033[1;34m")
+C_CYAN=coloriftty("\033[36m")
+C_BCYAN=coloriftty("\033[1;36m")
+C_WHITE=coloriftty("\033[37m")
+C_BWHITE=coloriftty("\033[1;37m")
+C_GREEN=coloriftty("\033[32m")
+C_BGREEN=coloriftty("\033[1;32m")
+C_UNDERLINE=coloriftty("\033[4m")
+C_RESET=coloriftty("\033[1;0m")
+
+C_VERSION_O=C_BLUE
+C_VERSION_OLD=C_BBLUE
+C_VERSION_N=C_CYAN
+C_VERSION_NEW=C_BCYAN
+C_DB=C_BMAG
+C_OLD=C_BCYAN
+C_EXPLICIT=C_BWHITE
+
+## https://stackoverflow.com/questions/14889454/printed-length-of-a-string-in-python
+strip_ANSI_pat = re.compile(r"""
+	\x1b	 # literal ESC
+	\[		 # literal [
+	[;\d]*	 # zero or more digits or semicolons
+	[A-Za-z] # a letter
+	""", re.VERBOSE).sub
+def strip_ANSI(s):
+	return strip_ANSI_pat("", s)
+
+def seconds_to_ago(s, maxComp = 2):
+	a = [(31556736, 'Y', 'year', '-'),
+		 #(2630016, 'M', 'month'),
+		 (2629746, 'M', 'month', '-'),
+		 #(2592000, 'M', 'month'),
+		 (86400, 'd', 'day', ' '),
+		 (3600, 'h', 'hour', ':'),
+		 (60, 'm', 'min', ':'),
+		 (1, 's', 'sec', '')]
+	r = []
+	for d in a:
+		if s >= d[0]:
+			f = (s / d[0])
+			return str(round(f, 1)) + ' ' + d[2] + 's'
+	return '0'
+
+numbers_re = re.compile("\d+");
+def find_version_diff(a, b):
+	last = (0, 0)
+	for ab in zip(*[numbers_re.finditer(r) for r in [a, b]]):
+		last = (ab[0].start(), ab[1].start())
+		if ab[0].group() != ab[1].group():
+			return last
+	return last
+
+ends_with_pkgrel_re = re.compile("-\d+$").search
+def version_increment_sort_key(a, b):
+	# fix epoch changes
+	epocha = ":" in a
+	epochb = ":" in a
+	if epocha != epochb:
+		if not epocha:
+			a = "0:" + a
+		if not epochb:
+			b = "0:" + b
+	## fix pkgrel changes
+	pkgrela = ends_with_pkgrel_re(a) != None
+	pkgrelb = ends_with_pkgrel_re(b) != None
+	if pkgrela != pkgrelb:
+		if not pkgrela:
+			a += "-0"
+		if not pkgrelb:
+			b += "-0"
+
+	af = numbers_re.findall(a)
+	bf = numbers_re.findall(b)
+	assert len(af) > 0
+	assert len(bf) > 0
+
+	## padd before pkgrel to equal size
+	def paddb(af, bf):
+		return bf[:-1] + [ "0" for _ in range(len(af) - len(bf)) ] + bf[-1:]
+	if len(af) > len(bf):
+		bf = paddb(af, bf)
+	elif len(af) < len(bf):
+		af = paddb(bf, af)
+
+	scorei = -1
+	scores = []
+	for i, ab in enumerate(zip(af, bf)):
+		if scorei == -1 and ab[0] != ab[1]:
+			scorei = i
+		if scorei != -1:
+			# to compare 1.1.2->1.2.0 and 1.1.2->1.2.1 we need to compute score to the end
+			if ab[0].isnumeric() and ab[1].isnumeric() and int(ab[1]) > 0:
+				scores.append((int(ab[1]) - int(ab[0])) / int(ab[1]))
+			else:
+				scores.append(0)
+
+	total = len(bf)
+	key = [ (total - scorei) / total ] + scores
+	#pp([a, af, bf, key])
+	return key
+
+# https://stackoverflow.com/questions/8526675/python-argparse-optional-append-argument-with-choices#8527629
+class SortChoiceListAction(argparse.Action):
+	CHOICES = ['name', 'versioninc', 'groups', 'db', 'explicit', 'sizediff', 'buildago']
+	DEFAULT = ['name', 'versioninc']
+	def __call__(self, parser, namespace, values, option_string=None):
+		if values:
+			values = values.split(",")
+			for value in values:
+				value, _ = SortChoiceListAction.parsekeyrev(value)
+				if value not in self.CHOICES:
+					message = ("invalid choice: {0!r} (choose from {1})"
+							   .format(value,
+									   ', '.join([repr(action)
+												  for action in self.CHOICES])))
+
+					raise argparse.ArgumentError(self, message)
+			setattr(namespace, self.dest, values)
+
+	def parsekeyrev(key):
+		if key.endswith("-"):
+			return key[:-1], True
+		return key, False
+
+def make_parser():
+	parser = argparse.ArgumentParser(
+		description="Prettier `pacman -Qu`, for humans.",
+		epilog="Highlighted package names are those you explicitly installed",
+		formatter_class=argparse.RawTextHelpFormatter)
+
+	parser.add_argument('--iec',
+		action = 'store_true', default = False,
+		help = 'Display IEC sizes (MiB), instead of SI (MB).\n(default: %(default)s)')
+	parser.add_argument('--old', metavar="<months>",
+		type=int, default = 8,
+		help = 'Threshold in months to colorize old packages.\n(default: %(default)s)')
+
+	filtering = parser.add_argument_group('Filter')
+	filtering.add_argument('-e', '--explicit',
+		action = 'store_true', default = False,
+		help = 'List only explicitly installed pakages.\n(default: %(default)s)')
+
+	ordering = parser.add_argument_group('Sort and Group')
+	ordering.add_argument('-g', '--group-by', metavar = '<key>',
+		dest='groupby',
+		choices = ['none', 'groups', 'db', 'dbngroups'], default = 'groups',
+		help = 'Group packages (%(choices)s).\n(default: %(default)s)')
+	ordering.add_argument('-s', '--sort-by', metavar = '<list>',
+		dest='sortkeys',
+		action = SortChoiceListAction, default = SortChoiceListAction.DEFAULT,
+		help = 'Ordered sort key list\n('+', '.join(SortChoiceListAction.CHOICES)+').\nSuffix key by "-" to reverse.\n(default: '+','.join(SortChoiceListAction.DEFAULT)+')')
+
+	return parser
+
+def getor(self, k, d):
+	return self[k] if k < len(self) else d
+
+class Grouped:
+	def __init__(self, title):
+		self.title = title
+		self.pkgs = []
+		self.hasexplicit = False
+
+def main(rawargs):
+
+	global handle
+
+	parser = make_parser()
+	args = parser.parse_args(rawargs)
+	args_old_sec = args.old * 2629746
+	#pp(args)
+
+	# @TODO: parse options and use init_with_config_and_options
+	config_file = "/etc/pacman.conf"
+	handle = pycman.config.init_with_config(config_file)
+
+	localdb = handle.get_localdb()
+
+	pkglist = localdb.pkgcache
+	# @TODO: filter pkglist from stdin or args
+	# @TODO: aur pkgs ?
+
+	db_order = { db.name: str(i).rjust(3, "0") for i, db in enumerate(handle.get_syncdbs()) }
+
+	pkgs_grouped = dict()
+	for pkg in pkglist:
+		if args.explicit and pkg.reason != pyalpm.PKG_REASON_EXPLICIT:
+			continue
+		pkgu = pyalpm.sync_newversion(pkg, handle.get_syncdbs())
+		if pkgu is None:
+			continue
+		groupedtitle = ''
+		groupedkey = ''
+		if args.groupby == 'groups':
+			groupedtitle = " ".join(pkgu.groups)
+			groupedkey = " ".join(pkgu.groups) if len(pkgu.groups) > 0 else "~"
+		elif args.groupby == 'db':
+			groupedtitle = pkgu.db.name
+			groupedkey = db_order[pkgu.db.name]
+		elif args.groupby == 'dbngroups':
+			groupedtitle = " ".join([pkgu.db.name] + pkgu.groups)
+			groupedkey = db_order[pkgu.db.name] + (" ".join(pkgu.groups) if len(pkgu.groups) > 0 else "~")
+		grouped = pkgs_grouped.setdefault(groupedkey, Grouped(groupedtitle))
+		grouped.pkgs.append((pkg, pkgu))
+		if pkg.reason == pyalpm.PKG_REASON_EXPLICIT:
+			grouped.hasexplicit = True
+
+	if len(pkgs_grouped) == 0:
+		return 1
+
+	def format_size(size, force=False, iec=False):
+		size = int(size)
+		if iec:
+			s = size / 1048576
+			u = "MiB"
+		else:
+			s = size / 1000000
+			u = "MB"
+		s = round(s, 1)
+		if not force and s == 0:
+			return ""
+		return "{:+}{}".format(s, u)
+
+	total_sizediff = 0
+	total_pkgs = 0
+	outtable = []
+	for k, grouped in sorted(pkgs_grouped.items(), key=lambda p: p[0]):
+		ident = ""
+		if len(grouped.title) > 0:
+			ident = "  "
+			g = ""
+			if grouped.hasexplicit:
+				g += C_EXPLICIT + grouped.title + ":" + C_RESET
+			else:
+				g += grouped.title+":"
+			outtable.append(g)
+
+		pkgsorted = grouped.pkgs
+		for sortkey in args.sortkeys:
+			sortkey, rev = SortChoiceListAction.parsekeyrev(sortkey)
+			if sortkey == 'name':
+				pkgsorted.sort(key=lambda p: p[1].name, reverse=rev)
+			elif sortkey == 'versioninc':
+				pkgsorted.sort(key=lambda p: version_increment_sort_key(p[0].version, p[1].version), reverse=not rev)
+			elif sortkey == 'groups':
+				pkgsorted.sort(key=lambda p: " ".join(p[1].groups) if len(p[1].groups) > 0 else "~", reverse=rev)
+			elif sortkey == 'db':
+				pkgsorted.sort(key=lambda p: p[1].db.name, reverse=rev)
+			elif sortkey == 'explicit':
+				pkgsorted.sort(key=lambda p: p[0].reason == pyalpm.PKG_REASON_EXPLICIT, reverse=not rev)
+			elif sortkey == 'sizediff':
+				pkgsorted.sort(key=lambda p: p[1].isize - p[0].isize, reverse=not rev)
+			elif sortkey == 'buildago':
+				pkgsorted.sort(key=lambda p: p[1].builddate - p[0].builddate, reverse=not rev)
+
+		for pkg, pkgu in pkgsorted:
+			name = pkgu.name
+			if pkg.reason == pyalpm.PKG_REASON_EXPLICIT:
+				name = C_EXPLICIT + name + C_RESET
+			oldver = pkg.version
+			newver = pkgu.version
+			oldveri, newveri = find_version_diff(oldver, newver)
+			oldvercolor = C_VERSION_O + oldver[:oldveri] + C_VERSION_OLD + oldver[oldveri:] + C_RESET
+			newvercolor = C_VERSION_N + newver[:newveri] + C_VERSION_NEW + newver[newveri:] + C_RESET
+			sizediff = format_size(pkgu.isize - pkg.isize, iec=args.iec);
+			total_sizediff += pkgu.isize - pkg.isize;
+			total_pkgs += 1
+			buildago = seconds_to_ago(pkgu.builddate - pkg.builddate)
+			if pkgu.builddate - pkg.builddate > args_old_sec:
+				buildago = C_OLD + buildago + C_RESET
+
+			p = []
+			p.append(ident + C_DB + pkgu.db.name + C_RESET)
+			p.append(name)
+			p.append(oldvercolor)
+			#p.append("->")
+			p.append(newvercolor)
+			p.append(buildago)
+			p.append(sizediff)
+			if len(pkgu.groups) > 0:
+				p.append("(" + " ".join(pkgu.groups) + ")")
+			else:
+				p.append('')
+			#p.append('https://www.archlinux.org/packages/'+pkgu.db.name+'/'+pkgu.arch+'/'+pkgu.name+'/')
+			#p.append(pkgu.url)
+
+			outtable.append(p)
+
+	outtable.append("total: " + str(total_pkgs) + " packages, " + format_size(total_sizediff, force=True, iec=args.iec))
+
+	outtable_lengths = [ [ len(strip_ANSI(c)) for c in r ] for r in outtable ]
+
+	# Merge name and oldver
+	namecoli = 1
+	nameverw = 0
+	for i in range(len(outtable_lengths)):
+		around = range(max(i - 1, 0), min(i + 2, len(outtable_lengths)))
+		ml = max([ getor(outtable_lengths[j], namecoli, 0) for j in around ])
+		mr = max([ getor(outtable_lengths[j], namecoli + 1, 0) for j in around ])
+		nameverw = max(nameverw, ml + mr)
+	nameverw += 1
+	for i in range(len(outtable_lengths)):
+		if not isinstance(outtable[i], str):
+			l = outtable_lengths[i][namecoli] + outtable_lengths[i][namecoli + 1]
+			outtable[i][namecoli] += (nameverw - l) * ' ' + outtable[i][namecoli + 1]
+			del outtable[i][namecoli + 1]
+			del outtable_lengths[i][namecoli + 1]
+
+	# Print table
+	def format_cell(cell, w):
+		if w == 0:
+			return ""
+		striped = strip_ANSI(cell)
+		if striped[0:1].isnumeric() or ((striped[0:1] == "+" or striped[0:1] == "-") and striped[1:2].isnumeric()):
+			return "{:>{}}".format(cell, w+len(cell)-len(striped))
+		else:
+			return "{:{}}".format(cell, w+len(cell)-len(striped))
+	tablews = [ max(col) for col in itertools.zip_longest(*outtable_lengths, fillvalue=0) ]
+	for row in outtable:
+		if isinstance(row, str):
+			print(row)
+		else:
+			print(" ".join(format_cell(cell, tablews[i]) for i, cell in enumerate(row)))
+
+	return 0
+
+if __name__ == "__main__":
+	ret = main(sys.argv[1:])
+	sys.exit(ret)
