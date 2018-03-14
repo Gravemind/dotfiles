@@ -34,7 +34,7 @@ pacup() {
 	sudo pacman -Syuw --noconfirm "$@" || { echo "${fg_bold[red]}$0: pacman -Syuw failed !!$reset_color"; return 1; }
 	pacaur --aur -Syuw --noconfirm --noedit "$@" || { echo "${fg_bold[red]}$0: pacaur --aur -Syuw failed !!$reset_color"; return 1; }
 
-	pacaur -Qu
+	~/bin/pacpend
 	if [[ $? -eq 0 ]]
 	then
 		echo "${fg_bold[green]}$0: pending upgrades downloaded$reset_color"
