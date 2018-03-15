@@ -26,8 +26,9 @@ pacupmir() {
 	fi
 }
 
-# Download only new packages
 pacup() {
+	echo "${fg_bold[blue]}check and download only package updates...$reset_color"
+
 	pacupmir || { echo "$0: pacupmir failed"; return 1; }
 
 	cachedir="/var/cache/pacman/pkg/"
@@ -54,15 +55,16 @@ pacup() {
 	then
 		#echo "${fg_bold[green]}$0: new pending packages$reset_color"
 	else
-		echo "${fg_bold[green]}$0: no new packages$reset_color"
+		echo "${fg_bold[green]}no new packages$reset_color"
 	fi
 }
 
-# Download and Install packages
 pacupg() {
+	echo "${fg_bold[blue]}check, download, and install package updates...$reset_color"
+
 	pacupmir || { echo "$0: pacupmir failed"; return 1; }
 
-	pacman -Sy > /dev/null
+	pacaur -Sy > /dev/null
 	~/bin/pacpend -b ''
 
 	## `pacaur` does not catch pacman errors and continues with AUR packages silently, so run pacman alone
@@ -70,7 +72,7 @@ pacupg() {
 	sudo pacman -Syu --noconfirm "$@" || { echo "${fg_bold[red]}$0: pacman -Syu failed !!$reset_color"; return 1; }
 	pacaur --aur -Syu --noconfirm --noedit "$@" || { echo "${fg_bold[red]}$0: pacaur --aur -Syu failed !!$reset_color"; return 1; }
 
-	echo "${fg_bold[green]}$0: package updated$reset_color"
+	echo "${fg_bold[green]}package updated$reset_color"
 
 	checkpacnew
 }
