@@ -5,6 +5,8 @@ import itertools
 import re
 import argparse
 import time
+import os
+import subprocess
 
 # https://git.archlinux.org/pyalpm.git/
 # pacman -S pyalpm
@@ -13,8 +15,6 @@ import pycman.config
 
 import pprint
 pp = pprint.PrettyPrinter(indent=4).pprint
-
-handle = None
 
 ISATTY=sys.stdout.isatty()
 def coloriftty(c):
@@ -153,31 +153,62 @@ class SortChoiceListAction(argparse.Action):
 
 def make_parser():
 	parser = argparse.ArgumentParser(
-		description="Prettier `pacman -Qu`, for humans.",
-		epilog="Highlighted package names are those you explicitly installed",
+		description=r"""Prettier `pacman -Qu`, using `checkupdates` database by default.
+
+Tries to use same temporary database as `checkupdates`'s by default.
+Here is how the database gets picked:
+  - `-b ''` -> pacman's default (from /etc/pacman.conf)
+  - `-b <path>` -> path
+  - non-empty $CHECKUPDATES_DB -> $CHECKUPDATES_DB
+  - same default dbpath as `checkupdates`'s
+
+Examples:
+  Simply checking for updates
+  $> checkupdates > /dev/null && %(prog)s
+
+  Check and download updates, using non-root and safe dbpath:
+  # Setup once as root: (so users can download, should be safe, else use --cachedir)
+    #> sudo chmod a+w /var/cache/pacman/pkg
+  # Check and download as user:
+    $> checkupdates > /dev/null; %(prog)s; echo ":: Downloading only:";\
+         fakeroot -- pacman --noconfirm -Suwb "${TMPDIR:-/tmp}/checkup-db-${USER}/"
+
+""",
 		formatter_class=argparse.RawTextHelpFormatter)
 
 	parser.add_argument('--iec',
 		action = 'store_true', default = False,
-		help = 'Display IEC sizes (MiB), instead of SI (MB).\n(default: %(default)s)')
+		help = 'display IEC sizes (MiB), instead of SI (MB).\n(default: %(default)s)')
 	parser.add_argument('--old', metavar="<months>",
 		type=int, default = 8,
-		help = 'Threshold in months to colorize old packages.\n(default: %(default)s)')
+		help = 'threshold in months to colorize old packages.\n(default: %(default)s)')
 
-	filtering = parser.add_argument_group('Filter')
+	filtering = parser.add_argument_group('filter')
 	filtering.add_argument('-e', '--explicit',
 		action = 'store_true', default = False,
-		help = 'List only explicitly installed pakages.\n(default: %(default)s)')
+		help = 'list only explicitly installed pakages.\n(default: %(default)s)')
 
-	ordering = parser.add_argument_group('Sort and Group')
+	ordering = parser.add_argument_group('sort and group')
 	ordering.add_argument('-g', '--group-by', metavar = '<key>',
 		dest='groupby',
 		choices = ['none', 'groups', 'db', 'dbngroups'], default = 'groups',
-		help = 'Group packages (%(choices)s).\n(default: %(default)s)')
+		help = 'group packages by %(choices)s.\n(default: %(default)s)')
 	ordering.add_argument('-s', '--sort-by', metavar = '<list>',
 		dest='sortkeys',
 		action = SortChoiceListAction, default = SortChoiceListAction.DEFAULT,
-		help = 'Ordered sort key list\n('+', '.join(SortChoiceListAction.CHOICES)+').\nSuffix key by "-" to reverse.\n(default: '+','.join(SortChoiceListAction.DEFAULT)+')')
+		help = 'ordered sort key list\n('+', '.join(SortChoiceListAction.CHOICES)+').\nsuffix key by "-" to reverse.\n(default: '+','.join(SortChoiceListAction.DEFAULT)+')')
+
+	# partial pyalpm/pycman/config.py make_parser()
+	common = parser.add_argument_group('pacman')
+	common.add_argument('-b', '--dbpath', metavar = '<path>',
+			action = 'store', dest = 'dbpath', type = str,
+			help = 'set an alternate database location.\nempty path to force pacman\'s default.')
+	common.add_argument('--config', metavar = '<file>',
+			action = 'store', dest = 'config', type = str,
+			help = 'set an alternate configuration file')
+	#common.add_argument('--cachedir', metavar = '<dir>',
+	#		action = 'store', dest = 'cachedir', type = str,
+	#		help = 'set an alternate cche location')
 
 	return parser
 
@@ -190,32 +221,52 @@ class Grouped:
 		self.pkgs = []
 		self.hasexplicit = False
 
-def main(rawargs):
+class NamespaceDef():
+	def __getattr__(self, name):
+		return None
 
-	global handle
+def main(rawargs):
 
 	parser = make_parser()
 	args = parser.parse_args(rawargs)
 	args_old_sec = args.old * 2629746
-	#pp(args)
 
-	# @TODO: parse options and use init_with_config_and_options
-	config_file = "/etc/pacman.conf"
-	handle = pycman.config.init_with_config(config_file)
+	# Pacman config file
+	if args.config is None:
+		args.config = "/etc/pacman.conf"
+	pacman_config = pycman.config.PacmanConfig(conf=args.config)
 
-	localdb = handle.get_localdb()
+	# Resolve pacman db path
+	if args.dbpath == '':
+		args.dbpath = pacman_config.options["DBPath"]
+	elif args.dbpath is None:
+		args.dbpath = os.environ.get('CHECKUPDATES_DB', '')
+		if args.dbpath == '':
+			# /usr/bin/checkupdates
+			# CHECKUPDATES_DB="${TMPDIR:-/tmp}/checkup-db-${USER}/"
+			args.dbpath = os.environ.get('TMPDIR', '/tmp') + '/checkup-db-' + os.environ.get('USER', '') + '/'
+		if not os.path.exists(args.dbpath + '/local'):
+			sys.stderr.write('Did you run checkupdates ? db does not exists: {}/local\n'.format(args.dbpath))
+	pacman_args = NamespaceDef()
+	pacman_args.dbpath = args.dbpath
+	pacman_args.config = args.config
+	#pacman_args.cachedir = args.cachedir
+	pacman_config.load_from_options(pacman_args)
 
+	# Load pacman db
+	pacman_handle = pacman_config.initialize_alpm()
+	localdb = pacman_handle.get_localdb()
 	pkglist = localdb.pkgcache
 	# @TODO: filter pkglist from stdin or args
 	# @TODO: aur pkgs ?
 
-	db_order = { db.name: str(i).rjust(3, "0") for i, db in enumerate(handle.get_syncdbs()) }
-
+	db_order = { db.name: str(i).rjust(3, "0") for i, db in enumerate(pacman_handle.get_syncdbs()) }
 	pkgs_grouped = dict()
 	for pkg in pkglist:
 		if args.explicit and pkg.reason != pyalpm.PKG_REASON_EXPLICIT:
 			continue
-		pkgu = pyalpm.sync_newversion(pkg, handle.get_syncdbs())
+		pkgu = pyalpm.sync_newversion(pkg, pacman_handle.get_syncdbs())
+		#pkgu = pkg
 		if pkgu is None:
 			continue
 		groupedtitle = ''
@@ -315,7 +366,10 @@ def main(rawargs):
 
 			outtable.append(p)
 
-	outtable.append("total: " + str(total_pkgs) + " packages, " + format_size(total_sizediff, force=True, iec=args.iec))
+	t = "total: {} packages, {}".format(total_pkgs, format_size(total_sizediff, force=True, iec=args.iec))
+	if args.dbpath is not None:
+		t += ' (db: '+args.dbpath+')'
+	outtable.append(t)
 
 	outtable_lengths = [ [ len(strip_ANSI(c)) for c in r ] for r in outtable ]
 
@@ -344,12 +398,15 @@ def main(rawargs):
 			return "{:>{}}".format(cell, w+len(cell)-len(striped))
 		else:
 			return "{:{}}".format(cell, w+len(cell)-len(striped))
+
+	print('')
 	tablews = [ max(col) for col in itertools.zip_longest(*outtable_lengths, fillvalue=0) ]
 	for row in outtable:
 		if isinstance(row, str):
 			print(row)
 		else:
 			print(" ".join(format_cell(cell, tablews[i]) for i, cell in enumerate(row)))
+	print('')
 
 	return 0
 
