@@ -1,0 +1,88 @@
+#!/bin/bash
+
+set -euo pipefail
+
+prog="$(basename "$0")"
+
+if [[ "${1:--h}" == "-h" ]]
+then
+    echo "
+usage: $prog src_file.rrd clamp_max_value [replace_by_string]
+
+  replace_by_string default is clamp_max_value
+
+Example: clamp values to 10 maximum
+  $> sudo $prog /var/lib/collectd/rrd/$HOSTNAME/ping/ping-8.8.8.8.rrd 10
+
+Example: remove values greater than 10 (replace by NaN)
+  $> sudo $prog /var/lib/collectd/rrd/$HOSTNAME/ping/ping-8.8.8.8.rrd 10 NaN
+
+"
+    exit 1
+fi
+
+src="$1"
+maxvalue="$2"
+newvalue="${3:-$2}"
+
+if [[ "$newvalue" != "NaN" ]]
+then
+    newvalue="$(printf %e "$newvalue")"
+fi
+
+echo "Looking for values greater than $maxvalue in $src ..."
+
+tmpfile="$(mktemp --tmpdir rrdtool_clamp.XXXXXXXX)"
+trap 'rm -f $tmpfile' INT TERM EXIT
+rrdtool dump "$src" > "$tmpfile"
+
+valuereg='(.*<v>)([0-9].*?)(<\/v>.*)'
+
+echo
+gawk -v "vmax=$maxvalue" -v "vnew=$newvalue" '
+match($0, /'"$valuereg"'/, vm) { if (vm[2] > vmax) { gv+=vm[2]; gc++; } else { lv+=vm[2]; lc++; } }
+END {
+    t = (gc + lc)
+    printf "Found %d values\n", t
+    printf "  to be unchanged : %7g,%5.1f%%, average: %g\n", lc, (100 * lc / t), (lc == 0 ? "-" : lv / lc)
+    printf "  to be replaced  : %7g,%5.1f%%, average: %g\n", gc, (100 * gc / t), (gc == 0 ? "-" : gv / gc)
+    printf "Would replace by %s\n", vnew
+}' "$tmpfile"
+echo
+
+echo -n "Replace them [y/N] ?"
+read -n 1 resp
+echo
+if [[ "x$resp" != "xy" ]]
+then
+    echo "Aborting."
+    exit 1
+fi
+
+backup="${src}.b"
+echo "Backing up to $backup"
+cp "$src" "$backup"
+
+echo "Replacing..."
+rm -f "$src"
+
+rrdtool restore \
+        <(gawk -v "vmax=$maxvalue" -v "vnew=$newvalue" '
+match($0, /'"$valuereg"'/, vm) { if (vm[2] > vmax) { $0 = vm[1] vnew vm[3]; } }
+{ print }
+' "$tmpfile") \
+        "$src"
+
+echo "Checking..."
+
+r=0
+rrdtool info "$src" > /dev/null || r=$?
+if [[ "$r" -ne 0 ]]
+then
+    echo "Something went wrong, restoring backup"
+    cp "$backup" "$src"
+    exit 1
+fi
+
+echo "Done. removing backup."
+rm -f "$backup"
