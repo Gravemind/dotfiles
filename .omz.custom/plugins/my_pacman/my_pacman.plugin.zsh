@@ -22,37 +22,55 @@ pacupmir() {
 		echo "$0: mirrorlist is $(durationtostr $ago old), updating:"
 		pacupdatemirrors || { echo "${fg_bold[red]}$0: pacupdatemirrors failed !!$reset_color"; return 1 }
 	else
-		echo "$0: mirrorlist is $(durationtostr $ago old), not updating yet"
+		#echo "$0: mirrorlist is $(durationtostr $ago old), not updating yet"
 	fi
 }
 
-# Download only new upgrades
+# Download only new packages
 pacup() {
 	pacupmir || { echo "$0: pacupmir failed"; return 1; }
 
+	cachedir="/var/cache/pacman/pkg/"
+	if [[ ! -w "$cachedir" ]]
+	then
+		echo "$0: Cannot write cache dir as user, it should be safe to:"
+		echo "$0: $> sudo chmod a+w $cachedir"
+		return 1
+	fi
+
+	# same as default of checkupdates
+	export CHECKUPDATES_DB="${TMPDIR:-/tmp}/checkup-db-${USER}/"
+
+	checkupdates > /dev/null
+
+	~/bin/pacpend
+
 	## `pacaur` does not catch pacman errors and continues with AUR packages silently, so run pacman alone
-	sudo pacman -Syuw --noconfirm "$@" || { echo "${fg_bold[red]}$0: pacman -Syuw failed !!$reset_color"; return 1; }
-	pacaur --aur -Syuw --noconfirm --noedit "$@" || { echo "${fg_bold[red]}$0: pacaur --aur -Syuw failed !!$reset_color"; return 1; }
+	( fakeroot -- pacman -Suw --noconfirm --dbpath "$CHECKUPDATES_DB" --color=always || { echo "${fg_bold[red]}$0: pacman -Syuw failed !!$reset_color"; return 1; } ) | grep -v '^$'
+	( pacaur --aur -Suw --noconfirm --noedit--color=always || { echo "${fg_bold[red]}$0: pacaur --aur -Syuw failed !!$reset_color"; return 1; } ) | grep -v '^$'
 
 	~/bin/pacpend
 	if [[ $? -eq 0 ]]
 	then
-		echo "${fg_bold[green]}$0: pending upgrades downloaded$reset_color"
+		#echo "${fg_bold[green]}$0: new pending packages$reset_color"
 	else
-		echo "${fg_bold[green]}$0: no pending upgrades$reset_color"
+		echo "${fg_bold[green]}$0: no new packages$reset_color"
 	fi
 }
 
-# Download and Install upgrades
+# Download and Install packages
 pacupg() {
 	pacupmir || { echo "$0: pacupmir failed"; return 1; }
+
+	pacman -Sy > /dev/null
+	~/bin/pacpend -b ''
 
 	## `pacaur` does not catch pacman errors and continues with AUR packages silently, so run pacman alone
 	## and `pacaur -Syur` exits 1 ?
 	sudo pacman -Syu --noconfirm "$@" || { echo "${fg_bold[red]}$0: pacman -Syu failed !!$reset_color"; return 1; }
 	pacaur --aur -Syu --noconfirm --noedit "$@" || { echo "${fg_bold[red]}$0: pacaur --aur -Syu failed !!$reset_color"; return 1; }
 
-	echo "${fg_bold[green]}$0: upgraded$reset_color"
+	echo "${fg_bold[green]}$0: package updated$reset_color"
 
 	checkpacnew
 }
