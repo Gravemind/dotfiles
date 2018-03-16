@@ -7,6 +7,7 @@ import argparse
 import time
 import os
 import subprocess
+from operator import itemgetter, attrgetter
 
 # https://git.archlinux.org/pyalpm.git/
 # pacman -S pyalpm
@@ -54,7 +55,7 @@ strip_ANSI_pat = re.compile(r"""
 def strip_ANSI(s):
     return strip_ANSI_pat("", s)
 
-def seconds_to_ago(s, maxComp = 2):
+def seconds_to_human(s):
     a = [(31556736, 'Y', 'year', '-'),
          #(2630016, 'M', 'month'),
          (2629746, 'M', 'month', '-'),
@@ -67,8 +68,9 @@ def seconds_to_ago(s, maxComp = 2):
     for d in a:
         if s >= d[0]:
             f = (s / d[0])
-            return str(round(f, 1)) + ' ' + d[2] + 's'
-    return '0'
+            #return str(round(f, 1)) + ' ' + d[2] + 's'
+            return str(round(f, 1)) + d[1]
+    return 'now'
 
 numbers_re = re.compile("\d+");
 def find_version_diff(a, b):
@@ -80,7 +82,7 @@ def find_version_diff(a, b):
     return last
 
 ends_with_pkgrel_re = re.compile("-\d+$").search
-def version_increment_sort_key(a, b):
+def version_diff_sort_key(a, b):
     # fix epoch changes
     epocha = ":" in a
     epochb = ":" in a
@@ -130,8 +132,17 @@ def version_increment_sort_key(a, b):
 
 # https://stackoverflow.com/questions/8526675/python-argparse-optional-append-argument-with-choices#8527629
 class SortChoiceListAction(argparse.Action):
-    CHOICES = ['name', 'versioninc', 'groups', 'db', 'explicit', 'sizediff', 'buildago']
-    DEFAULT = ['name', 'versioninc']
+    SORT_KEYS = [
+        ('name'    , 'package name'),
+        ('groups'  , 'package groups'),
+        ('db'      , 'package sync database name'),
+        ('explicit', 'package explicitly installed or not'),
+        ('old'     , 'old package build date'),
+        ('vdiff'   , 'difference between old version and new one'),
+        ('sizediff', 'difference between old installed size and new one'),
+    ]
+    DEFAULT = ['name', 'vdiff']
+    CHOICES = map(itemgetter(0), SORT_KEYS)
     def __call__(self, parser, namespace, values, option_string=None):
         if values:
             values = values.split(",")
@@ -151,6 +162,10 @@ class SortChoiceListAction(argparse.Action):
             return key[:-1], True
         return key, False
 
+    def sortkeyshelp(ident):
+        m = max([ len(s[0]) for s in SortChoiceListAction.SORT_KEYS ])
+        return "\n".join([ '{}{:<{}} : {}'.format(ident, s[0], m, s[1]) for s in SortChoiceListAction.SORT_KEYS])
+
 def make_parser():
     parser = argparse.ArgumentParser(
         description=r"""Prettier `pacman -Qu`, using `checkupdates` database by default.
@@ -162,11 +177,11 @@ Here is how the database gets picked:
   - non-empty $CHECKUPDATES_DB -> $CHECKUPDATES_DB
   - same default dbpath as `checkupdates`'s
 
-Examples:
-  Simply checking for updates
+examples:
+  - Simply checking for updates:
   $> checkupdates > /dev/null && %(prog)s
 
-  Check and download updates, using non-root and safe dbpath:
+  - Check and download updates, using non-root and safe dbpath:
   # Setup once as root: (so users can download, should be safe, else use --cachedir)
     #> sudo chmod a+w /var/cache/pacman/pkg
   # Check and download as user:
@@ -174,6 +189,11 @@ Examples:
          fakeroot -- pacman --noconfirm -Suwb "${TMPDIR:-/tmp}/checkup-db-${USER}/"
 
 """,
+        epilog=r"""
+sort keys:
+{sortkeys}
+
+""".format(sortkeys=SortChoiceListAction.sortkeyshelp("  ")),
         formatter_class=argparse.RawTextHelpFormatter)
 
     parser.add_argument('--iec',
@@ -189,14 +209,14 @@ Examples:
         help = 'list only explicitly installed pakages.\n(default: %(default)s)')
 
     ordering = parser.add_argument_group('sort and group')
-    ordering.add_argument('-g', '--group-by', metavar = '<key>',
+    ordering.add_argument('-g', '--group-by', metavar = '<groupby>',
         dest='groupby',
         choices = ['none', 'groups', 'db', 'dbngroups'], default = 'groups',
         help = 'group packages by %(choices)s.\n(default: %(default)s)')
-    ordering.add_argument('-s', '--sort-by', metavar = '<list>',
+    ordering.add_argument('-s', '--sort-by', metavar = '<key,...>',
         dest='sortkeys',
         action = SortChoiceListAction, default = SortChoiceListAction.DEFAULT,
-        help = 'ordered sort key list\n('+', '.join(SortChoiceListAction.CHOICES)+').\nsuffix key by "-" to reverse.\n(default: '+','.join(SortChoiceListAction.DEFAULT)+')')
+        help = 'ordered sort key list.\nsee sort keys section.\n"-" suffix to reverse: name-,vdiff-\n(default: '+','.join(SortChoiceListAction.DEFAULT)+')')
 
     # partial pyalpm/pycman/config.py make_parser()
     common = parser.add_argument_group('pacman')
@@ -301,10 +321,11 @@ def main(rawargs):
             return ""
         return "{:+}{}".format(s, u)
 
+    now = int(time.time())
     total_sizediff = 0
     total_pkgs = 0
     outtable = []
-    for k, grouped in sorted(pkgs_grouped.items(), key=lambda p: p[0]):
+    for k, grouped in sorted(pkgs_grouped.items(), key=itemgetter(0)):
         ident = ""
         if len(grouped.title) > 0:
             ident = "  "
@@ -320,18 +341,18 @@ def main(rawargs):
             sortkey, rev = SortChoiceListAction.parsekeyrev(sortkey)
             if sortkey == 'name':
                 pkgsorted.sort(key=lambda p: p[1].name, reverse=rev)
-            elif sortkey == 'versioninc':
-                pkgsorted.sort(key=lambda p: version_increment_sort_key(p[0].version, p[1].version), reverse=not rev)
             elif sortkey == 'groups':
                 pkgsorted.sort(key=lambda p: " ".join(p[1].groups) if len(p[1].groups) > 0 else "~", reverse=rev)
             elif sortkey == 'db':
                 pkgsorted.sort(key=lambda p: p[1].db.name, reverse=rev)
             elif sortkey == 'explicit':
                 pkgsorted.sort(key=lambda p: p[0].reason == pyalpm.PKG_REASON_EXPLICIT, reverse=not rev)
+            elif sortkey == 'old':
+                pkgsorted.sort(key=lambda p: p[0].builddate, reverse=rev)
+            elif sortkey == 'vdiff':
+                pkgsorted.sort(key=lambda p: version_diff_sort_key(p[0].version, p[1].version), reverse=not rev)
             elif sortkey == 'sizediff':
                 pkgsorted.sort(key=lambda p: p[1].isize - p[0].isize, reverse=not rev)
-            elif sortkey == 'buildago':
-                pkgsorted.sort(key=lambda p: p[1].builddate - p[0].builddate, reverse=not rev)
 
         for pkg, pkgu in pkgsorted:
             name = pkgu.name
@@ -345,9 +366,9 @@ def main(rawargs):
             sizediff = format_size(pkgu.isize - pkg.isize, iec=args.iec);
             total_sizediff += pkgu.isize - pkg.isize;
             total_pkgs += 1
-            buildago = seconds_to_ago(pkgu.builddate - pkg.builddate)
-            if pkgu.builddate - pkg.builddate > args_old_sec:
-                buildago = C_OLD + buildago + C_RESET
+            olddate = seconds_to_human(now - pkg.builddate)
+            if now - pkg.builddate > args_old_sec:
+                olddate = C_OLD + olddate + C_RESET
 
             p = []
             p.append(ident + C_DB + pkgu.db.name + C_RESET)
@@ -355,7 +376,7 @@ def main(rawargs):
             p.append(oldvercolor)
             #p.append("->")
             p.append(newvercolor)
-            p.append(buildago)
+            p.append(olddate)
             p.append(sizediff)
             if len(pkgu.groups) > 0:
                 p.append("(" + " ".join(pkgu.groups) + ")")
