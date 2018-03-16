@@ -219,7 +219,7 @@ sort keys:
     ordering = parser.add_argument_group('sort and group')
     ordering.add_argument('-g', '--group-by', metavar = '<groupby>',
         dest='groupby',
-        choices = ['none', 'groups', 'db', 'dbngroups'], default = 'groups',
+        choices = ['none', 'groups', 'db', 'dbngroups', 'explicit'], default = 'groups',
         help = 'group packages by %(choices)s.\n(default: %(default)s)')
     ordering.add_argument('-s', '--sort-by', metavar = '<key,...>',
         dest='sortkeys',
@@ -318,6 +318,15 @@ def main(rawargs):
         elif args.groupby == 'dbngroups':
             groupedtitle = " ".join([pkgu.db.name] + pkgu.groups)
             groupedkey = db_order[pkgu.db.name] + (" ".join(pkgu.groups) if len(pkgu.groups) > 0 else "~")
+        elif args.groupby == 'explicit':
+            if pkg.reason == pyalpm.PKG_REASON_EXPLICIT:
+                reason = 'explicitly installed'
+            elif pkg.reason == pyalpm.PKG_REASON_DEPEND:
+                reason = 'installed as dependency'
+            else:
+                reason = 'N/A'
+            groupedtitle = reason
+            groupedkey = pkg.reason
         grouped = pkgs_grouped.setdefault(groupedkey, Grouped(groupedtitle))
         grouped.pkgs.append((pkg, pkgu))
         if pkg.reason == pyalpm.PKG_REASON_EXPLICIT:
