@@ -7,6 +7,7 @@ import argparse
 import time
 import os
 import subprocess
+import unittest
 from operator import itemgetter, attrgetter
 
 # https://git.archlinux.org/pyalpm.git/
@@ -66,59 +67,65 @@ def seconds_to_human(s):
             return str(round(f, 1)) + d[1]
     return 'now'
 
-numbers_re = re.compile("\d+");
+starts_with_epoch_re_search = re.compile("^\d+:").search
+ends_with_pkgrel_re_search = re.compile("-\d+$").search
+version_comp_re = re.compile("[0-9a-zA-Z+]+");
+
+def versions_components_normalized(a, b):
+    ca = [ (m.start(), m.group()) for m in version_comp_re.finditer(a) ]
+    cb = [ (m.start(), m.group()) for m in version_comp_re.finditer(b) ]
+    assert len(ca) > 0
+    assert len(cb) > 0
+    # fix epoch changes
+    epocha = (starts_with_epoch_re_search(a) != None)
+    if epocha != (starts_with_epoch_re_search(b) != None):
+        if not epocha: ca = [(0, "0")] + ca
+        else:          cb = [(0, "0")] + cb
+    # fix pkrel changes
+    pkgrela = (ends_with_pkgrel_re_search(a) != None)
+    if pkgrela != (ends_with_pkgrel_re_search(b) != None):
+        if not pkgrela: ca.append((len(a), "0"))
+        else:           cb.append((len(b), "0"))
+    ## padd before pkgrel to equal size
+    def paddb(ca, cb):
+        return cb[:-1] + [ (cb[-1][0], "0") for _ in range(len(ca) - len(cb)) ] + cb[-1:]
+    if len(ca) > len(cb):
+        cb = paddb(ca, cb)
+    elif len(ca) < len(cb):
+        ca = paddb(cb, ca)
+    return ca, cb
+
+# cd bin/; ln -sf pacpend pacpend.py; python -m unittest -v pacpend.py
+class TestVersions(unittest.TestCase):
+    def test_versions_components_normalized(self):
+        self.assertEqual(versions_components_normalized("1.2", "1.2"),
+                         ([ (0, "1"), (2, "2") ], [ (0, "1"), (2, "2") ]))
+        self.assertEqual(versions_components_normalized("1.2.3.4", "2:2-2"),
+                         ([(0, "0"), (0, "1"), (2, "2"), (4, "3"), (6, "4"), (7, "0")],
+                          [(0, "2"), (2, "2"), (4, "0"), (4, "0"), (4, "0"), (4, "2")]))
+
 def find_version_diff(a, b):
     last = (0, 0)
-    for ab in zip(*[numbers_re.finditer(r) for r in [a, b]]):
-        last = (ab[0].start(), ab[1].start())
-        if ab[0].group() != ab[1].group():
+    for ab in zip(*versions_components_normalized(a, b)):
+        last = (ab[0][0], ab[1][0])
+        if ab[0][1] != ab[1][1]:
             return last
     return last
 
-ends_with_pkgrel_re = re.compile("-\d+$").search
 def version_diff_sort_key(a, b):
-    # fix epoch changes
-    epocha = ":" in a
-    epochb = ":" in a
-    if epocha != epochb:
-        if not epocha:
-            a = "0:" + a
-        if not epochb:
-            b = "0:" + b
-    ## fix pkgrel changes
-    pkgrela = ends_with_pkgrel_re(a) != None
-    pkgrelb = ends_with_pkgrel_re(b) != None
-    if pkgrela != pkgrelb:
-        if not pkgrela:
-            a += "-0"
-        if not pkgrelb:
-            b += "-0"
-
-    af = numbers_re.findall(a)
-    bf = numbers_re.findall(b)
-    assert len(af) > 0
-    assert len(bf) > 0
-
-    ## padd before pkgrel to equal size
-    def paddb(af, bf):
-        return bf[:-1] + [ "0" for _ in range(len(af) - len(bf)) ] + bf[-1:]
-    if len(af) > len(bf):
-        bf = paddb(af, bf)
-    elif len(af) < len(bf):
-        af = paddb(bf, af)
-
+    af, bf = versions_components_normalized(a, b)
     scorei = -1
     scores = []
     for i, ab in enumerate(zip(af, bf)):
-        if scorei == -1 and ab[0] != ab[1]:
+        ac, bc = ab[0][1], ab[1][1]
+        if scorei == -1 and ac != ab:
             scorei = i
         if scorei != -1:
             # to compare 1.1.2->1.2.0 and 1.1.2->1.2.1 we need to compute score to the end
-            if ab[0].isnumeric() and ab[1].isnumeric() and int(ab[1]) > 0:
-                scores.append((int(ab[1]) - int(ab[0])) / int(ab[1]))
+            if ac.isnumeric() and bc.isnumeric() and int(bc) > 0:
+                scores.append((int(bc) - int(ac)) / int(bc))
             else:
                 scores.append(0)
-
     total = len(bf)
     key = [ (total - scorei) / total ] + scores
     #pp([a, af, bf, key])
@@ -273,7 +280,7 @@ def main(rawargs):
             # CHECKUPDATES_DB="${TMPDIR:-/tmp}/checkup-db-${USER}/"
             args.dbpath = os.environ.get('TMPDIR', '/tmp') + '/checkup-db-' + os.environ.get('USER', '') + '/'
         if not os.path.exists(args.dbpath + '/local'):
-            sys.stderr.write('Did you run checkupdates ? db does not exists: {}/local\n'.format(args.dbpath))
+            sys.stderr.write(col('bold', 'red')+'Did you run checkupdates ? db does not exists: {}/local\n'+col('reset').format(args.dbpath))
     pacman_args = NamespaceDef()
     pacman_args.dbpath = args.dbpath
     pacman_args.config = args.config
