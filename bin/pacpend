@@ -125,7 +125,7 @@ def version_diff_sort_key(a, b):
             if ac.isnumeric() and bc.isnumeric() and int(bc) > 0:
                 scores.append((int(bc) - int(ac)) / int(bc))
             else:
-                scores.append(0)
+                scores.append(0.9) # arbitrary
     total = len(bf)
     key = [ (total - scorei) / total ] + scores
     #pp([a, af, bf, key])
