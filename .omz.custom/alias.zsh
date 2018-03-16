@@ -13,8 +13,13 @@ alias rcp='cp -r'
 alias c='clear'
 alias e='exit'
 
-alias rgg='noglob rg --files -g'
-alias rggg='noglob rg -uuui --files -g'
+rgg() {
+    s="$1"
+    shift
+    rg -uu --files --iglob '*'"$s"'*' "$@"
+}
+alias rgg='noglob rgg'
+compdef _rg rgg=rg
 
 alias gdiff='git diff --no-index'
 alias gdiffw='git dw --no-index'
