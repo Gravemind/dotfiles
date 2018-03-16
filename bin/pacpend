@@ -147,7 +147,7 @@ class SortChoiceListAction(argparse.Action):
         ('sizediff', 'difference between old installed size and new one'),
     ]
     DEFAULT = ['name', 'vdiff']
-    CHOICES = map(itemgetter(0), SORT_KEYS)
+    CHOICES = list(map(itemgetter(0), SORT_KEYS))
     def __call__(self, parser, namespace, values, option_string=None):
         if values:
             values = values.split(",")
