@@ -78,9 +78,13 @@ def versions_components_normalized(a, b):
     assert len(cb) > 0
     # fix epoch changes
     epocha = (starts_with_epoch_re_search(a) != None)
-    if epocha != (starts_with_epoch_re_search(b) != None):
+    epochb = (starts_with_epoch_re_search(b) != None)
+    if epocha != epochb:
         if not epocha: ca = [(0, "0")] + ca
         else:          cb = [(0, "0")] + cb
+    elif epocha and epochb and ca[0][1] == cb[0][1]: # remove epoch if same
+        ca = ca[1:]
+        cb = cb[1:]
     # fix pkrel changes
     pkgrela = (ends_with_pkgrel_re_search(a) != None)
     if pkgrela != (ends_with_pkgrel_re_search(b) != None):
