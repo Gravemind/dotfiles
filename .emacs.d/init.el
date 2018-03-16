@@ -1024,8 +1024,6 @@ With argument, do this that many times."
   ;; Save current position to mark ring when jumping to a different place
   (add-hook 'helm-goto-line-before-hook #'helm-save-current-pos-to-mark-ring)
 
-  ;;(helm-mode 1)
-
   ;;
   ;; use ripgrep
   ;;    https://github.com/BurntSushi/ripgrep
@@ -1033,6 +1031,9 @@ With argument, do this that many times."
   (setq-default helm-grep-ag-command "rg --color=always --colors 'match:fg:red' --colors 'match:style:bold' --smart-case --no-heading --line-number %s %s %s")
   (setq-default helm-grep-ag-pipe-cmd-switches '("--colors 'match:fg:red'" "--colors 'match:style:bold'"))
   (defalias 'helm-do-grep-rg 'helm-do-grep-ag)
+
+  ;; helm everywhere
+  (helm-mode 1)
 
   )
 
