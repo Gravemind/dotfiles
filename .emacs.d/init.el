@@ -339,6 +339,7 @@
       (find-alternate-file fname))))
 
 (req-package ido
+  ;:disabled
   :bind (("C-x C-f" . ido-find-file)
          ("C-x b"   . ido-switch-buffer)
          ("C-x C-r" . find-alternative-file-with-sudo)
@@ -952,7 +953,7 @@ With argument, do this that many times."
 ;;
 
 (req-package helm
-  ;;:disabled
+  ;:disabled
   ;; :require helm-command
   :bind (("M-x" . helm-M-x)
          :map helm-grep-mode-map
@@ -1042,9 +1043,21 @@ With argument, do this that many times."
 ;;
 
 (req-package helm-dash
-  ;;:disabled
+  ;:disabled
   :require helm
   :commands (helm-dash helm-dash-activate-docset))
+
+(req-package ivy
+  :disabled
+  :demand
+  :config
+  (setq ivy-use-virtual-buffers t
+        ivy-count-format "%d/%d "
+        )
+  (define-key ivy-minibuffer-map (kbd "C-j") #'ivy-immediate-done)
+  (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
+  (ivy-mode)
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
