@@ -17,33 +17,27 @@ import pycman.config
 import pprint
 pp = pprint.PrettyPrinter(indent=4).pprint
 
-ISATTY=sys.stdout.isatty()
-def coloriftty(c):
-    return c if ISATTY else str()
-C_RED=coloriftty("\033[31m")
-C_BRED=coloriftty("\033[1;31m")
-C_MAG=coloriftty("\033[35m")
-C_BMAG=coloriftty("\033[1;35m")
-C_YELLOW=coloriftty("\033[33m")
-C_BYELLOW=coloriftty("\033[1;33m")
-C_BLUE=coloriftty("\033[34m")
-C_BBLUE=coloriftty("\033[1;34m")
-C_CYAN=coloriftty("\033[36m")
-C_BCYAN=coloriftty("\033[1;36m")
-C_WHITE=coloriftty("\033[37m")
-C_BWHITE=coloriftty("\033[1;37m")
-C_GREEN=coloriftty("\033[32m")
-C_BGREEN=coloriftty("\033[1;32m")
-C_UNDERLINE=coloriftty("\033[4m")
-C_RESET=coloriftty("\033[1;0m")
-
-C_VERSION_O=C_BLUE
-C_VERSION_OLD=C_BBLUE
-C_VERSION_N=C_CYAN
-C_VERSION_NEW=C_BCYAN
-C_DB=C_BMAG
-C_OLD=C_BCYAN
-C_EXPLICIT=C_BWHITE
+COLORS={ 'red'      : "\033[31m",
+         'green'    : "\033[32m",
+         'yellow'   : "\033[33m",
+         'blue'     : "\033[34m",
+         'mag'      : "\033[35m",
+         'cyan'     : "\033[36m",
+         'white'    : "\033[37m",
+         'bold'     : "\033[1m",
+         'underline': "\033[4m",
+         'reset'    : "\033[0m" }
+def col_never(*cs):  return ''
+def col_always(*cs): return "".join([COLORS[c] for c in cs])
+global col
+col = col_never
+def init_col_when(when):
+    if when == 'auto':
+        usecolor=sys.stdout.isatty()
+    else:
+        usecolor=(when == 'always')
+    global col
+    col = col_always if usecolor else col_never
 
 ## https://stackoverflow.com/questions/14889454/printed-length-of-a-string-in-python
 strip_ANSI_pat = re.compile(r"""
@@ -202,6 +196,9 @@ sort keys:
     parser.add_argument('--old', metavar="<months>",
         type=int, default = 8,
         help = 'threshold in months to colorize old packages.\n(default: %(default)s)')
+    parser.add_argument('--color', metavar="<when>",
+        choices=['never', 'always', 'auto'], default='auto',
+        help = 'when to use colors.\n(default: %(default)s)')
 
     filtering = parser.add_argument_group('filter')
     filtering.add_argument('-e', '--explicit',
@@ -250,6 +247,16 @@ def main(rawargs):
     parser = make_parser()
     args = parser.parse_args(rawargs)
     args_old_sec = args.old * 2629746
+
+    init_col_when(args.color)
+    col_vers_old=col('blue')
+    col_vers_d=col('bold', 'blue')
+    col_vers_new=col('cyan')
+    col_vers_w=col('bold', 'cyan')
+    col_db=col('bold', 'mag')
+    col_old=col('bold', 'cyan')
+    col_explicit=col('bold', 'white')
+    col_reset=col('reset')
 
     # Pacman config file
     if args.config is None:
@@ -331,7 +338,7 @@ def main(rawargs):
             ident = "  "
             g = ""
             if grouped.hasexplicit:
-                g += C_EXPLICIT + grouped.title + ":" + C_RESET
+                g += col_explicit + grouped.title + ":" + col_reset
             else:
                 g += grouped.title+":"
             outtable.append(g)
@@ -357,21 +364,21 @@ def main(rawargs):
         for pkg, pkgu in pkgsorted:
             name = pkgu.name
             if pkg.reason == pyalpm.PKG_REASON_EXPLICIT:
-                name = C_EXPLICIT + name + C_RESET
+                name = col_explicit + name + col_reset
             oldver = pkg.version
             newver = pkgu.version
             oldveri, newveri = find_version_diff(oldver, newver)
-            oldvercolor = C_VERSION_O + oldver[:oldveri] + C_VERSION_OLD + oldver[oldveri:] + C_RESET
-            newvercolor = C_VERSION_N + newver[:newveri] + C_VERSION_NEW + newver[newveri:] + C_RESET
+            oldvercolor = col_vers_old + oldver[:oldveri] + col_vers_d + oldver[oldveri:] + col_reset
+            newvercolor = col_vers_new + newver[:newveri] + col_vers_w + newver[newveri:] + col_reset
             sizediff = format_size(pkgu.isize - pkg.isize, iec=args.iec);
             total_sizediff += pkgu.isize - pkg.isize;
             total_pkgs += 1
             olddate = seconds_to_human(now - pkg.builddate)
             if now - pkg.builddate > args_old_sec:
-                olddate = C_OLD + olddate + C_RESET
+                olddate = col_old + olddate + col_reset
 
             p = []
-            p.append(ident + C_DB + pkgu.db.name + C_RESET)
+            p.append(ident + col_db + pkgu.db.name + col_reset)
             p.append(name)
             p.append(oldvercolor)
             #p.append("->")
