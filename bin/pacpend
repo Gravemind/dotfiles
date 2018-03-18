@@ -8,6 +8,8 @@ import time
 import os
 import subprocess
 import unittest
+import collections
+import json, urllib.parse, urllib.request
 from operator import itemgetter, attrgetter
 
 # https://git.archlinux.org/pyalpm.git/
@@ -133,6 +135,69 @@ def version_diff_sort_key(a, b):
     #pp([a, af, bf, key])
     return key
 
+FakeDb = collections.namedtuple('FakeDb', 'name')
+fake_aur_db = FakeDb('aur')
+
+class AurPkg:
+    def fetch_pkg_pkgaur_pairs(pkglist):
+        if not pkglist:
+            return []
+
+        # @TODO: pacaur checks for url len < 4400 (for curl? http?), should we do too ?
+        aur_url = "https://aur.archlinux.org/rpc/?v=5"
+        params = urllib.parse.urlencode({'type':'info', 'arg[]': [p.name for p in pkglist]}, doseq=True)
+        url = "%s&%s" % (aur_url, params)
+        with urllib.request.urlopen(url) as f:
+            response = f.read().decode('utf-8')
+            responsecode = f.getcode()
+        data = json.loads(response)
+        if responsecode != 200 or not data or 'type' not in data or data['type'] != 'multiinfo':
+            sys.stderr.write('error: failed to fecth aur packages !\nurl: {}\nresponse: {}\n'.format(url, responsecode))
+            pprint.PrettyPrinter(indent=2, stream=sys.stderr).pprint(response)
+            pprint.PrettyPrinter(indent=2, stream=sys.stderr).pprint(data)
+            return []
+
+        pairs = []
+        foreign_names = []
+        for pkg in pkglist:
+            aurdata = next((d for d in data['results'] if d['Name'] == pkg.name), None)
+            if not aurdata:
+                foreign_names.append(pkg.name)
+                continue
+            aurpkg = AurPkg(pkg, aurdata)
+            pairs.append((pkg, aurpkg))
+
+        if foreign_names:
+            sys.stderr.write('warning: foreign package not found in AUR: {}\n'.format(" ".join(foreign_names)))
+
+        return pairs
+
+    def __init__(self, pkg, data):
+        self.name = data.get('Name', '')
+        #self.id = int(data.get("ID"], '')
+        self.name = data.get("Name", '')
+        self.packagebaseid = data.get("PackageBaseID", 0)
+        self.packagebase = data.get("PackageBase", '')
+        self.version = data.get("Version", '0')
+        self.description = data.get("Description", '')
+        self.url = data.get("URL", '')
+        self.numvotes = data.get("NumVotes", '')
+        self.popularity = data.get("Popularity", 0)
+        self.outofdate = data.get("OutOfDate", False)
+        self.maintainer = data.get("Maintainer", '')
+        self.firstsubmitted = data.get("FirstSubmitted", 0)
+        self.lastmodified = data.get("LastModified", 0)
+        self.urlpath = data.get("URLPath", '')
+        self.depends = data.get("Depends", [])
+        self.optdepends = data.get("OptDepends", [])
+        self.license = data.get("License", '')
+        self.keywords = data.get("Keywords", [])
+
+        self.builddate = self.lastmodified
+        self.isize = pkg.isize # @TODO: make it explicitly unknown
+        self.groups = []
+        self.db = fake_aur_db
+
 # https://stackoverflow.com/questions/8526675/python-argparse-optional-append-argument-with-choices#8527629
 class SortChoiceListAction(argparse.Action):
     SORT_KEYS = [
@@ -208,6 +273,9 @@ sort keys:
     parser.add_argument('--color', metavar="<when>",
         choices=['never', 'always', 'auto'], default='auto',
         help = 'when to use colors.\n(default: %(default)s)')
+    parser.add_argument('-a', '--aur',
+        action = 'store_true',
+        help = 'download foreign packages info from AUR.\n(default: %(default)s)')
 
     filtering = parser.add_argument_group('filter')
     filtering.add_argument('-e', '--explicit',
@@ -295,17 +363,41 @@ def main(rawargs):
     localdb = pacman_handle.get_localdb()
     pkglist = localdb.pkgcache
     # @TODO: filter pkglist from stdin or args
-    # @TODO: aur pkgs ?
 
-    db_order = { db.name: str(i).rjust(3, "0") for i, db in enumerate(pacman_handle.get_syncdbs()) }
+    sync_dbs = pacman_handle.get_syncdbs()
+    sync_dbs_names = list([ db.name for db in sync_dbs ])
+    db_order = { name: str(i).rjust(3, "0") for i, name in enumerate(sync_dbs_names + [fake_aur_db.name]) }
     pkgs_grouped = dict()
+
+    if args.aur:
+        syncpkgs = set()
+        for db in sync_dbs:
+            syncpkgs |= set(p.name for p in db.pkgcache)
+        pkgscheckaur = []
+
+    flatpkgpairs = []
     for pkg in pkglist:
         if args.explicit and pkg.reason != pyalpm.PKG_REASON_EXPLICIT:
             continue
-        pkgu = pyalpm.sync_newversion(pkg, pacman_handle.get_syncdbs())
-        #pkgu = pkg
+        if args.aur and pkg.name not in syncpkgs:
+            pkgscheckaur.append(pkg)
+            continue
+        pkgu = pyalpm.sync_newversion(pkg, sync_dbs)
         if pkgu is None:
             continue
+        flatpkgpairs.append((pkg, pkgu))
+
+    if args.aur:
+        for pkg, pkgu in AurPkg.fetch_pkg_pkgaur_pairs(pkgscheckaur):
+            if pkg.version == pkgu.version:
+                continue
+            # devel packages can have installed version > to aur one, so ignore those
+            # @TODO: '--devel --needed' to fetch devel pkgs and resolve true version from PKGBUILD
+            if pyalpm.vercmp(pkg.version, pkgu.version) >= 0:
+                continue
+            flatpkgpairs.append((pkg, pkgu))
+
+    for pkg, pkgu in flatpkgpairs:
         groupedtitle = ''
         groupedkey = ''
         if args.groupby == 'groups':
