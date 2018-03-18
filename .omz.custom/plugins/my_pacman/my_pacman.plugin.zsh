@@ -4,6 +4,8 @@ alias pacman='env -u CC -u CXX -u CPP pacman '
 alias pacaur='env -u CC -u CXX -u CPP pacaur '
 alias pac='env -u CC -u CXX -u CPP pacaur '
 
+export PACPEND='-g explicit -s name,vdiff'
+
 if ! command which pacaur > /dev/null
 then
 	echo "${fg_bold[red]}pacaur not found${reset_color}"
@@ -26,6 +28,23 @@ pacupmir() {
 	fi
 }
 
+pacu() {
+	echo "${fg_bold[blue]}check only package updates...$reset_color"
+
+	# same as default of checkupdates
+	export CHECKUPDATES_DB="${TMPDIR:-/tmp}/checkup-db-${USER}/"
+
+	checkupdates > /dev/null
+	~/bin/pacpend --aur
+
+	if [[ $? -eq 0 ]]
+	then
+		#echo "${fg_bold[green]}$0: new pending packages$reset_color"
+	else
+		echo "${fg_bold[green]}no new packages$reset_color"
+	fi
+}
+
 pacup() {
 	echo "${fg_bold[blue]}check and download only package updates...$reset_color"
 
@@ -42,15 +61,12 @@ pacup() {
 	# same as default of checkupdates
 	export CHECKUPDATES_DB="${TMPDIR:-/tmp}/checkup-db-${USER}/"
 
-	checkupdates > /dev/null
-
-	~/bin/pacpend
-
 	## `pacaur` does not catch pacman errors and continues with AUR packages silently, so run pacman alone
-	( fakeroot -- pacman -Suw --noconfirm --dbpath "$CHECKUPDATES_DB" --color=always || { echo "${fg_bold[red]}$0: pacman -Syuw failed !!$reset_color"; return 1; } ) | grep -v '^$'
-	( pacaur --aur -Suw --noconfirm --noedit--color=always || { echo "${fg_bold[red]}$0: pacaur --aur -Syuw failed !!$reset_color"; return 1; } ) | grep -v '^$'
+	( fakeroot -- pacman -Syuw --noconfirm --dbpath "$CHECKUPDATES_DB" --color=always || { echo "${fg_bold[red]}$0: pacman -Syuw failed !!$reset_color"; return 1; } )
+	# ( pacaur --aur -Suw --noconfirm --noedit--color=always || { echo "${fg_bold[red]}$0: pacaur --aur -Syuw failed !!$reset_color"; return 1; } ) | grep -v '^$'
 
-	~/bin/pacpend
+	~/bin/pacpend --aur
+
 	if [[ $? -eq 0 ]]
 	then
 		#echo "${fg_bold[green]}$0: new pending packages$reset_color"
