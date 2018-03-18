@@ -122,12 +122,15 @@ def version_diff_sort_key(a, b):
     scores = []
     for i, ab in enumerate(zip(af, bf)):
         ac, bc = ab[0][1], ab[1][1]
-        if scorei == -1 and ac != ab:
+        if scorei == -1 and ac != bc:
             scorei = i
         if scorei != -1:
             # to compare 1.1.2->1.2.0 and 1.1.2->1.2.1 we need to compute score to the end
-            if ac.isnumeric() and bc.isnumeric() and int(bc) > 0:
-                scores.append((int(bc) - int(ac)) / int(bc))
+            if ac.isnumeric() and bc.isnumeric():
+                if int(bc) > 0:
+                    scores.append((int(bc) - int(ac)) / int(bc))
+                else:
+                    scores.append(0)
             else:
                 scores.append(0.9) # arbitrary
     total = len(bf)
