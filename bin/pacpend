@@ -109,12 +109,10 @@ class TestVersions(unittest.TestCase):
                           [(0, "2"), (2, "2"), (4, "0"), (4, "0"), (4, "0"), (4, "2")]))
 
 def find_version_diff(a, b):
-    last = (0, 0)
     for ab in zip(*versions_components_normalized(a, b)):
-        last = (ab[0][0], ab[1][0])
         if ab[0][1] != ab[1][1]:
-            return last
-    return last
+            return (ab[0][0], ab[1][0])
+    return (len(a), len(b))
 
 def version_diff_sort_key(a, b):
     af, bf = versions_components_normalized(a, b)
@@ -284,7 +282,8 @@ def main(rawargs):
             # CHECKUPDATES_DB="${TMPDIR:-/tmp}/checkup-db-${USER}/"
             args.dbpath = os.environ.get('TMPDIR', '/tmp') + '/checkup-db-' + os.environ.get('USER', '') + '/'
         if not os.path.exists(args.dbpath + '/local'):
-            sys.stderr.write(col('bold', 'red')+'Did you run checkupdates ? db does not exists: {}/local\n'+col('reset').format(args.dbpath))
+            sys.stderr.write(col('bold', 'red')+'Did you run checkupdates ? dbpath does not exists: {}\n'.format(args.dbpath)+col('reset'))
+            return 1
     pacman_args = NamespaceDef()
     pacman_args.dbpath = args.dbpath
     pacman_args.config = args.config
