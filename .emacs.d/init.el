@@ -352,6 +352,7 @@
      ido-everywhere t
      ido-default-buffer-method 'selected-window
      ido-max-prospects 32
+     ido-case-fold nil ; case sensitive
      ;; ido-use-filename-at-point 'guess
      )
     (ido-mode 1)
@@ -897,6 +898,7 @@ With argument, do this that many times."
    git-commit-summary-max-length 50
    git-commit-fill-column 72
    git-commit-turn-on-flyspell t
+   magit-log-arguments '("--graph" "--color" "--decorate" "--date-order" "-n256")
    )
 
   ;(setq-default git-commit-turn-on-auto-fill nil)
@@ -1031,7 +1033,7 @@ With argument, do this that many times."
   ;;
   (setq-default helm-grep-ag-command "rg --color=always --colors 'match:fg:red' --colors 'match:style:bold' --smart-case --no-heading --line-number %s %s %s")
   (setq-default helm-grep-ag-pipe-cmd-switches '("--colors 'match:fg:red'" "--colors 'match:style:bold'"))
-  (defalias 'helm-do-grep-rg 'helm-do-grep-ag)
+  (defalias 'helm-do-grep-rg-ripgrep 'helm-do-grep-ag)
 
   ;; helm everywhere
   (helm-mode 1)
