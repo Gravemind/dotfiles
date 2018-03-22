@@ -38,7 +38,7 @@
 
 	## Usage: git fclean PATH
 	## Force clean PATH to HEAD state
-	fclean = "!f() { [[ \"$#\" -gt 0 ]] && cd \"$GIT_PREFIX\" && ls -d \"$@\" && git checkout @ -- \"$@\" && git clean -xdf -- \"$@\" && echo \"Cleaned $@\"; }; f"
+	fclean = "!f() { a=\"${1:-./}\"; echo -n \"Checkout HEAD and clean $a ? [y/N] \" && read -n 1 r && echo && [[ $r == \"y\" ]] && cd \"$GIT_PREFIX\" && ls -d \"$a\" && git checkout @ -- \"$a\" && git clean -xdf -- \"$a\" && echo \"Cleaned $a\"; }; f"
 
 	## Usage: git fo BRANCH
 	## Fetch BRANCH and update local ref
