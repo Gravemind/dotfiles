@@ -7,3 +7,6 @@
 [submodule "bin/pacpend-git"]
 	path = bin/pacpend-git
 	url = https://github.com/Gravemind/pacpend.git
+[submodule "bin/lsdisk-git"]
+	path = bin/lsdisk-git
+	url = https://github.com/Gravemind/lsdisk
