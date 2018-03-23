@@ -4,3 +4,6 @@
 [submodule ".emacs.d/themes/emacs-theme-autumn"]
 	path = .emacs.d/themes/emacs-theme-autumn
 	url = https://github.com/Gravemind/emacs-theme-autumn.git
+[submodule "bin/pacpend-git"]
+	path = bin/pacpend-git
+	url = https://github.com/Gravemind/pacpend.git
