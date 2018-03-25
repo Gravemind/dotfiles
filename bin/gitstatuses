@@ -39,7 +39,7 @@ fetchrepo() {
 
     if [[ "$FETCHALL" == "1" ]]
     then
-        last_fetched="$(stat -c %Y .git/FETCH_HEAD)"
+        last_fetched="$([ -f .git/FETCH_HEAD ] && stat -c %Y .git/FETCH_HEAD || echo 0)"
         if [[ "$last_fetched" -le "$FETCH_IF_OLDER_THAN" ]]
         then
             (
