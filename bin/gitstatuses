@@ -152,7 +152,7 @@ do
     repos[i++]="$(dirname "$file")"
 done 3< <(find "$root" -name .git -type d -print0 | sort -z)
 
-echo "Processing ${#repos} repos ..."
+echo "Processing ${i} repos ..."
 
 i=0
 if [[ "$#" -ge 1 ]]
@@ -192,6 +192,7 @@ fi
 if [[ "$FETCHALL" == "1" ]]
 then
     maxjobs=6 # limit at 6 fetches at the same time
+    #ssh-add
 else
     maxjobs=$(nproc)
 fi
