@@ -1437,7 +1437,16 @@ With argument, do this that many times."
 ;; asm
 ;;
 
+(defun my-disaster-asm-mode ()
+  "asm-mode but with disaster--shadow-non-assembly-code"
+  (interactive)
+  (require 'disaster)
+  (asm-mode)
+  (disaster--shadow-non-assembly-code)
+)
+
 (req-package asm-mode
+  :commands (asm-mode my-disaster-asm-mode)
   :defer t
   :config
   (add-hook 'asm-mode-hook (lambda () (jo/tab-term-8)))
