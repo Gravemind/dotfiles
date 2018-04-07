@@ -61,6 +61,11 @@ pacup() {
 	# same as default of checkupdates
 	export CHECKUPDATES_DB="${TMPDIR:-/tmp}/checkup-db-${USER}/"
 
+	if [[ ! -e "$CHECKUPDATES_DB" ]]
+	then
+		checkupdates > /dev/null
+	fi
+
 	## `pacaur` does not catch pacman errors and continues with AUR packages silently, so run pacman alone
 	( fakeroot -- pacman -Syuw --noconfirm --dbpath "$CHECKUPDATES_DB" --color=always || { echo "${fg_bold[red]}$0: pacman -Syuw failed !!$reset_color"; return 1; } )
 	# ( pacaur --aur -Suw --noconfirm --noedit--color=always || { echo "${fg_bold[red]}$0: pacaur --aur -Syuw failed !!$reset_color"; return 1; } ) | grep -v '^$'
@@ -88,7 +93,7 @@ pacupg() {
 	sudo pacman -Syu --noconfirm "$@" || { echo "${fg_bold[red]}$0: pacman -Syu failed !!$reset_color"; return 1; }
 	pacaur --aur -Syu --noconfirm --noedit "$@" || { echo "${fg_bold[red]}$0: pacaur --aur -Syu failed !!$reset_color"; return 1; }
 
-	echo "${fg_bold[green]}package updated$reset_color"
+	echo "${fg_bold[green]}packages updated$reset_color"
 
 	checkpacnew
 }
