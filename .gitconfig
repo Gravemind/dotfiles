@@ -41,8 +41,8 @@
 	fclean = "!f() { a=\"${1:-./}\"; echo -n \"Checkout HEAD and clean $a ? [y/N] \" && read -n 1 r && echo && [[ $r == \"y\" ]] && cd \"$GIT_PREFIX\" && ls -d \"$a\" && git checkout @ -- \"$a\" && git clean -xdf -- \"$a\" && echo \"Cleaned $a\"; }; f"
 
 	## Usage: git fo BRANCH
-	## Fetch BRANCH and update local ref
-	fo = "!sh -c 'git fetch origin $1:$1;' -"
+	## Update BRANCH to it's upstream
+	fo = "!sh -c 'git update-ref refs/heads/$1 $1@{upstream}' -"
 
 	## Usage: git fco BRANCH
 	## "git fo BRANCH" then "git checkout BRANCH"
