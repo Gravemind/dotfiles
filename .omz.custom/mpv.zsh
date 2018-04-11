@@ -43,7 +43,7 @@ mpn() {
 		return 1
 	fi
 
-	NEXTFILE=$(\ls | sort -fi | \grep -F "$FOUNDFILE" -A 100 | tail -n '+2' | getfirstvalidfile)
+	NEXTFILE=$(\ls | sort -fiV | \grep -F "$FOUNDFILE" -A 100 | tail -n '+2' | getfirstvalidfile)
 
 	if [[ ! -e "$NEXTFILE" ]]
 	then
@@ -63,7 +63,7 @@ mpn() {
 }
 
 mpf() {
-	FIRST="$(ls | sort -fi | getfirstvalidfile)"
+	FIRST="$(ls | sort -fiV | getfirstvalidfile)"
 	echo
 	echo "  Now playing: \"$FIRST\""
 	echo
