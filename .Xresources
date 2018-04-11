@@ -35,7 +35,8 @@
 *color14:     #71bebe
 
 !white
-*color7:      #e8e8e8
+!*color7:      #e8e8e8
+*color7:      #b0b0b0
 *color15:     #e8e8e8
 
 ! fixes font spacing
@@ -54,6 +55,7 @@ URxvt*scrollBar:        false
 
 URxvt*transparent:      true
 URxvt*shading:          25
+URxvt*blurRadius:       17
 
 URxvt*scrollTtyOutput:      false
 URxvt*scrollWithBuffer:     true
