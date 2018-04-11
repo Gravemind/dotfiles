@@ -129,9 +129,9 @@ bindsym $ModK+e border toggle
 bindsym $ModK+q kill
 
 # Move to scrathpad
-bind $ModK+Shift+49 move scratchpad
+bindsym $ModK+Shift+grave move scratchpad
 # Toggle scratchpad
-bind $ModK+49 scratchpad show
+bindsym $ModK+grave scratchpad show
 
 # Change focus
 bindsym $ModK+$keyLeft          focus left
@@ -226,10 +226,10 @@ exec --no-startup-id clipmenud
 # Pulse Audio
 set $pactl_vol pactl set-sink-volume '@DEFAULT_SINK@'
 set $pactl_mute pactl set-sink-mute '@DEFAULT_SINK@' toggle
-bind $ModK+21 exec --no-startup-id $pactl_vol +2%
-bind $ModK+20 exec --no-startup-id $pactl_vol -2%
-bind $ModK+Shift+21 exec --no-startup-id $pactl_vol +10%
-bind $ModK+Shift+20 exec --no-startup-id $pactl_vol -10%
+bindsym $ModK+equal exec --no-startup-id $pactl_vol +2%
+bindsym $ModK+minus exec --no-startup-id $pactl_vol -2%
+bindsym $ModK+Shift+equal exec --no-startup-id $pactl_vol +10%
+bindsym $ModK+Shift+minus exec --no-startup-id $pactl_vol -10%
 bindsym XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +2%
 bindsym XF86AudioLowerVolume exec --no-startup-id $pactl_vol -2%
 bindsym $ModK+XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +2%
