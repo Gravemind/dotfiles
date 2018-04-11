@@ -1,0 +1,29 @@
+#!/bin/bash
+
+##
+## usage: pipes2files COMMAND...
+##
+## Read and replace pipes in argument by files in /tmp
+##
+## Example: pipes2files git diff --no-index <(ls a) <(ls b)
+##
+
+set -euo pipefail
+
+tmpdir="$(mktemp -d -t "$(basename $0).XXXXXXXX")"
+trap "{ rm -rf $tmpdir; }" EXIT
+
+args=()
+for arg in "$@"
+do
+    if [[ -p "$arg" ]]
+    then
+        tmpfile="$(mktemp "$tmpdir/XXXXXXXX")"
+        cp "$arg" "$tmpfile"
+        args+=("$tmpfile")
+    else
+        args+=("$arg")
+    fi
+done
+
+"${args[@]}"

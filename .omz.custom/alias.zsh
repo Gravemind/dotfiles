@@ -21,8 +21,8 @@ rgg() {
 alias rgg='noglob rgg'
 compdef _rg rgg=rg
 
-alias gdiff='git diff --no-index'
-alias gdiffw='git dw --no-index'
+alias gdiff='pipes2files git d --no-index'
+alias gdiffw='pipes2files git dw --no-index'
 
 alias clean='find . \( -name "*~" -or -name "#*#" \) -print -delete'
 alias fclean='find . \( -name "*~" -or -name "#*#" -or -name "*.o" -or -name "*.pyc" \) -print -delete'
