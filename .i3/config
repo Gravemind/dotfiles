@@ -115,12 +115,30 @@ assign [class="(?i)^.*steam.*$"] → 1
 # Use Mouse+ModK to drag floating windows to their wanted position
 floating_modifier $ModK
 
-# Reload i3 configuration file
-bindsym $ModK+Shift+w reload
-# Exit i3 (logs you out of your X session)
-bindsym $ModK+Escape exit
-# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $ModK+Shift+r restart
+set $locker i3lock -c 404552 && sleep 1
+#set $locker sleep 1
+
+# Lock, Restart, Reboot...
+set $mode_system "    [l]o[c]k    [e]xit  relo[a]d  [r]estart    [s]uspend  [h]ibernate    [S]hutdown  [R]eboot    "
+mode $mode_system {
+    bindsym l exec --no-startup-id $locker, mode "default"
+    bindsym c exec --no-startup-id $locker, mode "default"
+    # Exit i3 (logs you out of your X session)
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    # Reload i3 configuration file
+    bindsym a exec --no-startup-id i3-msg reload, mode "default"
+    # Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+    bindsym r exec --no-startup-id i3-msg restart, mode "default"
+    bindsym s exec --no-startup-id $locker && systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id $locker && systemctl hibernate, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+    bindsym Shift+r exec --no-startup-id systemctl reboot, mode "default"
+    # back to normal: Enter or Escape
+    bindsym q mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $ModK+Escape mode $mode_system
 
 # Toggle border decoration
 bindsym $ModK+e border toggle
@@ -183,7 +201,8 @@ bindsym $ModK+Shift+space floating toggle
 bindsym $ModK+space focus mode_toggle
 
 # Resize window (you can also use the mouse for that)
-mode "resize" {
+set $mode_resize "    [resize]    "
+mode $mode_resize {
     bindsym $keyLeft        resize shrink left  $resize_step px
     bindsym Shift+$keyLeft  resize grow   left  $resize_step px
     bindsym $keyDown        resize shrink down  $resize_step px
@@ -200,10 +219,11 @@ mode "resize" {
     bindsym Shift+Up        resize grow   up    $resize_step px
     bindsym Right           resize shrink right $resize_step px
     bindsym Shift+Right     resize grow   right $resize_step px
+    bindsym q mode "default"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym $ModK+r mode "resize"
+bindsym $ModK+r mode $mode_resize
 
 #
 # Bindings to launch programs
@@ -215,8 +235,8 @@ bindsym $ModK+r mode "resize"
 bindsym $ModK+z exec --no-startup-id "rofi -show combi -combi-modi 'run,ssh,window' -modi combi"
 
 # Cliboard Manager
-bindsym $ModK+Insert exec CM_LAUNCHER=rofi clipmenu -p clip
-exec --no-startup-id clipmenud
+bindsym $ModK+Insert exec --no-startup-id  "CM_LAUNCHER=rofi clipmenu -p clip"
+exec_always --no-startup-id "systemctl --user restart clipmenud.service"
 
 # Overriding Shift-Insert to type what's in primary clipboard (selection)
 # (xdotool bugge ? seems to type while Shift is pressed ?)
@@ -226,16 +246,16 @@ exec --no-startup-id clipmenud
 # Pulse Audio
 set $pactl_vol pactl set-sink-volume '@DEFAULT_SINK@'
 set $pactl_mute pactl set-sink-mute '@DEFAULT_SINK@' toggle
-bindsym $ModK+equal exec --no-startup-id $pactl_vol +2%
-bindsym $ModK+minus exec --no-startup-id $pactl_vol -2%
+bindsym $ModK+equal exec --no-startup-id $pactl_vol +5%
+bindsym $ModK+minus exec --no-startup-id $pactl_vol -5%
 bindsym $ModK+Shift+equal exec --no-startup-id $pactl_vol +10%
 bindsym $ModK+Shift+minus exec --no-startup-id $pactl_vol -10%
-bindsym XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +2%
-bindsym XF86AudioLowerVolume exec --no-startup-id $pactl_vol -2%
-bindsym $ModK+XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +2%
-bindsym $ModK+XF86AudioLowerVolume exec --no-startup-id $pactl_vol -2%
-bindsym $ModK+F12 exec --no-startup-id $pactl_vol +2%
-bindsym $ModK+F11 exec --no-startup-id $pactl_vol -2%
+bindsym XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id $pactl_vol -5%
+bindsym $ModK+XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +5%
+bindsym $ModK+XF86AudioLowerVolume exec --no-startup-id $pactl_vol -5%
+bindsym $ModK+F12 exec --no-startup-id $pactl_vol +5%
+bindsym $ModK+F11 exec --no-startup-id $pactl_vol -5%
 bindsym XF86AudioMute exec --no-startup-id $pactl_mute
 bindsym $ModK+XF86AudioMute exec --no-startup-id $pactl_mute
 
