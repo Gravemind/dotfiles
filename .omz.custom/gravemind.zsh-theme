@@ -9,7 +9,11 @@ PROMPT_USER=""
 # level (shell recursion depth)
 export OMZLVL="$((${OMZLVL:--1} + 1))"
 if [[ "$OMZLVL" -gt 0 ]]; then
-	PROMPT_USER="${PROMPT_USER} %F{yellow}$OMZLVL"
+	#PROMPT_USER="%F{yellow}$OMZLVL %F{white}:"
+	for i in {1..$OMZLVL}
+	do
+		PROMPT_USER+="%F{yellow}%{❰%G%}"
+	done
 fi
 # user
 if [[ $EUID -ne 1000 || -n "$SSH_CONNECTION" ]]; then
@@ -24,9 +28,9 @@ if [[ -n "$PROMPT_USER" ]]; then
 	PROMPT_USER="$PROMPT_USER %F{white}%{∶%G%}"
 fi
 
-PROMPT='%K{black}%B%F{white}%{❰%G%}'"${PROMPT_USER}"' $(gravemind_git_prompt_info_short)%1(j. %F{white}%{∶%G%} %F{green}%j.)%(?.. %F{white}%{∶%G%} %F{red}%?) %F{white}%{❱%G%} %f%b%K{black}'
+PROMPT='%K{black}%B%F{white}%{❰%G%}'"${PROMPT_USER}"' $(gravemind_prompt_info_short)%1(j. %F{white}%{∶%G%} %F{green}%j.)%(?.. %F{white}%{∶%G%} %F{red}%?) %F{white}%{❱%G%} %f%b%K{black}'
 
-RPS1='%K{black}%B%F{white}%{❰%G%} $(gravemind_git_prompt_info_long) %F{white}%{∶%G%} $(gravemind_promt_cc) %F{white}%{∶%G%} %F{blue}%D{%H:%M} %F{white}%{❱%G%}%f%b%k'
+RPS1='%K{black}%B%F{white}%{❰%G%}$GRAVEMIND_PROMPT_CMD_TIME $(gravemind_prompt_info_long) %F{white}%{∶%G%} $(gravemind_promt_cc) %F{white}%{∶%G%} %F{blue}%D{%H:%M} %F{white}%{❱%G%}%f%b%k'
 
 PROMPT2='%K{black}%B  %F{blue}%_ %F{white}%{❱%G%} %f%b%k'
 
@@ -51,14 +55,14 @@ function gravemind_git_prompt_current_branch() {
 	fi
 }
 
-function gravemind_git_prompt_info_short() {
+function gravemind_prompt_info_short() {
   local toplevel="$(command git rev-parse --show-toplevel 2>/dev/null)"
   if [[ -z "$toplevel" ]]; then
-	  echo -n "%F{blue}%30>…>%1~%<</"
+	  echo -n "%F{blue}%30>…>%1~%<<"
 	  return
   fi
   if [[ "$(command git config --get oh-my-zsh.hide-status 2>/dev/null)" = "1" ]]; then
-	  echo -n "%F{blue}%30>…>%1~%<</"
+	  echo -n "%F{blue}%30>…>%1~%<<"
 	  return
   fi
   ## FIXME when pwd is outside toplevel
@@ -78,7 +82,7 @@ function gravemind_git_prompt_info_short() {
   echo -n "%F{blue}⌥ %20>…>$gitrootname%<<%F{black}%20>…>$shortsubgit%<</"
 }
 
-function gravemind_git_prompt_info_long() {
+function gravemind_prompt_info_long() {
   local toplevel="$(command git rev-parse --show-toplevel 2>/dev/null)"
   if [[ -z "$toplevel" ]]; then
 	  echo -n "%F{black}%~"
@@ -118,12 +122,38 @@ function gravemind_promt_cc() {
 	fi
 }
 
-function gravemind_alert_precmd() {
-	## .Xresource: URxvt*urgentOnBell: true
-	echo -ne '\a'
+
+GRAVEMIND_CMD_START=$SECONDS
+function gravemind_preexec() {
+	GRAVEMIND_CMD_START=$SECONDS
 }
+
+GRAVEMIND_PROMPT_CMD_TIME=""
+function gravemind_precmd() {
+	if [[ $GRAVEMIND_CMD_START -lt 0 ]]
+	then
+		GRAVEMIND_PROMPT_CMD_TIME=""
+		return
+	fi
+	last_cmd_time=$(($SECONDS - $GRAVEMIND_CMD_START))
+	GRAVEMIND_CMD_START=-1
+	if [[ $last_cmd_time -ge 1 ]]
+	then
+		## .Xresource: URxvt*urgentOnBell: true
+		echo -ne '\a'
+		GRAVEMIND_PROMPT_CMD_TIME=" %F{blue}↳"
+		[[ $last_cmd_time -lt 3600 ]] || { GRAVEMIND_PROMPT_CMD_TIME+="$(($last_cmd_time / 3600))h"; last_cmd_time=$(($last_cmd_time % 3600)) }
+		[[ $last_cmd_time -lt 60 ]] || { GRAVEMIND_PROMPT_CMD_TIME+="$(($last_cmd_time / 60))m"; last_cmd_time=$(($last_cmd_time % 60)) }
+		[[ $last_cmd_time -lt 1 ]] || { GRAVEMIND_PROMPT_CMD_TIME+="$(($last_cmd_time))s"; }
+		GRAVEMIND_PROMPT_CMD_TIME+="↲ %F{white}%{∶%G%}"
+	else
+		GRAVEMIND_PROMPT_CMD_TIME=""
+	fi
+}
+
 ## prepend
-precmd_functions=(gravemind_alert_precmd "${precmd_functions[@]}")
+preexec_functions+=(gravemind_preexec)
+precmd_functions=(gravemind_precmd "${precmd_functions[@]}")
 
 ## refresh prompt every 60 sec
 ## builtin TRAPALRM called every TMOUT
