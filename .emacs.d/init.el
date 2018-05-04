@@ -31,7 +31,7 @@
 ;;(custom-set-faces
 ;; '(default ((t (:family "DejaVu Sans Mono" :foundry "PfEd" :slant normal :weight normal :height 100 :width normal)))))
 
-;; Dark
+;; Prefer dark theme
 (setq-default frame-background-mode 'dark)
 (set-terminal-parameter nil 'background-mode 'dark)
 
@@ -41,19 +41,17 @@
 ;;
 
 (setq-default package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                                 ("melpa" . "https://melpa.org/packages/")
+                                 ("melpa-stable" . "https://stable.melpa.org/packages/")
                                  ;;("marmalade" . "https://marmalade-repo.org/packages/")
-                                 ("melpa" . "https://melpa.org/packages/"))
-                                 ;;("melpa-stable" . "https://stable.melpa.org/packages/"))
-              )
+              ))
 
 (require 'package)
 (eval-when-compile (package-initialize))
 ;;(package-initialize)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Bootstrap req-package
-;;
 ;;   https://github.com/edvorg/emacs-configs/blob/master/init-real.el
 ;;
 
@@ -91,6 +89,7 @@
 (blink-cursor-mode -1)
 (electric-indent-mode -1)
 (column-number-mode 1)
+;; delete current selection when typing http://www.emacswiki.org/emacs/DeleteSelectionMode
 (delete-selection-mode 1)
 
 (if window-system
@@ -107,7 +106,7 @@
  truncate-lines t
  ;vc-handled-backends nil
  recentf-max-saved-items 92
- ;; delete current selection when typing http://www.emacswiki.org/emacs/DeleteSelectionMode
+
  org-startup-folded 'showeverything
  Man-width 100
 
@@ -123,7 +122,18 @@
  ;; https://emacs.stackexchange.com/questions/28736/emacs-pointcursor-movement-lag/28746
  auto-window-vscroll nil
 
+ ;; https://www.emacswiki.org/emacs/FillParagraph
+ ;; The original value is "\f\\|[ \t]*$", so we add the bullets (-), (+), and (*).
+ ;; There is no need for "^" as the regexp is matched at the beginning of line.
+ ;paragraph-start "\f\\|[ \t]*$\\|[ \t]*[-+] "
+ ;paragraph-separate "\\([ \t\f]*\\|.*\\.\\)$"
+ ;c-paragraph-start "[ \t]*\\(//+\\|\\**\\)[ \t]*\\([-+*] \\)?$\\|^\f"
+ fill-column 80
+
+ x-gtk-use-system-tooltips nil
  )
+
+;(custom-set-variables '(paragraph-start "\f\\|[ \t]*$\\|[ \t]*[-+*] "))
 
 ;;
 ;; show-paren-mode
@@ -147,7 +157,7 @@
 ;; Replace yes-or-no by y-or-n
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; This code adds , for revert:
+;; This code adds [,] to revert buffer when file changes:
 ;; https://stackoverflow.com/questions/10041284/how-to-not-save-changes-in-file-and-in-temp-buffer-too#10043197
 (when (boundp 'save-some-buffers-action-alist)
   (setq save-some-buffers-action-alist
@@ -173,6 +183,28 @@
 
 ;; (setq-default font-lock-maximum-decoration
 ;;     '((c-mode . 2) (c++-mode . 2)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; zoom-mode
+;;   auto resize windows
+;; (golden-ratio replacement)
+;;
+
+(req-package zoom
+  :init
+  (setq-default zoom-size '(0.618 . 0.618))
+  (zoom-mode t))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; winner
+;;   windows layout undo/redo bindings;
+;;   C-c left, C-c right
+;;
+
+(req-package winner
+  :config (winner-mode 1))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -202,123 +234,6 @@
   (setq-default savehist-additional-variables '(compile-command))
   (savehist-mode 1)
   )
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;; winner
-;;   windows layout undo/redo bindings;
-;;   C-c left, C-c right
-;;
-
-(req-package winner
-  :config (winner-mode 1))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;; Indent default 4 spaces
-;;
-
-(setq-default
- tab-stop-list (number-sequence 4 180 4)
- c-basic-offset 4
- tab-width 4
- standard-indent 4
- indent-tabs-mode nil)
-
-(setq-default whitespace-style '(face trailing indentation space-before-tab))
-(add-hook 'prog-mode-hook (lambda () (whitespace-mode 1)))
-
-(defun jo/iwb-space ()
-  "Indent whole buffer, see jo/tab-space."
-  (interactive)
-  (delete-trailing-whitespace)
-  ;;(indent-region (point-min) (point-max) nil)
-  (untabify (point-min) (point-max))
-  (indent-region (point-min) (point-max) nil)
-  (untabify (point-min) (point-max))
-  )
-
-(defun jo/iwb-tab ()
-  "Indent whole buffer, see jo/tab-tab."
-  (interactive)
-  (delete-trailing-whitespace)
-  (tabify (point-min) (point-max))
-  ;;(indent-region (point-min) (point-max) nil)
-  ;;(tabify (point-min) (point-max))
-  )
-
-(defun jo/tab-space (&optional opt-tab-width)
-  "Indent with 4 spaces."
-  (interactive)
-  (let ((tabw (if (eq opt-tab-width nil) 4 opt-tab-width)))
-    (progn
-      (setq c-basic-offset tabw
-            tab-width tabw
-            standard-indent tabw
-            indent-tabs-mode nil)))
-  (setq whitespace-style '(face trailing indentation space-before-tab))
-  (whitespace-mode 0)
-  (whitespace-mode 1)
-  (local-set-key [f5] 'jo/iwb-space)
-  (message "tab space")
-  )
-
-(defun jo/tab-tab (&optional opt-tab-width)
-  "Indent with 1 tabulation of 4 spaces width."
-  (interactive)
-  (let ((tabw (if (eq opt-tab-width nil) 4 opt-tab-width)))
-    (progn
-      (setq c-basic-offset tabw
-            tab-width tabw
-            standard-indent tabw
-            indent-tabs-mode t)))
-  (setq whitespace-style '(face trailing indentation space-before-tab))
-  (whitespace-mode 0)
-  (whitespace-mode 1)
-  (local-set-key [f5] 'jo/iwb-tab)
-  (message "tab tab")
-  )
-
-(defun jo/tab-absurde ()
-  "Indent absurde (4 spaces indent but replace 8 spaces by tabulation)"
-  (interactive)
-  (local-set-key [f5] 'jo/iwb-absurde)
-  (setq c-basic-offset 4
-        tab-width 8
-        standard-indent 4
-        indent-tabs-mode t)
-  (setq whitespace-style '(face trailing))
-  (whitespace-mode 0)
-  (whitespace-mode 1)
-  )
-
-(defun jo/tab-term-8 ()
-  "Indent 8 tab like a terminal."
-  (interactive)
-  (setq c-basic-offset 8
-        tab-width 8
-        standard-indent 8
-        indent-tabs-mode t)
-  ;(setq whitespace-style '(face trailing))
-  (whitespace-mode 0)
-  ;(whitespace-mode 1)
-  )
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;; golden-ratio
-;;   auto resize windows
-;;
-
-;; (req-package golden-ratio
-;;   :commands (golden-ratio-mode)
-;;   :init (golden-ratio-mode 1))
-
-(req-package zoom
-  :commands (zoom-mode)
-  :init
-  (setq-default zoom-size '(0.618 . 0.618))
-  (zoom-mode t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -361,6 +276,128 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; Indent default 4 spaces
+;;
+
+(setq-default
+ tab-stop-list (number-sequence 4 180 4)
+ c-basic-offset 4
+ tab-width 4
+ standard-indent 4
+ indent-tabs-mode nil)
+
+(setq-default whitespace-style '(face trailing indentation space-before-tab))
+(add-hook 'prog-mode-hook (lambda () (whitespace-mode 1)))
+
+(defun jo/iwb-space ()
+  "Indent whole buffer, see jo/tab-space."
+  (interactive)
+  (delete-trailing-whitespace)
+  ;;(indent-region (point-min) (point-max) nil)
+  (untabify (point-min) (point-max))
+  (indent-region (point-min) (point-max) nil)
+  (untabify (point-min) (point-max))
+  )
+
+(defun jo/iwb-tab ()
+  "Indent whole buffer, see jo/tab-tab."
+  (interactive)
+  (delete-trailing-whitespace)
+  (tabify (point-min) (point-max))
+  ;;(indent-region (point-min) (point-max) nil)
+  ;;(tabify (point-min) (point-max))
+  )
+
+
+;; https://stackoverflow.com/questions/11623721/can-i-just-tabify-begnning-of-lines-in-emacs
+(defun tabify-leading (start end)
+  "Call `tabify' with `tabify-regexp' set so that only leading
+spaces are treated."
+  (interactive "r")
+  (require 'tabify)
+  (setq tabify-regexp-old tabify-regexp)
+  (unwind-protect
+      (progn
+        (setq tabify-regexp "^\t* [ \t]+")
+        (tabify start end))
+    (setq tabify-regexp tabify-regexp-old)))
+;; @TODO untabify-leading (untabify do not use tabify-regexp)
+
+(defun jo/iwb ()
+  "Indent whole buffer, see jo/tab-tab."
+  (interactive)
+  (delete-trailing-whitespace)
+  (if (eq indent-tabs-mode t)
+      (tabify-leading (point-min) (point-max))
+    (untabify (point-min) (point-max)))
+  (indent-region (point-min) (point-max) nil)
+  (if (eq indent-tabs-mode t)
+      (tabify-leading (point-min) (point-max))
+    (untabify (point-min) (point-max)))
+  )
+
+(defun jo/tab-space (&optional opt-tab-width)
+  "Indent with 4 spaces."
+  (interactive)
+  (let ((tabw (if (eq opt-tab-width nil) 4 opt-tab-width)))
+    (progn
+      (setq c-basic-offset tabw
+            tab-width tabw
+            standard-indent tabw
+            indent-tabs-mode nil)))
+  (setq whitespace-style '(face trailing indentation space-before-tab))
+  (whitespace-mode 0)
+  (whitespace-mode 1)
+  ;(local-set-key [f5] 'jo/iwb-space)
+  (message "tab space")
+  )
+
+(defun jo/tab-tab (&optional opt-tab-width)
+  "Indent with 1 tabulation of 4 spaces width."
+  (interactive)
+  (let ((tabw (if (eq opt-tab-width nil) 4 opt-tab-width)))
+    (progn
+      (setq c-basic-offset tabw
+            tab-width tabw
+            standard-indent tabw
+            indent-tabs-mode t)))
+  (setq whitespace-style '(face trailing indentation space-before-tab))
+  (whitespace-mode 0)
+  (whitespace-mode 1)
+  ;(local-set-key [f5] 'jo/iwb-tab)
+  (message "tab tab")
+  )
+
+(defun jo/tab-absurde ()
+  "Indent absurde (4 spaces indent but replace 8 spaces by tabulation)"
+  (interactive)
+  ;(local-set-key [f5] 'jo/iwb-absurde)
+  (setq c-basic-offset 4
+        tab-width 8
+        standard-indent 4
+        indent-tabs-mode t)
+  (setq whitespace-style '(face trailing))
+  (whitespace-mode 0)
+  (whitespace-mode 1)
+  )
+
+(defun jo/tab-term-8 ()
+  "Indent 8 tab like a terminal."
+  (interactive)
+  (setq c-basic-offset 8
+        tab-width 8
+        standard-indent 8
+        indent-tabs-mode t)
+  ;(setq whitespace-style '(face trailing))
+  (whitespace-mode 0)
+  ;(whitespace-mode 1)
+  )
+
+(defun do-apply-jo/tab ()
+  (or (eq buffer-file-name nil) (eq (editorconfig-core-get-properties) nil)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; bindings
 ;;
 ;; (bind-key is installed and required by use-package)
@@ -371,6 +408,9 @@
 
  ;; M-i and C-tab
  ("C-<tab>"     . tab-to-tab-stop)
+
+ ;; Indent Whole Bufffer
+ ("<f5>"        . jo/iwb)
 
  ;; window
  ("<f7>"        . split-window-horizontally)
@@ -583,7 +623,7 @@ With argument, do this that many times."
   :init
   (add-hook 'prog-mode-hook (lambda () (auto-highlight-symbol-mode)))
   :config
-  (setq-default ahs-idle-interval 0.1
+  (setq-default ahs-idle-interval 0.07
                 ahs-case-fold-search nil
                 ;; Removed "$" to match "aaa" in "$aaa" and "${aaa}"
                 ahs-include  "^[0-9A-Za-z/_.,:;*+=&%|#@!^?-]+$"
@@ -623,7 +663,13 @@ With argument, do this that many times."
      ("\\<\\(FIXME\\|TODO\\\)\\>" 1 font-lock-warning-face prepend)
      ("\\<\\(null\\)\\>" 1 font-lock-keyword-face)
      ))
-  (jo/tab-tab)
+  (cond ((do-apply-jo/tab)) (jo/tab-tab))
+
+  ; original: "[ \t]*\\(//+\\|\\**\\)[ \t]*$\\|^\f"
+  ;;(setq fill-indent-according-to-mode 1)
+  ;(setq paragraph-start "[ \t]*\\(//+\\|\\**\\)[ \t]*\\($\\|[-+*] \\)\\|^\f")
+  (setq paragraph-start "[ \t]*\\(//+\\|\\**\\)[ \t]*\\($\\|[-+] \\)\\|^\f")
+  ;;(setq paragraph-start "[ \t]*\\(//+\\|\\**\\)[ \t]*$\\|^\f")
   )
 
 (defconst cc-style
@@ -667,7 +713,7 @@ With argument, do this that many times."
 (req-package lua-mode
   :mode ("\\.lua\\'" . lua-mode)
   :config
-  (add-hook 'lua-mode-hook (lambda () (jo/tab-tab)))
+  (add-hook 'lua-mode-hook (lambda () (cond ((do-apply-jo/tab)) (jo/tab-tab))))
   (setq-default lua-indent-level 4)
   )
 
@@ -680,7 +726,7 @@ With argument, do this that many times."
   :mode (("Rakefile\\'" . ruby-mode)
          ("\\.rb\\'" . ruby-mode))
   :config
-  (add-hook 'ruby-mode-hook (lambda () (jo/tab-space)))
+  (add-hook 'ruby-mode-hook (lambda () (cond ((do-apply-jo/tab)) (jo/tab-space))))
   ;(setq-default ruby-deep-arglist 4)
   ;(setq-default ruby-deep-indent-paren nil)
   )
@@ -710,8 +756,8 @@ With argument, do this that many times."
 ;; (req-package lisp-mode
 ;;   :pin manual
 ;;   :config
-  (add-hook 'emacs-lisp-mode-hook (lambda () (jo/tab-space 2)))
-  (add-hook 'lisp-mode-hook (lambda () (jo/tab-space 2)))
+  (add-hook 'emacs-lisp-mode-hook (lambda () (cond ((do-apply-jo/tab)) (jo/tab-space 2))))
+  (add-hook 'lisp-mode-hook (cond ((do-apply-jo/tab)) (lambda () (jo/tab-space 2))))
   ;; )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -722,7 +768,14 @@ With argument, do this that many times."
 (use-package editorconfig
   :ensure t
   :config
-  (editorconfig-mode 1))
+  (editorconfig-mode 1)
+  (add-hook 'editorconfig-custom-hooks
+            (lambda (hash)
+              (message "editorconfig hook")
+              (whitespace-mode 0)
+              (whitespace-mode +1)
+              ))
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -863,7 +916,7 @@ With argument, do this that many times."
 ;;(setq-default gdb-many-windows t)
 (setq-default gdb-create-source-file-list nil)
 
-(add-hook 'gdb-mode-hook (lambda () (jo/tab-tab 8)))
+(add-hook 'gdb-mode-hook (lambda () (cond ((do-apply-jo/tab)) (jo/tab-tab 8))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -878,16 +931,6 @@ With argument, do this that many times."
   :bind (("C-x g" . magit-status))
   ;;:init
   :config
-  (defun my-magit-log-upstream (&optional args files)
-    "Show log for `@{upstream}'."
-    (interactive (magit-log-arguments))
-    (magit-log (list "@{upstream}") args files))
-
-  (defun my-magit-pullff (&optional args)
-    "Pull fast forward only if possible
-\n(git pull --ff-only --no-rebase)"
-    (interactive (list (magit-commit-arguments)))
-    (magit-run-git-with-editor "pull" "--ff-only" "--no-rebase"))
 
   (setq-default
    magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1
@@ -898,11 +941,18 @@ With argument, do this that many times."
    git-commit-summary-max-length 50
    git-commit-fill-column 72
    git-commit-turn-on-flyspell t
-   magit-log-arguments '("--graph" "--color" "--decorate" "--date-order" "-n256")
    )
 
-  ;(setq-default git-commit-turn-on-auto-fill nil)
-  ;(add-hook 'git-commit-mode-hook 'turn-off-auto-fill)
+  (defun my-magit-log-upstream (&optional args files)
+    "Show log for `@{upstream}'."
+    (interactive (magit-log-arguments))
+    (magit-log (list "@{upstream}") args files))
+
+  (defun my-magit-pullff (&optional args)
+    "Pull fast forward only if possible
+\n(git pull --ff-only --no-rebase)"
+    (interactive (list (magit-commit-arguments)))
+    (magit-run-git-with-editor "pull" "--ff-only" "--no-rebase"))
 
   (magit-define-popup-switch
     'magit-log-popup
@@ -933,6 +983,15 @@ With argument, do this that many times."
   (magit-define-popup-switch
     'magit-diff-popup
     ?b "Ignore changes in amount of whitespace" "--ignore-space-change")
+
+  (setq-default
+   magit-log-arguments '("--graph" "--color" "--decorate" "--date-order" "-n256")
+   magit-pull-arguments '("--autostash")
+   magit-rebase-arguments '("--autostash")
+   )
+
+  ;(setq-default git-commit-turn-on-auto-fill nil)
+  ;(add-hook 'git-commit-mode-hook 'turn-off-auto-fill)
 
   )
 
@@ -1429,7 +1488,7 @@ With argument, do this that many times."
 (req-package sgml-mode
   :defer t
   :config
-  (add-hook 'html-mode-hook (lambda () (jo/tab-space 2)))
+  (add-hook 'html-mode-hook (lambda () (cond ((do-apply-jo/tab)) (jo/tab-space 2))))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1449,7 +1508,7 @@ With argument, do this that many times."
   :commands (asm-mode my-disaster-asm-mode)
   :defer t
   :config
-  (add-hook 'asm-mode-hook (lambda () (jo/tab-term-8)))
+  (add-hook 'asm-mode-hook (lambda () (cond ((do-apply-jo/tab)) (jo/tab-term-8))))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1463,10 +1522,19 @@ With argument, do this that many times."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; Golang
+;;
+
+(req-package go-mode
+  :defer t
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; other misc
 ;;
 
-(defun jo/hide-ctrl-M ()
+(defun jo/hide-crlf-M ()
   "Hides the disturbing '^M' showing up in files containing mixed UNIX and DOS line endings."
   (interactive)
   (setq buffer-display-table (make-display-table))
