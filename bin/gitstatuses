@@ -3,6 +3,7 @@
 set -euo pipefail
 
 C_RED="\033[1;31m"
+C_MAGENTA="\033[1;35m"
 C_YELLOW="\033[1;33m"
 C_BLUE="\033[1;34m"
 C_CYAN="\033[1;36m"
@@ -12,8 +13,8 @@ C_RESET="$(tput sgr0)"
 
 C_ERROR="$C_RED"
 C_OK="$C_GREEN"
-C_PULL="$C_YELLOW"
-C_PUSH="$C_YELLOW"
+C_PULL="$C_MAGENTA"
+C_PUSH="$C_CYAN"
 C_LOCAL="$C_RED"
 C_STAGE="$C_GREEN"
 
@@ -43,7 +44,7 @@ fetchrepo() {
         if [[ "$last_fetched" -le "$FETCH_IF_OLDER_THAN" ]]
         then
             (
-                git fetch
+                git fetch --all
             ) 1>&2 || echo -ne "${C_ERROR}fetch failed${C_RESET} "
             logdeb "$repo: fetched"
         else
@@ -101,38 +102,50 @@ fetchrepo() {
         ((++i))
     done 3< <( git status -z --branch --porcelain=v1 )
 
-    printf "${C_LOCAL}"
-    #printf "%1s" "$([[ "$count_Q" -gt 0 ]] && echo -n "?")"
-    local count_local=$(( $count_local_M + $count_local_D ))
-    if [[ "$count_U" -gt 0 ]]; then
-        echo -n "✖"
-    elif [[ "$count_local" -gt 0 ]]; then
-        echo -n "●"
-    else
-        echo -n " "
-    fi
-    #printf "%1s" "$([[ "$count_local_M" -gt 0 ]] && echo -n "M")"
-    #printf "%1s" "$([[ "$count_local_D" -gt 0 ]] && echo -n "D")"
-    #printf "%1s" "$([[ "$count_U" -gt 0 ]] && echo -n "U")"
+    printf "%3d %s " "$repoi" "$repo"
 
-    printf "${C_STAGE}"
+    local count_local=$(( $count_local_M + $count_local_D + $count_U + $count_Q))
+    echo -ne "${C_LOCAL}"
+    echo -ne "$([[ "$count_local" -gt 0 ]] && echo -n "●")"
+
     local count_stage=$(( $count_stage_M + $count_stage_A + $count_stage_D ))
-    printf "%1s" "$([[ "$count_stage" -gt 0 ]] && echo -n "●")"
-    #printf "%1s" "$([[ "$count_stage_M" -gt 0 ]] && echo -n "M")"
-    #printf "%1s" "$([[ "$count_stage_A" -gt 0 ]] && echo -n "A")"
-    #printf "%1s" "$([[ "$count_stage_D" -gt 0 ]] && echo -n "D")"
+    echo -ne "${C_STAGE}"
+    echo -ne "$([[ "$count_stage" -gt 0 ]] && echo -n "●")"
 
-    printf "${C_PUSH}"
-    #printf "%1s"  "$([[ "$count_ahead" -gt 0 ]] && echo -n "↑")"
-    #printf "%-3s" "$([[ "$count_ahead" -gt 0 ]] && echo -n "$count_ahead")"
-    printf "%1s" "$([[ "$count_ahead" -gt 0 ]] && echo -n "↑")"
+    ## branches
+    while IFS= read -r -u3 -d $'\n' line
+    do
+        local ishead=0
+        if [[ "$line" =~ ^\* ]]
+        then
+           ishead=1
+        fi
+        local branch=
+        local ahead=0
+        local behind=0
+        [[ "$line" =~ ^(\*?\ +[^\ ]+)\ + ]] && branch="${BASH_REMATCH[1]}"
+        [[ "$line" =~ ahead\ ([0-9]+) ]] && ahead="${BASH_REMATCH[1]}"
+        [[ "$line" =~ behind\ ([0-9]+) ]] && behind="${BASH_REMATCH[1]}"
+        if [[ $ahead -gt 0 || $behind -gt 0 ]]
+        then
+            echo
+            echo -n "    "
+            if [[ $ahead -gt 0 ]] ; then
+                printf "$C_PUSH%2d↑" $ahead
+            else
+                printf "   "
+            fi
+            if [[ $behind -gt 0 ]] ; then
+                printf "$C_PULL%2d↓" $behind
+            else
+                printf "   "
+            fi
+            echo -ne "$C_RESET"
+            echo -n " $branch"
+        fi
+    done 3< <( git branch -v --color=always )
 
-    printf "${C_PULL}"
-    #printf "%1s"  "$([[ "$count_behind" -gt 0 ]] && echo -n "↓")"
-    #printf "%-3s" "$([[ "$count_behind" -gt 0 ]] && echo -n "$count_behind")"
-    printf "%1s" "$([[ "$count_behind" -gt 0 ]] && echo -n "↓")"
-
-    printf "${C_RESET}"
+    echo "$C_RESET"
 
     #logdeb "$repo: done"
 }
@@ -211,9 +224,9 @@ wait
 i=0
 for repo in "${repos[@]}"
 do
-    res="$(cat "$tmpdir/$i")"
-    echo -n "$res"
-    printf "%3d %s\n" "$i" "$repo"
+    cat "$tmpdir/$i"
+    #echo "$res"
+    #printf "%3d %s\n" "$i" "$repo"
     ((++i))
 done
 
