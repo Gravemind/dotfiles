@@ -74,6 +74,11 @@
 	## --no-commit					# dont "auto" commit after merge
 	magicmerge = !git -c merge.renamelimit=2048 merge -X patience -X rename-threshold=10 -X ignore-space-at-eol --no-ff --no-commit
 
+
+	## Merge fast-forward only
+	mf = merge --ff-only
+	mff = merge --ff-only
+
 	## Merge non fast-forward (create a commit)
 	mnf = merge --no-ff
 
