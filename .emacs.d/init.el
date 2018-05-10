@@ -1138,6 +1138,32 @@ With argument, do this that many times."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; dired and dired-k
+;;   https://github.com/hlissner/doom-emacs/blob/master/modules/tools/dired/config.el
+;;
+
+
+(setq-default
+   ;; Auto refresh dired, but be quiet about it
+   global-auto-revert-non-file-buffers t
+   ;; Add human
+   dired-listing-switches "-alh"
+   dired-k-human-readable t
+   dired-k-style 'git)
+
+(req-package dired-k
+  :hook ((dired-initial-position . dired-k)
+         (dired-after-readin . dired-k-no-revert))
+  :config
+  (defun +dired*dired-k-highlight (orig-fn &rest args)
+    "Butt out if the requested directory is remote (i.e. through tramp)."
+    (unless (file-remote-p default-directory)
+      (apply orig-fn args)))
+  (advice-add #'dired-k--highlight :around #'+dired*dired-k-highlight)
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; git-gutter-fringe+
 ;;   show git diffs in fringe margin
 ;;
