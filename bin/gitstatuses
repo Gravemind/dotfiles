@@ -33,6 +33,10 @@ logdeb() {
     echo "$@" 1>&2
 }
 
+printfrepo() {
+    printf "%3d %s\t" "$1" "$2"
+}
+
 fetchrepo() {
     local repoi="$1"
     local repo="$2"
@@ -102,7 +106,7 @@ fetchrepo() {
         ((++i))
     done 3< <( git status -z --branch --porcelain=v1 )
 
-    printf "%3d %s " "$repoi" "$repo"
+    printfrepo "$repoi" "$repo"
 
     local count_local=$(( $count_local_M + $count_local_D + $count_U + $count_Q))
     echo -ne "${C_LOCAL}"
@@ -165,7 +169,7 @@ do
     repos[i++]="$(dirname "$file")"
 done 3< <(find -L "$root" -name .git -type d -print0 | sort -z)
 
-echo "Processing ${i} repos ..."
+echo "Found ${i} repos..."
 
 i=0
 if [[ "$#" -ge 1 ]]
@@ -181,23 +185,32 @@ then
         FETCH_IF_OLDER_THAN=9999999999
     else
         declare -a selectedrepos
-        while [[ "$1" =~ ^[0-9]+$ ]]
+        if [[ "$1" =~ ^[0-9]+$ ]]
+        then
+            while [[ "$1" =~ ^[0-9]+$ ]]
+            do
+                repoid="$1"
+                shift
+                if [[ "$repoid" -lt 0 || "$repoid" -gt "${#repos[@]}" ]]
+                then
+                    echo invalid repo index $repoid 1>&2
+                    exit 1
+                fi
+                selectedrepos+=("$repoid")
+            done
+        elif [[ -n "$1" ]]
+        then
+            selectedrepos=( $(seq 0 $((${#repos[@]} - 1)) ) )
+        fi
+        for i in "${selectedrepos[@]}"
         do
-            repoid="$1"
-            shift
-            repo="${repos[$repoid]}"
-            if [[ -z "$repo" ]]
-            then
-                echo invalid repo index $repoid 1>&2
-                exit 1
-            fi
-            selectedrepos[i++]="$repo"
-        done
-        for repo in "${selectedrepos[@]}"
-        do
-            echo "$repo; $@"
+            repo="${repos[i]}"
+            echo
+            printfrepo "$i" "$repo"
+            echo "; $@"
             ( cd "$repo" ; "$@" )
         done
+        echo
         exit 0
     fi
 fi
