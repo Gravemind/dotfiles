@@ -37,22 +37,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Packages init
-;;
-
-(setq-default package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                                 ("melpa" . "https://melpa.org/packages/")
-                                 ("melpa-stable" . "https://stable.melpa.org/packages/")
-                                 ;;("marmalade" . "https://marmalade-repo.org/packages/")
-              ))
-
-(require 'package)
-(eval-when-compile (package-initialize))
-;;(package-initialize)
-
-;;
-;; Bootstrap req-package
-;;   https://github.com/edvorg/emacs-configs/blob/master/init-real.el
+;; Packages, use-package, req-package
 ;;
 
 (setq-default
@@ -61,15 +46,25 @@
  use-package-always-ensure t
 )
 
-(if (null (require 'req-package "req-package" t))
-    (progn
-      (message "Installing req-package ...")
-      (package-initialize)
-      (package-refresh-contents)
-      (package-install 'el-get)
-      ;(package-install 'use-package)
-      (package-install 'req-package)
-      (require 'req-package)))
+(require 'package)
+(setq package-enable-at-startup nil)
+(setq-default package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                                 ("melpa" . "https://melpa.org/packages/")
+                                 ("melpa-stable" . "https://stable.melpa.org/packages/")
+                                 ;;("marmalade" . "https://marmalade-repo.org/packages/")
+              ))
+(package-initialize)
+
+;;
+;; Auto install req-package
+;;   https://github.com/jwiegley/use-package/issues/313
+;;   https://github.com/edvorg/emacs-configs/blob/master/init-real.el
+;;
+(unless (package-installed-p 'req-package)
+  (message "Installing use-package ...")
+  (package-refresh-contents)
+  (package-install 'req-package))
+(require 'req-package)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
