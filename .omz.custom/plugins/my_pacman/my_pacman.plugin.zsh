@@ -118,9 +118,28 @@ checkpacnew() {
 	fi
 }
 
+pacfind() {
+	local cachefile="/var/lib/pacman/sync/core.files"
+	local maxage=$((3600 * 24 * 30)) ## 30 days
+
+	local age=-1
+	if [[ -f "$cachefile" ]]; then
+		age=$(( $(date +%s) - $(date +%s -r "$cachefile") ))
+	fi
+	if [[ $age -lt 0 || $age -gt $maxage ]]
+	then
+		echo "$0: pacman files db is ${fg_bold[red]}$(durationtostr $age old)${reset_color} ! running pac -Fy:"
+		pac -Fy
+	else
+		echo "$0: pacman files db is $(durationtostr $age old) (updating at $(durationtostr $maxage old))"
+	fi
+
+	pac -Fs "$@"
+}
+
 # pkgfile wrap
 # /usr/share/doc/pkgfile/command-not-found.zsh
-pacfind() {
+pkgpacfind() {
 	local pkgs
 	local cmd="$1"
 
