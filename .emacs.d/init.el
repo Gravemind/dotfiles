@@ -623,13 +623,21 @@ With argument, do this that many times."
   :init
   (add-hook 'prog-mode-hook (lambda () (auto-highlight-symbol-mode)))
   :config
-  (setq-default ahs-idle-interval 0.07
-                ahs-case-fold-search nil
-                ;; Removed "$" to match "aaa" in "$aaa" and "${aaa}"
-                ahs-include  "^[0-9A-Za-z/_.,:;*+=&%|#@!^?-]+$"
-                ;ahs-include "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?-]+$" ;; default
-                )
-  )
+  (setq-default
+   ahs-idle-interval 0.07
+
+   ;; Case sensitive
+   ahs-case-fold-search nil
+
+   ;; Removed "$" to match "aaa" in "$aaa" and "${aaa}"
+   ahs-include  "^[0-9A-Za-z/_.,:;*+=&%|#@!^?-]+$"
+   ;;ahs-include "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?-]+$" ;; default
+
+   ;; Highlight even inside comments
+   ahs-inhibit-face-list '()
+   ;;ahs-inhibit-face-list '(font-lock-comment-delimiter-face font-lock-comment-face font-lock-doc-face font-lock-doc-string-face font-lock-string-face)
+
+   ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -985,7 +993,7 @@ With argument, do this that many times."
     ?b "Ignore changes in amount of whitespace" "--ignore-space-change")
 
   (setq-default
-   magit-log-arguments '("--graph" "--color" "--decorate" "--date-order" "-n256")
+   magit-log-arguments '("--graph" "--color" "--decorate" "--date-order" "--follow" "-n256")
    magit-pull-arguments '("--autostash")
    magit-rebase-arguments '("--autostash")
    )
@@ -1142,14 +1150,14 @@ With argument, do this that many times."
 ;;   https://github.com/hlissner/doom-emacs/blob/master/modules/tools/dired/config.el
 ;;
 
-
 (setq-default
    ;; Auto refresh dired, but be quiet about it
    global-auto-revert-non-file-buffers t
    ;; Add human
    dired-listing-switches "-alh"
    dired-k-human-readable t
-   dired-k-style 'git)
+   dired-k-style 'git
+   )
 
 (req-package dired-k
   :hook ((dired-initial-position . dired-k)
@@ -1552,6 +1560,15 @@ With argument, do this that many times."
 ;;
 
 (req-package go-mode
+  :defer t
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; php
+;;
+
+(req-package php-mode
   :defer t
   )
 
