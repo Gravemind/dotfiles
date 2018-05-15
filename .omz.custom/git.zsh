@@ -3,7 +3,7 @@
 alias cdr='cd "$(git rev-parse --show-toplevel)"'
 
 # overwrite git plugin
-alias gdc=gdc
+#unalias gdc
 
 function gitsetuser() {
 	local name="$1"

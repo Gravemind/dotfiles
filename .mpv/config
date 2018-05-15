@@ -10,13 +10,13 @@ sub-auto=fuzzy
 #af=scaletempo=stride=20:search=20:overlap=.30
 af=scaletempo=stride=12:search=12:overlap=1
 
-#profile=opengl-hq
+profile=opengl-hq
 opengl-swapinterval=1
 interpolation=yes
 tscale=oversample
 video-sync=display-resample
 video-sync=display-adrop
-#display-fps=60
+display-fps=60
 
 cache-secs=300
 

@@ -6,9 +6,9 @@
 ## Screen
 ##
 
-nvidia-settings --load-config-only
+#nvidia-settings --load-config-only
 #xrandr --output DVI-I-1  --auto --primary --right-of DVI-D-0
-xrandr --dpi 94
+#xrandr --dpi 94
 #export __GL_THREADED_OPTIMIZATIONS=1
 #export __GL_YIELD="USLEEP"
 #export __GL_SYNC_DISPLAY_DEVICE=DP-4
@@ -21,7 +21,7 @@ xrandr --dpi 94
 ## Keyboard
 ##
 
-setxkbmap -option terminate:ctrl_alt_bksp
+#setxkbmap -option terminate:ctrl_alt_bksp
 ## desactivate touchpad when typing
 #syndaemon -i 2 -t -k -d &
 setxkbmap us_qwerty-fr
@@ -41,6 +41,11 @@ xset b 0 &> /dev/null
 ##
 ## Start
 ##
+
+# Fix flatpak service(?) making desktop/gtk app dbus stuff at startup very slow...
+# https://github.com/flatpak/xdg-desktop-portal-gtk/issues/72
+# https://bbs.archlinux.org/viewtopic.php?id=224787
+dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY
 
 ## ssh agent
 #eval "$(ssh-agent)"

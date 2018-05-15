@@ -11,6 +11,9 @@ autojump
 moreutils
 readline
 bc
+rsync
+sysstat
+wget
 
 xorg
 
@@ -88,11 +91,6 @@ youtube-dl
 
 ssmtp
 net-tools
-
-autojump
-rsync
-sysstat
-wget
 
 # Screenshot
 maim

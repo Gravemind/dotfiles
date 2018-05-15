@@ -13,12 +13,12 @@ alias rcp='cp -r'
 alias c='clear'
 alias e='exit'
 
-rgg() {
+_rgg() {
     s="$1"
     shift
     rg -uu --files --iglob '*'"$s"'*' "$@"
 }
-alias rgg='noglob rgg'
+alias rgg='noglob _rgg'
 compdef _rg rgg=rg
 
 alias gdiff='pipes2files git d --no-index'

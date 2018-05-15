@@ -23,8 +23,16 @@ run-help-docker() {
 	else
 		# local al
 		# if al=$(git config --get "alias.$1"); then
-		# 	1=${al%% *}
+		#	1=${al%% *}
 		# fi
 		man docker-$1
+	fi
+}
+
+run-help-flatpak() {
+	if [ $# -eq 0 ]; then
+		man flatpak
+	else
+		man flatpak-$1
 	fi
 }
