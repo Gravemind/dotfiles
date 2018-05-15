@@ -75,5 +75,5 @@ emacs.menuBar:              off
 emacs.toolBar:              off
 emacs.verticalScrollBars:   off
 emacs.font:                 DejaVu Sans Mono-9
-emacs.background:           #000000
+emacs.background:           #202020
 emacs.cursorBlink:          off

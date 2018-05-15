@@ -57,8 +57,10 @@ client.focused          #285577 #285577 #dddddd #2e9ef4   #285577
 client.focused_inactive #282828 #282828 #888888 #303030   #282828
 client.unfocused        #101010 #101010 #555555 #181818   #101010
 client.urgent           #900000 #900000 #ffffff #900000   #900000
-client.placeholder      #000000 #202020 #888888 #000000   #000000   # borders & indicator ignored
-client.background       #202020
+# placeholder (border, indicator, and child_border are ignored)
+client.placeholder      #0000ff #202020 #888888 #0000ff   #0000ff
+# for windows that do not render all the way (mpv sometimes)
+client.background       #000000
 
 #
 # Workspaces and outputs
