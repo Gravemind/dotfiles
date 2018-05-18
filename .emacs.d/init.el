@@ -1312,21 +1312,16 @@ With argument, do this that many times."
 ;; FIXME: doesnt work properly with req-package (diagnositic and/or helm issues)
 ;;
 
+;(setq debug-on-error t)
 (setq-default
  rtags-jump-to-first-match nil
  ;rtags-enable-unsaved-reparsing t
+ ;rtags-autostart-diagnostics t
  rtags-use-helm t
  rtags-display-result-backend 'helm
  )
 
 (require 'rtags)
-
-(defun rtags-clear-diagnostics ()
-  "Stops rtags diagnostics, and clear diagnostics overlay."
-  (interactive)
-  (rtags-stop-diagnostics)
-  (rtags-clear-diagnostics-overlays)
-  )
 
 ;; (require 'flycheck-rtags)
 ;; (defun my-flycheck-rtags-setup ()
