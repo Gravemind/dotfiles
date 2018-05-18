@@ -666,7 +666,7 @@ With argument, do this that many times."
      ("\\<\\(FIXME\\|TODO\\\)\\>" 1 font-lock-warning-face prepend)
      ("\\<\\(null\\)\\>" 1 font-lock-keyword-face)
      ))
-  (cond ((do-apply-jo/tab)) (jo/tab-tab))
+  (if (do-apply-jo/tab) (jo/tab-space))
 
   ; original: "[ \t]*\\(//+\\|\\**\\)[ \t]*$\\|^\f"
   ;;(setq fill-indent-according-to-mode 1)
@@ -716,7 +716,7 @@ With argument, do this that many times."
 (req-package lua-mode
   :mode ("\\.lua\\'" . lua-mode)
   :config
-  (add-hook 'lua-mode-hook (lambda () (cond ((do-apply-jo/tab)) (jo/tab-tab))))
+  (add-hook 'lua-mode-hook (lambda () (if (do-apply-jo/tab) (jo/tab-tab))))
   (setq-default lua-indent-level 4)
   )
 
@@ -729,7 +729,7 @@ With argument, do this that many times."
   :mode (("Rakefile\\'" . ruby-mode)
          ("\\.rb\\'" . ruby-mode))
   :config
-  (add-hook 'ruby-mode-hook (lambda () (cond ((do-apply-jo/tab)) (jo/tab-space))))
+  (add-hook 'ruby-mode-hook (lambda () (if (do-apply-jo/tab) (jo/tab-space))))
   ;(setq-default ruby-deep-arglist 4)
   ;(setq-default ruby-deep-indent-paren nil)
   )
@@ -759,8 +759,8 @@ With argument, do this that many times."
 ;; (req-package lisp-mode
 ;;   :pin manual
 ;;   :config
-  (add-hook 'emacs-lisp-mode-hook (lambda () (cond ((do-apply-jo/tab)) (jo/tab-space 2))))
-  (add-hook 'lisp-mode-hook (cond ((do-apply-jo/tab)) (lambda () (jo/tab-space 2))))
+  (add-hook 'emacs-lisp-mode-hook (lambda () (if (do-apply-jo/tab) (jo/tab-space 2))))
+  (add-hook 'lisp-mode-hook (lambda () (if (do-apply-jo/tab) (jo/tab-space 2))))
   ;; )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -919,7 +919,7 @@ With argument, do this that many times."
 ;;(setq-default gdb-many-windows t)
 (setq-default gdb-create-source-file-list nil)
 
-(add-hook 'gdb-mode-hook (lambda () (cond ((do-apply-jo/tab)) (jo/tab-tab 8))))
+(add-hook 'gdb-mode-hook (lambda () (if (do-apply-jo/tab) (jo/tab-tab 8))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -1517,7 +1517,7 @@ With argument, do this that many times."
 (req-package sgml-mode
   :defer t
   :config
-  (add-hook 'html-mode-hook (lambda () (cond ((do-apply-jo/tab)) (jo/tab-space 2))))
+  (add-hook 'html-mode-hook (lambda () (if (do-apply-jo/tab) (jo/tab-space 2))))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1537,7 +1537,7 @@ With argument, do this that many times."
   :commands (asm-mode my-disaster-asm-mode)
   :defer t
   :config
-  (add-hook 'asm-mode-hook (lambda () (cond ((do-apply-jo/tab)) (jo/tab-term-8))))
+  (add-hook 'asm-mode-hook (lambda () (if (do-apply-jo/tab) (jo/tab-term-8))))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
