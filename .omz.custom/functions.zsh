@@ -36,10 +36,10 @@ function bak() {
 	done
 }
 
-function sbak() {
+function unbak() {
 	for f in "$@"
 	do
-		sudo cp $f{,.bak}
+		cp $f{.bak,}
 	done
 }
 
