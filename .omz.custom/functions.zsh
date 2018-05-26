@@ -18,13 +18,6 @@ function dolast() {
 	"$@" "$LAST"
 }
 
-function agent() {
-	ssh-agent -s > /tmp/ssh.keys
-	. /tmp/ssh.keys
-	rm /tmp/ssh.keys
-	ssh-add
-}
-
 function mnt() {
 	sudo mount -o gid=`id -g`,uid=`id -u` "$@"
 }
