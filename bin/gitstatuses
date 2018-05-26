@@ -18,6 +18,10 @@ C_PUSH="$C_CYAN"
 C_LOCAL="$C_RED"
 C_STAGE="$C_GREEN"
 
+C_BR_REMOTE="$C_BLUE"
+C_BR_HEAD="$C_GREEN"
+C_BR_LOCAL="$C_YELLOW"
+
 root="."
 
 FETCHALL=0
@@ -119,15 +123,20 @@ fetchrepo() {
     ## branches
     while IFS= read -r -u3 -d $'\n' line
     do
-        local ishead=0
+        local c_br_local="$C_BR_LOCAL"
         if [[ "$line" =~ ^\* ]]
         then
-           ishead=1
+            c_br_local="$C_BR_HEAD"
         fi
+        local head=" "
+        local branch=
+        local remote=
+        local rembranch=
         local branch=
         local ahead=0
         local behind=0
-        [[ "$line" =~ ^(\*?\ +[^\ ]+)\ + ]] && branch="${BASH_REMATCH[1]}"
+        [[ "$line" =~ ^\*?\ +([^\ ]+)\ + ]] && branch="${BASH_REMATCH[1]}"
+        [[ "$line" =~ \[([^\ /]+)/([^\ ]+): ]] && { remote="${BASH_REMATCH[1]}"; rembranch="${BASH_REMATCH[2]}"; }
         [[ "$line" =~ ahead\ ([0-9]+) ]] && ahead="${BASH_REMATCH[1]}"
         [[ "$line" =~ behind\ ([0-9]+) ]] && behind="${BASH_REMATCH[1]}"
         if [[ $ahead -gt 0 || $behind -gt 0 ]]
@@ -140,14 +149,20 @@ fetchrepo() {
                 printf "   "
             fi
             if [[ $behind -gt 0 ]] ; then
-                printf "$C_PULL%2d↓" $behind
+                printf "$C_PULL%3d↓" $behind
             else
                 printf "   "
             fi
             echo -ne "$C_RESET"
-            echo -n " $branch"
+            if [[ "$rembranch" != "$branch" ]] ; then
+                echo -ne " $C_BR_REMOTE$remote/$rembranch$C_RESET $c_br_local$branch$C_RESET"
+            elif [[ "$remote" == "origin" ]] ; then
+                echo -ne " $c_br_local$branch$C_RESET"
+            else
+                echo -ne " $C_BR_REMOTE$remote/$c_br_local$branch$C_RESET"
+            fi
         fi
-    done 3< <( git branch -v --color=always )
+    done 3< <( git branch -vv )
 
     echo "$C_RESET"
 
@@ -217,6 +232,7 @@ fi
 
 if [[ "$FETCHALL" == "1" ]]
 then
+    # TODO: maxjobs=min(nproc, 6)
     maxjobs=6 # limit at 6 fetches at the same time
     #ssh-add
 else
