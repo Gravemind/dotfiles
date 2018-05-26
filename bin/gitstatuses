@@ -235,6 +235,25 @@ then
     # TODO: maxjobs=min(nproc, 6)
     maxjobs=6 # limit at 6 fetches at the same time
     #ssh-add
+
+    # TODO: test for ssh-agent only if password needed ?
+    set +e
+    keys="$(ssh-add -l 2> /dev/null)"
+    res=$?
+    set -e
+    if [[ $res -ne 0 ]] ; then
+        echo -n "No ssh agent running, continue ? [y/n] "
+        read -n1 resp
+        echo
+        if [[ "$resp" != "y" ]] ; then
+            echo Aborting
+            exit 1
+        fi
+    elif [[ -z "$keys" ]] ; then
+        echo 'No ssh agent keys found, running ssh-add:'
+        ssh-add
+    fi
+
 else
     maxjobs=$(nproc)
 fi
