@@ -48,7 +48,7 @@ URxvt*scrollBar_right:  false
 URxvt*scrollBar:        false
 
 URxvt*transparent:      true
-URxvt*shading:          25
+URxvt*shading:          18
 URxvt*blurRadius:       17
 
 URxvt*scrollTtyOutput:      false
