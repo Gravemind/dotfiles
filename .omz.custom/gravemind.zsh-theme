@@ -30,7 +30,7 @@ fi
 
 PROMPT='%K{black}%B%F{white}%{❰%G%}'"${PROMPT_USER}"' $(gravemind_prompt_info_short)%1(j. %F{white}%{∶%G%} %F{green}%j.)%(?.. %F{white}%{∶%G%} %F{red}%?) %F{white}%{❱%G%} %f%b%K{black}'
 
-RPS1='%K{black}%B%F{white}%{❰%G%}$GRAVEMIND_PROMPT_CMD_TIME $(gravemind_prompt_info_long) %F{white}%{∶%G%} $(gravemind_promt_cc) %F{white}%{∶%G%} %F{blue}%D{%H:%M} %F{white}%{❱%G%}%f%b%k'
+RPS1='%K{black}%B%F{white}%{❰%G%}$GRAVEMIND_PROMPT_CMD_TIME $(gravemind_prompt_info_long) %F{white}%{∶%G%} $(gravemind_promt_cc)%F{white}%{∶%G%} %F{blue}%D{%H:%M} %F{white}%{❱%G%}%f%b%k'
 
 PROMPT2='%K{black}%B  %F{blue}%_ %F{white}%{❱%G%} %f%b%k'
 
@@ -102,26 +102,32 @@ function gravemind_prompt_info_long() {
 }
 
 function gravemind_promt_cc() {
-	local str=""
-	if [[ "$ENABLE_RTAGS" == "1" ]]; then
-		str+='%F{blue}R'
+	local cc
+	if [[ -n "$CC" ]]; then
+		local ccname="$(basename "$CC")"
+		cc="%F{blue}$ccname"
 	else
-		str+='%F{black}R'
+		cc="%F{black}CC"
+	fi
+	local progs=""
+	if [[ "$ENABLE_RTAGS" == "1" ]]; then
+		progs+="%F{blue}R"
+	else
+		progs+="%F{black}R"
 	fi
 	if [[ "$ENABLE_CCACHE" == "1" ]]; then
-		str+='%F{blue}C'
+		progs+="%F{blue}C"
 	else
-		str+='%F{black}C'
+		progs+="%F{black}C"
 	fi
-	if [[ -z "$CC" ]]
+	if [[ -n "$SSH_AGENT_PID" ]]
 	then
-		echo -n "%F{black}cc $str"
+		progs+="%F{blue}A"
 	else
-		local ccname="$(basename "$CC")"
-		echo -n "%F{blue}$ccname $str"
+		progs+="%F{black}A"
 	fi
+	echo -n "$cc $progs "
 }
-
 
 GRAVEMIND_CMD_START=$SECONDS
 function gravemind_preexec() {
