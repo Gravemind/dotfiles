@@ -56,62 +56,62 @@ function gravemind_git_prompt_current_branch() {
 }
 
 function gravemind_prompt_info_short() {
-  local toplevel="$(command git rev-parse --show-toplevel 2>/dev/null)"
-  if [[ -z "$toplevel" ]]; then
-	  echo -n "%F{blue}%30>…>%1~%<<"
-	  return
-  fi
-  if [[ "$(command git config --get oh-my-zsh.hide-status 2>/dev/null)" = "1" ]]; then
-	  echo -n "%F{blue}%30>…>%1~%<<"
-	  return
-  fi
-  ## FIXME when pwd is outside toplevel
-  local gitrootname="$(basename "$toplevel")"
-  local subgit="${$(pwd)#$toplevel}"
-  local shortsubgit=""
-  if [[ -z "$subgit" ]]; then
-	  shortsubgit=""
-  else
-	  local subgitlast="$(basename "$subgit")"
-	  if [[ "$subgit" = "/$subgitlast" ]]; then
-		  shortsubgit="/$subgitlast"
-	  else
-		  shortsubgit="/%{…%G%}/$subgitlast"
-	  fi
-  fi
-  echo -n "%F{blue}⌥ %20>…>$gitrootname%<<%F{black}%20>…>$shortsubgit%<</"
+	local toplevel="$(command git rev-parse --show-toplevel 2>/dev/null)"
+	if [[ -z "$toplevel" ]]; then
+		echo -n "%F{blue}%30>…>%1~%<<"
+		return
+	fi
+	if [[ "$(command git config --get oh-my-zsh.hide-status 2>/dev/null)" = "1" ]]; then
+		echo -n "%F{blue}%30>…>%1~%<<"
+		return
+	fi
+	## FIXME when pwd is outside toplevel
+	local gitrootname="$(basename "$toplevel")"
+	local subgit="${$(pwd)#$toplevel}"
+	local shortsubgit=""
+	if [[ -z "$subgit" ]]; then
+		shortsubgit=""
+	else
+		local subgitlast="$(basename "$subgit")"
+		if [[ "$subgit" = "/$subgitlast" ]]; then
+			shortsubgit="/$subgitlast"
+		else
+			shortsubgit="/%{…%G%}/$subgitlast"
+		fi
+	fi
+	echo -n "%F{blue}⌥ %20>…>$gitrootname%<<%F{black}%20>…>$shortsubgit%<</"
 }
 
 function gravemind_prompt_info_long() {
-  local toplevel="$(command git rev-parse --show-toplevel 2>/dev/null)"
-  if [[ -z "$toplevel" ]]; then
-	  echo -n "%F{black}%~"
-	  return
-  fi
-  if [[ "$(command git config --get oh-my-zsh.hide-status 2>/dev/null)" = "1" ]]; then
-	  echo -n "%F{black}%~ %F{white}%{∶%G%} %F{black}(oh-my-zsh.hide-status)"
-	  return
-  fi
-  ## FIXME when pwd is outside toplevel
-  local toplevelbase="$(basename "$toplevel")"
-  local toplevelparent="$(dirname "$toplevel")/"
-  local pwdbegin="${toplevelparent/#$HOME\//~/}"
-  local pwdgit="$toplevelbase"
-  local pwdend="${$(pwd)#$toplevel}"
-  echo -n "%F{blue}$(gravemind_git_prompt_current_branch) %F{white}%{∶%G%} %F{black}$pwdbegin%F{blue}$pwdgit%F{black}$pwdend"
+	local toplevel="$(command git rev-parse --show-toplevel 2>/dev/null)"
+	if [[ -z "$toplevel" ]]; then
+		echo -n "%F{black}%~"
+		return
+	fi
+	if [[ "$(command git config --get oh-my-zsh.hide-status 2>/dev/null)" = "1" ]]; then
+		echo -n "%F{black}%~ %F{white}%{∶%G%} %F{black}(oh-my-zsh.hide-status)"
+		return
+	fi
+	## FIXME when pwd is outside toplevel
+	local toplevelbase="$(basename "$toplevel")"
+	local toplevelparent="$(dirname "$toplevel")/"
+	local pwdbegin="${toplevelparent/#$HOME\//~/}"
+	local pwdgit="$toplevelbase"
+	local pwdend="${$(pwd)#$toplevel}"
+	echo -n "%F{blue}$(gravemind_git_prompt_current_branch) %F{white}%{∶%G%} %F{black}$pwdbegin%F{blue}$pwdgit%F{black}$pwdend"
 }
 
 function gravemind_promt_cc() {
 	local str=""
 	if [[ "$ENABLE_RTAGS" == "1" ]]; then
-	   str+='%F{blue}R'
+		str+='%F{blue}R'
 	else
-	   str+='%F{black}R'
+		str+='%F{black}R'
 	fi
 	if [[ "$ENABLE_CCACHE" == "1" ]]; then
-	   str+='%F{blue}C'
+		str+='%F{blue}C'
 	else
-	   str+='%F{black}C'
+		str+='%F{black}C'
 	fi
 	if [[ -z "$CC" ]]
 	then
