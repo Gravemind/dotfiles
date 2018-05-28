@@ -235,24 +235,29 @@
 ;; ido
 ;;
 
-;; https://www.emacswiki.org/emacs/TrampMode#toc20
-(defun find-alternative-file-with-sudo ()
+;; https://www.emacswiki.org/emacs/TrampMode#toc30
+;; modified to work in dired too
+(defun sudo-edit-current-file ()
   (interactive)
-  (let ((fname (or buffer-file-name
+  (let ((position (point))
+        (fname (or buffer-file-name
                    dired-directory)))
-    (when fname
-      (if (string-match "^/sudo:root@localhost:" fname)
-          (setq fname (replace-regexp-in-string
-                       "^/sudo:root@localhost:" ""
-                       fname))
-        (setq fname (concat "/sudo:root@localhost:" fname)))
-      (find-alternate-file fname))))
+    (find-alternate-file
+     (if (file-remote-p fname)
+         (let ((vec (tramp-dissect-file-name fname)))
+           (tramp-make-tramp-file-name
+            "sudo"
+            (tramp-file-name-user vec)
+            (tramp-file-name-host vec)
+            (tramp-file-name-localname vec)))
+       (concat "/sudo:root@localhost:" fname)))
+    (goto-char position)))
 
 (req-package ido
   ;:disabled
   :bind (("C-x C-f" . ido-find-file)
          ("C-x b"   . ido-switch-buffer)
-         ("C-x C-r" . find-alternative-file-with-sudo)
+         ("C-x C-r" . sudo-edit-current-file)
          )
   :config
     (setq-default
