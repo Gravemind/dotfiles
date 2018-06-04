@@ -1069,15 +1069,105 @@ With argument, do this that many times."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; Change C-f to be a prefix key map (for iy-go-to-char, ace-jump-mode. ...)
+;;
+
+(define-prefix-command 'ctrl-f-map)
+(global-set-key (kbd "C-f") 'ctrl-f-map)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; iy-go-to-char vim's "f" "F"
+;;   https://github.com/doitian/iy-go-to-char
+;;
+;; (works well with multiple-cursors)
+
+(req-package iy-go-to-char
+  :bind (
+         ("C-f C-f" . iy-go-up-to-char)
+         ("C-f C-d" . iy-go-to-char-backward)
+         ;("C-f C-f" . iy-go-up-to-char-continue)
+         ;("C-f C-d" . iy-go-to-char-continue-backward)
+         )
+  :config
+  ;; (setq-default
+  ;;  iy-go-to-char-key-forward ?f
+  ;;  iy-go-to-char-key-backward ?d
+  ;;  )
+  ;(add-to-list 'mc/cursor-specific-vars 'iy-go-to-char-start-pos)
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; ace-jump-mode, setup with 2 chars mode
+;;   https://github.com/winterTTr/ace-jump-mode/
+;;
+
+(req-package ace-jump-mode
+  :bind (
+         ;("C-f <SPC>" . ace-jump-two-chars-word-mode)
+         ;("C-f <RET>" . ace-jump-line-mode)
+         ("C-f <SPC>" . ace-jump-word-mode)
+         ("C-f <RET>" . ace-jump-line-mode)
+         ;("C-u C-u C-f <SPC>" . ace-jump-line-mode)
+         )
+  :config
+
+  ;; https://github.com/winterTTr/ace-jump-mode/issues/23
+  (defun ace-jump-two-chars-char-mode (query-char query-char-2)
+    "AceJump two chars mode"
+    (interactive (list (read-char "First Char:")
+                       (read-char "Second:")))
+
+    (if (eq (ace-jump-char-category query-char) 'other)
+        (error "[AceJump] Non-printable character"))
+
+    ;; others : digit , alpha, punc
+    (let ((query-string (cond ((eq query-char-2 ?\r)
+                               (format "%c" query-char))
+                              (t
+                               (format "%c%c" query-char query-char-2)))))
+      (setq ace-jump-query-char query-char)
+                                        ;(setq ace-jump-current-mode 'ace-jump-char-mode)
+      (setq ace-jump-current-mode 'ace-jump-word-mode)
+      (ace-jump-do (regexp-quote query-string))))
+
+  ;; modified https://github.com/winterTTr/ace-jump-mode/issues/23
+  (defun ace-jump-two-chars-word-mode (query-char query-char-2)
+    "AceJump two chars mode, word mode"
+    (interactive (list (read-char "First Char:")
+                       (read-char "Second:")))
+
+    (if (eq (ace-jump-char-category query-char) 'other)
+        (error "[AceJump] Non-printable character"))
+
+    ;; others : digit , alpha, punc
+    (let ((query-string (cond ((eq query-char-2 ?\r)
+                               (format "\\<%c" query-char))
+                              (t
+                               (format "\\<%c%c" query-char query-char-2)))))
+      (setq ace-jump-query-char query-char)
+                                        ;(setq ace-jump-current-mode 'ace-jump-char-mode)
+      (setq ace-jump-current-mode 'ace-jump-word-mode)
+      (ace-jump-do query-string)))
+
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; multiple-cursors
+;;   https://github.com/magnars/multiple-cursors.el
 ;;
 
 (req-package multiple-cursors
   :bind (("C-S-c C-S-c" . mc/edit-lines)
-         ("C->" . mc/mark-next-word-like-this)
-         ("C-<" . mc/mark-previous-word-like-this)
+         ("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
          ("C-M->" . mc/mark-more-like-this-extended)
-         ("C-c C-<" . mc/mark-all-like-this)))
+         ("C-c C-<" . mc/mark-all-like-this))
+  :config
+  (add-to-list 'mc/cursor-specific-vars 'iy-go-to-char-start-pos)
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -1089,6 +1179,7 @@ With argument, do this that many times."
   ;:disabled
   ;; :require helm-command
   :bind (("M-x" . helm-M-x)
+         ("C-f <C-return>" . helm-occur)
          :map helm-grep-mode-map
          ("C-c C-p" . wgrep-change-to-wgrep-mode)
          )
