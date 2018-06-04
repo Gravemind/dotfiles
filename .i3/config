@@ -36,6 +36,14 @@ default_orientation auto
 workspace_auto_back_and_forth no
 #mouse_warping none
 
+# https://i3wm.org/docs/userguide.html#focus_on_window_activation
+# The window will neither be focused, nor be marked urgent.
+#focus_on_window_activation none
+# The window will always be marked urgent, but the focus will not be stolen.
+focus_on_window_activation urgent
+
+no_focus [window_role="pop-up"]
+
 # Default border style: normal[px]|pixel[px]|none
 default_border pixel 2
 default_floating_border normal 2
@@ -256,6 +264,10 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +5%
 bindsym XF86AudioLowerVolume exec --no-startup-id $pactl_vol -5%
 bindsym $ModK+XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +5%
 bindsym $ModK+XF86AudioLowerVolume exec --no-startup-id $pactl_vol -5%
+bindsym Shift+XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +10%
+bindsym Shift+XF86AudioLowerVolume exec --no-startup-id $pactl_vol -10%
+bindsym $ModK+Shift+XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +10%
+bindsym $ModK+Shift+XF86AudioLowerVolume exec --no-startup-id $pactl_vol -10%
 bindsym $ModK+F12 exec --no-startup-id $pactl_vol +5%
 bindsym $ModK+F11 exec --no-startup-id $pactl_vol -5%
 bindsym XF86AudioMute exec --no-startup-id $pactl_mute
