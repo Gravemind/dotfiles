@@ -691,6 +691,40 @@ With argument, do this that many times."
 ;; auto highlight symbol
 ;;
 
+(defun jo/tweak-sh-mode-syntax-table ()
+  "Change chars syntax to make auto-highlight-symbol (forward-symbol really) seeing 'foo' as the symbol in '$foo',
+'${foo:-}', '${foo%...}' (bash parameter expansions)"
+
+  ;; @TODO: 'foo' in '${foo#...}'
+
+  ;; https://stackoverflow.com/questions/18675201/alternative-to-forward-word-backward-word-to-include-symbols-e-g
+  ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Syntax-Table-Functions.html#Syntax-Table-Functions
+  ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Syntax-Class-Table.html#Syntax-Class-Table
+
+  ;; see sh-mode-syntax-table
+  ;; /usr/share/emacs/26.1/lisp/progmodes/sh-script.el.gz:429
+
+  ;; also more advanced: perl-mode-syntax-table
+  ;; /usr/share/emacs/26.1/lisp/progmodes/perl-mode.el.gz:110
+
+  ;; revert back those to punctuation instead of symbol
+  (modify-syntax-entry ?! "." sh-mode-syntax-table)
+  (modify-syntax-entry ?% "." sh-mode-syntax-table)
+  (modify-syntax-entry ?: "." sh-mode-syntax-table)
+  (modify-syntax-entry ?. "." sh-mode-syntax-table)
+  (modify-syntax-entry ?^ "." sh-mode-syntax-table)
+  ;(modify-syntax-entry ?~ "." sh-mode-syntax-table)
+  (modify-syntax-entry ?, "." sh-mode-syntax-table)
+
+  ;; bash symbol do not contain '-'
+  (modify-syntax-entry ?- "." sh-mode-syntax-table)
+
+  ;; split filenames in paths
+  (modify-syntax-entry ?/ "." sh-mode-syntax-table)
+  )
+
+(add-hook 'sh-mode-hook 'jo/tweak-sh-mode-syntax-table)
+
 (req-package auto-highlight-symbol
   :hook (prog-mode . auto-highlight-symbol-mode)
   :bind (:map auto-highlight-symbol-mode-map
@@ -703,13 +737,6 @@ With argument, do this that many times."
 
    ;; Case sensitive
    ahs-case-fold-search nil
-
-   ;; Removed "$" to match "aaa" in "$aaa" and "${aaa}"
-   ahs-include  "^[0-9A-Za-z/_.,:;*+=&%|#@!^?-]+$"
-   ;;ahs-include "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?-]+$" ;; default
-
-   ;; select next symbol even if not visible
-   ;ahs-default-range 'ahs-range-whole-buffer
 
    ;; Highlight even inside comments
    ahs-inhibit-face-list '()
