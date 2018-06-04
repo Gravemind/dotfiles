@@ -189,6 +189,70 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; evil
+;;
+
+;; (setq-default which-key-allow-evil-operators t)
+
+;; (req-package evil
+;;   :ensure t
+;;   :init
+;;   (setq evil-want-integration nil)
+;;   :config
+;;   (evil-mode 1))
+
+;; (req-package evil-collection
+;;   :after evil
+;;   :ensure t
+;;   :config
+;;   (evil-collection-init))
+
+;; (req-package discover
+;;   :ensure t
+;;   :init
+;;   (global-discover-mode 1)
+;;   )
+
+;; ;; https://github.com/wcsmith/evil-args
+;; (req-package evil-args
+;;   :after evil
+;;   :ensure t
+;;   :config
+;;   ;; bind evil-args text objects
+;;   (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
+;;   (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
+;; )
+
+;; ;; https://github.com/redguardtoo/evil-matchit
+;; (req-package evil-matchit
+;;   :after evil
+;;   :ensure t
+;;   :config
+;;   (global-evil-matchit-mode 1)
+;;   )
+
+;; ;; https://github.com/hlissner/evil-snipe
+;; (req-package evil-snipe
+;;   :after evil
+;;   :ensure t
+;;   :config
+;;   (setq-default
+;;    evil-snipe-scope 'whole-visible
+;;    evil-snipe-repeat-scope 'whole-visible
+;;    )
+;;   (evil-snipe-mode 1)
+;;   (evil-snipe-override-mode 1)
+;;   )
+
+;; ;; https://github.com/emacs-evil/evil-magit#key-bindings
+;; (req-package evil-magit
+;;   :after (evil magit)
+;;   :ensure t
+;;   )
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; zoom-mode
 ;;   auto resize windows
 ;; (golden-ratio replacement)
