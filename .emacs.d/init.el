@@ -20,6 +20,8 @@
 ;; - Uncomment:
 ;;(add-to-list 'load-path "~/.emacs.d/benchmark-init-el/") (require 'benchmark-init-loaddefs) (benchmark-init/activate)
 
+;;(setq debug-on-error t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Theme
@@ -50,7 +52,7 @@
 (setq package-enable-at-startup nil)
 (setq-default package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                                  ("melpa" . "https://melpa.org/packages/")
-                                 ("melpa-stable" . "https://stable.melpa.org/packages/")
+                                 ;;("melpa-stable" . "https://stable.melpa.org/packages/")
                                  ;;("marmalade" . "https://marmalade-repo.org/packages/")
               ))
 (package-initialize)
@@ -98,6 +100,7 @@
 
  ;; no foo~ files
  make-backup-files nil
+
  truncate-lines t
  ;vc-handled-backends nil
  recentf-max-saved-items 92
@@ -117,6 +120,9 @@
  ;; https://emacs.stackexchange.com/questions/28736/emacs-pointcursor-movement-lag/28746
  auto-window-vscroll nil
 
+ ;; Scroll down/up N lines before bottom/top
+ scroll-margin 7
+
  ;; https://www.emacswiki.org/emacs/FillParagraph
  ;; The original value is "\f\\|[ \t]*$", so we add the bullets (-), (+), and (*).
  ;; There is no need for "^" as the regexp is matched at the beginning of line.
@@ -124,6 +130,8 @@
  ;paragraph-separate "\\([ \t\f]*\\|.*\\.\\)$"
  ;c-paragraph-start "[ \t]*\\(//+\\|\\**\\)[ \t]*\\([-+*] \\)?$\\|^\f"
  fill-column 80
+
+ c-backslash-max-column 1000
 
  x-gtk-use-system-tooltips nil
  )
@@ -187,6 +195,7 @@
 ;;
 
 (req-package zoom
+  :ensure t
   :init
   (setq-default zoom-size '(0.618 . 0.618))
   (zoom-mode t))
@@ -1317,7 +1326,6 @@ With argument, do this that many times."
 ;; FIXME: doesnt work properly with req-package (diagnositic and/or helm issues)
 ;;
 
-;(setq debug-on-error t)
 (setq-default
  rtags-jump-to-first-match nil
  ;rtags-enable-unsaved-reparsing t
