@@ -975,6 +975,13 @@ With argument, do this that many times."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; flyspell
+;;
+
+(add-hook 'prog-mode-hook (lambda () (flyspell-prog-mode) ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; magit
 ;;
 
@@ -995,8 +1002,18 @@ With argument, do this that many times."
    magit-diff-refine-hunk 'all
    git-commit-summary-max-length 50
    git-commit-fill-column 72
-   git-commit-turn-on-flyspell t
+
+   magit-revision-show-gravatars '("^Author:     " . "^Commit:     ")
+
+   ;; Abbreviate age in margins
+   magit-default-margin '(t age-abbreviated magit-log-margin-width t 18)
+   magit-cherry-margin magit-default-margin
+   magit-log-select-margin magit-default-margin
+   magit-reflog-margin magit-default-margin
+   magit-log-margin magit-default-margin
    )
+
+  (add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell)
 
   (defun my-magit-log-upstream (&optional args files)
     "Show log for `@{upstream}'."
@@ -1019,25 +1036,25 @@ With argument, do this that many times."
     'magit-log-popup
     ?u "Log upstream" 'my-magit-log-upstream)
 
-  (magit-define-popup-switch
-    'magit-diff-refresh-popup
-    ?W "Function context" "-W")
-
   (magit-define-popup-action
     'magit-pull-popup
     ?f "Pull ff only" 'my-magit-pullff)
-
   (magit-define-popup-switch
     'magit-pull-popup
     ?a "Auto stash" "--autostash")
 
   (magit-define-popup-switch
+    'magit-diff-refresh-popup
+    ?W "Function context" "-W")
+  (magit-define-popup-switch
     'magit-diff-popup
     ?W "Ignore changes in whitespace at EOL" "--ignore-space-at-eol")
-
   (magit-define-popup-switch
     'magit-diff-popup
     ?b "Ignore changes in amount of whitespace" "--ignore-space-change")
+  (magit-define-popup-switch
+    'magit-diff-popup
+    ?R "Reverse, show differences from index or on-disk file to tree contents" "-R")
 
   (setq-default
    magit-log-arguments '("--graph" "--color" "--decorate" "--date-order" "--follow" "-n256")
