@@ -628,9 +628,11 @@ With argument, do this that many times."
 ;;
 
 (req-package auto-highlight-symbol
-  :commands (auto-highlight-symbol-mode)
-  :init
-  (add-hook 'prog-mode-hook (lambda () (auto-highlight-symbol-mode)))
+  :hook (prog-mode . auto-highlight-symbol-mode)
+  :bind (:map auto-highlight-symbol-mode-map
+              ("M-<right>" . ahs-forward-whole-buffer)
+              ("M-<left>" . ahs-backward-whole-buffer)
+              )
   :config
   (setq-default
    ahs-idle-interval 0.07
@@ -642,11 +644,47 @@ With argument, do this that many times."
    ahs-include  "^[0-9A-Za-z/_.,:;*+=&%|#@!^?-]+$"
    ;;ahs-include "^[0-9A-Za-z/_.,:;*+=&%|$#@!^?-]+$" ;; default
 
+   ;; select next symbol even if not visible
+   ;ahs-default-range 'ahs-range-whole-buffer
+
    ;; Highlight even inside comments
    ahs-inhibit-face-list '()
    ;;ahs-inhibit-face-list '(font-lock-comment-delimiter-face font-lock-comment-face font-lock-doc-face font-lock-doc-string-face font-lock-string-face)
 
-   ))
+   )
+
+  (defun ahs-select-range (pred range &optional reverse onlydef)
+    "Select highlighted symbol."
+    (interactive)
+    (let ((old-range ahs-current-range))
+      (ahs-clear nil)
+      (ahs-change-range-internal range)
+      (ahs-idle-function)
+      (ahs-set-lighter)
+
+      (ahs-select pred reverse onlydef)
+
+      (ahs-clear nil)
+      (ahs-change-range-internal 'old-range)
+      (ahs-idle-function)
+      (ahs-set-lighter)
+      )
+    )
+
+  (defun ahs-forward-whole-buffer ()
+    "Select highlighted symbols forwardly whole buf."
+    (interactive)
+    (ahs-select-range 'ahs-forward-p 'ahs-range-whole-buffer t))
+
+  (defun ahs-backward-whole-buffer ()
+    "Select highlighted symbols bac."
+    (interactive)
+    (ahs-select-range 'ahs-backward-p 'ahs-range-whole-buffer))
+
+  ;(add-to-list 'ahs-unhighlight-allowed-commands 'ahs-forward-whole-buffer)
+  ;(add-to-list 'ahs-unhighlight-allowed-commands 'ahs-backward-whole-buffer)
+
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
