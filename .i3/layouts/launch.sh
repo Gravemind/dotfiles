@@ -35,6 +35,10 @@ log() {
 	echo "$0:" "$@"
 }
 
+quote_arg() {
+	printf '%q' "$*"
+}
+
 if [ "$#" -lt 1 ]; then
 	echo "$0: not enough arguments"
 	usage
@@ -57,7 +61,9 @@ else
 fi
 
 tmp="$(mktemp -t "i3layoutlaunch.XXXXXXXX")"
-trap "{ rm -f $tmp; }" EXIT
+#trap "{ rm -f $tmp; }" EXIT # removed in tmpexec script
+tmpexec="$(mktemp -t "i3layoutlaunch.exec.XXXXXXXX")"
+#trap "{ rm -f $tmpexec; }" EXIT # removed in tmpexec script
 
 layout_win_name="[[ ${name} ]]"
 
@@ -73,25 +79,45 @@ EOF
 
 log "launching \"$prog\" class \"$class\" instance \"$instance\""
 
-$here/append_layout_window.sh $tmp $workspace > /dev/null
+#
+# All that so i3-msg execs the program with proper startup-up on the right
+# workspace
+#
+# And had to have a tmpexec script because I could not get quoting working
+# properly in i3-msg, e.g. `launch.sh -c urxvt bash -c 'sleep 1 ; urxvt'`
+#
 
-"$prog" "${prog_args[@]}"
+prog_cmd=()
+prog_cmd+=( "$(quote_arg "$prog")" )
+for arg in "${prog_args[@]}" ; do
+	prog_cmd+=( "$(quote_arg "$arg")" )
+done
+echo "trap \"{ rm -f $tmp; }\" EXIT" >> "$tmpexec"
+echo "trap \"{ rm -f $tmpexec; }\" EXIT" >> "$tmpexec"
+echo "${prog_cmd[*]}" >> "$tmpexec"
+#cat "$tmpexec"
 
-res=$?
-
-## command failed !? close the placeholder if necessary
-if [[ $res -ne 0 ]]
-then
-	winid="$(xwininfo -name "$layout_win_name" -int 2> /dev/null | sed -nE 's/.*Window id: ([0-9]+) .*/\1/gp')"
-	if [[ -n "$winid" ]]
-	then
-		log "$prog exited $res (closing placeholder $winid)"
-		xkill -id "$winid" > /dev/null
-	else
-		log "$prog exited $res (no more placeholder)"
-	fi
-else
-	log "$prog exited $res"
+# append_layout.sh hard coded so we can add the exec in the same i3-msg
+msg=()
+if [[ -n "$workspace" ]] ; then
+	msg+=( "workspace $workspace;" )
 fi
+msg+=(
+	"workspace tmpappendlayout;"
+	"append_layout $tmp;" # ! no space between $tmp and ';'
+	"focus child;"
+	"move window to workspace back_and_forth;"
+	"workspace back_and_forth;"
+)
 
-exit $res
+msg+=( "exec bash $tmpexec;" )
+#echo "${msg[*]}"
+
+res="$(i3-msg "${msg[*]}")"
+exi=$?
+
+if [[ $exi -ne 0 || "$res" =~ false ]]
+then
+	log "error: i3-msg $msg"
+	log "error: exit $exit: $res"
+fi

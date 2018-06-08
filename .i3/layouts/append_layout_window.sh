@@ -9,10 +9,18 @@ then
 	exit 1
 fi
 
-force_ws=""
+msg=""
 if [[ -n "$ws" ]]
 then
-	force_ws="workspace $ws; "
+    msg+="workspace $ws; "
 fi
+msg+="workspace tmpappend; append_layout $layout; focus child; move window to workspace back_and_forth; workspace back_and_forth"
 
-i3-msg "$force_ws workspace tmpappend; append_layout $layout; focus child; move window to workspace back_and_forth; workspace back_and_forth"
+res="$(i3-msg "$msg")"
+exi=$?
+
+if [[ $exi -ne 0 || "$res" =~ false ]]
+then
+    echo "$0: error: i3-msg $msg" 1>&2
+    echo "$0: error: exit $exit: $res" 1>&2
+fi
