@@ -8,7 +8,7 @@ todo() {
     fi
     echo " ┌─────"
     \cat "$TODOFILE" | sed -r '/^\s*$/d' | sed 's/.*/ │ &/'
-    echo " └"    
+    echo " └"
 }
 
 netodo() {

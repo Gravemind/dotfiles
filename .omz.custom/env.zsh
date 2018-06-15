@@ -41,7 +41,7 @@ export PAGER='less'
 
 if type firefox >& /dev/null
 then
-	export BROWSER="firefox"
+    export BROWSER="firefox"
 fi
 
 export OSTYPE=`uname -s`

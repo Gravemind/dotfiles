@@ -14,9 +14,9 @@ alias c='clear'
 alias e='exit'
 
 _rgg() {
-    s="$1"
-    shift
-    rg -uu --files --iglob '*'"$s"'*' "$@"
+	s="$1"
+	shift
+	rg -uu --files --iglob '*'"$s"'*' "$@"
 }
 alias rgg='noglob _rgg'
 compdef _rg rgg=rg
@@ -42,12 +42,12 @@ alias untar='tar xvzf'
 alias a='echo -ne "\a"'
 
 shut() {
-    ( sleep 1 ; systemctl poweroff ) &
-    disown
+	( sleep 1 ; systemctl poweroff ) &
+	disown
 }
 reboot() {
-    ( sleep 1 ; systemctl reboot ) &
-    disown
+	( sleep 1 ; systemctl reboot ) &
+	disown
 }
 
 alias ssh-fingerprint="find . -name '*.pub' -exec ssh-keygen -l -f {} \;"
