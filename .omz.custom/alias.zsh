@@ -36,10 +36,23 @@ alias _='sudo'
 
 alias lock='i3lock -c 111111'
 #alias disk='df -h --total'
-alias x='dtrx -v'
-alias xl='dtrx -l'
 alias untar='tar xvzf'
 alias a='echo -ne "\a"'
+
+x() {
+	for f in "$@"
+	do
+		echo "x: $f"
+		dtrx -v --one=rename "$f"
+		d="${f%.*}"
+		if [[ -e "$d" ]]; then
+			touch "$d"
+		else
+			echo "!!x: could not find $d !!"
+		fi
+	done
+}
+alias xl='dtrx -l'
 
 shut() {
 	( sleep 1 ; systemctl poweroff ) &
