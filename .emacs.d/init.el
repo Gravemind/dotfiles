@@ -716,11 +716,14 @@ With argument, do this that many times."
   ;(modify-syntax-entry ?~ "." sh-mode-syntax-table)
   (modify-syntax-entry ?, "." sh-mode-syntax-table)
 
-  ;; bash symbol do not contain '-'
+  ;; operators as punctuation
   (modify-syntax-entry ?- "." sh-mode-syntax-table)
-
-  ;; split filenames in paths
+  (modify-syntax-entry ?+ "." sh-mode-syntax-table)
+  (modify-syntax-entry ?* "." sh-mode-syntax-table)
   (modify-syntax-entry ?/ "." sh-mode-syntax-table)
+  (modify-syntax-entry ?~ "." sh-mode-syntax-table)
+
+  ;; foo+=
   )
 
 (add-hook 'sh-mode-hook 'jo/tweak-sh-mode-syntax-table)
@@ -1778,11 +1781,21 @@ With argument, do this that many times."
   (disaster--shadow-non-assembly-code)
 )
 
+(defun jo/init-asm-mode ()
+  "asm-mode but with disaster--shadow-non-assembly-code"
+  (interactive)
+  (if (do-apply-jo/tab) (jo/tab-term-8))
+  (setq
+   paragraph-ignore-fill-prefix t ;; Fixes forward-paragraph walking each line
+   )
+)
+
 (req-package asm-mode
   :commands (asm-mode my-disaster-asm-mode)
+  :hook (asm-mode . jo/init-asm-mode)
   :defer t
   :config
-  (add-hook 'asm-mode-hook (lambda () (if (do-apply-jo/tab) (jo/tab-term-8))))
+  ;;(add-hook 'asm-mode-hook (lambda () ))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
