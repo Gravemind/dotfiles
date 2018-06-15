@@ -1,7 +1,19 @@
 #!/bin/zsh
 
-alias mpw="mpv --force-window=immediate "
 alias mpa="mpv --no-video "
+alias mpw="mpv --force-window=immediate "
+
+mpcb() {
+	url="$(xclip -o -r)"
+	echo -n "mpv $@ $url ? [y/n]"
+	read -r -k1 r
+	echo
+	if [[ "$r" == "y" ]]
+	then
+		mpv --force-window=immediate "$@" "$url"
+			 # && print -s "mpv $@ \"$url\""
+	fi
+}
 
 getfirstvalidfile() {
 	while IFS= read -r -d $'\n' file
