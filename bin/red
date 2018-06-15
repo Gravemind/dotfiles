@@ -22,9 +22,9 @@ file_prefix="/tmp/.red.${UID}.${DISPLAY}"
 cola=6500	# starting temperature
 bria=100	# starting brightness
 gama=100	# starting gamma * 100
-colstep=1000	# temperature step
-bristep=20	# brightness step
-gamstep=-5	# gamma step * 100
+colstep=800	# temperature step
+bristep=18	# brightness step
+gamstep=-8	# gamma step * 100
 
 enable_current_output=0
 
