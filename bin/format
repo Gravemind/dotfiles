@@ -1,0 +1,11 @@
+#!/bin/bash
+
+while read f
+do
+    echo "$f"
+    # (indent-region (point-min) (point-max) nil)
+    #\emacs -batch "$f" --eval "(progn (package-initialize) (set-buffer-modified-p t) (editorconfig-mode 1) (editorconfig-apply))" -f save-buffer || { echo FAIL; exit 1;  }
+    #\emacs --eval "(package-initialize)" -batch "$f" --eval "(indent-region (point-min) (point-max) nil)" -f save-buffer || { echo FAIL; exit 1;  }
+    #\emacs --eval "(package-initialize)" -batch "$f" --eval "(progn (set-buffer-modified-p t) (editorconfig-mode 1) (editorconfig-apply) (indent-region (point-min) (point-max) nil))" -f save-buffer || { echo FAIL; exit 1;  }
+    \emacs --eval "(package-initialize)" -batch "$f" --eval "(progn (set-buffer-modified-p t) (editorconfig-mode 1) (editorconfig-apply))" -f save-buffer || { echo FAIL; exit 1;  }
+done < "${1:-/dev/stdin}"
