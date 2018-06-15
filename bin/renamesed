@@ -1,0 +1,49 @@
+#!/bin/bash
+
+set -euo pipefail
+
+patt="$1"
+shift
+
+srcs=()
+dsts=()
+
+revert="/tmp/renamesed_revert_$(date --iso-8601=seconds).sh"
+touch "$revert"
+chmod +x "$revert"
+echo "#!/bin/bash" >> "$revert"
+echo "set -x" >> "$revert"
+printf "cd %q || exit 1\n" "$(pwd)" >> "$revert"
+
+for file in "$@"
+do
+    if [[ ! -e "$file" ]]
+    then
+        echo "$0: no such file or directory: $file"
+        exit 1
+    fi
+    newfile="$(echo "$file" | sed -E "$patt")"
+
+    srcs+=( "$file" )
+    dsts+=( "$newfile" )
+
+    (wdiff -n <( echo "$file" ) <( echo "$newfile" ) || true) | colordiff
+
+    printf "mv %q %q\n" "$newfile" "$file" >> "$revert"
+
+done
+
+echo -n "execute ? [y/n] "
+echo "revert script: $revert"
+read -r -n1 r
+echo
+if [[ "$r" == "y" ]]
+then
+    for ((i = 0; i < ${#srcs[@]}; i++))
+    do
+        (set -x; mv "${srcs[i]}" "${dsts[i]}")
+    done
+else
+    echo "aborted"
+    rm "$revert"
+fi
