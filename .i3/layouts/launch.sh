@@ -77,6 +77,11 @@ sponge $tmp <<EOF
 }
 EOF
 
+exec_from_i3msg=0
+if [[ -n "$workspace" ]] ; then
+	exec_from_i3msg=1
+fi
+
 log "launching \"$prog\" class \"$class\" instance \"$instance\""
 
 #
@@ -92,10 +97,12 @@ prog_cmd+=( "$(quote_arg "$prog")" )
 for arg in "${prog_args[@]}" ; do
 	prog_cmd+=( "$(quote_arg "$arg")" )
 done
-echo "trap \"{ rm -f $tmp; }\" EXIT" >> "$tmpexec"
-echo "trap \"{ rm -f $tmpexec; }\" EXIT" >> "$tmpexec"
-echo "${prog_cmd[*]}" >> "$tmpexec"
-#cat "$tmpexec"
+declare -px  >> $tmpexec
+printf "cd %q\n" "$(pwd)" >> $tmpexec
+echo "trap \"{ rm -f $tmp; }\" EXIT" >> $tmpexec
+echo "trap \"{ rm -f $tmpexec; }\" EXIT" >> $tmpexec
+echo "${prog_cmd[*]}" >> $tmpexec
+#cat -e $tmpexec
 
 # append_layout.sh hard coded so we can add the exec in the same i3-msg
 msg=()
@@ -111,7 +118,6 @@ msg+=(
 )
 
 msg+=( "exec bash $tmpexec;" )
-#echo "${msg[*]}"
 
 res="$(i3-msg "${msg[*]}")"
 exi=$?
