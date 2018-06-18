@@ -603,8 +603,7 @@ With argument, do this that many times."
 ;;
 
 (req-package sh-script
-  :mode (("\\.zsh\\'" . sh-mode)
-         ("PKGBUILD" . sh-mode)))
+  :mode (("PKGBUILD" . sh-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -612,9 +611,7 @@ With argument, do this that many times."
 ;;
 
 (req-package cmake-mode
-  :mode (("CMakeLists\\.txt\\'" . cmake-mode)
-         ("\\.cmake\\'" . cmake-mode)
-         )
+  :defer t
   :config
   (setq-default cmake-tab-width 4)
   )
@@ -625,10 +622,7 @@ With argument, do this that many times."
 ;;
 
 (req-package markdown-mode
-  :commands (markdown-mode gfm-mode)
-  :mode (("README\\.md\\'" . gfm-mode)
-         ("\\.md\\'" . markdown-mode)
-         ("\\.markdown\\'" . markdown-mode))
+  :defer t
   :config
   ;; bin launched to generate html (C-c C-c l), needs to be installed
   (setq-default markdown-command "multimarkdown")
@@ -839,6 +833,7 @@ With argument, do this that many times."
      )))
 
 (req-package cc-mode
+  :pin manual
   :mode (("\\.cpp\\'" . c++-mode)
          ("\\.hpp\\'" . c++-mode)
          ("\\.inl\\'" . c++-mode)
@@ -860,7 +855,7 @@ With argument, do this that many times."
 ;;
 
 (req-package lua-mode
-  :mode ("\\.lua\\'" . lua-mode)
+  :defer t
   :config
   (add-hook 'lua-mode-hook (lambda () (if (do-apply-jo/tab) (jo/tab-tab))))
   (setq-default lua-indent-level 4)
@@ -872,8 +867,7 @@ With argument, do this that many times."
 ;;
 
 (req-package ruby-mode
-  :mode (("Rakefile\\'" . ruby-mode)
-         ("\\.rb\\'" . ruby-mode))
+  :defer t
   :config
   (add-hook 'ruby-mode-hook (lambda () (if (do-apply-jo/tab) (jo/tab-space))))
   ;(setq-default ruby-deep-arglist 4)
@@ -886,14 +880,14 @@ With argument, do this that many times."
 ;;
 
 (req-package d-mode
-  :mode (("\\.d\\'" . d-mode))
+  :defer t
   :config
   (add-hook 'd-mode-hook (lambda () (jo/cc-mode) (flycheck-dmd-dub-set-include-path)))
   )
 
 (req-package flycheck-dmd-dub
-  :require flycheck
-  :commands (flycheck-dmd-dub-set-include-path)
+  :defer t
+  :require d-mode flycheck
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1363,7 +1357,7 @@ With argument, do this that many times."
 (req-package helm-dash
   ;:disabled
   :require helm
-  :commands (helm-dash helm-dash-activate-docset))
+  :defer t)
 
 (req-package ivy
   :disabled
@@ -1386,11 +1380,12 @@ With argument, do this that many times."
 ;; @FIXME why wgrep gets loaded when helm is loaded (eg on M-x)
 
 (req-package wgrep
-  :commands (wgrep-change-to-wgrep-mode)
+  :defer t
   )
 
 (req-package wgrep-helm
-  :commands (helm-do-grep-ag helm-do-grep-rg wgrep-change-to-wgrep-mode)
+  :require helm wgrep
+  :defer t
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
