@@ -17,8 +17,16 @@ Example: clamp values to 10 maximum
 Example: remove values greater than 10 (replace by NaN)
   $> sudo $prog /var/lib/collectd/rrd/$HOSTNAME/ping/ping-8.8.8.8.rrd 10 NaN
 
+Negative clamp_max_value will affect values lower than clamp_max_value
+
 "
     exit 1
+fi
+
+if [[ "${1:-}" == "-d" ]]
+then
+    set -x
+    shift
 fi
 
 src="$1"
@@ -30,26 +38,46 @@ then
     newvalue="$(printf %e "$newvalue")"
 fi
 
-echo "Looking for values greater than $maxvalue in $src ..."
+if [[ $maxvalue -lt 0 ]]
+then
+    cmpop="<"
+else
+    cmpop=">"
+fi
+
+echo "Looking for values $cmpop $maxvalue in $src ..."
 
 tmpfile="$(mktemp --tmpdir rrdtool_clamp.XXXXXXXX)"
-trap 'rm -f $tmpfile' INT TERM EXIT
+trap 'rm -f $tmpfile' EXIT
 rrdtool dump "$src" > "$tmpfile"
 
-valuereg='(.*<v>)([0-9].*?)(<\/v>.*)'
 
 echo
-gawk -v "vmax=$maxvalue" -v "vnew=$newvalue" '
-match($0, /'"$valuereg"'/, vm) { if (vm[2] > vmax) { gv+=vm[2]; gc++; } else { lv+=vm[2]; lc++; } }
+
+valuereg='<v>([-+]?[0-9]+.*?)<\/v>'
+
+perl -ne '
+BEGIN {
+    $vnew = "'"$newvalue"'";
+    $vmax = '"$maxvalue"';
+}
 END {
-    t = (gc + lc)
-    printf "Found %d values\n", t
-    printf "  to be unchanged : %7g,%5.1f%%, average: %g\n", lc, (100 * lc / t), (lc == 0 ? "-" : lv / lc)
-    printf "  to be replaced  : %7g,%5.1f%%, average: %g\n", gc, (100 * gc / t), (gc == 0 ? "-" : gv / gc)
-    printf "Would replace by %s\n", vnew
-}' "$tmpfile"
-echo
+    printf "Found %d values\n", $t;
+    printf "  to be unchanged : %7g,%5.1f%%, average: %g\n", $lc, (100 * $lc / $t), ($lc == 0 ? "-" : $lv / $lc);
+    printf "  to be replaced  : %7g,%5.1f%%, average: %g\n", $gc, (100 * $gc / $t), ($gc == 0 ? "-" : $gv / $gc);
+    printf "Would replace by %s\n", $vnew;
+}
+s/'"$valuereg"'/
+    $t += 1;
+    if ($1 '"$cmpop"' $vmax) {
+      $gv+=$1 ; $gc += 1;
+    } else {
+      $lv+=$1 ; $lc += 1;
+    }
+/ge
+' "$tmpfile"
 
+echo
 echo -n "Replace them [y/N] ?"
 read -n 1 resp
 echo
@@ -59,19 +87,30 @@ then
     exit 1
 fi
 
-backup="${src}.b"
+backup="${src}.backup"
+echo
 echo "Backing up to $backup"
 cp "$src" "$backup"
+echo
 
 echo "Replacing..."
 rm -f "$src"
 
-rrdtool restore \
-        <(gawk -v "vmax=$maxvalue" -v "vnew=$newvalue" '
-match($0, /'"$valuereg"'/, vm) { if (vm[2] > vmax) { $0 = vm[1] vnew vm[3]; } }
-{ print }
-' "$tmpfile") \
-        "$src"
+perl -i -pe '
+BEGIN {
+    $vnew = "'"$newvalue"'";
+    $vmax = '"$maxvalue"';
+}
+s/'"$valuereg"'/
+    if ($1 '"$cmpop"' $vmax) {
+      "<v>".$vnew."<\/v>"
+    } else {
+      "<v>".$1."<\/v>"
+    }
+/ge
+' "$tmpfile"
+
+rrdtool restore "$tmpfile" "$src"
 
 echo "Checking..."
 
