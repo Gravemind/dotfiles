@@ -60,11 +60,11 @@ default_floating_border normal 2
 #for_window [class="(?i)mpv"] border none
 
 # Colors
-# class                 border  backgr. text    indicator child_border
+# class                 border  backgr. text    split_indicator child_border
 client.focused          #285577 #285577 #dddddd #2e9ef4   #285577
 client.focused_inactive #282828 #282828 #888888 #303030   #282828
 client.unfocused        #101010 #101010 #555555 #181818   #101010
-client.urgent           #900000 #900000 #ffffff #900000   #900000
+client.urgent           #c02020 #c02020 #ffffff #c02020   #c02020
 # placeholder (border, indicator, and child_border are ignored)
 client.placeholder      #0000ff #202020 #888888 #0000ff   #0000ff
 # for windows that do not render all the way (mpv sometimes)
@@ -313,15 +313,16 @@ bindsym XF86TouchpadToggle exec zsh ~/bin/toggletouchpad
 bindsym $ModK+w exec --no-startup-id i3lock -c 222222
 
 # Terminal
-#bindsym $ModK+Return exec $layouts/launch.sh urxvt
+#bindsym $ModK+Return exec --no-startup-id $layouts/launch.sh urxvt
 bindsym $ModK+Return exec urxvt
 
 # Emacs
-bindsym $ModK+Shift+Return exec $layouts/launch.sh -- emacs
-bindsym $ModK+Ctrl+Return exec $layouts/launch.sh -- emacs ~/TODO.org
+bindsym $ModK+Shift+Return exec --no-startup-id $layouts/launch.sh -- emacs
+bindsym $ModK+Ctrl+Return exec --no-startup-id $layouts/launch.sh -- emacs ~/TODO.org
 
 # Firefox
-bindsym $ModK+F10 exec $layouts/launch.sh -w 10 firefox
+bindsym $ModK+F10 exec --no-startup-id $layouts/launch.sh -w 10 firefox
+bindsym $ModK+Shift+F10 exec --no-startup-id $layouts/launch.sh firefox
 
 # Qalculate
 bindsym $ModK+F5 exec $layouts/launch.sh qalculate-gtk -n
@@ -334,6 +335,10 @@ bindsym $ModK+Shift+p exec --no-startup-id ~/bin/red -c -1
 
 # Go to urgent window, and go back
 bindsym $ModK+BackSpace exec --no-startup-id ~/.i3/goto_urgent_and_back.sh
+
+# set $search_polybar_win --name "^polybar-mybar-big$"
+# bindsym $ModK+g exec xdotool search $search_polybar_win windowmove --relative %@ 0 -21
+# bindsym $ModK+g --release exec xdotool search $search_polybar_win windowmove --relative %@ 0 21
 
 #
 # Bar
