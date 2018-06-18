@@ -1290,6 +1290,7 @@ With argument, do this that many times."
   ;; :require helm-command
   :bind (("M-x" . helm-M-x)
          ("C-f <C-return>" . helm-occur)
+         ("C-f C-r" . helm-do-grep-rg-ripgrep)
          :map helm-grep-mode-map
          ("C-c C-p" . wgrep-change-to-wgrep-mode)
          )
