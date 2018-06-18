@@ -24,8 +24,8 @@ compdef _rg rgg=rg
 alias gdiff='pipes2files git d --no-index'
 alias gdiffw='pipes2files git dw --no-index'
 
-alias clean='find . \( -name "*~" -or -name "#*#" \) -print -delete'
-alias fclean='find . \( -name "*~" -or -name "#*#" -or -name "*.o" -or -name "*.pyc" \) -print -delete'
+alias clean='find . \( -name "*~" -or -name "#*#" -or -name ".#*" \) -print -delete'
+alias fclean='find . \( -name "*~" -or -name "#*#" -or -name ".#*" -or -name "*.o" -or -name "*.pyc" \) -print -delete'
 alias cleansvn='find . -name ".svn" -execdir rm -rf {} \;'
 alias cleandhcp='sudo rm -rf /var/lib/dhcp3/*.lease'
 alias cleanhg='find . \( -name "*.orig" \) -print -delete'
