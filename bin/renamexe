@@ -2,27 +2,51 @@
 
 set -euo pipefail
 
-patt="$1"
-shift
+usage() {
+    echo "usage: $0 cmd [cmd_args...] -- file [files...]"
+}
+
+cmd=()
+files=()
+
+while [[ "$#" -gt 0 ]]
+do
+    c="$1"
+    if [[ "$c" == "--" ]]
+    then
+        shift
+        break
+    fi
+    cmd+=( "$1" )
+    shift
+done
+
+files=( "$@" )
+
+if [[ "${#cmd[@]}" -le 0 || "${#files[@]}" -le 0 ]]
+then
+    usage
+    exit
+fi
 
 srcs=()
 dsts=()
 
-revert="/tmp/renamesed_revert_$(date --iso-8601=seconds).sh"
+revert="/tmp/renamexe_revert_$(date --iso-8601=seconds).sh"
 touch "$revert"
 chmod +x "$revert"
 echo "#!/bin/bash" >> "$revert"
 echo "set -x" >> "$revert"
 printf "cd %q || exit 1\n" "$(pwd)" >> "$revert"
 
-for file in "$@"
+for file in "${files[@]}"
 do
     if [[ ! -e "$file" ]]
     then
         echo "$0: no such file or directory: $file"
         exit 1
     fi
-    newfile="$(echo "$file" | sed -E "$patt")"
+    newfile="$(echo "$file" | "${cmd[@]}")"
 
     srcs+=( "$file" )
     dsts+=( "$newfile" )
