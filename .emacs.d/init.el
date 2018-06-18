@@ -1088,6 +1088,14 @@ With argument, do this that many times."
 ;; flyspell
 ;;
 
+(req-package flyspell
+  :pin manual
+  :defer t
+  :bind (:map flyspell-mode-map
+              ("C-;" . helm-flyspell-correct)
+              )
+  )
+
 (add-hook 'prog-mode-hook (lambda () (flyspell-prog-mode) ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1371,6 +1379,16 @@ With argument, do this that many times."
   ;; helm everywhere
   (helm-mode 1)
 
+  )
+
+;;
+;; helm-flyspell
+;;
+
+(req-package helm-flyspell
+  ;:disabled
+  :require helm flyspell
+  :defer t
   )
 
 ;;
