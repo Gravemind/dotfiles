@@ -34,7 +34,7 @@ getfirstvalidfile() {
 		mime="$(file -b --mime-type	"$file")"
 		# echo "FILE $file $mime $ext" >&2
 		# mkv mime type sometimes does not report as video/audio
-		if [[ "$mime" =~ video\|audio\|directory || "$ext" =~ mkv\|mka\|mp4 ]]
+		if [[ "$mime" =~ video\|audio\|directory || "$ext" =~ mkv\|mka\|mp4\|webm\|avi ]]
 		then
 			echo "$file"
 			return 0
