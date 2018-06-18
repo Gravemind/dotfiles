@@ -851,6 +851,28 @@ With argument, do this that many times."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; conf
+;;
+
+(req-package conf-mode
+  :pin manual
+  :defer t
+  :mode (("\\.conf\\'" . conf-mode)
+         ("rc\\'" . conf-mode)
+         ("\\.te\\'" . conf-mode) ;; selinux
+         )
+)
+
+(req-package m4-mode
+  :pin manual
+  :defer t
+  :mode (("\\.if\\'" . m4-mode) ;; selinux
+         ("\\.spt\\'" . m4-mode) ;; selinux
+         )
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; lua
 ;;
 
