@@ -120,9 +120,10 @@ function gravemind_promt_cc() {
 	else
 		progs+="%F{black}C"
 	fi
-	if [[ -n "$SSH_AGENT_PID" ]]
+	if [[ -n "$SSH_AUTH_SOCK" ]]
 	then
-		if [[ -e "/proc/$SSH_AGENT_PID" && -e "$SSH_AUTH_SOCK" ]]; then
+		if ssh-add -l >& /dev/null
+		then
 			local selfpid=$$
 			if [[ "$SSH_AGENT_OWNER_PID" == "$selfpid" ]]; then
 				progs+="%F{green}A"
