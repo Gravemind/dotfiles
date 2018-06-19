@@ -13,18 +13,20 @@
 
 	d   = diff -M
 	dc  = diff -M --cached
+	du  = diff -M @..@{u}
 	dw  = diff --word-diff=color '--word-diff-regex=\\w+|[^[:space:]]' -M
 	dcw = diff --word-diff=color '--word-diff-regex=\\w+|[^[:space:]]' -M --cached
+	duw = diff --word-diff=color '--word-diff-regex=\\w+|[^[:space:]]' -M @..@{u}
 
 	dule = submodule
 
-	## branches
 	b = branch --sort=version:refname
 	ba = branch --sort=version:refname --all
 
-	## git cont REV # shows branch containing REV
+	# usage: git cont REV
+	# Show branch containing REV
 	cont = branch --sort=version:refname --all --contains
-	## ditto tag
+	# Ditto tag
 	contt = tag --contains
 
 	su = !git --no-pager diff --name-only --diff-filter=U
@@ -33,84 +35,104 @@
 	sd = !git --no-pager diff --name-only --diff-filter=D
 
 	a = add
-	## "un-add"
+	# "un-add"
 	ua = reset HEAD
 
-	## Usage: git fclean PATH
-	## Force clean PATH to HEAD state
+	# usage: git fclean PATH
+	# Force clean PATH to HEAD state
 	fclean = "!f() { a=\"${1:-./}\"; echo -n \"Checkout HEAD and clean $a ? [y/N] \" && read -n 1 r && echo && [[ $r == \"y\" ]] && cd \"$GIT_PREFIX\" && ls -d \"$a\" && git checkout @ -- \"$a\" && git clean -xdf -- \"$a\" && echo \"Cleaned $a\"; }; f"
 
-	## Usage: git fo BRANCH
-	## Update BRANCH to it's upstream
+	# usage: git fo BRANCH
+	# Fetch any BRANCH to it's upstream
 	fo = "!sh -c 'git update-ref refs/heads/$1 $1@{upstream}' -"
 
-	## Usage: git fco BRANCH
-	## "git fo BRANCH" then "git checkout BRANCH"
+	# usage: git fco BRANCH
+	# Fetch any BRANCH to it's upstream, _then_ checkout it
+	# (reverse of git co BRANCH; git pull; )
 	fco = "!sh -c 'git fo $1; git checkout $1 && git submodule update' -"
 
-	## Fetch prune all
+	# Fetch prune all
 	fp = fetch --all --prune --tags
 
-	## Pull only if fast forward is possible (abort if conflicts)
+	# Pull only if fast forward is possible (abort if conflicts)
 	pulf = pull --no-rebase --ff-only
 
-	## Pull rebase with autostash
+	# Pull rebase with autostash
 	pulr = pull --rebase --autostash
 
-	## Clean deleted branches
+	# Clean deleted branches
 	cleanbranches = !git branch -vv | grep ': gone]' | awk '{ print $1 }' | xargs -n 1 git branch -d
 
-	## Short merge base of HEAD and $1
+	# Short merge base of HEAD and $1
 	mb = "!f() { git rev-parse --short $(git merge-base @ \"$1\"); }; f"
 
-	## Usage: git magicmerge BRANCH
-	## Magic merge
-	## -c merge.renamelimit=2048	# increase "follow file rename" limit
-	## -X patience					# slower but much smarter merge
-	## -X rename-threshold=10		# 2 files with 10% similarities is a rename
-	## # -X ignore-space-change		# well, ignore whitespaces
-	## -X ignore-space-at-eol		# well, ignore whitespaces eol
-	## --no-ff						# dont fast forward, ie always create a commit
-	## --no-commit					# dont "auto" commit after merge
+	# usage: git magicmerge BRANCH
+	# Magic merge
+	# -c merge.renamelimit=2048		# increase "follow file rename" limit
+	# -X patience					# slower but much smarter merge
+	# -X rename-threshold=10		# 2 files with 10% similarities is a rename
+	# # -X ignore-space-change		# ignore whitespaces
+	# -X ignore-space-at-eol		# ignore whitespaces at eol only
+	# --no-ff						# dont fast forward, ie always create a commit
+	# --no-commit					# dont "auto" commit after merge
 	magicmerge = !git -c merge.renamelimit=2048 merge -X patience -X rename-threshold=10 -X ignore-space-at-eol --no-ff --no-commit
 
-
-	## Merge fast-forward only
+	# Merge fast-forward only
 	mf = merge --ff-only
 	mff = merge --ff-only
 
-	## Merge non fast-forward (create a commit)
+	# Merge non fast-forward (create a commit)
 	mnf = merge --no-ff
 
-	## Merge non fast-forward (create a commit), and don't commit
+	# Merge non fast-forward (create a commit), and don't commit
 	mnfc = merge --no-ff --no-commit
 
-	## Log current branch
+	# Log current branch
 	l  = log --pretty=my --graph --full-history --simplify-merges --date-order
 
-	## Log current branch, topologic
+	# Log current branch, topologic
 	lt = log --pretty=my --graph --full-history --simplify-merges --topo-order
 
-	## Log all
+	# Log all
 	la = log --pretty=my --graph --full-history --simplify-merges --date-order --all
 
-	## Log HEAD and its upstream
+	# Log HEAD and its upstream
 	lu = log --pretty=my --graph --full-history --simplify-merges --date-order @{upstream}...@~5 @{upstream}~5...@
 
-	## Note: By default `git log -- path/to/file` will omit commit if "the end result is the same"
-	##       `--full-history --simplify-merges` disables that.
+	# Note: By default `git log -- path/to/file` will omit commit if "the end result is the same"
+	#       `--full-history --simplify-merges` disables that.
 
-	## Show hide untracked files
+	# Show hide untracked files
 	hideuntrack = config --local status.showUntrackedFiles no
 	showuntrack = config --local status.showUntrackedFiles normal
 
-## Pretty log format
-[pretty]
-	my = "%C(bold blue)%h%C(bold red)% D%Creset %s %C(green)%an %C(bold blue)%ar%C(reset)"
-
 [format]
-	## default pretty format for log/show/whatchanged
+	# default pretty format for log/show/whatchanged
 	#pretty = my
+
+# Pretty log format
+[pretty]
+	my = "tformat:%C(magenta)%h%C(reset)%C(auto)% D %C(reset)%s%C(blue)%>|(90) %an %C(bold black)%ar"
+
+[color "branch"]
+	current = bold white
+	local = bold green
+	remote = bold cyan
+[color "decorate"]
+	HEAD = bold white
+	branch = bold green
+	remoteBranch = bold cyan
+	tag = bold yellow
+	stash = bold blue
+[color "status"]
+	header = bold white
+	added = bold green
+	changed = bold blue
+	untracked = red
+	unmerged = bold red
+	branch = bold green
+	localBranch = bold green
+	remoteBranch = bold cyan
 
 [color]
 	branch = auto
@@ -120,18 +142,6 @@
 	log = auto
 	ui = auto
 	grep = auto
-
-[color "branch"]
-	current = bold green
-	local = bold yellow
-	remote = bold cyan
-[color "status"]
-	header = bold white
-	added = bold green
-	changed = bold blue
-	untracked = red
-	unmerged = bold red
-	branch = bold yellow
 
 #[column]
 #	ui = auto column dense
@@ -158,7 +168,7 @@
 [merge]
 	conflictstyle = diff3
 [core]
-	## Increase short hash to 10 characters
+	# Increase short hash to 10 characters
 	abbrev = 10
 [diff]
 	indentHeuristic = true
@@ -169,13 +179,13 @@
 
 [core]
 	# default:
-	# whitespace = blank-at-eol,blank-at-eof,space-before-tab
+	#whitespace = blank-at-eol,blank-at-eof,space-before-tab
 	whitespace = blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 
 	# checkout crlf, commit lf
-	# autocrlf = true
+	#autocrlf = true
 	# checkout as is, commit lf
-	# autocrlf = input
+	#autocrlf = input
 	# checkout as is, commit as is
 	autocrlf = false
 
@@ -185,7 +195,7 @@
 [mergetool "emerge"]
 	path = /home/jo/bin/emerge-for-git
 
-###	WINDOWS
+### WINDOWS ###
 #[core]
 #	autocrlf = true
 #	editor = \"C:/Program Files (x86)/emacs-24.3/bin/emacs.exe\"
