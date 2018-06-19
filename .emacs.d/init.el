@@ -20,7 +20,7 @@
 ;; - Uncomment:
 ;;(add-to-list 'load-path "~/.emacs.d/benchmark-init-el/") (require 'benchmark-init-loaddefs) (benchmark-init/activate)
 
-(setq debug-on-error t)
+;(setq debug-on-error t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -137,6 +137,33 @@
  )
 
 ;(custom-set-variables '(paragraph-start "\f\\|[ \t]*$\\|[ \t]*[-+*] "))
+
+;;
+;; tramp 'ssha': ssh with agent forwarding
+;;
+(eval-after-load "tramp"
+  '(add-to-list 'tramp-methods
+               (list "ssha"
+                     '(tramp-login-program "ssh")
+                     '(tramp-login-args
+                       (("-l" "%u")
+                        ("-p" "%p")
+                        ("%c")
+                        ("-A")
+                        ("-e" "none")
+                        ("%h")))
+                     '(tramp-async-args
+                       (("-q")))
+                     '(tramp-remote-shell "/bin/sh")
+                     '(tramp-remote-shell-login
+                       ("-l"))
+                     '(tramp-remote-shell-args
+                       ("-c")))
+               t)
+  )
+;; might help tramp
+(setenv "SHELL" "/bin/bash")
+(setenv "ESHELL" "/bin/bash")
 
 ;;
 ;; show-paren-mode
