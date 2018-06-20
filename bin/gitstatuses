@@ -3,6 +3,7 @@
 set -euo pipefail
 
 C_RED="\033[1;31m"
+C_RED_NOBOLD="\033[0;31m"
 C_MAGENTA="\033[1;35m"
 C_YELLOW="\033[1;33m"
 C_BLUE="\033[1;34m"
@@ -13,14 +14,18 @@ C_RESET="$(tput sgr0)"
 
 C_ERROR="$C_RED"
 C_OK="$C_GREEN"
-C_PULL="$C_MAGENTA"
-C_PUSH="$C_CYAN"
+
+# status indicators
 C_LOCAL="$C_RED"
 C_STAGE="$C_GREEN"
-
-C_BR_REMOTE="$C_BLUE"
-C_BR_HEAD="$C_GREEN"
-C_BR_LOCAL="$C_YELLOW"
+C_UNTRACK="$C_RED_NOBOLD"
+# branch ahead/behind count
+C_PULL="$C_MAGENTA"
+C_PUSH="$C_CYAN"
+# branch names
+C_BR_REMOTE="$C_CYAN"
+C_BR_LOCAL="$C_GREEN"
+C_BR_HEAD="$C_WHITE"
 
 root="."
 
@@ -110,15 +115,36 @@ fetchrepo() {
         ((++i))
     done 3< <( git status -z --branch --porcelain=v1 )
 
-    printfrepo "$repoi" "$repo"
+    # local localstr=
+    # #[[ "$(( $count_local_M + $count_local_D + $count_U + $count_Q))" -gt 0 ]] && localstr+="●"
+    # [[ "$count_local_M" -gt 0 ]] && localstr+="M"
+    # [[ "$count_local_D" -gt 0 ]] && localstr+="D"
+    # [[ "$count_U" -gt 0 ]] && localstr+="U"
+    # [[ "$count_Q" -gt 0 ]] && localstr+="?"
+    # local stagestr=
+    # #[[ "$(( $count_stage_M + $count_stage_A + $count_stage_D ))" -gt 0 ]] && stagestr+="●"
+    # [[ "$count_stage_M" -gt 0 ]] && stagestr+="M"
+    # [[ "$count_stage_A" -gt 0 ]] && stagestr+="A"
+    # [[ "$count_stage_D" -gt 0 ]] && stagestr+="D"
+    # printfrepo "$repoi" "$repo"
+    # echo -ne "${C_LOCAL}$localstr ${C_STAGE}$stagestr"
+    #local branches_ident="    "
 
-    local count_local=$(( $count_local_M + $count_local_D + $count_U + $count_Q))
-    echo -ne "${C_LOCAL}"
-    echo -ne "$([[ "$count_local" -gt 0 ]] && echo -n "●")"
+    local pfmt="${C_LOCAL}%1s${C_STAGE}%1s${C_UNTRACK}%1s"
+    local pargs=(
+        #"$([[ "$count_local_M" -gt 0 ]] && echo -ne "M")"
+        # "$([[ "$count_local_D" -gt 0 ]] && echo -ne "D")"
+        # "$([[ "$count_U" -gt 0 ]] && echo -ne "U")"
+        "$([[ "$((count_local_M + count_local_D + $count_U))" -gt 0 ]] && echo -ne "●")"
+        # "$([[ "$count_stage_M" -gt 0 ]] && echo -ne "M" )"
+        # "$([[ "$count_stage_A" -gt 0 ]] && echo -ne "A" )"
+        # "$([[ "$count_stage_D" -gt 0 ]] && echo -ne "D" )"
+        "$([[ "$((count_stage_M + count_stage_A + count_stage_D))" -gt 0 ]] && echo -ne "●" )"
+        "$([[ "$count_Q" -gt 0 ]] && echo -ne "?")"
+    )
+    local branches_ident="        "
 
-    local count_stage=$(( $count_stage_M + $count_stage_A + $count_stage_D ))
-    echo -ne "${C_STAGE}"
-    echo -ne "$([[ "$count_stage" -gt 0 ]] && echo -n "●")"
+    printf "%3d ${pfmt} ${C_RESET}%s" "$repoi" "${pargs[@]}" "$repo"
 
     ## branches
     while IFS= read -r -u3 -d $'\n' line
@@ -142,16 +168,16 @@ fetchrepo() {
         if [[ $ahead -gt 0 || $behind -gt 0 ]]
         then
             echo
-            echo -n "    "
+            echo -n "$branches_ident"
             if [[ $ahead -gt 0 ]] ; then
-                printf "$C_PUSH%2d↑" $ahead
+                printf "$C_PUSH↑%-3d" "${ahead}"
             else
-                printf "   "
+                printf "    "
             fi
             if [[ $behind -gt 0 ]] ; then
-                printf "$C_PULL%3d↓" $behind
+                printf "$C_PULL↓%-3d" "$behind"
             else
-                printf "   "
+                printf "    "
             fi
             echo -ne "$C_RESET"
             if [[ "$rembranch" != "$branch" ]] ; then
