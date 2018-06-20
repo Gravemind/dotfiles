@@ -16,6 +16,8 @@ _systemctl_j() {
 }
 compdef _systemctl_j='systemctl'
 
+alias sysd='_ systemctl'
+
 alias start='_systemctl_j start'
 alias stop='_systemctl_j stop'
 alias restart='_systemctl_j restart'
