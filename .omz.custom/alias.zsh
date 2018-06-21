@@ -63,6 +63,8 @@ reboot() {
 	disown
 }
 
+alias suspend='systemctl suspend'
+
 alias ssh-fingerprint="find . -name '*.pub' -exec ssh-keygen -l -f {} \;"
 
 alias rchttpd='sudo /etc/rc.d/httpd'
