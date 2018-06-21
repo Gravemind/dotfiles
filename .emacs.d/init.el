@@ -887,6 +887,11 @@ With argument, do this that many times."
   :mode (("\\.conf\\'" . conf-mode)
          ("rc\\'" . conf-mode)
          ("\\.te\\'" . conf-mode) ;; selinux
+         ;; systemd
+         ("\\.service\\'" . conf-mode)
+         ("\\.network\\'" . conf-mode)
+         ("\\.socket\\'" . conf-mode)
+         ("\\.timer\\'" . conf-mode)
          )
 )
 
