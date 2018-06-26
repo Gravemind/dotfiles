@@ -12,6 +12,7 @@ alias lt='l -rt'
 alias rcp='cp -r'
 alias c='clear'
 alias e='exit'
+alias t='urxvt & ; disown'
 
 _rgg() {
 	s="$1"
@@ -80,5 +81,6 @@ alias -g   NULL='>& /dev/null'
 alias -g  COLOR='--color=always'
 alias -g  XCILP='| xclip -r'
 alias -g   YANK='| yank'
+alias -g     BG='& ; disown'
 
 alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test100.zip'
