@@ -699,12 +699,6 @@ With argument, do this that many times."
 
 (req-package expand-region
   :bind ("C-=" . er/expand-region)
-  :config
-  ;; https://github.com/magnars/expand-region.el/issues/229
-  (global-set-key (kbd "C-SPC") #'(lambda (arg)
-                                    (interactive "P")
-                                    (setq transient-mark-mode t)
-                                    (set-mark-command arg)))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1136,12 +1130,8 @@ With argument, do this that many times."
 ;;
 
 (req-package magit
-  :commands (magit-status
-             magit-log
-             magit-diff
-             magit-log-buffer-file)
+  :defer t
   :bind (("C-x g" . magit-status))
-  ;;:init
   :config
 
   (setq-default
