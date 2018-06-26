@@ -1467,6 +1467,7 @@ With argument, do this that many times."
    )
 
 (req-package dired-k
+  :disabled
   :hook ((dired-initial-position . dired-k)
          (dired-after-readin . dired-k-no-revert))
   :config
@@ -1483,8 +1484,29 @@ With argument, do this that many times."
 ;;   show git diffs in fringe margin
 ;;
 
+(req-package diff-hl
+  ;:disabled
+  :demand
+  :bind (("M-n" . diff-hl-next-hunk)
+         ("M-p" . diff-hl-previous-hunk))
+  :config
+  (define-fringe-bitmap 'jo/vertical-bar [3 3 3 3 3 3 3 3 3 3 3 3 3 3 3] nil 2 'center)
+  (defun jo/diff-hl-fringe-bmp (type _pos)
+    'jo/vertical-bar
+    )
+  (setq-default
+   diff-hl-fringe-bmp-function 'jo/diff-hl-fringe-bmp
+   diff-hl-draw-borders nil
+   diff-hl-flydiff-delay 0.01
+   )
+
+  (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
+  (global-diff-hl-mode)
+  (diff-hl-flydiff-mode t)
+)
+
 (req-package git-gutter-fringe
-  ;;:disabled
+  :disabled
   :demand
   :bind (("M-n" . git-gutter:next-hunk)
          ("M-p" . git-gutter:previous-hunk))
