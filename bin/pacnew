@@ -1,6 +1,6 @@
-#!/bin/zsh
+#!/bin/bash
 
-FILES=()
+pacnews=()
 
 PAC_LOGFILE="/var/log/pacman.log"
 
@@ -19,27 +19,28 @@ fi
 if [ "$1" = "-a" ]
 then
     echo ">> searching all .pacnew ..."
-    find / \( -name "*.pacnew" -a -mount \) -print 2> /dev/null | while read F
-        do
-            echo "++ found: $F"
-            FILES+=$F
-        done
-
+    while read -u3 -r -d $'\0' F
+    do
+        echo "++ found: $F"
+        pacnews+=("$F")
+    done 3< <( find / \( -name "*.pacnew" -a -mount \) -print0 2> /dev/null )
 else
     echo ">> searching .pacnew in $PAC_LOGFILE ..."
-    ( ( cat "$PAC_LOGFILE" | grep --color=auto pacnew | sed -r 's#^.*installed as ([a-zA-Z0-9_./-]+\.pacnew).*$#\1#g' | sort -u ) 2> /dev/null ) | while read F
+    while read -u3 -r -d $'\n' F
     do
-        if [ -f "$F" ]
+        if [[ -e "$F" ]]
         then
             echo "++ found: $F"
-            FILES+=$F
+            pacnews+=("$F")
         fi
-    done
+    done 3< <( ( grep --binary-files=text pacnew "$PAC_LOGFILE" |
+                     sed -n -E 's#^.*installed as (.*\.pacnew)$#\1#gp' |
+                     sort -u ) 2> /dev/null )
 fi
 
-echo "== ${#FILES} files found"
+echo "== ${#pacnews[@]} pacnew found"
 
-for NEW in $FILES
+for NEW in "${pacnews[@]}"
 do
 
     OLD=${NEW%.*}

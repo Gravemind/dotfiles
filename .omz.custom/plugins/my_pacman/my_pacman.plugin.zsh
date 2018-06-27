@@ -99,22 +99,21 @@ pacupg() {
 }
 
 checkpacnew() {
-	local pacnews=""
-	local pacnewcount=0
-	grep pacnew /var/log/pacman.log | \
-		sed -n -E 's#^.* ([^ ]+\.pacnew)$#\1#gp' | \
-		sort -u | \
-		while read pacnew
-		do
-			if [[ -f "$pacnew" ]]
-			then
-				pacnews="$pacnews $pacnew"
-				pacnewcount=$(($pacnewcount + 1))
-			fi
-		done
-	if [[ pacnewcount -gt 0 ]]
+	local pacnews=()
+	while read -u3 -r -d $'\n' pacnew
+	do
+		if [[ -e "$pacnew" ]]
+		then
+			pacnews+=("$pacnew")
+		fi
+	done 3< <( grep --binary-files=text pacnew /var/log/pacman.log |
+				   sed -n -E 's#^.*installed as (.*\.pacnew)$#\1#gp' |
+				   sort -u )
+	if [[ "${#pacnews[@]}" -gt 0 ]]
 	then
-		echo "${fg_bold[red]}$0: found $pacnewcount pacnew:$reset_color$pacnews"
+		echo
+		echo "${fg_bold[red]}$0: found ${#pacnews[@]} pacnew: ${pacnews[@]}$reset_color"
+		echo
 	fi
 }
 
