@@ -102,6 +102,8 @@
  make-backup-files nil
 
  truncate-lines t
+ word-wrap t
+
  ;vc-handled-backends nil
  recentf-max-saved-items 92
 
@@ -650,7 +652,11 @@ With argument, do this that many times."
 
 (req-package markdown-mode
   :defer t
+  :hook (markdown-mode . (lambda () (setq word-wrap t) (setq truncate-lines t) (toggle-truncate-lines t))) ;; FIXME does not work !?
   :config
+
+  ;;(add-hook 'markdown-mode-hook '(lambda () (setq word-wrap t) (setq truncate-lines t) (toggle-truncate-lines t)))
+
   ;; bin launched to generate html (C-c C-c l), needs to be installed
   (setq-default markdown-command "multimarkdown")
   )
@@ -879,6 +885,7 @@ With argument, do this that many times."
   :pin manual
   :defer t
   :mode (("\\.conf\\'" . conf-mode)
+         ("\\.pa\\'" . conf-mode)
          ("rc\\'" . conf-mode)
          ("\\.te\\'" . conf-mode) ;; selinux
          ;; systemd
