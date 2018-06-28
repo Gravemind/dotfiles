@@ -1,4 +1,4 @@
-volume=70
+#volume=70
 
 hr-seek=yes
 #force-window=immediate
@@ -8,17 +8,26 @@ sub-color=1.0/0.2
 #exact|fuzzy|all
 sub-auto=fuzzy
 
+# af=... here will always enable filter (even at speed 1) !
+# so, done in input.conf
 #af=rubberband
-#af=scaletempo=stride=20:search=20:overlap=.30
-af=scaletempo=stride=12:search=12:overlap=1
+#af=scaletempo=stride=12:search=12:overlap=1
 
-profile=opengl-hq
+#profile=opengl-hq
 opengl-swapinterval=1
 interpolation=yes
-tscale=oversample
-video-sync=display-resample
-video-sync=display-adrop
 display-fps=60
+video-sync=display-resample
+#video-sync=display-resample-vdrop
+tscale=oversample
+
+# profile=opengl-hq
+# opengl-swapinterval=1
+# interpolation=yes
+# tscale=oversample
+# #video-sync=display-resample
+# #video-sync=display-adrop
+# display-fps=60
 
 cache-secs=300
 
