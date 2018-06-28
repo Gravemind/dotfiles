@@ -253,57 +253,54 @@ exec_always --no-startup-id "systemctl --user restart clipmenud.service"
 #bindsym Shift+Insert exec --no-startup-id "bash -c 'xdotool type \\"$(xclip -selection primary -o -r)\\"'
 #bindsym Shift+Insert exec --no-startup-id "bash -c 'xclip -selection primary -o -r | xvkbd -xsendevent -delay 1 -file -'"
 
-# Pulse Audio
-set $pactl_vol pactl set-sink-volume '@DEFAULT_SINK@'
-set $pactl_mute pactl set-sink-mute '@DEFAULT_SINK@' toggle
-bindsym $ModK+equal exec --no-startup-id $pactl_vol +5%
-bindsym $ModK+minus exec --no-startup-id $pactl_vol -5%
-bindsym $ModK+Shift+equal exec --no-startup-id $pactl_vol +10%
-bindsym $ModK+Shift+minus exec --no-startup-id $pactl_vol -10%
-bindsym XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +5%
-bindsym XF86AudioLowerVolume exec --no-startup-id $pactl_vol -5%
-bindsym $ModK+XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +5%
-bindsym $ModK+XF86AudioLowerVolume exec --no-startup-id $pactl_vol -5%
-bindsym Shift+XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +10%
-bindsym Shift+XF86AudioLowerVolume exec --no-startup-id $pactl_vol -10%
-bindsym $ModK+Shift+XF86AudioRaiseVolume exec --no-startup-id $pactl_vol +10%
-bindsym $ModK+Shift+XF86AudioLowerVolume exec --no-startup-id $pactl_vol -10%
-bindsym $ModK+F12 exec --no-startup-id $pactl_vol +5%
-bindsym $ModK+F11 exec --no-startup-id $pactl_vol -5%
-bindsym XF86AudioMute exec --no-startup-id $pactl_mute
-bindsym $ModK+XF86AudioMute exec --no-startup-id $pactl_mute
+# Volume: Pulse Audio
+set $volume_set  exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@'
+set $volume_mute exec --no-startup-id pactl set-sink-mute '@DEFAULT_SINK@' toggle
 
-# Playerctl
-bindsym $ModK+End exec --no-startup-id playerctl play-pause
-bindsym $ModK+Prior exec --no-startup-id playerctl previous
-bindsym $ModK+Next exec --no-startup-id playerctl next
-bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
-bindsym XF86AudioPrev exec --no-startup-id playerctl previous
-bindsym XF86AudioNext exec --no-startup-id playerctl next
-bindsym XF86AudioStop exec --no-startup-id playerctl pause
-bindsym $ModK+XF86AudioPlay exec --no-startup-id playerctl play-pause
-bindsym $ModK+XF86AudioPrev exec --no-startup-id playerctl previous
-bindsym $ModK+XF86AudioNext exec --no-startup-id playerctl next
-bindsym $ModK+XF86AudioStop exec --no-startup-id playerctl pause
-#bindsym $ModK+F8 exec --no-startup-id playerctl play-pause
-#bindsym $ModK+F9 exec --no-startup-id playerctl previous
-#bindsym $ModK+F10 exec --no-startup-id playerctl next
+# Player: Playerctl
+set $player_play  exec --no-startup-id playerctl play-pause
+set $player_pause exec --no-startup-id playerctl pause
+set $player_next  exec --no-startup-id playerctl next
+set $player_prev  exec --no-startup-id playerctl previous
+# Player: MPD
+# set $player_play  exec --no-startup-id mpc -q toggle
+# set $player_pause exec --no-startup-id mpc -q stop
+# set $player_next  exec --no-startup-id mpc -q next
+# set $player_prev  exec --no-startup-id mpc -q prev
 
-# MPD
-#bindsym $ModK+End exec --no-startup-id mpc -q toggle
-#bindsym $ModK+Prior exec --no-startup-id mpc -q prev
-#bindsym $ModK+Next exec --no-startup-id mpc -q next
-#bindsym XF86AudioPlay exec --no-startup-id mpc -q toggle
-#bindsym XF86AudioPrev exec --no-startup-id mpc -q prev
-#bindsym XF86AudioNext exec --no-startup-id mpc -q next
-#bindsym XF86AudioStop exec --no-startup-id mpc -q stop
-#bindsym $ModK+XF86AudioPlay exec --no-startup-id mpc -q toggle
-#bindsym $ModK+XF86AudioPrev exec --no-startup-id mpc -q prev
-#bindsym $ModK+XF86AudioNext exec --no-startup-id mpc -q next
-#bindsym $ModK+XF86AudioStop exec --no-startup-id mpc -q stop
-##bindsym $ModK+F8 exec --no-startup-id mpc -q toggle
-##bindsym $ModK+F9 exec --no-startup-id mpc -q prev
-##bindsym $ModK+F10 exec --no-startup-id mpc -q next
+bindsym $ModK+equal $volume_set +5%
+bindsym $ModK+minus $volume_set -5%
+bindsym $ModK+Shift+equal $volume_set +10%
+bindsym $ModK+Shift+minus $volume_set -10%
+bindsym XF86AudioRaiseVolume $volume_set +5%
+bindsym XF86AudioLowerVolume $volume_set -5%
+bindsym $ModK+XF86AudioRaiseVolume $volume_set +5%
+bindsym $ModK+XF86AudioLowerVolume $volume_set -5%
+bindsym Shift+XF86AudioRaiseVolume $volume_set +10%
+bindsym Shift+XF86AudioLowerVolume $volume_set -10%
+bindsym $ModK+Shift+XF86AudioRaiseVolume $volume_set +10%
+bindsym $ModK+Shift+XF86AudioLowerVolume $volume_set -10%
+bindsym $ModK+F12 $volume_set +5%
+bindsym $ModK+F11 $volume_set -5%
+bindsym XF86AudioMute $volume_mute
+bindsym Shift+XF86AudioMute $volume_mute
+bindsym $ModK+XF86AudioMute $volume_mute
+bindsym $ModK+Shift+XF86AudioMute $volume_mute
+
+bindsym $ModK+End $player_play_pause
+bindsym $ModK+Prior $player_previous
+bindsym $ModK+Next $player_next
+bindsym XF86AudioPlay $player_play_pause
+bindsym XF86AudioPrev $player_previous
+bindsym XF86AudioNext $player_next
+bindsym XF86AudioStop $player_pause
+bindsym $ModK+XF86AudioPlay $player_play_pause
+bindsym $ModK+XF86AudioPrev $player_previous
+bindsym $ModK+XF86AudioNext $player_next
+bindsym $ModK+XF86AudioStop $player_pause
+#bindsym $ModK+F8 $player_play_pause
+#bindsym $ModK+F9 $player_previous
+#bindsym $ModK+F10 $player_next
 
 # On/Off Touchpad
 bindsym XF86TouchpadToggle exec zsh ~/bin/toggletouchpad
