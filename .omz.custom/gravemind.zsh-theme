@@ -122,7 +122,8 @@ function gravemind_promt_cc() {
 	fi
 	if [[ -n "$SSH_AUTH_SOCK" ]]
 	then
-		if ssh-add -l >& /dev/null
+		ssh-add -l >& /dev/null
+		if [[ $? == 0 || $? == 1 ]] ## returns 1 when connected but no keys
 		then
 			local selfpid=$$
 			if [[ "$SSH_AGENT_OWNER_PID" == "$selfpid" ]]; then

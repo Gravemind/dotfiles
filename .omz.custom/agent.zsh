@@ -11,13 +11,17 @@ function _onkill_killagent() {
 trap '_onkill_killagent' EXIT
 
 function agent() {
-	if ssh-add -l >& /dev/null
+	local selfpid=$$
+	ssh-add -l >& /dev/null
+	if [[ $? == 0 || $? == 1 ]] ## returns 1 when connected but no keys
 	then
 		echo "agent already running pid $SSH_AGENT_PID, sock $SSH_AUTH_SOCK"
-		return
+	else
+		export SSH_AGENT_OWNER_PID="$selfpid"
+		eval "$(ssh-agent -s)"
 	fi
-	local selfpid=$$
-	export SSH_AGENT_OWNER_PID="$selfpid"
-	eval "$(ssh-agent -s)"
-	ssh-add
+	if [[ "$1" = "a" ]]
+	then
+		ssh-add
+	fi
 }
