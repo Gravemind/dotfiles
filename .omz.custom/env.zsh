@@ -27,7 +27,7 @@ export LESSBINFMT='*u<%02X>'
 # -jn : --jump-target=n
 export LESS='-R -i -S -M -j5'
 
-export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep
+export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/config
 
 # deprecated:
 #export GREP_OPTIONS="--binary-files=without-match"
