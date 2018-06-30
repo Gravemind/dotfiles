@@ -14,6 +14,9 @@ bc
 rsync
 sysstat
 wget
+zsh-completions
+bash-completion
+pacutils
 
 xorg
 
@@ -54,6 +57,8 @@ iotop
 gdb
 asciidoc
 dos2unix
+socat
+perf
 
 chromium
 
@@ -79,7 +84,10 @@ libva-vdpau-driver
 p7zip
 redshift
 ripgrep
+fd
 dtrx
+pwgen
+neofetch
 
 xkb-qwerty-fr
 
