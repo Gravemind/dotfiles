@@ -287,23 +287,23 @@ bindsym Shift+XF86AudioMute $volume_mute
 bindsym $ModK+XF86AudioMute $volume_mute
 bindsym $ModK+Shift+XF86AudioMute $volume_mute
 
-bindsym $ModK+End $player_play_pause
+bindsym $ModK+End $player_play
 bindsym $ModK+Prior $player_previous
 bindsym $ModK+Next $player_next
-bindsym XF86AudioPlay $player_play_pause
+bindsym XF86AudioPlay $player_play
 bindsym XF86AudioPrev $player_previous
 bindsym XF86AudioNext $player_next
 bindsym XF86AudioStop $player_pause
-bindsym $ModK+XF86AudioPlay $player_play_pause
+bindsym $ModK+XF86AudioPlay $player_play
 bindsym $ModK+XF86AudioPrev $player_previous
 bindsym $ModK+XF86AudioNext $player_next
 bindsym $ModK+XF86AudioStop $player_pause
-#bindsym $ModK+F8 $player_play_pause
+#bindsym $ModK+F8 $player_play
 #bindsym $ModK+F9 $player_previous
 #bindsym $ModK+F10 $player_next
 
 # On/Off Touchpad
-bindsym XF86TouchpadToggle exec zsh ~/bin/toggletouchpad
+bindsym XF86TouchpadToggle exec --no-startup-id zsh ~/bin/toggletouchpad
 
 # Lock
 #bindsym $ModK+w exec --no-startup-id "/bin/bash --login -c 'sleep 0.5; xtrlock; exit 0'"
