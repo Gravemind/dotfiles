@@ -1,0 +1,4 @@
+# for bare git dotiles
+*
+!.gitignore
+!ccache.conf

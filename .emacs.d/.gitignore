@@ -1,4 +1,16 @@
+# for bare git dotiles
 custom.el
 elpa
 .mc-lists.el
 bookmarks
+\#*
+.gitignore
+.tutor/
+auto-save-list/
+eshell/
+history
+ido.last
+image-dired/
+recentf
+tramp
+url/
