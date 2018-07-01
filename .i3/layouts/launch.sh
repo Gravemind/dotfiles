@@ -99,8 +99,7 @@ for arg in "${prog_args[@]}" ; do
 done
 declare -px  >> $tmpexec
 printf "cd %q\n" "$(pwd)" >> $tmpexec
-echo "trap \"{ rm -f $tmp; }\" EXIT" >> $tmpexec
-echo "trap \"{ rm -f $tmpexec; }\" EXIT" >> $tmpexec
+echo "trap \"{ rm -f $tmp; rm -f $tmpexec; }\" EXIT" >> $tmpexec
 echo "${prog_cmd[*]}" >> $tmpexec
 #cat -e $tmpexec
 
