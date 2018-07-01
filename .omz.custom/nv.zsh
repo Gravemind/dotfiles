@@ -8,11 +8,11 @@ nvdualunsync() {
 }
 
 nvsingle() {
-	nvidia-settings --assign 'CurrentMetaMode=DP-4: nvidia-auto-select +1680+0 {ForceCompositionPipeline=Off, ForceFullCompositionPipeline=Off}'
+	nvidia-settings --assign 'CurrentMetaMode=DP-4: nvidia-auto-select +0+0 {ForceCompositionPipeline=Off, ForceFullCompositionPipeline=Off}'
 }
 
 nvsinglesync() {
-	nvidia-settings --assign 'CurrentMetaMode=DP-4: nvidia-auto-select +1680+0 {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}'
+	nvidia-settings --assign 'CurrentMetaMode=DP-4: nvidia-auto-select +0+0 {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}'
 }
 
 nvoverclock() {
