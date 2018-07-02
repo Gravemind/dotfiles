@@ -97,7 +97,7 @@
 	la = log --pretty=my --graph --full-history --simplify-merges --date-order --all
 
 	# Log HEAD and its upstream
-	lu = log --pretty=my --graph --full-history --simplify-merges --date-order @{upstream}...@~5 @{upstream}~5...@
+	lu = log --pretty=my --graph --full-history --simplify-merges --date-order @...@{u} --boundary --left-right
 
 	# Note: By default `git log -- path/to/file` will omit commit if "the end result is the same"
 	#       `--full-history --simplify-merges` disables that.
