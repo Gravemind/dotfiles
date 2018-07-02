@@ -40,16 +40,16 @@
 
 	# usage: git fclean PATH
 	# Force clean PATH to HEAD state
-	fclean = "!f() { a=\"${1:-./}\"; echo -n \"Checkout HEAD and clean $a ? [y/N] \" && read -n 1 r && echo && [[ $r == \"y\" ]] && cd \"$GIT_PREFIX\" && ls -d \"$a\" && git checkout @ -- \"$a\" && git clean -xdf -- \"$a\" && echo \"Cleaned $a\"; }; f"
+	fclean = "!f() { set -eux; a=\"${1:-./}\"; echo -n \"Remove untracked and ignored and checkout $a ? [y/N] \" && read -n 1 r && echo && [[ $r == \"y\" ]] && cd \"$GIT_PREFIX\" && ls -d \"$a\" && git checkout @ -- \"$a\" && git clean -xdf -- \"$a\" && echo \"Cleaned $a\"; }; f"
 
 	# usage: git fo BRANCH
 	# Fetch any BRANCH to it's upstream
-	fo = "!sh -c 'git update-ref refs/heads/$1 $1@{upstream}' -"
+	fo = "!f() { set -eux; git update-ref refs/heads/$1 $1@{upstream}; }; f"
 
 	# usage: git fco BRANCH
 	# Fetch any BRANCH to it's upstream, _then_ checkout it
 	# (reverse of git co BRANCH; git pull; )
-	fco = "!sh -c 'git fo $1; git checkout $1 && git submodule update' -"
+	fco = "!f() { set -eux; git fo $1; git checkout $1 && git submodule update; }; f"
 
 	# Fetch prune all
 	fp = fetch --all --prune --tags
@@ -64,7 +64,7 @@
 	cleanbranches = !git branch -vv | grep ': gone]' | awk '{ print $1 }' | xargs -n 1 git branch -d
 
 	# Short merge base of HEAD and $1
-	mb = "!f() { git rev-parse --short $(git merge-base @ \"$1\"); }; f"
+	mb = "!f() { set -eux; git rev-parse --short $(git merge-base $1 ${2:-@}); }; f"
 
 	# usage: git magicmerge BRANCH
 	# Magic merge
@@ -87,6 +87,10 @@
 	# Merge non fast-forward (create a commit), and don't commit
 	mnfc = merge --no-ff --no-commit
 
+	# git log note: by default, `git log file` hides commits that make "the end result
+	# the same"; --full-history shows everything, and --simplify-merges re-hides
+	# only needless merges.
+
 	# Log current branch
 	l  = log --pretty=my --graph --full-history --simplify-merges --date-order
 
@@ -98,9 +102,6 @@
 
 	# Log HEAD and its upstream
 	lu = log --pretty=my --graph --full-history --simplify-merges --date-order @...@{u} --boundary --left-right
-
-	# Note: By default `git log -- path/to/file` will omit commit if "the end result is the same"
-	#       `--full-history --simplify-merges` disables that.
 
 	# Show hide untracked files
 	hideuntrack = config --local status.showUntrackedFiles no
