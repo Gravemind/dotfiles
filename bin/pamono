@@ -5,13 +5,18 @@
 # $> pacmd list-sinks | grep name:
 #
 
-#pacmd load-module module-remap-sink sink_name=mono master=alsa_output.pci-0000_00_1b.0.analog-stereo channels=2 channel_map=mono,mono
+map="${1:-left}"
+if [[ "$map" == "u" || "$map" == "unload" ]]; then
+    echo unload
+    pacmd unload-module module-remap-sink
+    exit 0
+elif [[ "$map" == "l" || "$map" == "left" ]]; then
+    map=left
+else
+    map=right
+fi
 
-# remaps left channel to both
-#pacmd load-module module-remap-sink sink_name=mono master=@DEFAULT_SINK@ channels=2 master_channel_map=left,right channel_map=right,right
-pacmd load-module module-remap-sink sink_name=mono master=@DEFAULT_SINK@ channels=2 master_channel_map=left,right channel_map=left,left
-# right
-#pacmd load-module module-remap-sink sink_name=mono master=alsa_output.pci-0000_00_1b.0.analog-stereo channels=2 master_channel_map=left,right channel_map=right,right
+echo map $map to mono
 
-# to unload:
-# pacmd unload-module module-remap-sink
+pacmd unload-module module-remap-sink
+pacmd load-module module-remap-sink sink_name=mono master=@DEFAULT_SINK@ channels=2 master_channel_map=left,right channel_map=$map,$map
