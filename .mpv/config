@@ -1,34 +1,128 @@
-#volume=70
 
+input-ipc-server=/tmp/mpvsocket
+
+#volume=70
 hr-seek=yes
-#force-window=immediate
-sub-pos=84
-sub-font-size=45
+sub-pos=96
+sub-scale=0.6
+#sub-font-size=30
 sub-color=1.0/0.2
 #exact|fuzzy|all
 sub-auto=fuzzy
+blend-subtitles=yes
+screenshot-format=png
 
-# af=... here will always enable filter (even at speed 1) !
-# so, done in input.conf
-#af=rubberband
-#af=scaletempo=stride=12:search=12:overlap=1
-
-#profile=opengl-hq
-opengl-swapinterval=1
-interpolation=yes
-display-fps=60
-video-sync=display-resample
-#video-sync=display-resample-vdrop
-tscale=oversample
-
-# profile=opengl-hq
-# opengl-swapinterval=1
-# interpolation=yes
-# tscale=oversample
-# #video-sync=display-resample
-# #video-sync=display-adrop
-# display-fps=60
+ytdl-format=(bestvideo[height<=?1080]+bestaudio/best)[protocol=https]
 
 cache-secs=300
 
-ytdl-format=(bestvideo[height<=?1080]+bestaudio/best)[protocol=https]
+# Hide album art
+audio-display=no
+
+# Force stereo
+#audio-channels=stereo
+
+# https://www.svp-team.com/wiki/SVP:mpv
+# fixes audio desync/delay with filters (vapoursynth)
+hr-seek-framedrop=no
+# also avoids A/V desync with filters ?!
+#framedrop=vo
+
+#
+# Profiles
+#
+
+# HQ
+#profile=gpu-hq
+profile=gpu-hqer
+
+# GPU api
+profile=vulkan
+#profile=opengl
+
+# 60fps interopation
+#profile=interp
+#profile=mvtools
+profile=svp
+
+#
+# much better audio at speed > x1
+# (bound in input.conf)
+#
+[af-add-myscaletempo]
+af-add=@myscaletempo:scaletempo=stride=14:search=8:overlap=0.8
+# remove vapoursynth filter. @TODO: put it back when going back to x1
+vf=""
+
+#
+# gpu-hq with even better scaler
+#
+[gpu-hqer]
+profile=gpu-hq
+scale=ewa_lanczossharp
+cscale=ewa_lanczossharp
+
+#
+# 60fps interpolation
+#
+[interp]
+interpolation=yes
+#display-fps=60
+#video-sync=audio
+video-sync=display-resample
+#video-sync=display-resample-vdrop
+#temporal-dither=yes
+tscale=oversample
+#tscale=linear
+#tscale=bicubic
+#hwdec=no
+
+#
+# 60fps motion interpolation
+#
+[_vapoursynth-common]
+# https://www.svp-team.com/wiki/SVP:mpv
+# vapoursynth filters on CPU, so don't use hw decoder
+# use best copy-back
+hwdec=auto-copy
+hwdec-codecs=all
+#video-sync=audio
+#interpolation=yes
+#display-fps=60
+#video-sync=display-resample
+
+[mvtools]
+profile=_vapoursynth-common
+vf=vapoursynth=~/.mpv/filters/mvtools.py
+
+[svp]
+profile=_vapoursynth-common
+vf=vapoursynth=~/.mpv/filters/svp.py
+
+#
+# GPU api
+#
+[vulkan]
+gpu-api=vulkan
+#vulkan-swap-mode=mailbox # triple buffer sync
+vulkan-swap-mode=immediate # no sync
+#vulkan-async-compute=yes
+#vulkan-async-transfer=yes
+#vulkan-queue-count=1
+
+[opengl]
+gpu-api=opengl
+opengl-swapinterval=0 # no sync
+# https://www.svp-team.com/wiki/SVP:mpv
+# Can fix stuttering in some cases, in other cases probably causes it. Try it if you experience stuttering on macOS.
+# opengl-early-flush=no
+
+#
+# Auto profiles `mpv --list-protocols`
+#
+[protocol.http]
+force-window=immediate
+[protocol.https]
+profile=protocol.http
+[protocol.ytdl]
+profile=protocol.http
