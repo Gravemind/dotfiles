@@ -113,7 +113,7 @@
 
 # Pretty log format
 [pretty]
-	my = "tformat:%C(magenta)%h%C(reset)%C(auto)% D %C(reset)%s%C(blue)%>|(90) %an %C(bold black)%ar"
+	my = "tformat:%C(magenta)%h%C(reset)%C(auto)% D %C(reset)%s%C(blue)%>|(90) %an %C(bold black)%ar%C(reset)"
 
 [color "branch"]
 	current = bold white
