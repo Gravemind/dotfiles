@@ -21,8 +21,8 @@ nvoverclock() {
 	sudo nvidia-smi -pl 216
 
 	# clock offsets
-	nvidia-settings -a "[gpu:0]/GPUMemoryTransferRateOffset[3]=400"
-	nvidia-settings -a "[gpu:0]/GPUGraphicsClockOffset[3]=200"
+	nvidia-settings -a "[gpu:0]/GPUMemoryTransferRateOffset[3]=500"
+	nvidia-settings -a "[gpu:0]/GPUGraphicsClockOffset[3]=150"
 
 	# GPUPowerMizerMode
 	# - 0 adaptive
