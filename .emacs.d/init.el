@@ -113,10 +113,13 @@
  dabbrev-case-fold-search nil
  dabbrev-case-replace nil
 
- ;tramp-verbose 10
+ tramp-verbose 2 ; warnings
+ ;tramp-verbose 3 ; + connections (default)
  ;tramp-connection-timeout 10
  tramp-connection-timeout 14400 ; 4h
  password-cache-expiry nil
+ tramp-shell-prompt "\\$ " ;; see ~/.zshrc
+ ;tramp-chunksize 4050
 
  ;; Faster cursor ?
  ;; https://emacs.stackexchange.com/questions/28736/emacs-pointcursor-movement-lag/28746
