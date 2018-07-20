@@ -101,7 +101,7 @@
 	la = log --pretty=my --graph --full-history --simplify-merges --date-order --all
 
 	# Log HEAD and its upstream
-	lu = log --pretty=my --graph --full-history --simplify-merges --date-order @...@{u} --boundary --left-right
+	lu = "!f() { set -eux; git l --boundary --left-right @...${1:-@\\{upstream\\}}; }; f"
 
 	# Show hide untracked files
 	hideuntrack = config --local status.showUntrackedFiles no
