@@ -282,24 +282,26 @@ bindsym $ModK+Shift+XF86AudioRaiseVolume $volume_set +10%
 bindsym $ModK+Shift+XF86AudioLowerVolume $volume_set -10%
 bindsym $ModK+F12 $volume_set +5%
 bindsym $ModK+F11 $volume_set -5%
+bindsym $ModK+Shift+F12 $volume_set +10%
+bindsym $ModK+Shift+F11 $volume_set -10%
 bindsym XF86AudioMute $volume_mute
 bindsym Shift+XF86AudioMute $volume_mute
 bindsym $ModK+XF86AudioMute $volume_mute
 bindsym $ModK+Shift+XF86AudioMute $volume_mute
 
 bindsym $ModK+End $player_play
-bindsym $ModK+Prior $player_previous
+bindsym $ModK+Prior $player_prev
 bindsym $ModK+Next $player_next
 bindsym XF86AudioPlay $player_play
-bindsym XF86AudioPrev $player_previous
+bindsym XF86AudioPrev $player_prev
 bindsym XF86AudioNext $player_next
 bindsym XF86AudioStop $player_pause
 bindsym $ModK+XF86AudioPlay $player_play
-bindsym $ModK+XF86AudioPrev $player_previous
+bindsym $ModK+XF86AudioPrev $player_prev
 bindsym $ModK+XF86AudioNext $player_next
 bindsym $ModK+XF86AudioStop $player_pause
 #bindsym $ModK+F8 $player_play
-#bindsym $ModK+F9 $player_previous
+#bindsym $ModK+F9 $player_prev
 #bindsym $ModK+F10 $player_next
 
 # On/Off Touchpad
