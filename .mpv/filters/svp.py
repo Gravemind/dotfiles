@@ -3,6 +3,7 @@
 # https://www.svp-team.com/wiki/Manual:SVPflow
 
 import vapoursynth as vs
+from pprint import pprint
 
 #core = vs.get_core(threads=9)
 core = vs.get_core()
@@ -31,6 +32,8 @@ main: {
 },
 refine:[{thsad:200}]}
 """
+# analyse_params="""
+# """
 
 '''
 block: { w:16, overlap:2 },
@@ -86,8 +89,9 @@ refine: [{
 '''
 
 smooth_params="""
-algo:23,mask:{cover:80,area:0},scene:{limits:{m1:0,m2:0},mode:1}
+,algo:23,mask:{cover:80,area:0},scene:{limits:{m1:0,m2:0},mode:1}
 """
+smooth_params=",algo:23,scene:{limits:{m1:0,m2:0},mode:1}"
 
 '''
 algo:23,mask:{cover:60},scene:{limits:{m1:0,m2:0},mode:1}
@@ -137,10 +141,14 @@ else:
 
     vectors = core.svp1.Analyse(sup["clip"], sup["data"], clip, "{"+analyse_params+"}")
 
-    full_smooth_params = "{ rate: {num:"+str(dst_fps_num)+", den:"+str(dst_fps_den)+", abs:true}, "+smooth_params+" }"
+    #pprint(vars(vectors))
+
+    full_smooth_params = "{ rate: {num:"+str(dst_fps_num)+", den:"+str(dst_fps_den)+", abs:true} "+smooth_params+" }"
     #full_smooth_params = "{ rate: {num:2,den:1}, "+smooth_params+" }"
 
     clip = core.svp2.SmoothFps(clip, sup["clip"], sup["data"], vectors["clip"], vectors["data"], full_smooth_params)
+
+    #pprint(vars(clip))
 
     clip = core.std.AssumeFPS(clip, fpsnum=clip.fps_num, fpsden=clip.fps_den)
 
