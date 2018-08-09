@@ -18,6 +18,15 @@
 #xset dmps 3600 3600 3600
 
 ##
+## Font
+##
+
+# Seems to make autohint+hintfull closer to hintfull (non-autohint)
+# https://www.freetype.org/freetype2/docs/reference/ft2-properties.html#warping
+# and https://bugs.launchpad.net/ubuntu/+source/freetype/+bug/1722508
+#export FREETYPE_PROPERTIES="autofitter:warping=1"
+
+##
 ## Keyboard
 ##
 

@@ -23,7 +23,7 @@ ipc-socket ~/.i3/ipc.sock
 #
 
 # Font for window titles
-font xft:DejaVu Sans Mono Bold 9
+font xft:Hack Bold 9
 
 # hide boarder if single window/container in output
 hide_edge_borders smart

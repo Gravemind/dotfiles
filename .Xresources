@@ -30,8 +30,6 @@
 *color7:      #b0b0b0
 *color15:     #e8e8e8
 
-! fixes font spacing
-URxvt.letterSpace:      -1
 
 URxvt*urgentOnBell:     true
 
@@ -39,11 +37,18 @@ URxvt*loginShell:       true
 URxvt*saveLines:        300000  ! 600M RAM usage `cat -e /dev/urandom`
 URxvt*buffered:         true
 !URxvt*font:             xft:DejaVu Sans Mono:size=9
-URxvt*font:             xft:DejaVu Sans Mono:size=9,\
+! URxvt*font:             xft:DejaVu Sans Mono:size=9,\
+!                         xft:Font Awesome 5 Free Solid:size=9,\
+!                         xft:Font Awesome 5 Free Solid:size=8,\
+!                         xft:Font Awesome 5 Free Solid:size=7,\
+!                         xft:Font Awesome 5 Free Solid:size=6
+URxvt*font:             xft:Hack:size=9,\
                         xft:Font Awesome 5 Free Solid:size=9,\
                         xft:Font Awesome 5 Free Solid:size=8,\
                         xft:Font Awesome 5 Free Solid:size=7,\
                         xft:Font Awesome 5 Free Solid:size=6
+! fixes font spacing
+URxvt.letterSpace:      -1
 URxvt*scrollBar_right:  false
 URxvt*scrollBar:        false
 
@@ -62,18 +67,20 @@ URxvt.perl-ext-common:  default,matcher
 URxvt.matcher.button:   2
 URxvt.url-launcher:     /usr/bin/firefox
 
+! Also see ~/.config/fontconfig/conf.d
 Xft.autohint:       1
 Xft.antialias:      1
 Xft.hinting:        1
 Xft.hintstyle:      hintfull
-Xft.rgba:           none
 Xft.lcdfilter:      lcdnone
+Xft.rgba:           none
 
 ! Fixes emacs flashing bars at startup
 ! evaluated much sooner than init.el
 emacs.menuBar:              off
 emacs.toolBar:              off
 emacs.verticalScrollBars:   off
-emacs.font:                 DejaVu Sans Mono-9
+!emacs.font:                 DejaVu Sans Mono-9
+emacs.font:                 Hack-9
 emacs.background:           #202020
 emacs.cursorBlink:          off

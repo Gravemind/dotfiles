@@ -33,6 +33,7 @@ mesa-demos
 xterm
 rxvt-unicode
 ttf-dejavu
+ttf-hack
 numlockx
 feh
 qalculate-gtk
