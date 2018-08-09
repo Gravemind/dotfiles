@@ -60,11 +60,14 @@
 	# Pull rebase with autostash
 	pulr = pull --rebase --autostash
 
+	# Push --force-with-lease
+	pushf = push --force-with-lease
+
 	# Clean deleted branches
 	cleanbranches = !git branch -vv | grep ': gone]' | awk '{ print $1 }' | xargs -n 1 git branch -d
 
 	# Short merge base of HEAD and $1
-	mb = "!f() { set -eux; git rev-parse --short $(git merge-base $1 ${2:-@}); }; f"
+	mb = "!f() { set -eu; git rev-parse --short $(git merge-base ${1} ${2:-@}); }; f"
 
 	# usage: git magicmerge BRANCH
 	# Magic merge
