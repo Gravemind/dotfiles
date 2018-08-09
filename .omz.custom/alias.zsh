@@ -74,6 +74,7 @@ alias rcsshd='sudo /etc/rc.d/sshd'
 
 alias -g    CAT='|& cat -A'
 alias -g   GREP='|& grep -i'
+alias -g    TEE='|& tee'
 alias -g   LESS='|& less'
 alias -g  LESSS='|& less -S'
 alias -g    ERR='2> /dev/null'

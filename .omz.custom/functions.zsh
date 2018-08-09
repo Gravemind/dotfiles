@@ -25,7 +25,21 @@ function mnt() {
 function bak() {
 	for f in "$@"
 	do
-		cp $f{,.bak}
+		cp $f{,.bak} || echo -e "\033[1;31mbak failed: $f\033[0;0m"
+	done
+}
+
+function bakr() {
+	for f in "$@"
+	do
+		cp -r $f{,.bak} || echo -e "\033[1;31mbak failed: $f\033[0;0m"
+	done
+}
+
+function bakmv() {
+	for f in "$@"
+	do
+		mv $f{,.bak} || echo -e "\033[1;31mbak failed: $f\033[0;0m"
 	done
 }
 

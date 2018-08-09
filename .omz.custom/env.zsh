@@ -50,3 +50,5 @@ export OS=`uname -s`
 
 export HISTSIZE=100000
 export SAVEHIST=100000
+
+export ORIG_PATH="$PATH"
