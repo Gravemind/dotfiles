@@ -79,7 +79,11 @@ function gravemind_prompt_info_short() {
 			shortsubgit="/%{…%G%}/$subgitlast"
 		fi
 	fi
-	echo -n "%F{blue}⌥ %20>…>$gitrootname%<<%F{black}%20>…>$shortsubgit%<</"
+	#local giticon=""
+	local giticon="⌥"
+	#local giticon=""
+	#local giticon=""
+	echo -n "%F{blue}$giticon %20>…>$gitrootname%<<%F{black}%20>…>$shortsubgit%<</"
 }
 
 function gravemind_prompt_info_long() {
