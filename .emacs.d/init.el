@@ -940,7 +940,7 @@ With argument, do this that many times."
 (req-package d-mode
   :defer t
   :config
-  (add-hook 'd-mode-hook (lambda () (jo/cc-mode) (flycheck-dmd-dub-set-include-path)))
+  (add-hook 'd-mode-hook (lambda () (jo/cc-mode) (flycheck-dmd-dub-set-variables)))
   )
 
 (req-package flycheck-dmd-dub
