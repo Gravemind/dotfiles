@@ -2,6 +2,13 @@
 
 set -euo pipefail
 
+## catch all errors, even those test with `$?`
+# on_error() {
+#   echo "Error near line ${1:-\?}: ${2:-error}; exit ${3:-1}"
+#   # exit "${3:-1}"
+# }
+# trap 'on_error ${LINENO}' ERR
+
 C_RED="\033[1;31m"
 C_RED_NOBOLD="\033[0;31m"
 C_MAGENTA="\033[1;35m"
@@ -197,7 +204,7 @@ fetchrepo() {
 
 waitmaxbgjobs() {
     local maxjobs=$1
-    while [[ $(jobs -p | wc -l) -ge $maxjobs ]]
+    while [[ $(jobs -p | wc -l) -gt $maxjobs ]]
     do
         sleep 0.2
     done
@@ -249,7 +256,7 @@ then
             echo
             printfrepo "$i" "$repo"
             echo "; $@"
-            ( cd "$repo" ; "$@" )
+            ( cd "$repo" ; "$@" || echo -e "${C_ERROR}error: exited $?$C_RESET" ; )
         done
         echo
         exit 0
