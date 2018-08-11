@@ -1,0 +1,20 @@
+#!/bin/bash
+
+( while inotifywait -re close_write ~/.config/fontconfig
+  do
+      echo -e "\n\nreload fontconfig"
+      fc-cache
+  done ) &
+
+( while inotifywait -e close_write ~/.Xresources
+  do
+      echo -e "\n\nreload Xresources"
+      xrdb ~/.Xresources
+  done ) &
+
+while true
+do
+    sleep 1
+done
+kill $(jobs -p)
+
