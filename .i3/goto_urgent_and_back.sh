@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-nextwid_file="$HOME/.i3/last_focus"
+nextwid_file="$HOME/.i3/goto_urgent_and_back.tmp"
 
 get_curr_id() {
 	HEX="$(xprop -root _NET_ACTIVE_WINDOW | sed -r 's/.*0x([0-9a-f]+)$/\1/g')"
