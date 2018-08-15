@@ -35,7 +35,6 @@ alias cleanhg='find . \( -name "*.orig" \) -print -delete'
 alias sudo='sudo -E '
 alias _='sudo'
 
-alias lock='i3lock -c 111111'
 #alias disk='df -h --total'
 alias untar='tar xvzf'
 alias a='echo -ne "\a"'

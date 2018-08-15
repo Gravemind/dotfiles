@@ -1,6 +1,6 @@
 
 [Unit]
-Description=Starts i3lock at suspend time
+Description=Starts /home/%I/bin/lock before sleep
 Before=sleep.target
 
 [Service]
@@ -8,7 +8,7 @@ User=%I
 Type=forking
 Environment=DISPLAY=:0
 ExecStartPre= 
-ExecStart=/usr/bin/i3lock -c 222222
+ExecStart=/home/%I/bin/lock
 
 [Install]
 WantedBy=sleep.target

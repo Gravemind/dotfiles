@@ -125,12 +125,12 @@ assign [class="(?i)^.*steam.*$"] → 1
 # Use Mouse+ModK to drag floating windows to their wanted position
 floating_modifier $ModK
 
-set $locker i3lock -c 404552 && sleep 1
-#set $locker sleep 1
+set $locker ~/bin/lock
+set $wallpaper ~/.i3/wallpaper_cycle
 
 # Lock, Restart, Reboot...
-set $mode_system "    [l]o[c]k    [e]xit  relo[a]d  [r]estart    [s]uspend  [h]ibernate    [S]hutdown  [R]eboot    "
-mode $mode_system {
+set $mode_system "    <u>e</u>xit  relo<u>a</u>d  <u>r</u>estart    <u>s</u>uspend  <u>h</u>ibernate    <u>S</u>hutdown  <u>R</u>eboot    <u>w</u>allpaper    "
+mode --pango_markup $mode_system {
     bindsym l exec --no-startup-id $locker, mode "default"
     bindsym c exec --no-startup-id $locker, mode "default"
     # Exit i3 (logs you out of your X session)
@@ -143,6 +143,9 @@ mode $mode_system {
     bindsym h exec --no-startup-id $locker && systemctl hibernate, mode "default"
     bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
     bindsym Shift+r exec --no-startup-id systemctl reboot, mode "default"
+    # Wallpaper
+    bindsym b exec --no-startup-id $wallpaper, mode "default"
+    bindsym w exec --no-startup-id $wallpaper, mode "default"
     # back to normal: Enter or Escape
     bindsym q mode "default"
     bindsym Return mode "default"
@@ -253,6 +256,9 @@ exec_always --no-startup-id "systemctl --user restart clipmenud.service"
 #bindsym Shift+Insert exec --no-startup-id "bash -c 'xdotool type \\"$(xclip -selection primary -o -r)\\"'
 #bindsym Shift+Insert exec --no-startup-id "bash -c 'xclip -selection primary -o -r | xvkbd -xsendevent -delay 1 -file -'"
 
+# Screenshot
+# bindsym $ModK+Print exec --no-startup-id "bash -c 'flameshot gui ; pkill flameshot'"
+
 # Volume: Pulse Audio
 set $volume_set  exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@'
 set $volume_mute exec --no-startup-id pactl set-sink-mute '@DEFAULT_SINK@' toggle
@@ -309,7 +315,7 @@ bindsym XF86TouchpadToggle exec --no-startup-id zsh ~/bin/toggletouchpad
 
 # Lock
 #bindsym $ModK+w exec --no-startup-id "/bin/bash --login -c 'sleep 0.5; xtrlock; exit 0'"
-bindsym $ModK+w exec --no-startup-id i3lock -c 222222
+bindsym $ModK+w exec --no-startup-id $locker
 
 # Terminal
 #bindsym $ModK+Return exec --no-startup-id $layouts/launch.sh urxvt
@@ -359,17 +365,14 @@ bar { # bar
 # Run at startup
 #
 
-#exec ~/.i3/bar/bar.py
-exec --no-startup-id ~/.i3/bg.py
+exec --no-startup-id $wallpaper #; $locker
 #exec conky -c ~/.conky/balloon/conkyrc
+
+set $hook_idle_time_min 10
+exec --no-startup-id xautolock -detectsleep -time $hook_idle_time_min -locker "~/bin/hooks/onidle" -noclose
 
 #
 # Spawn layouts and programs
 # http://i3wm.org/docs/layout-saving.html
 #
 exec --no-startup-id $layouts/startup.sh
-
-set $hook_idle_time_min 10
-exec --no-startup-id xautolock -detectsleep -time $hook_idle_time_min -locker "~/bin/hooks/onidle" -noclose
-
-#exec i3lock -c 222222

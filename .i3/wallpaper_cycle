@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -euo pipefail
+
+wallpapers_list_file="$HOME/.i3/wallpapers.list"
+dst_blured="$HOME/.i3/wallpaper.blured.png"
+blured_ext=".blured.png"
+
+mapfile -t wallpapers_list < "$wallpapers_list_file"
+
+wallpaperc="${#wallpapers_list[@]}"
+wallpaper="${wallpapers_list[RANDOM % wallpaperc]}"
+
+feh --bg-fill "$wallpaper"
+ln -sf "$wallpaper$blured_ext" "$dst_blured"

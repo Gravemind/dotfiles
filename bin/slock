@@ -1,8 +1,9 @@
 #!/bin/bash
 
 #~/bin/purplelock -c xtrlock -i X.X.X.X -a 'pause ?' -l '' &
-sh -c "i3lock -c 222222" &
+~/bin/lock &
 disown
+
 echo $(date) "## Sleeping ..."
 sleep 1
 sudo pm-suspend

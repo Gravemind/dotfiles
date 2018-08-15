@@ -1,0 +1,53 @@
+#!/bin/bash
+
+set -euo pipefail
+
+wallpapers="$HOME/.i3/wallpapers"
+dst_list="$HOME/.i3/wallpapers.list"
+dst_blured_ext=".blured.png"
+
+force=
+[[ "${1:-}" == "-f" ]] && force=1
+
+maxjobs=$(nproc)
+
+if [[ "$force" ]]
+then
+    echo "deleting old blured ..."
+    find "$wallpapers" -name '*'"$dst_blured_ext" -print -delete
+fi
+
+screen_res="$(xrandr | sed -nE 's/ +([0-9]+x[0-9]+) +[0-9.]+\*.*/\1/gp' | head -n1)"
+
+echo "generating list and bluring ($screen_res, $maxjobs threads) ..."
+
+gen_blured() {
+    echo bluring $1 ...
+    args=(
+        -filter Lanczos
+        -gravity center -resize "${screen_res}^" -extent "$screen_res" # match feh --bg-fill
+        -scale 2%
+        -fill black -colorize 80%
+        -gravity center -resize "${screen_res}^" -extent "$screen_res" # match feh --bg-fill
+    )
+    convert "$1" "${args[@]}" "$2"
+}
+
+while read -r src
+do
+    dst="$src$dst_blured_ext"
+    if [[ -f "$dst" && "$(stat -c '%Y' "$dst")" -ge "$(stat -c '%Y' "$src")" ]]
+    then
+        echo "skipping, seems up to date: $src"
+        continue
+    fi
+    # wait max background jobs
+    while [[ $(jobs -p | wc -l) -gt $maxjobs ]]
+    do
+        sleep 0.2
+    done
+    gen_blured "$src" "$dst" &
+done < <( find "$wallpapers" -type f -and -not -name '*'"$dst_blured_ext" | tee "$dst_list" )
+
+wait
+echo done
