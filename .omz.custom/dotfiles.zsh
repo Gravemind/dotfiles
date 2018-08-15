@@ -48,6 +48,9 @@ function dots() {
 	(
 		export GIT_DIR="$DOTFILES_BARE"
 		export GIT_WORK_TREE="$DOTFILES_ROOT"
-		git ls-files | sed -E 's#(.*)/.*?#\1#g' | sort -u | xargs git s
+		git -c status.showUntrackedFiles=normal ls-files |
+			sed -E 's#(.*)/.*?#\1#g' |
+			sort -u |
+			xargs git -c status.showUntrackedFiles=normal s
 	)
 }
