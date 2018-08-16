@@ -10,24 +10,21 @@
 DOTFILES_ROOT="$HOME"
 DOTFILES_BARE="$HOME/.dotfiles.git"
 
-# toggles env GIT_DIR and GIT_WORK_TREE to home dotfiles git
-# makes git dotfiles works in magit
+# creates a symlink ~/.git to ~/.dotfiles.git
+# (works with magit (GIT_DIR not supported by magit anymore...))
 function dotfiles() {
-	if [[ -z "$GIT_DIR" && -z "$GIT_WORK_TREE" ]]
+	local link="$HOME/.git"
+	if [[ -h "$link" ]]
 	then
-		export GIT_DIR="$DOTFILES_BARE"
-		export GIT_WORK_TREE="$DOTFILES_ROOT"
-		echo "Git is now forced to $GIT_WORK_TREE ($GIT_DIR)"
+		rm "$link"
+		echo "Home as git repo disabled: $link removed"
+	elif [[ -e "$link" ]]
+	then
+		echo "ERROR: $link exists but not a symlink!"
+		return 1
 	else
-		if [[ "$GIT_DIR" != "$DOTFILES_BARE" && "$GIT_WORK_TREE" != "$DOTFILES_BARE" ]]
-		then
-			echo unknown current "$GIT_DIR" "$GIT_WORK_TREE"
-			echo will do nothing
-			exit 1
-		fi
-		unset GIT_DIR
-		unset GIT_WORK_TREE
-		echo "Git is back to normal"
+		ln -s "$DOTFILES_BARE" "$link"
+		echo "Home as git repo GLOBALLY enabled: $link -> $DOTFILES_BARE"
 	fi
 }
 
