@@ -5,7 +5,7 @@ alias mpw="mpv --force-window=immediate "
 
 mpcb() {
 	url="$(xclip -o -r)"
-	echo -n "mpv $@ $url ? [y/n]"
+	echo -n "mpv $@ '$url' ? [y/n]"
 	read -r -k1 r
 	echo
 	if [[ "$r" == "y" ]]
