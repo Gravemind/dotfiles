@@ -40,16 +40,16 @@
 
 	# usage: git fclean PATH
 	# Force clean PATH to HEAD state
-	fclean = "!f() { set -eux; a=\"${1:-./}\"; echo -n \"Remove untracked and ignored and checkout $a ? [y/N] \" && read -n 1 r && echo && [[ $r == \"y\" ]] && cd \"$GIT_PREFIX\" && ls -d \"$a\" && git checkout @ -- \"$a\" && git clean -xdf -- \"$a\" && echo \"Cleaned $a\"; }; f"
+	fclean = "!f() { set -eu; a=\"${1:-./}\"; echo -n \"Remove untracked and ignored and checkout $a ? [y/N] \" && read -n 1 r && echo && [[ $r == \"y\" ]] && cd \"$GIT_PREFIX\" && ls -d \"$a\" && git checkout @ -- \"$a\" && git clean -xdf -- \"$a\" && echo \"Cleaned $a\"; }; f"
 
 	# usage: git fo BRANCH
 	# Fetch any BRANCH to it's upstream
-	fo = "!f() { set -eux; git update-ref refs/heads/$1 $1@{upstream}; }; f"
+	fo = "!f() { set -eu; git update-ref refs/heads/$1 $1@{upstream}; }; f"
 
 	# usage: git fco BRANCH
 	# Fetch any BRANCH to it's upstream, _then_ checkout it
 	# (reverse of git co BRANCH; git pull; )
-	fco = "!f() { set -eux; git fo $1; git checkout $1 && git submodule update; }; f"
+	fco = "!f() { set -eu; git fo $1; git checkout $1 && git submodule update; }; f"
 
 	# Fetch prune all
 	fp = fetch --all --prune --tags
@@ -103,8 +103,17 @@
 	# Log all
 	la = log --pretty=my --graph --full-history --simplify-merges --date-order --all
 
+	# Log all, topologic
+	lat = log --pretty=my --graph --full-history --simplify-merges --topo-order --all
+
+	# Log left-right with boundaries
+	lb = log --pretty=my --graph --full-history --simplify-merges --date-order --left-right --boundary
+
 	# Log HEAD and its upstream
-	lu = "!f() { set -eux; git l --boundary --left-right @...${1:-@\\{upstream\\}}; }; f"
+	lu = "!f() { set -eu; git l --left-right --boundary @...${1:-@\\{upstream\\}}; }; f"
+
+	# Fuller show
+	showf = show --format=fuller
 
 	# Show hide untracked files
 	hideuntrack = config --local status.showUntrackedFiles no
