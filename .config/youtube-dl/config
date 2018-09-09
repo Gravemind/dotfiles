@@ -1,2 +1,5 @@
 # Do not copy the mtime
 --no-mtime
+# youtube-dl by default prefers avc1 (because bitrate ?), but vp9 looks nicer (shaper, less artefact)
+--format (bestvideo[vcodec^=vp9]+bestaudio/bestvideo+bestaudio/best)[height<=?1080][protocol=https]
+--prefer-free-formats
