@@ -171,7 +171,8 @@
 	branch = "less -FRX"
 
 [tag]
-	sort = version:refname
+	#sort = version:refname
+	sort = creatordate
 [fetch]
 	prune = true
 [pull]
