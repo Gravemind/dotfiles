@@ -761,8 +761,8 @@ With argument, do this that many times."
   :pin melpa ; not in melpa-stable yet ?
   :hook (prog-mode . auto-highlight-symbol-mode)
   :bind (:map auto-highlight-symbol-mode-map
-              ("M-<right>" . ahs-forward-whole-buffer)
-              ("M-<left>" . ahs-backward-whole-buffer)
+              ("M-<up>" . ahs-backward-whole-buffer)
+              ("M-<down>" . ahs-forward-whole-buffer)
               )
   :config
   (setq-default
@@ -972,7 +972,7 @@ With argument, do this that many times."
 ;; EditorConfig is awesome: http://EditorConfig.org
 ;;
 
-(use-package editorconfig
+(req-package editorconfig
   :ensure t
   :config
   (editorconfig-mode 1)
@@ -1225,6 +1225,16 @@ With argument, do this that many times."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; smerge
+;;
+
+(req-package smerge-mode
+  :pin manual
+  :bind (("C-c ^ ^" . smerge-refine)) ;; 'C-c ^ R' alias
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; Change C-f to be a prefix key map (for iy-go-to-char, ace-jump-mode. ...)
 ;;
 
@@ -1268,6 +1278,8 @@ With argument, do this that many times."
          ;("C-u C-u C-f <SPC>" . ace-jump-line-mode)
          )
   :config
+
+  (setq-default ace-jump-mode-scope 'window)
 
   ;; https://github.com/winterTTr/ace-jump-mode/issues/23
   (defun ace-jump-two-chars-char-mode (query-char query-char-2)
