@@ -39,6 +39,8 @@ alias _='sudo'
 alias untar='tar xvzf'
 alias a='echo -ne "\a"'
 
+alias pydb='python -m pdb '
+
 x() {
 	for f in "$@"
 	do

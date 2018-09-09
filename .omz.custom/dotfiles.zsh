@@ -17,14 +17,14 @@ function dotfiles() {
 	if [[ -h "$link" ]]
 	then
 		rm "$link"
-		echo "Home as git repo disabled: $link removed"
+		echo "Home as git repo disabled: $link -> $DOTFILES_BARE link removed"
 	elif [[ -e "$link" ]]
 	then
 		echo "ERROR: $link exists but not a symlink!"
 		return 1
 	else
 		ln -s "$DOTFILES_BARE" "$link"
-		echo "Home as git repo GLOBALLY enabled: $link -> $DOTFILES_BARE"
+		echo "Home as git repo GLOBALLY enabled: $link -> $DOTFILES_BARE link created"
 	fi
 }
 
