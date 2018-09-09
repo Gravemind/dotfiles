@@ -52,9 +52,12 @@
 (setq package-enable-at-startup nil)
 (setq-default package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                                  ("melpa" . "https://melpa.org/packages/")
-                                 ;;("melpa-stable" . "https://stable.melpa.org/packages/")
+                                 ("melpa-stable" . "https://stable.melpa.org/packages/")
                                  ;;("marmalade" . "https://marmalade-repo.org/packages/")
               ))
+;; Make melpa-stable the default, use :pin to overwrite
+(setq-default use-package-always-pin "melpa-stable")
+
 (package-initialize)
 
 ;;
@@ -286,6 +289,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; zoom-mode
+;;   https://github.com/cyrus-and/zoom
 ;;   auto resize windows
 ;; (golden-ratio replacement)
 ;;
@@ -654,6 +658,7 @@ With argument, do this that many times."
 ;;
 
 (req-package markdown-mode
+  :pin melpa ;; table mode is not stable yet
   :defer t
   :hook (markdown-mode . (lambda () (setq word-wrap t) (setq truncate-lines t) (toggle-truncate-lines t))) ;; FIXME does not work !?
   :config
@@ -753,6 +758,7 @@ With argument, do this that many times."
 (add-hook 'sh-mode-hook 'jo/tweak-sh-mode-syntax-table)
 
 (req-package auto-highlight-symbol
+  :pin melpa ; not in melpa-stable yet ?
   :hook (prog-mode . auto-highlight-symbol-mode)
   :bind (:map auto-highlight-symbol-mode-map
               ("M-<right>" . ahs-forward-whole-buffer)
@@ -1419,6 +1425,7 @@ With argument, do this that many times."
 
 (req-package helm-flyspell
   ;:disabled
+  :pin melpa ; not in melpa-stable yet ?
   :require helm flyspell
   :defer t
   )
@@ -1808,6 +1815,7 @@ With argument, do this that many times."
 ;;
 
 (req-package rainbow-mode
+  :pin gnu ; not in melpa  ?
   :commands (rainbow-mode)
   :config
   (add-to-list 'rainbow-hexadecimal-colors-font-lock-keywords
@@ -1828,6 +1836,7 @@ With argument, do this that many times."
 ;; down :C-M-=
 
 (req-package centered-cursor-mode
+  :pin melpa ; not in melpa-stable yet ?
   :commands (centered-cursor-mode global-centered-cursor-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1836,6 +1845,7 @@ With argument, do this that many times."
 ;;
 
 (req-package disaster
+  :pin melpa ; not in melpa-stable yet ?
   :commands (disaster)
 )
 
