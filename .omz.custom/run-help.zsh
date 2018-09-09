@@ -36,3 +36,11 @@ run-help-flatpak() {
 		man flatpak-$1
 	fi
 }
+
+run-help-perf() {
+	if [ $# -eq 0 ]; then
+		man perf
+	else
+		man perf-$1
+	fi
+}
