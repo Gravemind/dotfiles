@@ -39,11 +39,10 @@ C_TAG="$C_YELLOW"
 root="."
 
 FETCHALL=0
-#FOLLOW_LINKS=-L
-FOLLOW_LINKS=
 
 # Fetch only if last fetch was before
-FETCH_IF_OLDER_THAN=$(( "$(date "+%s")" - 60 * 5 )) # 5 minutes ago
+fetch_timeout=$((60 * 5)) # 5 minutes ago
+FETCH_IF_OLDER_THAN=$(( "$(date "+%s")" - $fetch_timeout ))
 # usage: -F to force
 
 tmpdir="$(mktemp -d -t gitstatuses.XXXXXXXXXX)"
@@ -228,57 +227,88 @@ waitmaxbgjobs() {
     done
 }
 
+find_type="-type d"
+find_follow=""
+i=0
+while [[ "$#" -ge 1 ]]
+do
+    case "$1" in
+    -h|--help)
+        echo "usage: $0 [-f] [-F] [-s] [-d] [-L] [num... command...]
+-f : fetch if older than $fetch_timeout seconds
+-F : force fetch
+-L : follow symlinks
+-s/-d: include submodules"
+        exit 0
+        ;;
+    -f)
+        logdeb Fetching all
+        FETCHALL=1
+        ;;
+    -F)
+        logdeb Force fetching all
+        FETCHALL=1
+        FETCH_IF_OLDER_THAN=9999999999
+        ;;
+    -s|-d)
+        logdeb Will include submodules
+        find_type=""
+        ;;
+    -L)
+        logdeb Will follow symlinks
+        find_follow=-L
+        ;;
+    --)
+        shift
+        break
+        ;;
+    *)
+        break
+        ;;
+    esac
+    shift
+done
+
 declare -a repos
 i=0
 while IFS= read -r -u3 -d $'\0' file
 do
     repos[i++]="$(dirname "$file")"
-done 3< <(find $FOLLOW_LINKS "$root" -name .git -type d -print0 | sort -z)
+done 3< <(find $find_follow "$root" -name .git $find_type -print0 | sort -z)
 
 echo "Found ${i} repos..."
 
-i=0
-if [[ "$#" -ge 1 ]]
+# There is more arguments
+if [[ "$#" -gt 0 ]]
 then
-    if [[ "$1" = "-f" ]]
+    declare -a selectedrepos
+    if [[ "$1" =~ ^[0-9]+$ ]]
     then
-        logdeb fetching all
-        FETCHALL=1
-    elif [[ "$1" = "-F" ]]
-    then
-        logdeb Force fetching all
-        FETCHALL=1
-        FETCH_IF_OLDER_THAN=9999999999
-    else
-        declare -a selectedrepos
-        if [[ "$1" =~ ^[0-9]+$ ]]
-        then
-            while [[ "$1" =~ ^[0-9]+$ ]]
-            do
-                repoid="$1"
-                shift
-                if [[ "$repoid" -lt 0 || "$repoid" -gt "${#repos[@]}" ]]
-                then
-                    echo invalid repo index $repoid 1>&2
-                    exit 1
-                fi
-                selectedrepos+=("$repoid")
-            done
-        elif [[ -n "$1" ]]
-        then
-            selectedrepos=( $(seq 0 $((${#repos[@]} - 1)) ) )
-        fi
-        for i in "${selectedrepos[@]}"
+        while [[ "$1" =~ ^[0-9]+$ ]]
         do
-            repo="${repos[i]}"
-            echo
-            printfrepo "$i" "$repo"
-            echo "; $@"
-            ( cd "$repo" ; "$@" || echo -e "${C_ERROR}error: exited $?$C_RESET" ; )
+            repoid="$1"
+            shift
+            if [[ "$repoid" -lt 0 || "$repoid" -gt "${#repos[@]}" ]]
+            then
+                echo invalid repo index $repoid 1>&2
+                exit 1
+            fi
+            selectedrepos+=("$repoid")
         done
-        echo
-        exit 0
+    elif [[ -n "$1" ]]
+    then
+        selectedrepos=( $(seq 0 $((${#repos[@]} - 1)) ) )
     fi
+    for i in "${selectedrepos[@]}"
+    do
+        repo="${repos[i]}"
+        echo
+        printfrepo "$i" "$repo"
+        echo "; $@"
+        ( cd "$repo" ; "$@" || echo -e "${C_ERROR}error: exited $?$C_RESET" ; )
+    done
+    echo
+    exit 0
 fi
 
 if [[ "$FETCHALL" == "1" ]]
@@ -309,7 +339,7 @@ else
     maxjobs=$(nproc)
 fi
 
-max_repo_len=20
+max_repo_len=5
 for repo in "${repos[@]}"
 do
     l=${#repo}
