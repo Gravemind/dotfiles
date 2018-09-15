@@ -22,31 +22,42 @@ function mnt() {
 	sudo mount -o gid=`id -g`,uid=`id -u` "$@"
 }
 
+function _rmrf_ask() {
+	local f="$1"
+	if [[ -e "$f" ]]
+	then
+		echo -n "Overwrite $f ? [y/n] "
+		read -r -k1 r
+		echo
+		[[ "$r" = y ]] || { echo "aborted"; return 1 }
+		rm -rf "$f"
+	fi
+}
+
 function bak() {
 	for f in "$@"
 	do
-		cp $f{,.bak} || echo -e "\033[1;31mbak failed: $f\033[0;0m"
-	done
-}
-
-function bakr() {
-	for f in "$@"
-	do
-		cp -r $f{,.bak} || echo -e "\033[1;31mbak failed: $f\033[0;0m"
+		local bak="$f.bak"
+		_rmrf_ask "$f.bak" || return 1
+		cp -aT "$f" "$bak" || { echo -e "\033[1;31mbak failed: $f\033[0;0m" 1>&2 ; return 1; }
 	done
 }
 
 function bakmv() {
 	for f in "$@"
 	do
-		mv $f{,.bak} || echo -e "\033[1;31mbak failed: $f\033[0;0m"
+		local bak="$f.bak"
+		_rmrf_ask "$f.bak" || return 1
+		mv -T "$f" "$bak" || { echo -e "\033[1;31mbak failed: $f\033[0;0m" 1>&2 ; return 1; }
 	done
 }
 
 function unbak() {
 	for f in "$@"
 	do
-		cp $f{.bak,}
+		local bak="$f.bak"
+		_rmrf_ask "$f" || return 1
+		cp -aT "$bak" "$f" || { echo -e "\033[1;31mbak failed: $f\033[0;0m" 1>&2 ; return 1; }
 	done
 }
 
