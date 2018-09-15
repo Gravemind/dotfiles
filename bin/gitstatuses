@@ -79,8 +79,15 @@ fetchrepo() {
     git update-index -q --refresh 2>&1 >/dev/null || echo -ne "${C_ERROR}update-index failed${C_RESET} "
 
     local current_tag="$(git describe --abbrev=0 --tags 2> /dev/null)"
-    local current_desc="$(git describe --tags --abbrev=1 2> /dev/null || git describe --all 2> /dev/null)"
+    local current_desc="$(git describe --tags --abbrev=0 2> /dev/null)"
     local new_tags=( $(git tag --sort=creatordate | sed -e "1,/^$current_tag\$/d" | tail -n 4) )
+
+    if [[ -n "$current_desc" ]]
+    then
+        c="$(git rev-list "$current_desc..@" --count)"
+        [[ $c -eq 0 ]] || current_desc="$current_desc↑$c"
+        current_desc=" $current_desc"
+    fi
 
     local count_ahead=0
     local count_behind=0
@@ -160,10 +167,11 @@ fetchrepo() {
     local branches_ident="    "
     #local branches_ident="         $(printf "%*s" "$max_repo_len" " ")"
 
-    printf "%-3d" "$repoi"
+    printf " %3d" "$repoi"
     printf " ${pfmt}${C_RESET}" "${pargs[@]}"
     printf " %-*s" "$max_repo_len" "$repo"
-    printf " ${C_RESET}%s${C_RESET}" "$current_desc"
+    printf " %d" "$repoi"
+    printf "${C_RESET}%s${C_RESET}" "$current_desc"
     [[ -z "${new_tags[*]}" ]] || printf " ${C_TAG}%s${C_RESET}" "${new_tags[*]}"
 
     #echo
