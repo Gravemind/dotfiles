@@ -1,8 +1,8 @@
 #!/bin/zsh
 
 alias grep='grep --color=auto'
-alias less='less --quiet'
 alias cat='cat -v'
+# for less, see ./less.zsh
 
 alias ls='ls -h --color=auto'
 alias l='ls -l'
@@ -76,8 +76,6 @@ alias rcsshd='sudo /etc/rc.d/sshd'
 alias -g    CAT='|& cat -A'
 alias -g   GREP='|& grep -i'
 alias -g    TEE='|& tee'
-alias -g   LESS='|& less'
-alias -g  LESSS='|& less -S'
 alias -g    ERR='2> /dev/null'
 alias -g   NULL='>& /dev/null'
 alias -g  COLOR='--color=always'
