@@ -1,10 +1,16 @@
 
+#nv_metamode_dp_4="+1680+0"
+#nv_metamode_hdmi_0="+0+0"
+
+nv_metamode_dp_4="+0+0"
+nv_metamode_hdmi_0="+1920+0"
+
 nvdual() {
-	nvidia-settings --assign 'CurrentMetaMode=DP-4: nvidia-auto-select +1680+0 {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}, HDMI-0: nvidia-auto-select +0+0 {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}'
+	nvidia-settings --assign 'CurrentMetaMode=DP-4: nvidia-auto-select '"$nv_metamode_dp_4"' {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}, HDMI-0: nvidia-auto-select '"$nv_metamode_hdmi_0"' {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}'
 }
 
 nvdualunsync() {
-	nvidia-settings --assign 'CurrentMetaMode=DP-4: nvidia-auto-select +1680+0 {ForceCompositionPipeline=Off, ForceFullCompositionPipeline=Off}, HDMI-0: nvidia-auto-select +0+0 {ForceCompositionPipeline=Off, ForceFullCompositionPipeline=Off}'
+	nvidia-settings --assign 'CurrentMetaMode=DP-4: nvidia-auto-select '"$nv_metamode_dp_4"' {ForceCompositionPipeline=Off, ForceFullCompositionPipeline=Off}, HDMI-0: nvidia-auto-select '"$nv_metamode_hdmi_0"' {ForceCompositionPipeline=Off, ForceFullCompositionPipeline=Off}'
 }
 
 nvsingle() {

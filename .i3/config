@@ -6,8 +6,8 @@
 # Variables
 set $ModK           Mod4
 set $resize_step    100
-set $screenR        DP-4
-set $screenL        HDMI-0
+set $screenL        DP-4
+set $screenR        HDMI-0
 
 set $keyLeft        j
 set $keyRight       l
@@ -326,8 +326,11 @@ bindsym $ModK+Shift+Return exec --no-startup-id $layouts/launch.sh -- emacs
 bindsym $ModK+Ctrl+Return exec --no-startup-id $layouts/launch.sh -- emacs ~/TODO.org
 
 # Firefox
-bindsym $ModK+F10 exec --no-startup-id $layouts/launch.sh -w 10 firefox
-bindsym $ModK+Shift+F10 exec --no-startup-id $layouts/launch.sh firefox
+set $browser firefox
+bindsym $ModK+F10 exec --no-startup-id $layouts/launch.sh -w 10 $browser
+bindsym $ModK+Shift+F10 exec --no-startup-id $layouts/launch.sh $browser
+bindsym $ModK+F3 exec --no-startup-id $layouts/launch.sh -w 3 $browser
+bindsym $ModK+Shift+F3 exec --no-startup-id $layouts/launch.sh $browser
 
 # Qalculate
 bindsym $ModK+F5 exec $layouts/launch.sh qalculate-gtk -n
