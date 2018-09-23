@@ -12,11 +12,23 @@ sub-auto=fuzzy
 blend-subtitles=yes
 screenshot-format=png
 
+# MPV downmix better than pulseaudio ?!
+audio-channels=2
+
 # (copied from ~/.config/youtube-dl)
 ytdl-format=(bestvideo[vcodec^=av01]+bestaudio/bestvideo[vcodec^=vp9]+bestaudio/bestvideo+bestaudio/best)[height<=?1080][protocol=https]
 ytdl-raw-options=prefer-free-formats=
 
-cache-secs=300
+#cache-default=
+#cache-secs=300
+# When out of data, wait before re-playing
+cache-pause-wait=10
+# When out of data, wait more data before re-playing
+cache-pause-initial=yes
+# Create a cache file on the filesystem
+#cache-file=TMP
+# In kb, (default 1048576=1G)
+#cache-file-size=1048576
 
 # Hide album art
 audio-display=no
