@@ -1422,8 +1422,11 @@ With argument, do this that many times."
   ;; use ripgrep
   ;;    https://github.com/BurntSushi/ripgrep
   ;;
-  (setq-default helm-grep-ag-command "rg --color=always --colors 'match:fg:red' --colors 'match:style:bold' --smart-case --no-heading --line-number %s %s %s")
-  (setq-default helm-grep-ag-pipe-cmd-switches '("--colors 'match:fg:red'" "--colors 'match:style:bold'"))
+  (setq-default
+   helm-grep-ag-command "rg --color=always --colors 'match:fg:red' --colors 'match:style:bold' --smart-case --no-heading --line-number %s %s %s"
+   helm-grep-ag-pipe-cmd-switches '("--colors 'match:fg:red'" "--colors 'match:style:bold'")
+   helm-grep-file-path-style 'relative
+  )
   (defalias 'helm-do-grep-rg-ripgrep 'helm-do-grep-ag)
 
   ;; helm everywhere
