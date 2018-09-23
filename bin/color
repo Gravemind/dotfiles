@@ -4,27 +4,19 @@ import sys
 
 def cell(l, styles):
     style = ";".join([str(s) for s in styles if s])
-    w=8
+    w=12
+    text="\e["+ style + "m"
+    #box="┏━┓┃┃┗━┛"
+    box="┌─┐││└─┘"
+    #box="╭─╮││╰─╯"
     if l == 0:
-        sys.stdout.write("\033[{}m┏{:━^{w}}┓".format(style,'',w=w))
+        sys.stdout.write("\033[{}m{box[0]}{:{box[1]}^{w}}{box[2]}".format(style, '', box=box, w=w))
     elif l == 1:
-        sys.stdout.write("\033[{}m┃{:^{w}}┃".format(style,style,w=w)) # ┣ ┫
+        sys.stdout.write("\033[{}m{box[3]}{:^{w}}{box[4]}".format(style, text, box=box, w=w)) # ┣ ┫
     elif l == 2:
-        sys.stdout.write("\033[{}m┗{:━^{w}}┛".format(style,'',w=w))
-    # if l == 0:
-    #     sys.stdout.write("\033[{}m┌{:─^{w}}┐".format(style,'',w=w))
-    # elif l == 1:
-    #     sys.stdout.write("\033[{}m│{:^{w}}│".format(style,style,w=w)) # ┣ ┫
-    # elif l == 2:
-    #     sys.stdout.write("\033[{}m└{:─^{w}}┘".format(style,'',w=w))
-    # if l == 0:
-    #     sys.stdout.write("\033[{}m╭{:─^{w}}╮".format(style,'',w=w))
-    # elif l == 1:
-    #     sys.stdout.write("\033[{}m│{:^{w}}│".format(style,style,w=w)) # ┣ ┫
-    # elif l == 2:
-    #     sys.stdout.write("\033[{}m╰{:─^{w}}╯".format(style,'',w=w))
+        sys.stdout.write("\033[{}m{box[5]}{:{box[6]}^{w}}{box[7]}".format(style, '', box=box, w=w))
 
-print("\\e[CODE;CODEm\n")
+print()
 
 for style in [None, '1']:
     for l in range(0, 3):
@@ -41,22 +33,3 @@ for style in ['1']:
         sys.stdout.write("\033[0m\n")
 
 sys.stdout.write("\n")
-
-# printf "\ndeclare -A colors\n"
-# {
-#     printf "colors=( "
-#     names=(black red green yellow blue magenta cyan white)
-#     printf "[reset]=\"\\\e0m\" "
-#     for i in {0..7} ; do
-#         printf "[${names[i]}]=\"\\\e[$((i + 30))m\" "
-#     done
-#     for i in {0..7} ; do
-#         printf "[bg${names[i]}]=\"\\\e[$((i + 40))m\" "
-#     done
-#     names=(bold italic underline blink)
-#     values=(1 3 4 5)
-#     for i in {0..2} ; do
-#         printf "[${names[i]}]=\"\\\e[${values[$i]}m\" "
-#     done
-#     printf ")\n"
-# } | fold -w 80 -s -
