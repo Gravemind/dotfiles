@@ -24,4 +24,4 @@ alias restart='_systemctl_j restart'
 alias reload='_systemctl_j reload'
 
 alias status='_ systemctl status'
-alias journal='journalctl -u'
+alias journal='journalctl -eu'
