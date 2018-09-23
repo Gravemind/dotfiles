@@ -23,13 +23,14 @@ C_RESET="$(tput sgr0)"
 C_ERROR="$C_RED"
 C_OK="$C_GREEN"
 
+# TODO: git config --type=color ...
 # status indicators
 C_LOCAL="$C_RED"
 C_STAGE="$C_GREEN"
 C_UNTRACK="$C_RED_NOBOLD"
 # branch ahead/behind count
 C_PULL="$C_MAGENTA"
-C_PUSH="$C_CYAN"
+C_PUSH="$C_BLUE"
 # branch names
 C_BR_REMOTE="$C_CYAN"
 C_BR_LOCAL="$C_BGREEN"
@@ -79,13 +80,13 @@ fetchrepo() {
     git update-index -q --refresh 2>&1 >/dev/null || echo -ne "${C_ERROR}update-index failed${C_RESET} "
 
     local current_tag="$(git describe --abbrev=0 --tags 2> /dev/null)"
-    local current_desc="$(git describe --tags --abbrev=0 2> /dev/null)"
     local new_tags=( $(git tag --sort=creatordate | sed -e "1,/^$current_tag\$/d" | tail -n 4) )
 
+    local current_desc="$(git describe --tags --abbrev=0 2> /dev/null)"
     if [[ -n "$current_desc" ]]
     then
         c="$(git rev-list "$current_desc..@" --count)"
-        [[ $c -eq 0 ]] || current_desc="$current_desc↑$c"
+        [[ $c -eq 0 ]] || current_desc="$c↑$current_desc"
         current_desc=" $current_desc"
     fi
 
@@ -167,11 +168,17 @@ fetchrepo() {
     local branches_ident="    "
     #local branches_ident="         $(printf "%*s" "$max_repo_len" " ")"
 
+    # id
     printf " %3d" "$repoi"
+    # status
     printf " ${pfmt}${C_RESET}" "${pargs[@]}"
+    # name
     printf " %-*s" "$max_repo_len" "$repo"
+    # id
     printf " %d" "$repoi"
+    # current desc
     printf "${C_RESET}%s${C_RESET}" "$current_desc"
+    # new tag
     [[ -z "${new_tags[*]}" ]] || printf " ${C_TAG}%s${C_RESET}" "${new_tags[*]}"
 
     #echo
@@ -179,7 +186,6 @@ fetchrepo() {
 
     #printf " ${C_TAG}%s${C_RESET}" "$current_desc"
     #echo -ne "$branches_ident"
-
 
     #echo
 
@@ -205,18 +211,18 @@ fetchrepo() {
         if [[ $ahead -gt 0 || $behind -gt 0 ]]
         then
             echo -n " "
+            if [[ $behind -gt 0 ]] ; then
+                printf "$C_PULL%d↓" "$behind"
+            fi
+            if [[ $ahead -gt 0 ]] ; then
+                printf "$C_PUSH%d↑" "${ahead}"
+            fi
             if [[ "$rembranch" != "$branch" ]] ; then
-                echo -ne "$C_BR_REMOTE$remote/$rembranch$C_RESET $c_br_local$branch$C_RESET"
+                echo -ne "$C_BR_REMOTE$remote/$rembranch$C_RESET↔$c_br_local$branch$C_RESET"
             elif [[ "$remote" == "origin" ]] ; then
                 echo -ne "$c_br_local$branch$C_RESET"
             else
                 echo -ne "$C_BR_REMOTE$remote/$c_br_local$branch$C_RESET"
-            fi
-            if [[ $behind -gt 0 ]] ; then
-                printf "$C_PULL↓%d" "$behind"
-            fi
-            if [[ $ahead -gt 0 ]] ; then
-                printf "$C_PUSH↑%d" "${ahead}"
             fi
             echo -ne "$C_RESET"
         fi
