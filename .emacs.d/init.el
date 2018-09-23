@@ -1856,6 +1856,21 @@ With argument, do this that many times."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; org-mode
+;;
+
+(req-package org
+  :pin manual
+  :hook (org-mode . (lambda ()
+                      (unbind-key "S-<up>" org-mode-map)
+                      (unbind-key "S-<down>" org-mode-map)
+                      (unbind-key "S-<left>" org-mode-map)
+                      (unbind-key "S-<right>" org-mode-map)
+                      ))
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; disaster
 ;;
 
