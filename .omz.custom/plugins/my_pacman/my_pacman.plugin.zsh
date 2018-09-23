@@ -197,3 +197,17 @@ pkgpacfind() {
 
 	return 127
 }
+
+# lists last installed packages
+paclast() {
+	local lastn=40
+	echo "Last $lastn packages installed explicitly:"
+	echo "ago:"$'\t'"name:"
+	local pkgdate=
+	local pkgname=
+	while read -r pkgdate pkgname
+	do
+		local ago=$(( $(date +%s) - pkgdate ))
+		echo "$(durationtostr $ago)"$'\t'"$pkgname"
+	done < <(expac --timefmt=%s '%w\t%l\t%n' | grep '^explicit' | cut -f 2- | sort -n | tail -$lastn)
+}
