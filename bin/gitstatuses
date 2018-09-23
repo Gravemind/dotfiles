@@ -39,13 +39,6 @@ C_TAG="$C_YELLOW"
 
 root="."
 
-FETCHALL=0
-
-# Fetch only if last fetch was before
-fetch_timeout=$((60 * 5)) # 5 minutes ago
-FETCH_IF_OLDER_THAN=$(( "$(date "+%s")" - $fetch_timeout ))
-# usage: -F to force
-
 tmpdir="$(mktemp -d -t gitstatuses.XXXXXXXXXX)"
 trap "{ rm -rf $tmpdir; }" EXIT
 
@@ -241,18 +234,28 @@ waitmaxbgjobs() {
     done
 }
 
+# opts
+FETCHALL=0
+fetch_timeout=$((60 * 5)) # 5 minutes ago
+FETCH_IF_OLDER_THAN=$(( "$(date "+%s")" - $fetch_timeout ))
 find_type="-type d"
 find_follow=""
-i=0
-while [[ "$#" -ge 1 ]]
-do
+numjobs_fetch=6 # limit at 6 fetches at the same time
+
+options=$(getopt -o "+hfFsdLj:" -l "help" -n "$0" -- "$@")
+[[ $? -eq 0 ]] || exit 1
+eval set -- "$options"
+while true;  do
     case "$1" in
     -h|--help)
-        echo "usage: $0 [-f] [-F] [-s] [-d] [-L] [num... command...]
--f : fetch if older than $fetch_timeout seconds
--F : force fetch
+        echo 'usage: '"$0"' [-fFsdL] [-j N] [--] [nums...] [command...]
+-f : git fetch if older than '$fetch_timeout' seconds
+-F : force git fetch
 -L : follow symlinks
--s/-d: include submodules"
+-s|-d: include submodules
+-j N: num parallel jobs (default: max(nproc*2, num_repo/2), or '$numjobs_fetch' when fetching)
+nums...: example: `2-4 8`: only use repo 2, 3, 4, and 8
+command...: run command at the root of each repos'
         exit 0
         ;;
     -f)
@@ -272,47 +275,73 @@ do
         logdeb Will follow symlinks
         find_follow=-L
         ;;
-    --)
+    -j)
+        numjobs="$2"
         shift
-        break
         ;;
-    *)
-        break
-        ;;
+    --) shift; break; ;;
+    *) break; ;;
     esac
     shift
 done
 
-declare -a repos
+# nums...
+selectedrepos=()
+while [[ "$#" -gt 0 ]]
+do
+    if [[ "$1" =~ ^[0-9]+-[0-9]+$ ]]
+    then
+        selectedrepos+=( $(seq "${1%-*}" "${1#*-}") )
+    elif [[ "$1" =~ ^[0-9]+$ ]]
+    then
+        selectedrepos+=($1)
+    else
+        break
+    fi
+    shift
+done
+
+# find repos
+repos=()
 i=0
 while IFS= read -r -u3 -d $'\0' file
 do
     repos[i++]="$(dirname "$file")"
-done 3< <(find $find_follow "$root" -name .git $find_type -print0 | sort -z)
+done 3< <(find $find_follow "$root" -name .git $find_type -print0)
 
-echo "Found ${i} repos..."
+# max parallel jobs
+if [[ -z "${numjobs:-}" ]]
+then
+    if [[ "$FETCHALL" == "1" ]]
+    then
+        numjobs=$maxjobs_fetch
+    else
+        ## measured on SSD, w/ w/o vm/drop_caches, with 50, and 120 repos:
+        ## numrepo/2 was the fastest
+        numrepo="${#repos[@]}"
+        numjobs=$(( numrepo / 2 ))
+        minjobs=$(nproc)
+        minjobs=$(( minjobs * 2 ))
+        if [[ $numjobs -lt $minjobs ]]
+        then
+            numjobs=$minjobs
+        fi
+    fi
+fi
+# logdeb Running $numjobs parallel jobs
 
-# There is more arguments
+echo "Found ${#repos[@]} repos, running $numjobs parallel jobs..."
+
+# check nums...
+[[ "${#selectedrepos[@]}" -gt 0 ]] || selectedrepos=( $(seq 0 "$((${#repos[@]} - 1))" ) )
+for i in "${selectedrepos[@]}"
+do
+    [[ "$i" -ge 0 && "$i" -lt ${#repos[@]} ]] || { echo -e "${C_ERROR}error: invalid repo num $i$C_RESET" ; exit 1 ; }
+done
+
+# run command... on each repo and exit
 if [[ "$#" -gt 0 ]]
 then
-    declare -a selectedrepos
-    if [[ "$1" =~ ^[0-9]+$ ]]
-    then
-        while [[ "$1" =~ ^[0-9]+$ ]]
-        do
-            repoid="$1"
-            shift
-            if [[ "$repoid" -lt 0 || "$repoid" -gt "${#repos[@]}" ]]
-            then
-                echo invalid repo index $repoid 1>&2
-                exit 1
-            fi
-            selectedrepos+=("$repoid")
-        done
-    elif [[ -n "$1" ]]
-    then
-        selectedrepos=( $(seq 0 $((${#repos[@]} - 1)) ) )
-    fi
     for i in "${selectedrepos[@]}"
     do
         repo="${repos[i]}"
@@ -325,12 +354,9 @@ then
     exit 0
 fi
 
+## check for ssh agent
 if [[ "$FETCHALL" == "1" ]]
 then
-    # TODO: maxjobs=min(nproc, 6)
-    maxjobs=6 # limit at 6 fetches at the same time
-    #ssh-add
-
     # TODO: test for ssh-agent only if password needed ?
     set +e
     keys="$(ssh-add -l 2> /dev/null)"
@@ -348,36 +374,32 @@ then
         echo 'No ssh agent keys found, running ssh-add:'
         ssh-add
     fi
-
-else
-    maxjobs=$(nproc)
 fi
 
+# get max repo path len to align output
 max_repo_len=5
-for repo in "${repos[@]}"
+for i in "${selectedrepos[@]}"
 do
+    repo="${repos[i]}"
     l=${#repo}
     max_repo_len=$(( l > max_repo_len ? l : max_repo_len ))
 done
 export max_repo_len
 
-declare -a results
-i=0
-for repo in "${repos[@]}"
+# async fetch (opt) and generate output for each repo
+results=()
+for i in "${selectedrepos[@]}"
 do
-    waitmaxbgjobs $maxjobs
+    repo="${repos[i]}"
+    waitmaxbgjobs $numjobs
     ( fetchrepo $i "$repo" > "$tmpdir/$i" ) &
-    ((++i))
 done
 
 wait
 
-i=0
-for repo in "${repos[@]}"
+for i in "${selectedrepos[@]}"
 do
+    repo="${repos[i]}"
     cat "$tmpdir/$i"
-    #echo "$res"
-    #printf "%3d %s\n" "$i" "$repo"
-    ((++i))
 done
 
