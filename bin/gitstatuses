@@ -314,7 +314,7 @@ if [[ -z "${numjobs:-}" ]]
 then
     if [[ "$FETCHALL" == "1" ]]
     then
-        numjobs=$maxjobs_fetch
+        numjobs=$numjobs_fetch
     else
         ## measured on SSD, w/ w/o vm/drop_caches, with 50, and 120 repos:
         ## numrepo/2 was the fastest
