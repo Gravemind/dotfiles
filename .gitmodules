@@ -1,5 +1,5 @@
 [submodule ".omz.custom/plugins/zsh-syntax-highlighting"]
-	path = .omz.custom/plugins/syntax-highlight/zsh-syntax-highlighting
+	path = .omz.custom/plugins/syntax-highlight-git/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
 [submodule ".emacs.d/themes/emacs-theme-autumn"]
 	path = .emacs.d/themes/emacs-theme-autumn
