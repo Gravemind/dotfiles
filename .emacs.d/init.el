@@ -994,6 +994,31 @@ With argument, do this that many times."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; flycheck-grammalecte
+;;   https://git.deparis.io/flycheck-grammalecte/about/
+;;
+
+(req-package flycheck-grammalecte
+  :commands (jo/flycheck-grammalecte)
+  :config
+  (setq-default
+   ; don't report typographical apostrophes error
+   flycheck-grammalecte-report-apos nil
+   ; don't report non-breakable spaces error
+   flycheck-grammalecte-report-nbsp nil
+   )
+
+  (defun jo/flycheck-grammalecte ()
+    (interactive)
+    (require 'flycheck-grammalecte)
+    (flycheck-mode t)
+    (flycheck-select-checker 'francais-grammalecte)
+    )
+
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; Compile
 ;;
 
