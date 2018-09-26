@@ -79,7 +79,7 @@ ZSH_CUSTOM=$HOME/.omz.custom
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
 	syntax-highlight
-	history-substring-search
+	history-substring-search-git
 	autojump
 	safe-paste
 	my_pacman
