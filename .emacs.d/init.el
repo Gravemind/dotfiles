@@ -879,10 +879,10 @@ With argument, do this that many times."
          ("\\.cws\\'" . c-mode)
          ("\\.ino\\'" . c++-mode) ; arduino ide
          )
+  :hook (c-mode-common . jo/cc-mode)
   :config
   (c-add-style "cc-style" cc-style)
   (setq-default c-default-style "cc-style")
-  (add-hook 'c-mode-common-hook #'jo/cc-mode)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -944,14 +944,11 @@ With argument, do this that many times."
 ;;
 
 (req-package d-mode
-  :defer t
-  :config
-  (add-hook 'd-mode-hook (lambda () (jo/cc-mode) (flycheck-dmd-dub-set-variables)))
+  :hook (d-mode . (lambda () (jo/cc-mode) (flycheck-dmd-dub-set-variables)))
   )
 
 (req-package flycheck-dmd-dub
   :defer t
-  :require d-mode flycheck
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1157,7 +1154,6 @@ With argument, do this that many times."
 
 (req-package flyspell
   :pin manual
-  :defer t
   :bind (:map flyspell-mode-map
               ("C-;" . helm-flyspell-correct)
               )
@@ -1171,9 +1167,10 @@ With argument, do this that many times."
 ;;
 
 (req-package magit
-  :defer t
-  :bind (("C-x g" . magit-status))
+  :bind ("C-x g" . magit-status)
   :config
+
+  (require 'helm) ;; to get helm in minibuffers etc...
 
   (setq-default
    magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1
@@ -1369,13 +1366,9 @@ With argument, do this that many times."
 ;;
 
 (req-package helm
-  ;:disabled
-  ;; :require helm-command
   :bind (("M-x" . helm-M-x)
          ("C-f <C-return>" . helm-occur)
          ("C-f C-r" . helm-do-grep-rg-ripgrep)
-         :map helm-grep-mode-map
-         ("C-c C-p" . wgrep-change-to-wgrep-mode)
          )
   :config
   ;; http://tuhdo.github.io/helm-intro.html
@@ -1466,7 +1459,6 @@ With argument, do this that many times."
 (req-package helm-flyspell
   ;:disabled
   :pin melpa ; not in melpa-stable yet ?
-  :require helm flyspell
   :defer t
   )
 
@@ -1476,7 +1468,6 @@ With argument, do this that many times."
 
 (req-package helm-dash
   ;:disabled
-  :require helm
   :defer t)
 
 (req-package ivy
@@ -1500,12 +1491,11 @@ With argument, do this that many times."
 ;; @FIXME why wgrep gets loaded when helm is loaded (eg on M-x)
 
 (req-package wgrep
-  :defer t
+  :commands (wgrep-change-to-wgrep-mode)
   )
 
 (req-package wgrep-helm
-  :require helm wgrep
-  :defer t
+  :commands (wgrep-change-to-wgrep-mode)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1539,6 +1529,9 @@ With argument, do this that many times."
 ;;
 ;; git-gutter-fringe+
 ;;   show git diffs in fringe margin
+;;
+;; diff-hl
+;;   same with dired mode
 ;;
 
 (req-package diff-hl
@@ -1841,11 +1834,9 @@ With argument, do this that many times."
 ;;
 
 (req-package yasnippet
-  :commands (yas-global-mode yas-minor-mode)
-  :init
-  (setq-default yas-snippet-dirs '("~/.emacs.d/snippets"))
-  (add-hook 'prog-mode-hook #'yas-minor-mode)
+  :hook (c-mode-common . yas-minor-mode) ;; NOTE: cc-mode-hook does not work, c-mode-common-hook do.
   :config
+  (setq-default yas-snippet-dirs '("~/.emacs.d/snippets"))
   (yas-reload-all)
   )
 
@@ -1886,6 +1877,7 @@ With argument, do this that many times."
 
 (req-package org
   :pin manual
+  :defer t
   :hook (org-mode . (lambda ()
                       (unbind-key "S-<up>" org-mode-map)
                       (unbind-key "S-<down>" org-mode-map)
