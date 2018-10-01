@@ -264,8 +264,35 @@ exec_always --no-startup-id "systemctl --user restart clipmenud.service"
 bindsym $ModK+y exec ~/bin/mpvcb
 
 # Volume: Pulse Audio
-set $volume_set  exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@'
-set $volume_mute exec --no-startup-id pactl set-sink-mute '@DEFAULT_SINK@' toggle
+set $volume_mute      exec --no-startup-id pactl set-sink-mute   '@DEFAULT_SINK@' toggle
+set $volume_inc       exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@' +10%
+set $volume_dec       exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@' -10%
+set $volume_inc_shift exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@' +10%
+set $volume_dec_shift exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@' -10%
+# +/-
+bindsym $ModK+equal $volume_inc
+bindsym $ModK+minus $volume_dec
+bindsym $ModK+Shift+equal $volume_inc_shift
+bindsym $ModK+Shift+minus $volume_dec_shift
+# Media keys volume up/down
+bindsym XF86AudioRaiseVolume $volume_inc
+bindsym XF86AudioLowerVolume $volume_dec
+bindsym $ModK+XF86AudioRaiseVolume $volume_inc
+bindsym $ModK+XF86AudioLowerVolume $volume_dec
+bindsym Shift+XF86AudioRaiseVolume $volume_inc_shift
+bindsym Shift+XF86AudioLowerVolume $volume_dec_shift
+bindsym $ModK+Shift+XF86AudioRaiseVolume $volume_inc_shift
+bindsym $ModK+Shift+XF86AudioLowerVolume $volume_dec_shift
+# F11/F12
+bindsym $ModK+F12 $volume_inc
+bindsym $ModK+F11 $volume_dec
+bindsym $ModK+Shift+F12 $volume_inc_shift
+bindsym $ModK+Shift+F11 $volume_dec_shift
+# Mute media keys
+bindsym XF86AudioMute $volume_mute
+bindsym Shift+XF86AudioMute $volume_mute
+bindsym $ModK+XF86AudioMute $volume_mute
+bindsym $ModK+Shift+XF86AudioMute $volume_mute
 
 # Player: Playerctl
 set $player_play  exec --no-startup-id playerctl play-pause
@@ -277,31 +304,11 @@ set $player_prev  exec --no-startup-id playerctl previous
 # set $player_pause exec --no-startup-id mpc -q stop
 # set $player_next  exec --no-startup-id mpc -q next
 # set $player_prev  exec --no-startup-id mpc -q prev
-
-bindsym $ModK+equal $volume_set +5%
-bindsym $ModK+minus $volume_set -5%
-bindsym $ModK+Shift+equal $volume_set +10%
-bindsym $ModK+Shift+minus $volume_set -10%
-bindsym XF86AudioRaiseVolume $volume_set +5%
-bindsym XF86AudioLowerVolume $volume_set -5%
-bindsym $ModK+XF86AudioRaiseVolume $volume_set +5%
-bindsym $ModK+XF86AudioLowerVolume $volume_set -5%
-bindsym Shift+XF86AudioRaiseVolume $volume_set +10%
-bindsym Shift+XF86AudioLowerVolume $volume_set -10%
-bindsym $ModK+Shift+XF86AudioRaiseVolume $volume_set +10%
-bindsym $ModK+Shift+XF86AudioLowerVolume $volume_set -10%
-bindsym $ModK+F12 $volume_set +5%
-bindsym $ModK+F11 $volume_set -5%
-bindsym $ModK+Shift+F12 $volume_set +10%
-bindsym $ModK+Shift+F11 $volume_set -10%
-bindsym XF86AudioMute $volume_mute
-bindsym Shift+XF86AudioMute $volume_mute
-bindsym $ModK+XF86AudioMute $volume_mute
-bindsym $ModK+Shift+XF86AudioMute $volume_mute
-
+# Page Up/Down, End
 bindsym $ModK+End $player_play
 bindsym $ModK+Prior $player_prev
 bindsym $ModK+Next $player_next
+# Media Keys
 bindsym XF86AudioPlay $player_play
 bindsym XF86AudioPrev $player_prev
 bindsym XF86AudioNext $player_next
@@ -331,22 +338,23 @@ bindsym $ModK+Ctrl+Return exec --no-startup-id $layouts/launch.sh -- emacs ~/TOD
 
 # Firefox
 set $browser firefox
-bindsym $ModK+F10 exec --no-startup-id $layouts/launch.sh -w 10 $browser
+bindsym $ModK+F10       exec --no-startup-id $layouts/launch.sh -w 10 $browser
 bindsym $ModK+Shift+F10 exec --no-startup-id $layouts/launch.sh $browser
-bindsym $ModK+F3 exec --no-startup-id $layouts/launch.sh -w 3 $browser
-bindsym $ModK+Shift+F3 exec --no-startup-id $layouts/launch.sh $browser
+bindsym $ModK+F3        exec --no-startup-id $layouts/launch.sh -w 3 $browser
+bindsym $ModK+Shift+F3  exec --no-startup-id $layouts/launch.sh $browser
 
 # Qalculate
 bindsym $ModK+F5 exec $layouts/launch.sh qalculate-gtk -n
 
 # Redshift
-bindsym $ModK+o exec --no-startup-id ~/bin/red +1
-bindsym $ModK+p exec --no-startup-id ~/bin/red -1
+bindsym $ModK+o       exec --no-startup-id ~/bin/red +1
+bindsym $ModK+p       exec --no-startup-id ~/bin/red -1
 bindsym $ModK+Shift+o exec --no-startup-id ~/bin/red -c +1
 bindsym $ModK+Shift+p exec --no-startup-id ~/bin/red -c -1
 
 # Go to urgent window, and go back
 bindsym $ModK+BackSpace exec --no-startup-id ~/.i3/goto_urgent_and_back.sh
+bindsym $ModK+u         exec --no-startup-id ~/.i3/goto_urgent_and_back.sh
 
 # set $search_polybar_win --name "^polybar-mybar-big$"
 # bindsym $ModK+g exec xdotool search $search_polybar_win windowmove --relative %@ 0 -21
