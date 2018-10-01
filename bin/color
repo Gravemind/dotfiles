@@ -39,6 +39,8 @@ print_boxes(styles_bold)
 print_boxes(styles_bg)
 sys.stdout.write("\n")
 
+wrapwidth=70
+
 # https://slipsum.com/
 texts=[
 "The path of the righteous man is beset on all sides by the iniquities of the selfish and the tyranny of evil men. Blessed is he who, in the name of charity and good will, shepherds the weak through the valley of darkness, for he is truly his brother's keeper and the finder of lost children. And I will strike down upon thee with great vengeance and furious anger those who would attempt to poison and destroy My brothers. And you will know My name is the Lord when I lay My vengeance upon thee.",
@@ -48,7 +50,11 @@ texts=[
 
 random.shuffle(texts)
 
-wrapwidth=70
+for style in [''] + styles + styles_bold + ['']:
+    text=texts[-1][:wrapwidth]
+    sys.stdout.write("\033[{}m{}\033[0m\n".format(style, text))
+sys.stdout.write('\n')
+
 text="\n".join([ "\n".join(textwrap.wrap(text, width=wrapwidth)) for text in texts ])
 
 words=text.split(" ")
