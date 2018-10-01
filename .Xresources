@@ -5,31 +5,27 @@
 *cursorColor: #ffff00
 *background:  #202020
 *foreground:  #b0b0b0
+!white
+*color7:      #b0b0b0
+*color15:     #e0e0e0
 !black
 *color0:      #000000
 *color8:      #666666
-!red
-*color1:      #9e1828
-*color9:      #cf6171
-!green
-*color2:      #aece92
-*color10:     #B8EB6C
-!yellow
-*color3:      #968a38
-*color11:     #fff796
-!blue
-*color4:      #557DA1
-*color12:     #4B84B8
-!magenta
-*color5:      #963c59
-*color13:     #cf9ebe
-!cyan
-*color6:      #45A397
-*color14:     #71bebe
-!white
-*color7:      #b0b0b0
-*color15:     #e8e8e8
 
+! red gren blue yellow cyan magenta
+! then bold
+*color1: #ad5252
+*color2: #6fae6f
+*color4: #4e789d
+*color3: #aa9f55
+*color6: #55aaa7
+*color5: #aa5580
+*color9: #c96969
+*color10: #8dca8d
+*color12: #5b90bf
+*color11: #c6ba6c
+*color14: #6cc6c3
+*color13: #c66c9a
 
 URxvt*urgentOnBell:     true
 
@@ -46,7 +42,8 @@ URxvt*font:             xft:Hack:size=9,\
                         xft:Font Awesome 5 Free Solid:size=9,\
                         xft:Font Awesome 5 Free Solid:size=8,\
                         xft:Font Awesome 5 Free Solid:size=7,\
-                        xft:Font Awesome 5 Free Solid:size=6
+                        xft:Font Awesome 5 Free Solid:size=6,\
+                        xft:Font Awesome 5 Free Solid:size=5,
 ! fixes font spacing
 URxvt.letterSpace:      -1
 URxvt*scrollBar_right:  false
