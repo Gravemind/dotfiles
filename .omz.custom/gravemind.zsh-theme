@@ -146,6 +146,8 @@ function gravemind_promt_cc() {
 
 GRAVEMIND_CMD_START=$SECONDS
 function gravemind_preexec() {
+	# make sure prompt color doesn't leak (black background ?)
+	echo -n $'\033[0m'
 	GRAVEMIND_CMD_START=$SECONDS
 }
 
