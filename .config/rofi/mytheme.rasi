@@ -1,0 +1,46 @@
+
+configuration {
+}
+
+* {
+    bg: #000000e0;
+    fg: #4B86B3;
+    fghl: #f0f0f0;
+
+    text-color: @fg;
+    background-color: #00000000;
+}
+
+#window {
+    background-color: @bg;
+    location: center;
+    fullscreen: true;
+    padding: 20%;
+    // transparency: "~/.i3/wallpaper.blured.png";
+    transparency: "screenshot";
+}
+
+#inputbar {
+    children: [ textbox-pre-prompt,prompt,textbox-post-prompt,entry,case-indicator ];
+}
+
+#textbox-pre-prompt {
+    expand:     false;
+    text-color: @fghl;
+    str: "❰";
+}
+#prompt {
+    text-color: @fghl;
+}
+#textbox-post-prompt {
+    expand:     false;
+    text-color: @fghl;
+    str: "❱ ";
+}
+
+element {
+    padding: 4px;
+}
+element selected {
+    text-color: @fghl;
+}
