@@ -259,6 +259,9 @@ exec_always --no-startup-id "systemctl --user restart clipmenud.service"
 # Screenshot
 # bindsym $ModK+Print exec --no-startup-id "bash -c 'flameshot gui ; pkill flameshot'"
 
+# mpvcb (mpv clipboard)
+bindsym $ModK+y exec ~/bin/mpvcb
+
 # Volume: Pulse Audio
 set $volume_set  exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@'
 set $volume_mute exec --no-startup-id pactl set-sink-mute '@DEFAULT_SINK@' toggle

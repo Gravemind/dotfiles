@@ -1,0 +1,47 @@
+#!/bin/bash
+
+usage() {
+    echo 'usage: '"$0" [ARGS...]'
+
+    Basically runs `mpv ARGS... -- $(xlicp -o)`.
+    Asks before running using `read`, or `zenity` if not a tty.
+'
+}
+
+main() {
+    if [[ "$1" = "-h" || "$1" = "--help" ]]
+    then
+       usage
+       exit 0
+    fi
+
+    hasatty=true
+    [[ -t 0 ]] || hasatty=false
+
+    local url="$(xclip -o -r)"
+    local cmd=( "$@" -- "$url" )
+
+    $hasatty || cmd=( --really-quiet "${cmd[@]}" )
+
+    local msg="Run mpv$(printf " %q" "${cmd[@]}") ?"
+    if $hasatty
+    then
+        echo -n "$msg [y/n]"
+        read -r -n1 r
+        echo
+        if [[ "$r" != "y" ]]
+        then
+            exit 1
+        fi
+    else
+        zenity --question --title "mpcb" --text "$msg" --width 600
+        if [[ $? -ne 0 ]]
+        then
+            exit 1
+        fi
+    fi
+
+    mpv --force-window=immediate "${cmd[@]}"
+}
+
+main "$@"
