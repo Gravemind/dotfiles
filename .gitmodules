@@ -16,4 +16,3 @@
 [submodule ".omz.custom/plugins/history-substring-search-git/zsh-history-substring-search"]
 	path = .omz.custom/plugins/history-substring-search-git/zsh-history-substring-search
 	url = https://github.com/zsh-users/zsh-history-substring-search.git
-	branch = master
