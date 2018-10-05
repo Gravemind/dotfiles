@@ -44,3 +44,11 @@ run-help-perf() {
 		man perf-$1
 	fi
 }
+
+run-help-semanage() {
+	if [ $# -eq 0 ]; then
+		man semanage
+	else
+		man semanage-$1
+	fi
+}
