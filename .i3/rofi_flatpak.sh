@@ -6,8 +6,11 @@ then
 else
     app="$1"
     logfile="/tmp/rofi_flatpak.$app.log"
-    date > "$logfile"
-    flatpak run "$app" >& "$logfile" &
+    (
+        date;
+        flatpak run "$app";
+        date;
+    ) >& "$logfile" &
     disown
 fi
 

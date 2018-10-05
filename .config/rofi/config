@@ -171,9 +171,9 @@ rofi.theme:                         mytheme
 ! "Accept entry" Set from: Default
 ! rofi.kb-accept-entry:                Control+j,Control+m,Return,KP_Enter
 ! "Use entered text as command (in ssh/run modi)" Set from: Default
-! rofi.kb-accept-custom:               Control+Return
+rofi.kb-accept-custom:                 Control+Shift+Return
 ! "Use alternate accept command." Set from: Default
-! rofi.kb-accept-alt:                  Shift+Return
+rofi.kb-accept-alt:                    Shift+Return,Control+Return
 ! "Delete entry from history" Set from: Default
 ! rofi.kb-delete-entry:                Shift+Delete
 ! "Switch to the next mode." Set from: Default
@@ -247,25 +247,25 @@ rofi.theme:                         mytheme
 ! "Custom Keybinding 19" Set from: Default
 ! rofi.kb-custom-19:                   Alt+parenleft
 ! "Select row 1" Set from: Default
-! rofi.kb-select-1:                    Super+1
+rofi.kb-select-1:                    Control+1
 ! "Select row 2" Set from: Default
-! rofi.kb-select-2:                    Super+2
+rofi.kb-select-2:                    Control+2
 ! "Select row 3" Set from: Default
-! rofi.kb-select-3:                    Super+3
+rofi.kb-select-3:                    Control+3
 ! "Select row 4" Set from: Default
-! rofi.kb-select-4:                    Super+4
+rofi.kb-select-4:                    Control+4
 ! "Select row 5" Set from: Default
-! rofi.kb-select-5:                    Super+5
+rofi.kb-select-5:                    Control+5
 ! "Select row 6" Set from: Default
-! rofi.kb-select-6:                    Super+6
+rofi.kb-select-6:                    Control+6
 ! "Select row 7" Set from: Default
-! rofi.kb-select-7:                    Super+7
+rofi.kb-select-7:                    Control+7
 ! "Select row 8" Set from: Default
-! rofi.kb-select-8:                    Super+8
+rofi.kb-select-8:                    Control+8
 ! "Select row 9" Set from: Default
-! rofi.kb-select-9:                    Super+9
+rofi.kb-select-9:                    Control+9
 ! "Select row 10" Set from: Default
-! rofi.kb-select-10:                   Super+0
+rofi.kb-select-10:                   Control+0
 ! "Go to the previous column" Set from: Default
 ! rofi.ml-row-left:                    ScrollLeft
 ! "Go to the next column" Set from: Default

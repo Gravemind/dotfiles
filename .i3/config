@@ -246,7 +246,7 @@ bindsym $ModK+r mode $mode_resize
 #bindsym $ModK+z exec dmenu_run -b -p ">>" -nb '#222222' -nf '#CCCCCC' -sb '#4c7899' -sf '#FFFFFF'
 #bindsym $ModK+z exec rofi -show run
 #bindsym $ModK+z exec --no-startup-id "rofi -show combi -combi-modi 'run,ssh,window' -modi combi"
-bindsym $ModK+z exec --no-startup-id "rofi -show combi -display-combi launch -modi combi -combi-modi 'drun,flatpak:/home/jo/.i3/rofi_flatpak.sh,run,window'"
+bindsym $ModK+z exec --no-startup-id "rofi -show combi -display-combi launch -modi combi -combi-modi 'drun,flatpak:~/.i3/rofi_flatpak.sh,run,window'"
 
 # Cliboard Manager
 bindsym $ModK+Insert exec --no-startup-id  "CM_LAUNCHER=rofi clipmenu -p clip"
