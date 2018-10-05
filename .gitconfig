@@ -179,6 +179,9 @@
 	rebase = true
 [push]
 	default = simple
+[rebase]
+	autoStash = true
+	#autoSquash = true
 [merge]
 	conflictstyle = diff3
 [core]
