@@ -50,5 +50,5 @@ durationtostr() {
 	  unit='s'
   fi
   v="$(echo "scale=1; $1 / $div" | bc)"
-  echo "$v$unit"
+  echo "$v$unit" "$2"
 }
