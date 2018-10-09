@@ -1,0 +1,13 @@
+# see /etc/tigrc and man tigrc
+
+set commit-order = date
+
+# color is enough
+set reference-format = branch tag remote ~replace~
+
+color cursor			white	black	bold
+color main-tag			yellow	default	bold
+color main-local-tag	yellow	default	bold
+color date              black	default bold
+# author in main view
+color "author "			blue	default
