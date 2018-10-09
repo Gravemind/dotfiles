@@ -33,9 +33,6 @@ cache-pause-initial=yes
 # Hide album art
 audio-display=no
 
-# Force stereo
-#audio-channels=stereo
-
 # https://www.svp-team.com/wiki/SVP:mpv
 # fixes audio desync/delay with filters (vapoursynth)
 hr-seek-framedrop=no
@@ -45,6 +42,8 @@ hr-seek-framedrop=no
 #
 # Profiles
 #
+profile=mydefault
+[mydefault]
 
 # HQ
 #profile=gpu-hq
@@ -63,10 +62,15 @@ profile=svp
 # much better audio at speed > x1
 # (bound in input.conf)
 #
-[af-add-myscaletempo]
+[enable-myscaletempo]
 af-add=@myscaletempo:scaletempo=stride=14:search=8:overlap=0.8
-# remove vapoursynth filter. @TODO: put it back when going back to x1
+# remove vapoursynth filter. (profile mydefault will restore it.)
 vf=""
+
+[disable-myscaletempo]
+#af-del=@myscaletempo # done in input.conf. warns on startup if done here.
+# restore default config (e.g. vf vapoursynth)
+profile=mydefault
 
 #
 # gpu-hq with even better scaler
@@ -92,8 +96,16 @@ tscale=oversample
 #hwdec=no
 
 #
-# 60fps motion interpolation
+# 60fps motion interpolation profiles
 #
+[mvtools]
+profile=_vapoursynth-common
+vf=vapoursynth=~/.mpv/filters/mvtools.py
+
+[svp]
+profile=_vapoursynth-common
+vf=vapoursynth=~/.mpv/filters/svp.py
+
 [_vapoursynth-common]
 # https://www.svp-team.com/wiki/SVP:mpv
 # vapoursynth filters on CPU, so don't use hw decoder
@@ -104,14 +116,6 @@ hwdec-codecs=all
 #interpolation=yes
 #display-fps=60
 #video-sync=display-resample
-
-[mvtools]
-profile=_vapoursynth-common
-vf=vapoursynth=~/.mpv/filters/mvtools.py
-
-[svp]
-profile=_vapoursynth-common
-vf=vapoursynth=~/.mpv/filters/svp.py
 
 #
 # GPU api
