@@ -13,19 +13,18 @@
 *color8:      #666666
 
 ! red gren blue yellow cyan magenta
-! then bold
 *color1: #ad5252
 *color2: #6fae6f
 *color4: #4e789d
-*color3: #aa9f55
+*color3: #b6a849
 *color6: #55aaa7
-*color5: #aa5580
+*color5: #a15e7a
 *color9: #c96969
 *color10: #8dca8d
 *color12: #5b90bf
-*color11: #c6ba6c
+*color11: #d2c360
 *color14: #6cc6c3
-*color13: #c66c9a
+*color13: #bb7793
 
 URxvt*urgentOnBell:     true
 
