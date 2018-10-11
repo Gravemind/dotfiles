@@ -249,8 +249,11 @@ bindsym $ModK+r mode $mode_resize
 bindsym $ModK+z exec --no-startup-id "rofi -show combi -display-combi launch -modi combi -combi-modi 'drun,flatpak:~/.i3/rofi_flatpak.sh,run,window'"
 
 # Cliboard Manager
-bindsym $ModK+Insert exec --no-startup-id  "CM_LAUNCHER=rofi clipmenu -p clip"
-exec_always --no-startup-id "systemctl --user restart clipmenud.service"
+bindsym $ModK+Insert exec --no-startup-id  CM_LAUNCHER=rofi clipmenu -p clip
+exec_always --no-startup-id systemctl --user restart clipmenud.service
+
+# Mpv Clipboard (mpvcb)
+bindsym $ModK+y exec --no-startup-id CM_LAUNCHER=rofi ~/bin/mpvcb --clipmenu
 
 # Overriding Shift-Insert to type what's in primary clipboard (selection)
 # (xdotool bugge ? seems to type while Shift is pressed ?)
@@ -259,9 +262,6 @@ exec_always --no-startup-id "systemctl --user restart clipmenud.service"
 
 # Screenshot
 # bindsym $ModK+Print exec --no-startup-id "bash -c 'flameshot gui ; pkill flameshot'"
-
-# mpvcb (mpv clipboard)
-bindsym $ModK+y exec ~/bin/mpvcb
 
 # Volume: Pulse Audio
 set $volume_mute      exec --no-startup-id pactl set-sink-mute   '@DEFAULT_SINK@' toggle

@@ -1,47 +1,123 @@
 #!/bin/bash
 
-usage() {
-    echo 'usage: '"$0" [ARGS...]'
+set -euo pipefail
 
-    Basically runs `mpv ARGS... -- $(xlicp -o)`.
-    Asks before running using `read`, or `zenity` if not a tty.
+usage() {
+    echo -n 'usage: '"$0"' [-h|--help|--cli|--zenity|--clipmenu] [--] [ARGS...]
+
+    Asks before running `mpv ARGS... -- $(xlicp -o)`.
+
+-h|--help: print this message
+--cli/--zenity/--clipmenu: force ask before run with cli/zenity/clipmenu.
+
+Environment variables:
+* CM_LAUNCHER can be "rofi" when using --clipmenu (defaults to dmenu).
+* CLIPMENU overrides the clipmenu program
+
+Tip to make mpv open a window ASAP for http/https/ytdl streams: add to your mpv config:
+```
+[protocol.http]
+force-window=immediate
+[protocol.https]
+profile=protocol.http
+[protocol.ytdl]
+profile=protocol.http
+```
+
 '
 }
 
-main() {
-    if [[ "$1" = "-h" || "$1" = "--help" ]]
-    then
-       usage
-       exit 0
-    fi
-
-    hasatty=true
-    [[ -t 0 ]] || hasatty=false
-
-    local url="$(xclip -o -r)"
-    local cmd=( "$@" -- "$url" )
-
-    $hasatty || cmd=( --really-quiet "${cmd[@]}" )
-
-    local msg="Run mpv$(printf " %q" "${cmd[@]}") ?"
-    if $hasatty
-    then
-        echo -n "$msg [y/n]"
-        read -r -n1 r
-        echo
-        if [[ "$r" != "y" ]]
-        then
-            exit 1
-        fi
+getclipboard() {
+    if hash xclip 2> /dev/null ; then
+        xclip -o -r
+    elif hash xsel -o 2> /dev/null ; then
+        xsel -o
     else
-        zenity --question --title "mpcb" --text "$msg" --width 600
-        if [[ $? -ne 0 ]]
-        then
+        echo "$0: error: cannot find a program to get the clipboard !" >&2
+        exit 1
+    fi
+}
+
+main() {
+
+    CLIPMENU="${CLIPMENU:-clipmenu}"
+
+    local askwith=
+    while (( $# )); do
+        case "$1" in
+            -h|--help)  usage; exit 0; ;;
+            --zenity)   askwith="zenity"; shift; ;;
+            --cli)      askwith="cli"; shift; ;;
+            --clipmenu) askwith="clipmenu"; shift; ;;
+            --)         shift; break; ;;
+            *)          break; ;;
+        esac
+    done
+
+    local mpvargs=( "$@" )
+
+    local hastty=1
+    [[ -t 0 ]] || hastty=
+
+    if [[ -z "$askwith" ]]; then
+        if [[ "$hastty" ]]; then
+            askwith="cli"
+        elif hash "$CLIPMENU" 2>/dev/null; then
+            askwith="clipmenu"
+        elif hash zenity 2>/dev/null; then
+            askwith="zenity"
+        else
+            echo "$0: error: cannot find a proper \"ask before run\" program" >&2
             exit 1
         fi
     fi
 
-    mpv --force-window=immediate "${cmd[@]}"
+    # Quiet mpv if not in a cli
+    [[ "$hastty" ]] || mpvargs=( --really-quiet "${mpvargs[@]}" )
+
+    local title="mpv clipboard"
+    local cmd=()
+
+    if [[ "$askwith" = "cli" ]]; then
+
+        local url="$(getclipboard)"
+        cmd=( mpv "${mpvargs[@]}" "--" "$url")
+
+        read -p "$title: launch $(printf "%q " "${cmd[@]}")? [y]? " -r -n1 r
+        echo
+        [[ "$r" == "y" ]] || { exit 1; }
+
+    elif [[ "$askwith" == "zenity" ]]; then
+
+        local url="$(getclipboard)"
+        cmd=( mpv "${mpvargs[@]}" "--" "$url")
+
+        # --no-markup or else we need to htlm escape url (eg &->&amp;)
+        zenity --question --title "$title" \
+               --no-markup --no-wrap \
+               --text "$(printf " %q" "${cmd[@]}")" \
+               --cancel-label "Abort" \
+               --ok-label "Launch"
+        [[ $? -eq 0 ]] || { exit 1; }
+
+    elif [[ "$askwith" == "clipmenu" ]]; then
+
+        local launcher=( dmenu )
+        [[ "${CM_LAUNCHER:-}" = "rofi" ]] && launcher=( rofi -dmenu )
+
+        # rofi-script makes clipmenu list-only entries
+        # (we won't get multi-line clips, but don't really care here !?)
+        local url="$(CM_LAUNCHER=rofi-script "$CLIPMENU" | "${launcher[@]}" -p "$title")"
+        [[ $? -eq 0 ]] || { exit 1; }
+        [[ -n "$url" ]] || { exit 1; }
+
+        cmd=( mpv "${mpvargs[@]}" "--" "$url")
+
+    else
+        exit 48
+    fi
+
+    exec "${cmd[@]}"
 }
 
 main "$@"
