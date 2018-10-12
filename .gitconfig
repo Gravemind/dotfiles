@@ -14,9 +14,9 @@
 	d   = diff -M
 	dc  = diff -M --cached
 	du  = diff -M @..@{u}
-	dw  = diff --word-diff=color '--word-diff-regex=\\w+|[^[:space:]]' -M
-	dcw = diff --word-diff=color '--word-diff-regex=\\w+|[^[:space:]]' -M --cached
-	duw = diff --word-diff=color '--word-diff-regex=\\w+|[^[:space:]]' -M @..@{u}
+	dw  = diff --word-diff=color '--word-diff-regex=[a-zA-Z0-9]+|[^[:space:]]' -M
+	dcw = diff --word-diff=color '--word-diff-regex=[a-zA-Z0-9]+|[^[:space:]]' -M --cached
+	duw = diff --word-diff=color '--word-diff-regex=[a-zA-Z0-9]+|[^[:space:]]' -M @..@{u}
 
 	dule = submodule
 
