@@ -3,27 +3,33 @@
 ##
 ## usage: pipes2files COMMAND...
 ##
-## Read and replace pipes in argument by files in /tmp
+## Look for named pipes in COMMAND... and replace them by regular files in /tmp,
+## then execs the new command.
 ##
-## Example: pipes2files git diff --no-index <(ls a) <(ls b)
+## Example:
+##   workaround git diff not reading process substitutions:
+##     $> pipes2files git diff --no-index <(ls a) <(ls b)
 ##
 
 set -euo pipefail
 
 tmpdir="$(mktemp -d -t "$(basename $0).XXXXXXXX")"
-trap "{ rm -rf $tmpdir; }" EXIT
+cleanup() { rm -rf "$tmpdir"; }
+trap cleanup EXIT
 
 args=()
 for arg in "$@"
 do
-    if [[ -p "$arg" ]]
+    if [[ -p "$arg" ]] # is named pipe
     then
         tmpfile="$(mktemp "$tmpdir/XXXXXXXX")"
-        cp "$arg" "$tmpfile"
+        \cat "$arg" > "$tmpfile"
         args+=("$tmpfile")
     else
         args+=("$arg")
     fi
 done
 
+# Note: don't `exec` or cleanup wont happen
 "${args[@]}"
+exit $?
