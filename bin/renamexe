@@ -3,17 +3,60 @@
 set -euo pipefail
 #set -x
 
+basename0="$(basename "$0")"
+
 usage() {
-    echo "usage: $0 cmd [cmd_args...] -- file [files...]"
+    echo 'usage: '"$basename0"' COMMAND... -- FILE...
+
+Rename FILEs using COMMAND... to generate the new names.
+
+Before actually renaming, it shows the name diffs, generates a revert script,
+and ask.
+
+pseudo-sh code:
+    for file in FILE... ; do
+        show_and_ask mv $file $(echo $file | COMMAND...)
+    done
+
+Example:
+    $> '"$basename0"' sed '\''s/_/-/g'\'' -- foo_*.txt
+'
 }
+
+# Words are non-whitespace:
+#git_word_diff=
+# Words are [a-zA-Z0-9]+, fallback char-by-char:
+git_word_diff='--word-diff-regex=[a-zA-Z0-9]+|[^[:space:]]'
+# Char-by-char diff:
+#git_word_diff='--word-diff-regex=.'
+
+# Show word diffs with color only (won't see whitespace diff):
+git_word_diff_color=--word-diff=color
+# Show word diff with color and text delimiters:
+#git_word_diff_color=--word-diff=plain"
+
+tmpdir="$(mktemp -d -t "$basename0.XXXXXXXX")"
+cleanup() { rm -rf "$tmpdir"; }
+trap cleanup EXIT
+
+pretty_string_wdiff() {
+    echo "$1" > "$tmpdir/diffa"
+    echo "$2" > "$tmpdir/diffb"
+    { git diff --no-index --color=always $git_word_diff_color $git_word_diff -- "$tmpdir/diffa" "$tmpdir/diffb" || true ; } | tail -n+6 | sponge
+}
+
+if [[ "${1:-}" == "-h" || "${1:-}" == '--help' ]]
+then
+    usage
+    exit 0
+fi
 
 cmd=()
 files=()
 
 while [[ "$#" -gt 0 ]]
 do
-    c="$1"
-    if [[ "$c" == "--" ]]
+    if [[ "$1" == "--" ]]
     then
         shift
         break
@@ -26,15 +69,15 @@ files=( "$@" )
 
 if [[ "${#cmd[@]}" -le 0 || "${#files[@]}" -le 0 ]]
 then
+    echo "$basename0: error: missing arguments" >&2
     usage
-    exit
+    exit 1
 fi
 
 srcs=()
 dsts=()
-count=0
 
-revert="/tmp/renamexe_revert_$(date --iso-8601=seconds).sh"
+revert="/tmp/${basename0}_revert_$(date --iso-8601=seconds).sh"
 touch "$revert"
 chmod +x "$revert"
 echo "#!/bin/bash" >> "$revert"
@@ -45,7 +88,7 @@ for file in "${files[@]}"
 do
     if [[ ! -e "$file" ]]
     then
-        echo "$0: no such file or directory: $file"
+        echo "$basename0: no such file or directory: $file"
         exit 1
     fi
     newfile="$(echo "$file" | "${cmd[@]}")"
@@ -57,30 +100,30 @@ do
 
     srcs+=( "$file" )
     dsts+=( "$newfile" )
-    : $((count++))
 
-    (wdiff -n <( echo "$file" ) <( echo "$newfile" ) || true) | colordiff
+    pretty_string_wdiff "$file" "$newfile"
 
     printf "mv %q %q\n" "$newfile" "$file" >> "$revert"
 
 done
 
-if [[ "$count" -eq 0 ]]
+if [[ "${#srcs[@]}" -eq 0 ]]
 then
     echo "No file name changed !"
     exit 1
 fi
 
-echo -n "execute ? [y/n] "
-echo "revert script: $revert"
+echo -n "execute rename ? [y]/[n] "
 read -r -n1 r
 echo
-if [[ "$r" == "y" ]]
+if [[ "$r" = "y" ]]
 then
+    echo "(note: revert script at $revert)"
     for ((i = 0; i < ${#srcs[@]}; i++))
     do
         (set -x; mv "${srcs[i]}" "${dsts[i]}")
     done
+    echo "(note: revert script at $revert)"
 else
     echo "aborted"
     rm "$revert"
