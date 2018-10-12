@@ -17,14 +17,14 @@ error() {
 	exit 1
 }
 
-file_prefix="/tmp/.red.${UID}.${DISPLAY}"
+file_prefix="/tmp/red.${UID}.${DISPLAY}"
 
 cola=6500	# starting temperature
-bria=100	# starting brightness
+bria=100     # starting brightness
 gama=100	# starting gamma * 100
-colstep=800	# temperature step
-bristep=18	# brightness step
-gamstep=-8	# gamma step * 100
+colstep=700	# temperature step
+bristep=20	# brightness step
+gamstep=-5	# gamma step * 100
 
 enable_current_output=0
 
@@ -141,7 +141,23 @@ then
 	gam=$((- $value * $gamstep + $gama))
 	gam=$(echo "scale=3; $gam / 100.0" | bc)
 	echo "$0: redshifting to $value: redshift -O $col -b $bri $redopt"
+
 	redshift -P -O $col -b $bri -g $gam $redopt
+	#redshift -P -O $col -g $gam $redopt
+
+	# bri=$((- $value * $bristep + $bria))
+	# bri=$(echo "scale=3; - 1.0 + $bri / 100.0" | bc)
+	# cont="$bri"
+
+	# nvidia-settings --assign "[DPY:DP-4]/RedBrightness=$bri" \
+	# 	  --assign "[DPY:DP-4]/BlueBrightness=$bri" \
+	# 	  --assign "[DPY:DP-4]/GreenBrightness=$bri" \
+	# 	  --assign "[DPY:DP-4]/RedContrast=$cont" \
+	# 	  --assign "[DPY:DP-4]/BlueContrast=$cont" \
+	# 	  --assign "[DPY:DP-4]/GreenContrast=$cont"
+
+	#nvidia-settings --assign "[DPY:DP-4]/Contrast=$cont" --assign "[DPY:DP-4]/Brightness=$bri"
+
 else
 	echo "$0: redshifting reset: redshift -x $redopt"
 	redshift -x $redopt
