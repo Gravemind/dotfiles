@@ -52,3 +52,11 @@ run-help-semanage() {
 		man semanage-$1
 	fi
 }
+
+run-help-openssl() {
+	if [ $# -eq 0 ]; then
+		man openssl
+	else
+		man openssl-$1
+	fi
+}
