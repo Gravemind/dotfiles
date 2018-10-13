@@ -17,20 +17,66 @@ then
     find "$wallpapers" -name '*'"$dst_blured_ext" -print -delete
 fi
 
-screen_res="$(xrandr | sed -nE 's/ +([0-9]+x[0-9]+) +[0-9.]+\*.*/\1/gp' | head -n1)"
+msg=""
+screens_res=()
+screens_pos=()
+while read -r -u3 name w h x y; do
+    screens_res+=( "${w}x${h}" )
+    screens_pos+=( "+${x}+${y}" )
+    msg+="$name:${w}x${h}+${x}+${y}, "
+done 3< <(xrandr | sed -nE 's/(.*) connected ([0-9]+)x([0-9]+)\+([0-9]+)\+([0-9]+) .*/\1 \2 \3 \4 \5/p')
 
-echo "generating list and bluring ($screen_res, $maxjobs threads) ..."
+full_res="$(xwininfo -root | grep --only-matching -P 'geometry \K[0-9]+x[0-9]+(?=\+)')"
+
+echo "generating list and bluring ($full_res, $msg$maxjobs threads) ..."
 
 gen_blured() {
     echo bluring $1 ...
-    args=(
-        -filter Lanczos
-        -gravity center -resize "${screen_res}^" -extent "$screen_res" # match feh --bg-fill
-        -scale 2%
-        -fill black -colorize 80%
-        -gravity center -resize "${screen_res}^" -extent "$screen_res" # match feh --bg-fill
+    local mpri=0
+    local mprs=()
+    local layers=()
+    for ((i=0;i<${#screens_res[@]};i++)); do
+        local screen_res="${screens_res[i]}"
+        local screen_pos="${screens_pos[i]}"
+        mprs+=(
+            "$1"
+            -gravity center -resize "${screen_res}^" -extent "$screen_res" # match feh --bg-fill
+
+            # blur and fade
+            -filter Lanczos
+            -scale 2%
+            -fill black -colorize 80%
+            -gravity center -resize "${screen_res}^" -extent "$screen_res" # match feh --bg-fill
+
+            -write mpr:mpr$mpri
+            +delete
+        )
+        layers+=(
+            -page "$screen_pos"
+            mpr:mpr$mpri
+        )
+        mpri=$((mpri+1))
+    done
+    local args=(
+        "${mprs[@]}"
+
+        -background black
+        -page +0+0 xc:black
+        "${layers[@]}"
+        -layers merge +repage
+
+        # blur and fade
+        # -filter Lanczos
+        # -scale 2%
+        # -fill black -colorize 80%
+        # -gravity center -resize "${full_res}^" -extent "$full_res" # match feh --bg-fill
+
+        "$2"
     )
-    convert "$1" "${args[@]}" "$2"
+
+    #echo "${args[@]}"
+    #for arg in "${args[@]}"; do echo "$arg" ; done
+    convert "${args[@]}"
 }
 
 while read -r src
