@@ -36,17 +36,27 @@ gen_blured() {
 while read -r src
 do
     dst="$src$dst_blured_ext"
-    if [[ -f "$dst" && "$(stat -c '%Y' "$dst")" -ge "$(stat -c '%Y' "$src")" ]]
+    if [[ -f "$dst" ]]
     then
-        echo "skipping, seems up to date: $src"
-        continue
+        dst_date="$(stat -c '%Y' "$dst")"
+        src_date="$(stat -c '%Y' "$src")"
+        me_date="$(stat -c '%Y' "$0")"
+        if [[ $dst_date -ge $src_date && $dst_date -ge $me_date ]]
+        then
+            echo "skipping, seems up to date: $src"
+            continue
+        fi
     fi
+
     # wait max background jobs
     while [[ $(jobs -p | wc -l) -gt $maxjobs ]]
     do
         sleep 0.2
     done
+
     gen_blured "$src" "$dst" &
+
+    # wait ; exit 0
 done < <( find "$wallpapers" -type f -and -not -name '*'"$dst_blured_ext" | tee "$dst_list" )
 
 wait
