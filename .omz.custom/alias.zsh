@@ -79,7 +79,7 @@ alias -g    TEE='|& tee'
 alias -g    ERR='2> /dev/null'
 alias -g   NULL='>& /dev/null'
 alias -g  COLOR='--color=always'
-alias -g  XCILP='| xclip -r'
+alias -g  XCLIP='| xclip -r'
 alias -g   YANK='| yank'
 alias -g     BG='& ; disown'
 
