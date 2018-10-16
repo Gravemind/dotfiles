@@ -1,0 +1,49 @@
+#
+# Bare git dotfiles's gitgnore
+#
+# Setup as .git/info/exclude:
+#   $> ln -sfT -r .dotfiles.gitignore .dotfiles.git/info/exclude
+#
+# Using `info/exclude` should conflict less than a `~/.gitignore`
+#
+
+# Ignore all files/dirs only at **first-depth** (leading `/`):
+/*
+
+# Un-ignore dotfiles:
+#!/.*
+
+!/.gitconfig
+!/.gitmodules
+!/.gitignore
+!/.dotfiles.gitignore
+
+!/.bash_profile
+!/.bashrc
+!/.editorconfig.example
+!/.gdbinit
+!/.inputrc
+!/.tigrc
+!/.toprc
+!/.xinitrc
+!/.Xresources
+!/.zshrc
+!/.ccache
+!/.emacs.d
+!/.i3
+!/.mpv
+!/.ncmpcpp
+!/.oh-my-zsh
+!/.omz.custom
+!/.ssh
+
+#!/.config
+!/.config/fontconfig
+!/.config/mpd
+!/.config/ripgrep
+!/.config/rofi
+!/.config/systemd
+!/.config/youtube-dl
+
+!/bin
+!/dotfiles
