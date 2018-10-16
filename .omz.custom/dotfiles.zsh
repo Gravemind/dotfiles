@@ -12,9 +12,10 @@ DOTFILES_BARE="$HOME/.dotfiles.git"
 
 # creates a symlink ~/.git to ~/.dotfiles.git
 # (works with magit (GIT_DIR not supported by magit anymore...))
+# Note: could also be a regular file containing: 'gitdir: /home/user/.dotfiles.git'
 function dotfiles() {
 	local link="$HOME/.git"
-	if [[ -h "$link" ]]
+	if [[ -h "$link" || -f "$line" ]]
 	then
 		rm "$link"
 		echo "Home as git repo disabled: $link -> $DOTFILES_BARE link removed"
