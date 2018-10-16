@@ -46,11 +46,12 @@ x() {
 	do
 		echo "x: $f"
 		dtrx -v --one=rename "$f"
-		d="${f%.*}"
-		if [[ -e "$d" ]]; then
-			touch "$d"
+		if [[ -e "${f%.*}" ]]; then
+			touch "${f%.*}"
+		elif [[ -e "${f%.*.*}" ]]; then
+			touch "${f%.*.*}"
 		else
-			echo "!!x: could not find $d !!"
+			echo "!!x: could not find extracted from $f !!"
 		fi
 	done
 }
