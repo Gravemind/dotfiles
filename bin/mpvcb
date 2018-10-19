@@ -3,15 +3,15 @@
 set -euo pipefail
 
 usage() {
-    echo -n 'usage: '"$0"' [-h|--help|--cli|--zenity|--clipmenu] [--] [ARGS...]
+    echo -n 'usage: '"$0"' [-h|--help|--cli|--zenity|--clipmenu|--rofi] [--clipmenu-args ARGS...] [--] [ARGS...]
 
-    Asks before running `mpv ARGS... -- $(xlicp -o)`.
+    Asks before running `mpv ARGS... -- $(xclip -o)`.
 
 -h|--help: print this message
---cli/--zenity/--clipmenu: force ask before run with cli/zenity/clipmenu.
+--cli/--zenity/--clipmenu/--rofi: force ask before run with cli/zenity/clipmenu+dmenu/clipmenu+rofi-dmenu.
+--clipmenu-args ARGS...: pass ARGS to clipmenu (when --clipmenu|--rofi)
 
 Environment variables:
-* CM_LAUNCHER can be "rofi" when using --clipmenu (defaults to dmenu).
 * CLIPMENU overrides the clipmenu program
 
 Tip to make mpv open a window ASAP for http/https/ytdl streams: add to your mpv config:
@@ -43,14 +43,23 @@ main() {
     CLIPMENU="${CLIPMENU:-clipmenu}"
 
     local askwith=
+    local clipmenu_args=()
     while (( $# )); do
         case "$1" in
             -h|--help)  usage; exit 0; ;;
             --zenity)   askwith="zenity"; shift; ;;
             --cli)      askwith="cli"; shift; ;;
             --clipmenu) askwith="clipmenu"; shift; ;;
-            --)         shift; break; ;;
-            *)          break; ;;
+            --rofi)     askwith="rofi"; shift; ;;
+            --clipmenu-args)
+                shift
+                while [[ "$#" -gt 0 && "$1" != "--" ]]; do
+                    clipmenu_args+=("$1")
+                    shift
+                done
+                ;;
+            --) shift; break; ;;
+            *) break; ;;
         esac
     done
 
@@ -63,7 +72,11 @@ main() {
         if [[ "$hastty" ]]; then
             askwith="cli"
         elif hash "$CLIPMENU" 2>/dev/null; then
-            askwith="clipmenu"
+            if [[ -z "${CM_LAUNCHER:-}" ]] && hash "rofi"; then
+                askwith="rofi"
+            else
+                askwith="clipmenu"
+            fi
         elif hash zenity 2>/dev/null; then
             askwith="zenity"
         else
@@ -100,14 +113,16 @@ main() {
                --ok-label "Launch"
         [[ $? -eq 0 ]] || { exit 1; }
 
-    elif [[ "$askwith" == "clipmenu" ]]; then
+    elif [[ "$askwith" == "clipmenu" || "$askwith" == "rofi" ]]; then
 
         local launcher=( dmenu )
-        [[ "${CM_LAUNCHER:-}" = "rofi" ]] && launcher=( rofi -dmenu )
+        [[ "$askwith" != "rofi" ]] || launcher=( rofi -dmenu )
+
+        [[ "${#clipmenu_args[@]}" -gt 0 ]] || clipmenu_args=( -p "$title" )
 
         # rofi-script makes clipmenu list-only entries
         # (we won't get multi-line clips, but don't really care here !?)
-        local url="$(CM_LAUNCHER=rofi-script "$CLIPMENU" | "${launcher[@]}" -p "$title")"
+        local url="$(CM_LAUNCHER=rofi-script "$CLIPMENU" | "${launcher[@]}" "${clipmenu_args[@]}" )"
         [[ $? -eq 0 ]] || { exit 1; }
         [[ -n "$url" ]] || { exit 1; }
 

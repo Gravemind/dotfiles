@@ -27,7 +27,7 @@ configuration {
 #textbox-pre-prompt {
     expand:     false;
     text-color: @fghl;
-    str: "❰";
+    str: "❰ ";
 }
 #prompt {
     text-color: @fghl;
@@ -35,7 +35,7 @@ configuration {
 #textbox-post-prompt {
     expand:     false;
     text-color: @fghl;
-    str: "❱ ";
+    str: " ❱ ";
 }
 
 element {
