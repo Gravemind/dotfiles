@@ -28,6 +28,15 @@ gamstep=-5	# gamma step * 100
 
 enable_current_output=0
 
+#notify_icon="display-brightness-symbolic.symbolic"
+notify_icon_on="/usr/share/icons/hicolor/scalable/apps/redshift-status-on.svg"
+notify_icon_off="/usr/share/icons/hicolor/scalable/apps/redshift-status-off.svg"
+_notify-send() {
+	if hash notify-send 2>/dev/null; then
+		notify-send -h string:x-canonical-private-synchronous:red "$@"
+	fi
+}
+
 if [[ "${1-}" = '-h' || "${1-}" = '--help' ]]
 then
 	usage
@@ -142,7 +151,13 @@ then
 	gam=$(echo "scale=3; $gam / 100.0" | bc)
 	echo "$0: redshifting to $value: redshift -O $col -b $bri $redopt"
 
-	redshift -P -O $col -b $bri -g $gam $redopt
+	icon="$notify_icon_on"
+
+	redshift -P -O $col -b $bri -g $gam $redopt || {
+		echo "$0: redshift failed"
+		_notify-send -u low -i "$icon" -h "int:value:$value" -c bar "red" " FAILED"
+	}
+
 	#redshift -P -O $col -g $gam $redopt
 
 	# bri=$((- $value * $bristep + $bria))
@@ -159,6 +174,9 @@ then
 	#nvidia-settings --assign "[DPY:DP-4]/Contrast=$cont" --assign "[DPY:DP-4]/Brightness=$bri"
 
 else
+	icon="$notify_icon_off"
 	echo "$0: redshifting reset: redshift -x $redopt"
 	redshift -x $redopt
 fi
+
+_notify-send -u low -i "$icon" -h "int:value:$value" -c bar "red"

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -euo pipefail
+
+basename0="$(basename "$0")"
+lockdir="/tmp/$basename0.lock"
+
+pamixer "$@"
+
+if ! mkdir "$lockdir" 2> /dev/null; then
+    # local already taken
+    exit 0
+fi
+
+cleanup() { rm -rf "$lockdir"; }
+trap cleanup EXIT
+
+mute="$(pamixer --get-mute || true)"
+vol="$(pamixer --get-volume || true)"
+
+symbolic=""
+symbolic="-symbolic.symbolic"
+
+title="Volume"
+
+if [[ "$mute" = "true" ]]; then
+    title="<s>$title</s>"
+    icon="audio-volume-muted$symbolic"
+else
+    icon="audio-volume-high$symbolic"
+fi
+
+notify-send -u low -i "$icon" -h "int:value:$vol" -c bar "$title"

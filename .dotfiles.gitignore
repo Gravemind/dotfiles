@@ -45,6 +45,7 @@
 !/.config/rofi
 !/.config/systemd
 !/.config/youtube-dl
+!/.config/dunst
 
 !/bin
 !/dotfiles
