@@ -1,0 +1,70 @@
+
+configuration {
+}
+
+* {
+    bg: #c0c0c0;
+    bghl: #e0e0e0;
+    scrollbar-handle: #a0a0a0;
+    fg: #404040;
+    fghl: #404040;
+    fgurgent: #c02020;
+
+    text-color: inherit;
+    background-color: inherit;
+    padding: 0px;
+    margin: 0px;
+    spacing: 0px;
+}
+
+#window {
+    text-color: @fg;
+    background-color: @bg;
+    fullscreen: false;
+    location: north;
+    y-offset: 25%;
+    width: 50%;
+}
+
+#inputbar, message, sidebar {
+    padding: 11px;
+}
+
+#inputbar {
+    text-color: @fghl;
+    background-color: @bghl;
+    children: [ textbox-pre-prompt,prompt,textbox-post-prompt,entry,case-indicator ];
+}
+
+#textbox-pre-prompt {
+    expand: false;
+    //str: "❰ ";
+}
+#prompt {
+}
+#textbox-post-prompt {
+    expand: false;
+    str: " ❱ ";
+}
+
+#listview {
+    lines: 20;
+    dynamic: true;
+    fixed-height: false;
+    scrollbar: true;
+    margin: 1px 0 0 0;
+}
+#scrollbar {
+    handle-width: 10px;
+    handle-color: @scrollbar-handle;
+}
+
+#element {
+    padding: 3px 11px;
+}
+#element selected {
+    background-color: @bghl;
+}
+#element urgent, element selected.urgent {
+    text-color: @fgurgent;
+}
