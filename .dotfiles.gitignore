@@ -37,7 +37,8 @@
 !/.omz.custom
 !/.ssh
 
-#!/.config
+!/.config
+/.config/*
 !/.config/fontconfig
 !/.config/mpd
 !/.config/ripgrep
