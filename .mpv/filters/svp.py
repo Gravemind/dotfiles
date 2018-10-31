@@ -32,8 +32,8 @@ main: {
 },
 refine:[{thsad:200}]}
 """
-# analyse_params="""
-# """
+
+analyse_params=""
 
 '''
 block: { w:16, overlap:2 },
@@ -93,6 +93,8 @@ smooth_params="""
 """
 smooth_params=",algo:23,scene:{limits:{m1:0,m2:0},mode:1}"
 
+smooth_params=""
+
 '''
 algo:23,mask:{cover:60},scene:{limits:{m1:0,m2:0},mode:1}
 algo: 23
@@ -119,21 +121,28 @@ scene: {
 print()
 print("clip", clip.width, "x", clip.height, "at", container_fps, "fps")
 
-dst_fps = display_fps
-#_fps = 23.97602
-# # Interpolating to fps higher than 60 is too CPU-expensive, smoothmotion can handle the rest.
-# while (dst_fps > 60):
-#     dst_fps /= 2
+max_fps = display_fps
 
-if not enable or clip.width > 1920 or clip.height > 1200 or container_fps > 49:
-    print("NOT reflowing clip", clip.width, "x", clip.height, "at", container_fps, "fps")
+# Limit FullHD at 120 fps
+if clip.width >= 1920 and display_fps > 120:
+    max_fps = 120.0
+
+# Interpolate to a multiple of the original source fps
+dst_fps = container_fps
+while dst_fps + container_fps <= max_fps:
+    dst_fps += container_fps
+
+#dst_fps = display_fps
+
+if not enable or dst_fps <= container_fps:
+    print("NOT reflowing clip", clip.width, "x", clip.height, "at", container_fps, "fps (display:", display_fps, ").")
 else:
     src_fps_num = int(container_fps * 1e6)
     src_fps_den = int(1e6)
     dst_fps_num = int(dst_fps * 1e6)
     dst_fps_den = int(1e6)
 
-    print("Reflowing from", src_fps_num/src_fps_den, "fps to", dst_fps_num/dst_fps_den, "fps.")
+    print("Reflowing clip", clip.width, "x", clip.height, " from ", src_fps_num/src_fps_den, "fps to", dst_fps_num/dst_fps_den, "fps (display:", display_fps, ").")
 
     clip = core.std.AssumeFPS(clip, fpsnum = src_fps_num, fpsden = src_fps_den)
 
