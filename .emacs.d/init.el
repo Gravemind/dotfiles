@@ -1172,6 +1172,7 @@ With argument, do this that many times."
 ;;
 
 (req-package magit
+  :pin melpa
   :bind ("C-x g" . magit-status)
   :config
 
@@ -1199,9 +1200,9 @@ With argument, do this that many times."
   (add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell)
 
   (defun my-magit-log-upstream (&optional args files)
-    "Show log for `@{upstream}'."
+    "Logs current(o), ahead(<), and behind(>) commits."
     (interactive (magit-log-arguments))
-    (magit-log (list "@{upstream}") args files))
+    (magit-log (list "--graph" "--boundary" "--left-right" "@...@{u}") args files))
 
   (defun my-magit-pullff (&optional args)
     "Pull fast forward only if possible
