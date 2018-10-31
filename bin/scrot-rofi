@@ -1,0 +1,243 @@
+#!/usr/bin/env python3
+
+import sys
+import os
+import collections.abc
+import subprocess
+import re
+import time
+
+import pprint
+pp = pprint.PrettyPrinter(indent=4).pprint
+
+rofi_exe = "/home/jo/documents/clones/rofi/build/rofi"
+#rofi_exe = "rofi"
+
+scrot_exe="scrot"
+scrot_out_dir=os.getenv("HOME")
+scrot_out_prefix="screen_"
+scrot_out_tpl="%y-%m-%d_%H:%M:%S"
+scrot_out_ext="png"
+
+feh_cmd=[ "feh", "--full-screen", "--draw-filename", "--auto-zoom", "--" ]
+
+def log(msg):
+    name = sys.argv[0]
+    print(name + ": " + msg)
+
+def isiterable(a):
+    return hasattr(a, '__iter__') and not isinstance(a, str)
+
+def flatten(inargs):
+    args = []
+    for arg in inargs:
+        if isiterable(arg):
+            args += flatten(arg)
+        else:
+            args.append(arg)
+    return args
+
+def run(*args, **kwargs):
+    args = flatten(args)
+    #pp(args)
+    proc = subprocess.run([*args], stdout=subprocess.PIPE, **kwargs)
+    output = str(proc.stdout, 'utf-8')
+    if proc.returncode != 0:
+        log("run failed: {}".format(args))
+        print(stdout, end="")
+        return None
+    if len(output) == 0:
+        return None
+    if output.find("\n") == len(output) - 1:
+        output = output[:-1]
+    return output
+
+def rofi(stdin, *args):
+    if isiterable(stdin):
+        stdin = "\n".join(stdin)
+    args = flatten(args)
+    args = [ rofi_exe ] + args
+    #pp(args)
+    proc = subprocess.run([*args], input=stdin.encode(), stdout=subprocess.PIPE)
+    if proc.returncode != 0:
+        log("rofi exit")
+        return None
+    output = str(proc.stdout, 'utf-8')
+    if len(output) == 0:
+        return None
+    if output.find("\n") == len(output) - 1:
+        output = output[:-1]
+    return output
+
+def rofi_error(msg):
+    log("error:" + msg)
+    rofi("", "-e", "error: " + msg)
+
+def inc_basename(name):
+    m = re.match('^(.*?_)([0-9]+)$', name)
+    if m:
+        return m.group(1) + str(int(m.group(2)) + 1)
+    return name + "_1"
+
+# https://wiki.ubuntu.com/NotificationDevelopmentGuidelines
+def escape_markup(text):
+    # if caps and 'body-markup' in caps:
+    text = text.replace('&', '&amp;')
+    text = text.replace('<', '&lt;')
+    text = text.replace('>', '&gt;')
+    return text
+
+def scrot_out_filename(basename):
+    return scrot_out_prefix + basename + "." + scrot_out_ext
+
+def scrot_out_basename(f):
+    return f[len(scrot_out_prefix):len(f)-len(scrot_out_ext)-1]
+
+def scrot_rofi(rawargs):
+
+    res = rofi([
+        "all: capture all screens",
+        "window: capture currently focused window",
+        "select: select window or rectangle to capture",
+        "quit"
+    ], "-dmenu", "-i", "-p", "scrot capture")
+    if res is None:
+        log("quit")
+        return True
+
+    scrot_opts = []
+    res = res[0:res.find(":")] if ":" in res else res
+    if res == "window":
+        scrot_opts.append("--focused")
+        time.sleep(0.1)
+    elif res == "select":
+        scrot_opts.append("--select")
+    elif res == "all":
+        pass # default
+    elif res == "quit":
+        return True
+    else:
+        rofi_error("invalid entry: "+res)
+        return False
+
+    screen_filename = run(scrot_exe, scrot_opts, "-e", "echo $f",
+                          scrot_out_filename(scrot_out_tpl),
+                          cwd=scrot_out_dir)
+    if screen_filename is None:
+        rofi_error("scrot failed")
+        return False
+
+    screen_name = scrot_out_basename(screen_filename)
+    screen_path = scrot_out_dir+"/"+screen_filename
+    log("scrot screen: "+screen_path)
+
+    prefill=""
+
+    while True:
+
+        dir_entries = [ scrot_out_basename(f) for f in os.listdir(scrot_out_dir) if f.startswith(scrot_out_prefix) and f.endswith("." + scrot_out_ext) ]
+
+        new_entries = []
+        for ent in dir_entries:
+            ent = inc_basename(ent)
+            if ent not in dir_entries and ent not in new_entries:
+                new_entries.append(ent)
+        new_entries.sort()
+
+        entry_names = new_entries
+
+        rofi_base_entries = [
+            "quit: keep "+screen_name,
+            "feh: open in feh "+screen_name,
+            "rm: delete "+screen_name,
+            "----"
+        ]
+        rofi_rename_entries = [
+            "rename to: " + scrot_out_filename(f) for f in entry_names
+        ]
+
+        msg = "Saved as "
+        msg += escape_markup(scrot_out_dir)
+        msg += "/"+escape_markup(scrot_out_prefix)
+        msg += "<b>"+escape_markup(screen_name)+"</b>"
+        msg += "."+escape_markup(scrot_out_ext)
+        msg += "\n\n"
+        msg += "Select an action, or enter \"<b>NAME!</b>\" to rename to "
+        msg += "\""+escape_markup(scrot_out_prefix)+"<b>NAME</b>."+escape_markup(scrot_out_ext)+"\""
+
+        res = rofi(rofi_base_entries + rofi_rename_entries,
+                   "-dmenu", "-i",
+                   "-p", "scrot capture saved",
+                   "-format", "i f",
+                   "-filter", prefill,
+                   "-mesg", msg)
+        if res is None:
+            log("quit")
+            return True
+        #pp(res)
+
+        indexend = res.find(" ")
+        index = int(res[:indexend])
+        userinput = res[indexend + 1:]
+
+        rename_magic_char = '!'
+
+        if not userinput.endswith(rename_magic_char) and index >= 0 and index < len(rofi_base_entries):
+            res = rofi_base_entries[index]
+            res = res[0:res.find(":")] if ":" in res else res
+
+            if res == "quit":
+                log("quit")
+                return True
+
+            if res == "feh":
+                log("feh " + screen_path)
+                run(*feh_cmd, screen_path)
+
+            if res == "rm":
+                log("rm " + screen_path)
+                os.unlink(screen_path)
+                return True
+
+            if res.startswith("--"): # separator
+                pass
+
+        else:
+            if userinput.endswith(rename_magic_char):
+                new_screen_name = userinput[:-1]
+            elif index < 0:
+                new_screen_name = userinput
+            else:
+                assert(index >= len(rofi_base_entries))
+                index -= len(rofi_base_entries)
+                assert(index < len(entry_names))
+                new_screen_name = entry_names[index]
+
+            if len(new_screen_name) == 0:
+                rofi_error("please choose a non-empty name")
+                continue
+
+            new_screen_filename = scrot_out_filename(new_screen_name)
+            new_screen_path = scrot_out_dir + "/" + new_screen_filename
+
+            mv = ( screen_path, new_screen_path )
+            log("mv {}".format(mv))
+            os.rename(*mv)
+
+            screen_name = new_screen_name
+            screen_filename = new_screen_filename
+            screen_path = new_screen_path
+
+            prefill = screen_name
+
+    return True
+
+
+def main(rawargs):
+    if not scrot_rofi(rawargs):
+        return 1
+    return 0
+
+if __name__ == "__main__":
+    ret = main(sys.argv[1:])
+    sys.exit(ret)

@@ -261,7 +261,7 @@ bindsym $ModK+y exec --no-startup-id ~/bin/mpvcb --rofi --clipmenu-args -p ' 
 #bindsym Shift+Insert exec --no-startup-id "bash -c 'xclip -selection primary -o -r | xvkbd -xsendevent -delay 1 -file -'"
 
 # Screenshot
-# bindsym $ModK+Print exec --no-startup-id "bash -c 'flameshot gui ; pkill flameshot'"
+bindsym $ModK+Print exec --no-startup-id ~/bin/scrot-rofi
 
 # Volume: Pulse Audio
 #set $volume_mute      exec --no-startup-id pactl set-sink-mute   '@DEFAULT_SINK@' toggle
