@@ -1415,7 +1415,7 @@ With argument, do this that many times."
    helm-input-idle-delay 0.01 ; be idle for this many seconds, before updating candidate buffer
 
    helm-split-window-in-side-p t ;; open helm buffer inside current window, not occupy whole other window
-   helm-split-window-default-side 'above ;; open helm buffer in another window
+   helm-split-window-default-side 'below ;; open helm buffer in another window
 
    helm-autoresize-min-height 10
    helm-autoresize-max-height 70
