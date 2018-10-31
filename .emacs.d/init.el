@@ -322,7 +322,22 @@
 (req-package zoom
   :ensure t
   :init
-  (setq-default zoom-size '(0.618 . 0.618))
+  (defun zoom-size-in-char-to-ratio ()
+    (let ((ratio `( ,(/ (float (car zoom-size-in-char)) (frame-width)) . ,(/ (float (cdr zoom-size-in-char)) (frame-height)) )))
+      ratio
+      ))
+  (setq-default
+   ;; By ratio:
+   ;;zoom-size '(0.618 . 0.618)
+   ;;zoom-size '(0.5 . 0.7)
+
+   ;; By size in chars:
+   ;; Corresponds to the minimum window size (in char)
+   ;; If window smaller, zoom will make this size
+   zoom-size-in-char '(150 . 60)
+   zoom-size 'zoom-size-in-char-to-ratio
+
+   )
   (zoom-mode t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
