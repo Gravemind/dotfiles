@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-[[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
+[[ -f ~/.Xresources ]] && xrdb -I$HOME ~/.Xresources
 
 ##
 ## Screen
