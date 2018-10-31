@@ -50,8 +50,8 @@ profile=mydefault
 profile=gpu-hqer
 
 # GPU api
-profile=vulkan
-#profile=opengl
+profile=opengl
+#profile=vulkan
 
 # 60fps interopation
 #profile=interp
@@ -110,8 +110,8 @@ vf=vapoursynth=~/.mpv/filters/svp.py
 # https://www.svp-team.com/wiki/SVP:mpv
 # vapoursynth filters on CPU, so don't use hw decoder
 # use best copy-back
-hwdec=auto-copy
-hwdec-codecs=all
+#hwdec=auto-copy
+#hwdec-codecs=all
 #video-sync=audio
 #interpolation=yes
 #display-fps=60
@@ -122,18 +122,23 @@ hwdec-codecs=all
 #
 [vulkan]
 gpu-api=vulkan
+vulkan-swap-mode=auto
+#vulkan-swap-mode=fifo # vsync
+#vulkan-swap-mode=fifo-relaxed # vsync unless too slow
 #vulkan-swap-mode=mailbox # triple buffer sync
-vulkan-swap-mode=immediate # no sync
+#vulkan-swap-mode=immediate # no sync
 #vulkan-async-compute=yes
 #vulkan-async-transfer=yes
 #vulkan-queue-count=1
 
 [opengl]
 gpu-api=opengl
-opengl-swapinterval=0 # no sync
+#opengl-swapinterval=0 # no sync
+opengl-swapinterval=1 # vsync
 # https://www.svp-team.com/wiki/SVP:mpv
 # Can fix stuttering in some cases, in other cases probably causes it. Try it if you experience stuttering on macOS.
 # opengl-early-flush=no
+#opengl-pbo=yes
 
 #
 # Auto profiles `mpv --list-protocols`
