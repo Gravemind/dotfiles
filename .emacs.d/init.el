@@ -97,6 +97,21 @@
            (scroll-bar-mode -1)
            ))
 
+(defun split-where-there-is-more-space (window)
+  "Split the way there is more space (pixel-wise)."
+  (interactive)
+  (let ((window (or window (selected-window))))
+    (with-current-buffer (window-buffer window)
+                                        ;(message "window %d %d" (window-width) (window-height))
+      (if (>= (window-pixel-width) (window-pixel-height))
+          ;; split horizontally
+          (let ((split-height-threshold nil) (split-width-threshold 0))
+            (split-window-sensibly window))
+        ;; split vertically
+        (let ((split-height-threshold 0) (split-width-threshold nil))
+          (split-window-sensibly window))
+        ))))
+
 (setq-default
  inhibit-startup-screen t
  inhibit-splash-screen t
@@ -115,6 +130,11 @@
 
  dabbrev-case-fold-search nil
  dabbrev-case-replace nil
+
+ ;split-window-preferred-function 'split-where-there-is-more-space
+ ;; always split horizontally:
+ split-height-threshold nil
+ split-width-threshold 0
 
  tramp-verbose 2 ; warnings
  ;tramp-verbose 3 ; + connections (default)
