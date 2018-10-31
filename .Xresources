@@ -63,7 +63,8 @@ URxvt.perl-ext-common:  default,matcher
 URxvt.matcher.button:   2
 URxvt.url-launcher:     /usr/bin/firefox
 
-! Also see ~/.config/fontconfig/conf.d
+! Fontconfig for some programs (emacs)
+! For others, see ~/.config/fontconfig/conf.d (firefox, urxvt)
 Xft.autohint:       1
 Xft.antialias:      1
 Xft.hinting:        1
@@ -71,8 +72,12 @@ Xft.hintstyle:      hintfull
 Xft.lcdfilter:      lcdnone
 Xft.rgba:           none
 
-! Fixes emacs flashing bars at startup
-! evaluated much sooner than init.el
+! Dpi for some programs (emacs, urxvt, firefox !?)
+! For others, see ~/.config/fontconfig/conf.d, and X11/xrandr
+Xft.dpi:            110x110
+
+! Nice flicker-free emacs startup !
+! (evaluated much sooner than init.el)
 emacs.menuBar:              off
 emacs.toolBar:              off
 emacs.verticalScrollBars:   off
