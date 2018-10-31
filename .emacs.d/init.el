@@ -887,6 +887,7 @@ With argument, do this that many times."
      ;;
      ("\\<\\(FIXME\\|TODO\\\)\\>" 1 font-lock-warning-face prepend)
      ("\\<\\(null\\)\\>" 1 font-lock-keyword-face)
+     ("\\<\\(co_await\\|co_yield\\|co_return\\)\\>" 1 font-lock-keyword-face)
      ))
   (if (do-apply-jo/tab) (jo/tab-space))
 
