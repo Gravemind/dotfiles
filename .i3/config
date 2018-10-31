@@ -129,7 +129,7 @@ set $locker ~/bin/lock
 set $wallpaper ~/.i3/wallpaper_cycle
 
 # Lock, Restart, Reboot...
-set $mode_system "    <u>e</u>xit  relo<u>a</u>d  <u>r</u>estart    <u>s</u>uspend  <u>h</u>ibernate    <u>S</u>hutdown  <u>R</u>eboot    <u>w</u>allpaper    "
+set $mode_system "    <u>e</u>xit  relo<u>a</u>d  <u>r</u>estart    <u>s</u>uspend  <u>h</u>ibernate    <u>S</u>hutdown  <u>R</u>eboot    <u>w</u>allpaper    setup-<u>x</u>randr    "
 mode --pango_markup $mode_system {
     bindsym l exec --no-startup-id $locker, mode "default"
     bindsym c exec --no-startup-id $locker, mode "default"
@@ -146,6 +146,8 @@ mode --pango_markup $mode_system {
     # Wallpaper
     bindsym b exec --no-startup-id $wallpaper, mode "default"
     bindsym w exec --no-startup-id $wallpaper, mode "default"
+    #
+    bindsym x exec --no-startup-id ~/bin/setup-xrandr, mode "default"
     # back to normal: Enter or Escape
     bindsym q mode "default"
     bindsym Return mode "default"
