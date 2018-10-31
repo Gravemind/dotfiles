@@ -222,6 +222,11 @@
 ;; (setq-default font-lock-maximum-decoration
 ;;     '((c-mode . 2) (c++-mode . 2)))
 
+(defun jo/copy-buffer (buffername)
+  (interactive "sCopy to new buffer name? ")
+  (get-buffer-create buffername)
+  (copy-to-buffer buffername (point-min) (point-max)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; evil
