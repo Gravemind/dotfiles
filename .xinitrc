@@ -11,7 +11,7 @@
 #xrandr --dpi 94
 #export __GL_THREADED_OPTIMIZATIONS=1
 #export __GL_YIELD="USLEEP"
-#export __GL_SYNC_DISPLAY_DEVICE=DP-4
+export __GL_SYNC_DISPLAY_DEVICE=DP-4
 #export VDPAU_NVIDIA_SYNC_DISPLAY_DEVICE=DP-4
 # sleep
 #xset s 3600 3600
@@ -43,7 +43,8 @@ numlockx on
 ##
 
 # set volume
-pactl set-sink-volume @DEFAULT_SINK@ 50%
+#pactl set-sink-volume @DEFAULT_SINK@ 50%
+pactl set-sink-volume @DEFAULT_SINK@ 70%
 # no bell
 xset b 0 &> /dev/null
 

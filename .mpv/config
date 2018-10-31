@@ -16,7 +16,7 @@ screenshot-format=png
 audio-channels=2
 
 # (copied from ~/.config/youtube-dl)
-ytdl-format=(bestvideo[vcodec^=av01]+bestaudio/bestvideo[vcodec^=vp9]+bestaudio/bestvideo+bestaudio/best)[height<=?1080][protocol=https]
+ytdl-format=(bestvideo[vcodec^=av01]+bestaudio/bestvideo[vcodec^=vp9]+bestaudio/bestvideo+bestaudio/best)[height<=?1440][protocol=https]
 ytdl-raw-options=prefer-free-formats=
 
 #cache-default=

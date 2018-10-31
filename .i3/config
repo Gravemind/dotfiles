@@ -7,7 +7,7 @@
 set $ModK           Mod4
 set $resize_step    100
 set $screenL        DP-4
-set $screenR        HDMI-0
+set $screenR        DP-2
 
 set $keyLeft        j
 set $keyRight       l
