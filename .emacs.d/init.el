@@ -373,6 +373,12 @@
          ("C-x b"   . ido-switch-buffer)
          ("C-x C-r" . sudo-edit-current-file)
          )
+  :hook (ido-minibuffer-setup . (lambda ()
+                                  (unbind-key "C-<backspace>" ido-completion-map)
+                                  (unbind-key "M-<backspace>" ido-completion-map)
+                                  (unbind-key "C-<delete>" ido-completion-map)
+                                  (unbind-key "M-<delete>" ido-completion-map)
+                                  ))
   :config
     (setq-default
      ido-enable-flex-matching t
