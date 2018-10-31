@@ -1906,6 +1906,24 @@ With argument, do this that many times."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; pdf-tools
+;;
+
+;; (req-package pdf-tools
+;;   :if (file-exists-p "~/documents/clones/pdf-tools/server/epdfinfo")
+;;   :load-path "~/documents/clones/pdf-tools/lisp"
+;;   :mode (("\\.pdf\\'" . pdf-view-mode))
+;;   :config
+;;   (setq-default
+;;    pdf-info-epdfinfo-program "~/documents/clones/pdf-tools/server/epdfinfo"
+;;    pdf-view-use-imagemagick t
+;;    pdf-info-log t
+;;    )
+;;   (pdf-tools-install)
+;;   )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; other misc
 ;;
 
