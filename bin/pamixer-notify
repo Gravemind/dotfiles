@@ -24,10 +24,10 @@ symbolic="-symbolic.symbolic"
 title="Volume"
 
 if [[ "$mute" = "true" ]]; then
-    title="<s>$title</s>"
+    title="Mute"
     icon="audio-volume-muted$symbolic"
 else
     icon="audio-volume-high$symbolic"
 fi
 
-notify-send -u low -i "$icon" -h "int:value:$vol" -c bar "$title"
+notify-send -u low -i "$icon" -h int:value:$vol -h int:transient:1 -h string:synchronous:volume "$title"
