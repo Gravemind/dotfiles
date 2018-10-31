@@ -26,7 +26,12 @@ configuration {
     width: 50%;
 }
 
-#inputbar, message, sidebar {
+#inputbar, sidebar {
+    padding: 11px;
+}
+
+// textbox used for "-mesg MSG" and "-e MSG"
+#textbox {
     padding: 11px;
 }
 
