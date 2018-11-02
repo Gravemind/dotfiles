@@ -1,3 +1,5 @@
 #!/bin/bash
 
+echo "$0: lock at $(date -Is)"
 i3lock -f -c 202020 -i ~/.i3/wallpaper.blured.png
+echo "$0: unlocked at $(date -Is)"
