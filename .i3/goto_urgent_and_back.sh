@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
-nextwid_file="$HOME/.i3/goto_urgent_and_back.tmp"
+nextwid_file="/tmp/goto_urgent_and_back.$USER"
 
 get_curr_id() {
-	HEX="$(xprop -root _NET_ACTIVE_WINDOW | sed -r 's/.*0x([0-9a-f]+)$/\1/g')"
-	CURR="$(printf "%d\n" "0x$HEX")"
-	echo $CURR
+	local hex="$(xprop -root _NET_ACTIVE_WINDOW | sed -r 's/.*0x([0-9a-f]+)$/\1/g')"
+	printf "%d\n" "0x$hex"
 }
 
 old_wid="$(get_curr_id)"

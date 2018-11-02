@@ -5,7 +5,6 @@
 
 # Variables
 set $ModK           Mod4
-set $resize_step    100
 set $screenL        DP-4
 set $screenR        DP-2
 
@@ -47,6 +46,10 @@ no_focus [window_role="pop-up"]
 # Default border style: normal[px]|pixel[px]|none
 default_border pixel 2
 default_floating_border normal 2
+
+# Floating window size range
+floating_minimum_size 16 x 16
+floating_maximum_size -1 x -1
 
 # Default border for programs
 #for_window [class="^.*"] border pixel 2
@@ -125,30 +128,28 @@ assign [class="(?i)^.*steam.*$"] → 1
 # Use Mouse+ModK to drag floating windows to their wanted position
 floating_modifier $ModK
 
-set $locker ~/bin/lock
+set $locker    "bash -c '( nohup ~/bin/lock & );'"
+set $suspend   "bash -c '( nohup ~/bin/lock & ); sleep 1; systemctl suspend;'"
+set $hibernate "bash -c '( nohup ~/bin/lock & ); sleep 1; systemctl hibernate;'"
+
 set $wallpaper ~/.i3/wallpaper_cycle
 
 # Lock, Restart, Reboot...
-set $mode_system "    <u>e</u>xit  relo<u>a</u>d  <u>r</u>estart    <u>s</u>uspend  <u>h</u>ibernate    <u>S</u>hutdown  <u>R</u>eboot    <u>w</u>allpaper    setup-<u>x</u>randr    "
+set $mode_system "    <u>e</u>xit  relo<u>a</u>d  <u>r</u>estart  ·  <u>s</u>hutdown  re<u>b</u>oot  ·  s<u>u</u>spend  <u>h</u>ibernate    "
 mode --pango_markup $mode_system {
-    bindsym l exec --no-startup-id $locker, mode "default"
-    bindsym c exec --no-startup-id $locker, mode "default"
-    # Exit i3 (logs you out of your X session)
+    # bindsym l exec --no-startup-id $locker, mode "default"
+    # bindsym c exec --no-startup-id $locker, mode "default"
+
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
-    # Reload i3 configuration file
     bindsym a exec --no-startup-id i3-msg reload, mode "default"
-    # Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
     bindsym r exec --no-startup-id i3-msg restart, mode "default"
-    bindsym s exec --no-startup-id $locker && systemctl suspend, mode "default"
-    bindsym h exec --no-startup-id $locker && systemctl hibernate, mode "default"
-    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
-    bindsym Shift+r exec --no-startup-id systemctl reboot, mode "default"
-    # Wallpaper
-    bindsym b exec --no-startup-id $wallpaper, mode "default"
-    bindsym w exec --no-startup-id $wallpaper, mode "default"
-    #
-    bindsym x exec --no-startup-id ~/bin/setup-xrandr, mode "default"
-    # back to normal: Enter or Escape
+
+    bindsym s exec --no-startup-id systemctl poweroff, mode "default"
+    bindsym b exec --no-startup-id systemctl reboot, mode "default"
+
+    bindsym u exec --no-startup-id $suspend, mode "default"
+    bindsym h exec --no-startup-id $hibernate, mode "default"
+
     bindsym q mode "default"
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -215,9 +216,10 @@ bindsym $ModK+Shift+space floating toggle
 # Change focus between tiling / floating windows
 bindsym $ModK+space focus mode_toggle
 
-# Resize window (you can also use the mouse for that)
-set $mode_resize "    [resize]    "
-mode $mode_resize {
+# Change Window Size and Modes
+set $resize_step 100
+set $mode_resize "    [S-]←→↓↑ resize  ·  <u>s</u>ticky-float  <u>u</u>nsticky  ·  cycle-<u>b</u>order  ·  <u>w</u>allpaper  setup-<u>x</u>randr    "
+mode --pango_markup $mode_resize {
     bindsym $keyLeft        resize shrink left  $resize_step px
     bindsym Shift+$keyLeft  resize grow   left  $resize_step px
     bindsym $keyDown        resize shrink down  $resize_step px
@@ -234,6 +236,15 @@ mode $mode_resize {
     bindsym Shift+Up        resize grow   up    $resize_step px
     bindsym Right           resize shrink right $resize_step px
     bindsym Shift+Right     resize grow   right $resize_step px
+
+    bindsym s floating enable , sticky enable , mode "default"
+    bindsym u floating disable, sticky disable, mode "default"
+
+    bindsym b border toggle
+
+    bindsym w exec --no-startup-id $wallpaper, mode "default"
+    bindsym x exec --no-startup-id ~/bin/setup-xrandr, mode "default"
+
     bindsym q mode "default"
     bindsym Return mode "default"
     bindsym Escape mode "default"
