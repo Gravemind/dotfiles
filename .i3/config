@@ -351,7 +351,7 @@ bindsym $ModK+F3        exec --no-startup-id $layouts/launch.sh -w 3 $browser
 bindsym $ModK+Shift+F3  exec --no-startup-id $layouts/launch.sh $browser
 
 # Qalculate
-bindsym $ModK+F5 exec $layouts/launch.sh qalculate-gtk -n
+bindsym $ModK+F5 exec $layouts/launch.sh -f 800x800 qalculate-gtk -n
 
 # Redshift
 bindsym $ModK+o       exec --no-startup-id ~/bin/red +1
