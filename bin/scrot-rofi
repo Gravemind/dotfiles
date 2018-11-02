@@ -96,8 +96,8 @@ def scrot_out_basename(f):
 def scrot_rofi(rawargs):
 
     res = rofi([
-        "all: capture all screens",
         "window: capture currently focused window",
+        "all: capture all screens",
         "select: select window or rectangle to capture",
         "quit"
     ], "-dmenu", "-i", "-p", "scrot capture")
@@ -150,10 +150,11 @@ def scrot_rofi(rawargs):
             "quit: keep "+screen_name,
             "feh: open in feh "+screen_name,
             "rm: delete "+screen_name,
-            "----"
+            "--- Suggestions: (Ctrl-Space) ---"
         ]
         rofi_rename_entries = [
-            "rename to: " + scrot_out_filename(f) for f in entry_names
+            #"suggestion: " +
+            f for f in entry_names
         ]
 
         msg = "Saved as "
@@ -162,12 +163,11 @@ def scrot_rofi(rawargs):
         msg += "<b>"+escape_markup(screen_name)+"</b>"
         msg += "."+escape_markup(scrot_out_ext)
         msg += "\n\n"
-        msg += "Select an action, or enter \"<b>NAME!</b>\" to rename to "
-        msg += "\""+escape_markup(scrot_out_prefix)+"<b>NAME</b>."+escape_markup(scrot_out_ext)+"\""
+        msg += "Select an action <b>OR</b> enter a new name. <b>Ctrl-Space to use an suggestion</b>."
 
         res = rofi(rofi_base_entries + rofi_rename_entries,
                    "-dmenu", "-i",
-                   "-p", "scrot capture saved",
+                   "-p", "rename capture to",
                    "-format", "i f",
                    "-filter", prefill,
                    "-mesg", msg)
@@ -182,7 +182,7 @@ def scrot_rofi(rawargs):
 
         rename_magic_char = '!'
 
-        if not userinput.endswith(rename_magic_char) and index >= 0 and index < len(rofi_base_entries):
+        if (len(userinput) == 0 or userinput == prefill) and index >= 0 and index < len(rofi_base_entries):
             res = rofi_base_entries[index]
             res = res[0:res.find(":")] if ":" in res else res
 
@@ -203,9 +203,7 @@ def scrot_rofi(rawargs):
                 pass
 
         else:
-            if userinput.endswith(rename_magic_char):
-                new_screen_name = userinput[:-1]
-            elif index < 0:
+            if len(userinput) > 0 or index < 0:
                 new_screen_name = userinput
             else:
                 assert(index >= len(rofi_base_entries))
@@ -219,6 +217,15 @@ def scrot_rofi(rawargs):
 
             new_screen_filename = scrot_out_filename(new_screen_name)
             new_screen_path = scrot_out_dir + "/" + new_screen_filename
+
+            if os.path.exists(new_screen_path):
+                res = rofi([ "yes", "no" ],
+                           "-dmenu", "-i",
+                           "-p", "overwrite ?",
+                           "-mesg", "Overwrite "+escape_markup(new_screen_path)+"?")
+                if res != "yes":
+                    prefill = new_screen_name
+                    continue
 
             mv = ( screen_path, new_screen_path )
             log("mv {}".format(mv))
