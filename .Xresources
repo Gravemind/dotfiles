@@ -74,7 +74,8 @@ Xft.rgba:           none
 
 ! Dpi for some programs (emacs, urxvt, firefox !?)
 ! For others, see ~/.config/fontconfig/conf.d, and X11/xrandr
-Xft.dpi:            110x110
+! ("110x110" is an invalid format)
+Xft.dpi:            110
 
 ! Nice flicker-free emacs startup !
 ! (evaluated much sooner than init.el)
