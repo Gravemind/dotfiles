@@ -1,10 +1,19 @@
 #!/bin/bash
 
-#~/bin/purplelock -c xtrlock -i X.X.X.X -a 'pause ?' -l '' &
-~/bin/lock &
-disown
+here="$(cd "$(dirname "$0")"; pwd)"
 
-echo $(date) "## Sleeping ..."
-sleep 1
-sudo pm-suspend
-echo $(date) "## Woke up ..."
+action="${1:-suspend}"
+case "$action" in
+    suspend) ;;
+    hibernate) ;;
+    *)
+        echo "$0: invalid action $action"
+        exit 1
+        ;;
+esac
+
+"$here/lock" --fork || exit 2
+
+echo "$0: $action at $(date -Is)"
+systemctl "$action"
+echo "$0: woke up from $action at $(date -Is)"

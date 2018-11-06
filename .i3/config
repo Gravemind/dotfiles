@@ -128,9 +128,9 @@ assign [class="(?i)^.*steam.*$"] → 1
 # Use Mouse+ModK to drag floating windows to their wanted position
 floating_modifier $ModK
 
-set $locker    "bash -c '( nohup ~/bin/lock & );'"
-set $suspend   "bash -c '( nohup ~/bin/lock & ); sleep 1; systemctl suspend;'"
-set $hibernate "bash -c '( nohup ~/bin/lock & ); sleep 1; systemctl hibernate;'"
+set $locker    ~/bin/lock
+set $suspend   ~/bin/slock suspend
+set $hibernate ~/bin/slock hibernate
 
 set $wallpaper ~/.i3/wallpaper_cycle
 
@@ -343,8 +343,8 @@ bindsym $ModK+XF86AudioStop $player_pause
 bindsym XF86TouchpadToggle exec --no-startup-id zsh ~/bin/toggletouchpad
 
 # Lock
-#bindsym $ModK+w exec --no-startup-id "/bin/bash --login -c 'sleep 0.5; xtrlock; exit 0'"
 bindsym $ModK+w exec --no-startup-id $locker
+bindsym $ModK+Shift+w exec --no-startup-id $suspend
 
 # Terminal
 #bindsym $ModK+Return exec --no-startup-id $layouts/launch.sh urxvt
