@@ -1,0 +1,42 @@
+#!/bin/bash
+
+smt_enabled=0
+
+usage() {
+    echo "usage: $0 [0|1]"
+}
+
+read smt_enabled < /sys/devices/system/cpu/cpu1/online
+echo "CPU 1 is currently $( (($smt_enabled)) && echo online || echo offline )"
+
+if [[ -n "${1:-}"  ]]; then
+    if [[ "${1:-}" = 0 ]]; then
+        new_val=0
+    elif [[ "${1:-}" = 1 ]]; then
+        new_val=1
+    elif [[ -n "${1:-}" ]]; then
+        usage
+        exit 0
+    fi
+
+    [[ $new_val = 1 ]] && echo "Enabling odd processors ..." || echo "Disabling odd processors ..."
+
+    sudo echo -n
+
+    i=1
+    while [[ -f "/sys/devices/system/cpu/cpu$i/online" ]]; do
+        echo -n "set cpu$i online="
+        { echo $new_val | sudo tee "/sys/devices/system/cpu/cpu$i/online" ; } || { echo "failed"; exit 2; }
+        i=$((i+2))
+    done
+
+fi
+
+# cpu 0 always online
+echo -n "all: 1"
+i=1
+while [[ -f "/sys/devices/system/cpu/cpu$i/online" ]]; do
+    echo -n "$(cat "/sys/devices/system/cpu/cpu$i/online")"
+    i=$((i+1))
+done
+echo
