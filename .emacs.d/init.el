@@ -1300,8 +1300,16 @@ With argument, do this that many times."
 
 (req-package smerge-mode
   :pin manual
-  :bind (("C-c ^ ^" . smerge-refine)) ;; 'C-c ^ R' alias
-)
+  :defer t
+  :bind
+  (:map smerge-basic-map
+        ("m" . smerge-refine)
+        )
+  :init
+  (setq-default
+   smerge-command-prefix "\C-cm"
+   )
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
