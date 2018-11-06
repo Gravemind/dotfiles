@@ -1,0 +1,111 @@
+#!/bin/bash
+
+usage() {
+    echo 'usage: '"$0"' PATTERN...
+
+  Shows `pgrep "PATTERN"` with `ps`, then asks what to do (eg kill), then retries.
+'
+}
+
+echorun() {
+    echo "$@" ...
+    "$@"
+    r=$?
+    if [[ "$r" -ne 0 ]]
+    then
+        echo "Command failed ($r): $@"
+        exit 1
+    fi
+}
+
+joinescape() {
+    local quoted=()
+    for a in "$@"
+    do
+        quoted+=( "$(printf "%q" "$a")" )
+    done
+    echo -n "${quoted[*]}"
+}
+
+toggle() {
+    local f="$1"
+    local e="$2"
+    [[ -n "$e" ]] && echo "" || echo "$f"
+}
+
+printk() {
+    local k="$1"
+    local msg="$2"
+    local e="$3"
+    [[ -n "$e" ]] && echo "$COL_ENA[$k]: $msg$COL_RESET" || echo "$COL_DISA[$k]: $msg$COL_RESET"
+}
+
+COL_OK=$'\e[1;32m'
+COL_KO=$'\e[1;31m'
+COL_KEY=$'\e[1;34m'
+COL_RESET=$'\e[0m'
+COL_ENA=$'\e[1;34m'
+COL_DISA=$'\e[1;30m'
+
+main() {
+    local delay_after_kill=0.1
+
+    if [[ "$1" = "-h" || "$1" = "--help" ]]
+    then
+        usage
+        exit 0
+    fi
+
+    local pattern="$*"
+
+    local pgrepf=""
+    local pgrepi=""
+    local selfpid=$$
+    local sudo=
+    local quitifnomore=false
+
+    while true
+    do
+        echo
+        local pg=( pgrep $pgrepi $pgrepf -- "$pattern" )
+        local pids=( $("${pg[@]}") )
+        pids=( $(printf "%s\n" "${pids[@]}" | grep -vFx "$selfpid") ) ## grep -v separately so it doesn't get pgrep
+        if [[ $? -ne 0 || "${#pids[@]}" -le 0 ]]
+        then
+            echo "${COL_KO}No process found by ${pg[@]}${COL_RESET}"
+            $quitifnomore && exit 1
+        else
+            echo "${COL_OK}${pg[@]}"
+            echo "${pids[@]}${COL_RESET}"
+            ps u --pid "${pids[@]}"
+            quitifnomore=false
+        fi
+
+        echo
+        echo "$COL_KEY[r]$COL_RESET:grep again, $COL_KEY[e]$COL_RESET:edit pattern, $COL_KEY[y|k]$COL_RESET:${sudo} kill, $COL_KEY[9]$COL_RESET:${sudo} kill -9"
+        echo "$(printk "i" "pgrep -i" "$pgrepi"), $(printk "f" "pgrep -f" "$pgrepf"), $(printk "s" "sudo" "$sudo")"
+        read -p "${COL_KEY}press key>$COL_RESET " -r -n1 r
+        echo
+        case "$r" in
+            y|k)
+                echorun $sudo kill "${pids[@]}"
+                sleep $delay_after_kill
+                quitifnomore=true
+                ;;
+            9)
+                echorun $sudo kill -9 "${pids[@]}"
+                sleep $delay_after_kill
+                quitifnomore=true
+                ;;
+            i) read pgrepi < <(toggle "-i" "$pgrepi") ;;
+            f) read pgrepf < <(toggle "-f" "$pgrepf") ;;
+            s) read sudo < <(toggle "sudo" "$sudo") ;;
+            e) read -p "${COL_KEY}edit pattern>$COL_RESET " -ei "$pattern" pattern ;;
+            r) echo "run again" ;;
+            '') echo "run again" ;;
+            *) echo "quit" ; exit 0 ;;
+        esac
+    done
+}
+
+main "$@"
