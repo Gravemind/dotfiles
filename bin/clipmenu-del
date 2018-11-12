@@ -1,0 +1,55 @@
+#!/bin/bash
+
+: "${CM_LAUNCHER=dmenu}"
+
+usage() {
+    echo -n "usage: [CM_LAUNCHER=rofi] $0 [-h|--help] [LAUNCHER_ARGS...]
+
+Clipdel with dmenu.
+
+"
+}
+
+if [[ "${1:-}" = "-h" || "${1:-}" = "--help" ]]
+then
+    usage
+    exit 0
+fi
+
+if [[ "$CM_LAUNCHER" == rofi ]]; then
+    # rofi supports dmenu-like arguments through the -dmenu flag
+    set -- -dmenu "$@"
+fi
+
+menu_cmd=($CM_LAUNCHER "$@")
+
+while true
+do
+    res="$( CM_LAUNCHER=rofi-script clipmenu | "${menu_cmd[@]}" )"
+    if [[ -z "$res" ]]
+    then
+        break
+    fi
+
+    # https://stackoverflow.com/questions/407523/escape-a-string-for-a-sed-replace-pattern
+    escaped="$(printf '%s' "$res" | sed 's/[]$*.^\\[]/\\&/g')"
+
+    pattern="^${escaped}\$"
+    #local pattern="$escaped"
+    #echo "$0: clipdel pattern: $pattern"
+
+    n="$(clipdel "$pattern" | wc -l)"
+    if [[ $n -ne 1 ]]
+    then
+        res="dowhile"
+        while [[ -n "$res" ]]
+        do
+            msg="aborting because we matched $n entries instead of 1: $pattern"
+            echo "$0: internal error: $msg" >& 2
+            res="$( { echo "INTERNAL ERROR:"; echo "$msg"; } | "${menu_cmd[@]}")"
+        done
+        exit 1
+    fi
+
+    clipdel -d "$pattern"
+done
