@@ -41,22 +41,6 @@ alias a='echo -ne "\a"'
 
 alias pydb='python -m pdb '
 
-x() {
-	for f in "$@"
-	do
-		echo "x: $f"
-		dtrx -v --one=rename "$f"
-		if [[ -e "${f%.*}" ]]; then
-			touch "${f%.*}"
-		elif [[ -e "${f%.*.*}" ]]; then
-			touch "${f%.*.*}"
-		else
-			echo "!!x: could not find extracted from $f !!"
-		fi
-	done
-}
-alias xl='dtrx -l'
-
 shut() {
 	( sleep 1 ; systemctl poweroff ) &
 	disown

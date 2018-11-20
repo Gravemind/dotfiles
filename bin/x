@@ -1,0 +1,161 @@
+#!/bin/bash
+
+set -euo pipefail
+
+C_BOLD_GREEN=$'\e[1;32m'
+C_BOLD_CYAN=$'\e[1;36m'
+C_BOLD_BLUE=$'\e[1;34m'
+C_BOLD_YELLOW=$'\e[1;33m'
+C_BOLD_RED=$'\e[1;31m'
+C_RESET=$'\e[0;0m'
+
+C_DEB="$C_BOLD_BLUE"
+C_LOG="$C_BOLD_GREEN"
+C_WARN="$C_BOLD_YELLOW"
+C_ERR="$C_BOLD_RED"
+
+self="$(readlink -f "$0")"
+
+x_cmd=( 7z x )
+
+logdeb() { echo "${C_DEB}x: $*$C_RESET"; }
+log()    { echo "${C_LOG}x: $*$C_RESET"; }
+warn()   { echo "${C_WARN}x: $*$C_RESET"; }
+err()    { echo "${C_ERR}x: error: $*$C_RESET" >&2; }
+
+if [[ "${1:-h}" = "-h" || "${1:-}" = "--help" ]]
+then
+    echo -n "usage: $0 ARCHIVE [ARCHIVE...]
+
+- Extracts each ARCHIVE with '${x_cmd[@]} ARCHIVE', in their own directory
+
+- Recurses if it contains a single .tar file.
+
+- Removes superfluous sub-directory if the name resembles the archive's name
+  (takes the longest name for the root directory).
+
+- Forces the modification time of the root directory to now.
+
+"
+    exit 0
+fi
+
+ask_rmrf() {
+    local dir="$1"
+    [[ -e "$dir" ]] || return 0
+    #warn "\"$dir\" already exists:$C_RESET $(ls -ld --color=yes -A "$dir")"
+    warn "Remove \"$dir\" ? [y]es|abort"
+    read -r -n1 ans
+    echo
+    if [[ "$ans" != "y" ]]
+    then
+        err "Aborting."
+        return 1
+    fi
+    rm -rf "$dir"
+    return 0
+}
+
+for path in "$@"
+do
+    if [[ ! -f "$path" ]]
+    then
+        err "no such file: $path"
+        exit 1
+    fi
+
+    abspath="$(readlink -f "$path")"
+    filename="$(basename "$path")"
+    ext="${filename##*.}"
+    basename="${filename%.*}"
+
+    #
+    # Extract in a sub-directory first
+    #
+    dir="${basename}"
+
+    logdeb "Extracting ./$path in ./$dir/ ..."
+    ask_rmrf "$dir" || exit 1
+
+    mkdir "$dir"
+    pushd "$dir"
+
+    "${x_cmd[@]}" "$abspath"
+
+    files=()
+    mapfile -t files < <( find ./ -mindepth 1 -maxdepth 1 )
+    filecount="${#files[@]}"
+    file="${files[0]#./}"
+
+    popd
+
+    #
+    # Recursively extract .tgz/.tar.gz archives:
+    #
+    # If we extracted only one tar file, extract it recursively
+    #
+    if [[ "$filecount" -eq 1 && "$file" =~ ^.*\.tar$ && -f "$dir/$file" ]]
+    then
+        tar="$file"
+        logdeb "{ Begin recursively extract ./$tar in ./$dir/ ..."
+
+        pushd "$dir"
+
+        "$self" "$file"
+
+        rm "$file" # remove the tar BEFORE re-list files
+
+        files=()
+        mapfile -t files < <( find ./ -mindepth 1 -maxdepth 1 )
+        filecount="${#files[@]}"
+        file="${files[0]#./}"
+
+        popd
+
+        logdeb "} Done recursively extract ./$tar in ./$dir/"
+
+        [[ "$filecount" -eq 1 ]] || { err "Internal error: recursion should have emitted only one file in $dir"; exit 1; }
+    fi
+
+    #
+    # Try to remove superfluous sub-directory:
+    #
+    # If there is only one dir at the first depth, and it's name resembles the
+    # archive's basename, then move it as the root dir.
+    #
+    shopt -s nocasematch # enable case-insensitive [[ str = pattern ]]
+    if [[ "$filecount" -eq 1 && ( "$file" = *"$dir"* || "$dir" = *"$file"* ) && -d "$dir/$file" ]]
+    then
+        # take the longest name
+        if [[ "$dir" = *"$file"* ]]
+        then
+            newdir="$dir"
+        else
+            newdir="$file"
+        fi
+        shopt -u nocasematch
+
+        logdeb "Removing superfluous sub-directory ./$dir/$file to ./$newdir ..."
+
+        if [[ "$newdir" == "$dir" ]]
+        then
+            tmpname="${dir}_tmp_rename_${RANDOM}"
+            ask_rmrf "$tmpname" || exit 1 # just in case
+            mv -T "$dir/$file" "$tmpname"
+            mv -T "$tmpname" "$dir"
+        else
+            ask_rmrf "$newdir" || exit 1
+            mv -T "$dir/$file" "$newdir"
+            rmdir "$dir"
+            dir="$newdir"
+        fi
+    else
+        shopt -u nocasematch
+    fi
+
+    # Force the dir modification time to now
+    touch "$dir"
+
+    log "Extracted ./$path to ./$dir"
+
+done
