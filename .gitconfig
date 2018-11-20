@@ -185,8 +185,8 @@
 [merge]
 	conflictstyle = diff3
 [core]
-	# Increase short hash to 10 characters
-	abbrev = 10
+	# Increase short hash to 12 characters
+	abbrev = 12
 [diff]
 	indentHeuristic = true
 	#algorithm = myers # default
