@@ -1,5 +1,13 @@
 #!/bin/zsh
 
+# Copied from /etc/X11/xinit/xinitrc
+if [ -d /etc/X11/xinit/xinitrc.d ] ; then
+    for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
+        [ -x "$f" ] && . "$f"
+    done
+    unset f
+fi
+
 [[ -f ~/.Xresources ]] && xrdb -I$HOME ~/.Xresources
 
 ##
@@ -55,7 +63,7 @@ xset b 0 &> /dev/null
 # Fix flatpak service(?) making desktop/gtk app dbus stuff at startup very slow...
 # https://github.com/flatpak/xdg-desktop-portal-gtk/issues/72
 # https://bbs.archlinux.org/viewtopic.php?id=224787
-dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY
+#dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY
 
 ## ssh agent
 #eval "$(ssh-agent)"
