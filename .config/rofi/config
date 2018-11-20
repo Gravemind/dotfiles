@@ -110,7 +110,8 @@ rofi.case-sensitive:                   false
 ! rofi.show-match:                     true
 ! "New style theme file" Set from: Default
 !rofi.theme:                         transparent-dark-blue
-rofi.theme:                         flat-soft-white
+!rofi.theme:                         flat-soft-white
+rofi.theme:                         flat-i3-blue
 ! "Color scheme for normal row" Set from: Default
 ! rofi.color-normal:
 ! "Color scheme for urgent row" Set from: Default

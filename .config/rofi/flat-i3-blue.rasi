@@ -1,0 +1,78 @@
+
+configuration {
+}
+
+* {
+    bg: #282828;
+    bghl: #285577;
+    scrollbar-handle: #a0a0a0;
+    fg: #b0b0b0;
+    fghl: #dddddd;
+    fgurgent: #c02020;
+
+    text-color: inherit;
+    background-color: inherit;
+    padding: 0px;
+    margin: 0px;
+    spacing: 0px;
+}
+
+#window {
+    text-color: @fg;
+    background-color: @bg;
+    fullscreen: false;
+    location: north;
+    y-offset: 25%;
+    width: 50%;
+}
+
+#inputbar, sidebar {
+    padding: 11px;
+}
+
+// textbox used for "-mesg MSG" and "-e MSG"
+#textbox {
+    padding: 11px;
+    background-color: @bghl;
+    text-color: @fghl;
+}
+
+#inputbar {
+    text-color: @fghl;
+    background-color: @bghl;
+    children: [ textbox-pre-prompt,prompt,textbox-post-prompt,entry,case-indicator ];
+}
+
+#textbox-pre-prompt {
+    expand: false;
+    //str: "❰ ";
+}
+#prompt {
+}
+#textbox-post-prompt {
+    expand: false;
+    str: " ❱ ";
+}
+
+#listview {
+    lines: 20;
+    dynamic: true;
+    fixed-height: false;
+    scrollbar: true;
+    margin: 1px 0 0 0;
+}
+#scrollbar {
+    handle-width: 10px;
+    handle-color: @scrollbar-handle;
+}
+
+#element {
+    padding: 3px 11px;
+}
+#element selected {
+    background-color: @bghl;
+    text-color: @fghl;
+}
+#element urgent, element selected.urgent {
+    text-color: @fgurgent;
+}
