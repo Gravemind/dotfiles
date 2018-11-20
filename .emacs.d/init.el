@@ -356,6 +356,57 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; history (per-window location history stack)
+;;   https://github.com/boyw165/history
+;;   https://www.emacswiki.org/emacs/MarkCommands
+;;
+;; @TODO: duplicate history's window-parameters on split-window etc...
+;;
+
+(req-package history
+  :hook (prog-mode . history-mode)
+  :bind (("C-c j" . history-prev-history)
+         ("C-c l" . history-next-history)
+         )
+  ;; :init
+  ;; (history-mode 1)
+  :config
+  (setq-default history-window-local-history t)
+  (add-to-list 'history-advised-before-functions 'rtags-find-symbol-at-point t)
+  (add-to-list 'history-advised-after-functions 'rtags-find-symbol-at-point t)
+  (add-to-list 'history-advised-before-functions 'godef-jump t)
+  (add-to-list 'history-advised-after-functions 'godef-jump t)
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Visible mark
+;;   https://www.emacswiki.org/emacs/VisibleMark
+;;   https://www.emacswiki.org/emacs/MarkCommands
+;;
+
+(req-package visible-mark
+  :disabled t
+  :hook (prog-mode . visible-mark-mode)
+  :config
+  (setq-default
+   visible-mark-max 2
+   visible-mark-faces `(visible-mark-face1 visible-mark-face2)
+   )
+  )
+
+(req-package auto-mark
+  :disabled t
+  :pin manual
+  :load-path "~/.emacs.d/lisp"
+;;:ensure t ; ! forces query melpa !?
+  :init
+  (require 'auto-mark)
+  (global-auto-mark-mode 1)
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; isearch
 ;;
 
@@ -1774,10 +1825,10 @@ With argument, do this that many times."
   :after (cc-mode) ;; makes `:bind (:map c-mode-base-map)` work
   :bind
   (:map c-mode-base-map
-        ("C-c j" . rtags-location-stack-back)
-        ("C-c C-j" . rtags-location-stack-back)
-        ("C-c l" . rtags-location-stack-forward)
-        ("C-c C-l" . rtags-location-stack-forward)
+        ;; ("C-c j" . rtags-location-stack-back)
+        ;; ("C-c C-j" . rtags-location-stack-back)
+        ;; ("C-c l" . rtags-location-stack-forward)
+        ;; ("C-c C-l" . rtags-location-stack-forward)
 
         ("C-c p" . rtags-next-match)
         ("C-c ;" . rtags-next-match)
