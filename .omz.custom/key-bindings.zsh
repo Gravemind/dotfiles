@@ -24,7 +24,8 @@ bindkey "\eOd" emacs-backward-word      # [Ctrl-Left]
 bindkey "\e[3^" delete-word             # [Ctrl-Del]
 bindkey "\e[8^" end-of-line             # [Ctrl-End]
 bindkey "\e[7^" beginning-of-line       # [Ctrl-Home]
-bindkey '^I' complete-word				# [Ctrl-I]
+# '^I' = TAB, default is expand-or-complete
+# bindkey '^I' complete-word				# [Ctrl-I]
 
 # Quote region
 bindkey "^[\'" quote-region				# [Meta-']
