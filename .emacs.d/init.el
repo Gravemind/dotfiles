@@ -1316,6 +1316,22 @@ With argument, do this that many times."
    )
   )
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; diff
+;;
+
+(req-package diff-mode
+  :pin manual
+  :defer t
+  :config
+  (setq-default
+   ;; Makes diff-apply-hunk patch the "old" file
+   diff-jump-to-old-file t
+   )
+  )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Change C-f to be a prefix key map (for iy-go-to-char, ace-jump-mode. ...)
