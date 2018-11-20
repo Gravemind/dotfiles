@@ -1964,6 +1964,9 @@ With argument, do this that many times."
 
 (req-package go-mode
   :defer t
+  :bind (:map go-mode-map
+              ("C-c i" . godef-jump)
+              )
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
