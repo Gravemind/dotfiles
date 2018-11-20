@@ -191,7 +191,7 @@
 	indentHeuristic = true
 	#algorithm = myers # default
 	#algorithm = minimal
-	#algorithm = patience
+	algorithm = patience
 	#algorithm = histogram
 
 [core]
