@@ -337,6 +337,10 @@
    zoom-size-in-char '(150 . 60)
    zoom-size 'zoom-size-in-char-to-ratio
 
+   ;; '(zoom-ignore-predicates (quote ((lambda nil (window-minibuffer-p)))))
+   ;; '(zoom-ignored-major-modes (quote (helm-mode)))
+   ;; '(zoom-size (quote (0.618 . 0.618)))
+
    )
   (zoom-mode t))
 
@@ -422,7 +426,8 @@
      ido-everywhere t
      ido-default-buffer-method 'selected-window
      ido-max-prospects 32
-     ido-case-fold nil ; case sensitive
+     ;ido-case-fold nil ; case sensitive
+     ido-case-fold t ; case sensitive
      ;; ido-use-filename-at-point 'guess
      )
     (ido-mode 1)
