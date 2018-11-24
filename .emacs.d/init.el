@@ -381,18 +381,24 @@
 ;;
 
 (req-package history
-  :hook (prog-mode . history-mode)
+  :ensure t
   :bind (("C-c j" . history-prev-history)
          ("C-c l" . history-next-history)
          )
-  ;; :init
-  ;; (history-mode 1)
-  :config
-  (setq-default history-window-local-history t)
+  :init
+  (require 'history)
+  ;; rtags
   (add-to-list 'history-advised-before-functions 'rtags-find-symbol-at-point t)
   (add-to-list 'history-advised-after-functions 'rtags-find-symbol-at-point t)
+  ;; go-mode
   (add-to-list 'history-advised-before-functions 'godef-jump t)
   (add-to-list 'history-advised-after-functions 'godef-jump t)
+  ;; racer-mode (rust-mode)
+  (add-to-list 'history-advised-before-functions 'racer-find-definition t)
+  (add-to-list 'history-advised-after-functions 'racer-find-definition t)
+
+  (setq-default history-window-local-history t)
+  (history-mode 1)
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2024,6 +2030,28 @@ With argument, do this that many times."
 
 (req-package dockerfile-mode
   :defer t
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Rust-lang
+;;   https://areweideyet.com/#emacs
+;;
+
+(req-package rust-mode
+  :defer t
+  )
+
+(req-package flycheck-rust
+  :pin melpa ; only in unstable
+  :defer t
+  )
+
+(req-package racer
+  :defer t
+  :hook (rust-mode . racer-mode)
+  :bind (("C-c i" . racer-find-definition)
+         )
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
