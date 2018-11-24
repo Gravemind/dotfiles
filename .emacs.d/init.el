@@ -45,7 +45,8 @@
 (setq-default
  ;; Log *Messages* if the use-package takes longer than 0.1s to load
  use-package-verbose t
- use-package-always-ensure t
+ ;; Force :ensure everywhere, tries to package-install even :pin manual ones !?
+ ;; use-package-always-ensure t
 )
 
 (require 'package)
@@ -149,7 +150,7 @@
  auto-window-vscroll nil
 
  ;; Scroll down/up N lines before bottom/top
- scroll-margin 7
+ ;scroll-margin 7
 
  ;; https://www.emacswiki.org/emacs/FillParagraph
  ;; The original value is "\f\\|[ \t]*$", so we add the bullets (-), (+), and (*).
@@ -246,6 +247,22 @@
   (interactive "sCopy to new buffer name? ")
   (get-buffer-create buffername)
   (copy-to-buffer buffername (point-min) (point-max)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; help mode
+;;
+
+(req-package help-mode
+  :pin manual
+  :defer t
+  :bind (:map help-mode-map
+              ("j" . help-go-back)
+              ("l" . help-go-forward)
+              ("C-c j" . help-go-back)
+              ("C-c l" . help-go-forward)
+              )
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -1537,9 +1554,10 @@ With argument, do this that many times."
    helm-input-idle-delay 0.01 ; be idle for this many seconds, before updating candidate buffer
 
    helm-split-window-in-side-p t ;; open helm buffer inside current window, not occupy whole other window
-   helm-split-window-default-side 'below ;; open helm buffer in another window
+   ;;helm-split-window-default-side 'below ;; open helm buffer in another window
+   helm-split-window-default-side 'above ;; open helm buffer in another window
 
-   helm-autoresize-min-height 10
+   helm-autoresize-min-height 30
    helm-autoresize-max-height 70
 
    helm-ff-search-library-in-sexp t ; search for library in `require' and `declare-function' sexp.
