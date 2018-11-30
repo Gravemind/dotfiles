@@ -73,6 +73,7 @@ do
     # Extract in a sub-directory first
     #
     dir="${basename}"
+    dir="${dir%.tar}"
 
     logdeb "Extracting ./$path in ./$dir/ ..."
     ask_rmrf "$dir" || exit 1
