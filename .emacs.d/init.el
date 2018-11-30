@@ -165,7 +165,21 @@
  x-gtk-use-system-tooltips nil
  )
 
-;(custom-set-variables '(paragraph-start "\f\\|[ \t]*$\\|[ \t]*[-+*] "))
+;;
+;; mode line:
+;;   https://www.emacswiki.org/emacs/ModeLineConfiguration
+;;   http://www.holgerschurig.de/en/emacs-tayloring-the-built-in-mode-line/
+;;
+(setq-default
+ ;;header-line-format
+ mode-line-format
+ '("%e" "  "
+   (:propertize "%b" face mode-line-buffer-id)
+   "  %l:%c  %p/%I  "
+   mode-line-mule-info mode-line-client mode-line-modified mode-line-remote
+   " " (vc-mode vc-mode)
+   " " mode-line-modes mode-line-misc-info mode-line-end-spaces)
+ )
 
 ;;
 ;; tramp 'ssha': ssh with agent forwarding
