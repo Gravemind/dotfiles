@@ -1316,8 +1316,8 @@ With argument, do this that many times."
   :bind (:map flyspell-mode-map
               ("C-;" . helm-flyspell-correct)
               )
-  :hook ((prog-mode . flyspell-prog-mode)
-         (text-mode . flyspell-mode))
+  :hook ((prog-mode . (lambda () (flyspell-mode -1) (flyspell-prog-mode)))
+         (text-mode . (lambda () (flyspell-mode 1))))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
