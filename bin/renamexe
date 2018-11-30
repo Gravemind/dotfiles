@@ -8,18 +8,19 @@ basename0="$(basename "$0")"
 usage() {
     echo 'usage: '"$basename0"' COMMAND... -- FILE...
 
-Rename FILEs using COMMAND... to generate the new names.
+Rename FILEs using COMMAND to generate new names. COMMAND receives the current
+filename in STDIN, and the new filename is read from STDOUT.
 
-Before actually renaming, it shows the name diffs, generates a revert script,
-and ask.
+'"$basename0"' shows word diffs, and ask before moving files. Also generates a
+"revert" script.
 
-pseudo-sh code:
-    for file in FILE... ; do
-        show_and_ask mv $file $(echo $file | COMMAND...)
-    done
+Examples:
 
-Example:
+    # for all "foo_*.txt" files, replace all "_" by "-" in filenames
     $> '"$basename0"' sed '\''s/_/-/g'\'' -- foo_*.txt
+
+    # for all files, add 42 to all numbers in filenames, and zero-left-pad them to 4 characters
+    $> '"$basename0"' perl -pe '\''s/[0-9]+/sprintf("%04d", $& + 42)/eg'\'' -- *
 '
 }
 
@@ -114,16 +115,16 @@ then
 fi
 
 echo -n "execute rename ? [y]/[n] "
-read -r -n1 r
+read -r -n1 r || true
 echo
 if [[ "$r" = "y" ]]
 then
-    echo "(note: revert script at $revert)"
+    echo "(note: revert script generated: $revert)"
     for ((i = 0; i < ${#srcs[@]}; i++))
     do
         (set -x; mv "${srcs[i]}" "${dsts[i]}")
     done
-    echo "(note: revert script at $revert)"
+    echo "(note: revert script generated: $revert)"
 else
     echo "aborted"
     rm "$revert"
