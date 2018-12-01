@@ -796,12 +796,13 @@ With argument, do this that many times."
     (widen)
     (save-excursion
       (beginning-of-line)
-      (let ((location (format "%s:%d"
-                              (buffer-file-name)
-                              (1+ (count-lines 1 (point))))))
-        (progn
-          (message location)
-          (gui-set-selection nil location))))))
+      (let* ((fname (or buffer-file-name
+                        dired-directory))
+             (location (format "%s:%d"
+                               fname
+                               (1+ (count-lines 1 (point))))))
+        (message location)
+        (gui-set-selection nil location)))))
 
 (defun jo/file-to-clipboard ()
   "Copy \"file:linenum\" to clipboard"
@@ -810,10 +811,11 @@ With argument, do this that many times."
     (widen)
     (save-excursion
       (beginning-of-line)
-      (let ((location (buffer-file-name)))
-        (progn
-          (message location)
-          (gui-set-selection nil location))))))
+      (let* ((fname (or buffer-file-name
+                        dired-directory))
+             (location fname))
+        (message location)
+        (gui-set-selection nil location)))))
 
 (defun insert-from-primary ()
   "Insert the text from the current x-selection."
