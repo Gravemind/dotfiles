@@ -127,6 +127,8 @@ max_fps = display_fps
 if clip.width >= 1920 and display_fps > 120:
     max_fps = 120.0
 
+#max_fps = 60
+
 # Interpolate to a multiple of the original source fps
 dst_fps = container_fps
 while dst_fps + container_fps <= max_fps:

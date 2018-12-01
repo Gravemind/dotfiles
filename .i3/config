@@ -121,6 +121,8 @@ assign [class="(?i)^.*steam.*$"] → 1
 #for_window [class="(?i)^UE4Editor.*$"] floating enable
 #assign [class="(?i)^UE4Editor.*$"] → 8
 
+for_window [class="(?i)^keepassxc$"] floating enable
+
 #
 # Bindings
 #

@@ -245,7 +245,7 @@ numjobs_fetch=6 # limit at 6 fetches at the same time
 options=$(getopt -o "+hfFsdLj:" -l "help" -n "$0" -- "$@")
 [[ $? -eq 0 ]] || exit 1
 eval set -- "$options"
-while true;  do
+while true; do
     case "$1" in
     -h|--help)
         echo 'usage: '"$0"' [-fFsdL] [-j N] [--] [nums...] [command...]

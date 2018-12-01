@@ -3,10 +3,10 @@ input-ipc-server=/tmp/mpvsocket
 
 #volume=70
 hr-seek=yes
-sub-pos=96
+sub-pos=94
 sub-scale=0.6
 #sub-font-size=30
-sub-color=1.0/0.2
+sub-color=1.0/0.5
 #exact|fuzzy|all
 sub-auto=fuzzy
 blend-subtitles=yes

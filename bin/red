@@ -23,8 +23,8 @@ cola=6500	# starting temperature
 bria=100     # starting brightness
 gama=100	# starting gamma * 100
 colstep=800	# temperature step
-bristep=18	# brightness step
-gamstep=0	# gamma step * 100
+bristep=17	# brightness step
+gamstep=-2	# gamma step * 100
 
 enable_current_output=0
 
