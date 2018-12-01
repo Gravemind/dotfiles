@@ -163,22 +163,13 @@
  c-backslash-max-column 1000
 
  x-gtk-use-system-tooltips nil
- )
 
-;;
-;; mode line:
-;;   https://www.emacswiki.org/emacs/ModeLineConfiguration
-;;   http://www.holgerschurig.de/en/emacs-tayloring-the-built-in-mode-line/
-;;
-(setq-default
- ;;header-line-format
- mode-line-format
- '("%e" "  "
-   (:propertize "%b" face mode-line-buffer-id)
-   "  %l:%c  %p/%I  "
-   mode-line-mule-info mode-line-client mode-line-modified mode-line-remote
-   " " (vc-mode vc-mode)
-   " " mode-line-modes mode-line-misc-info mode-line-end-spaces)
+ ;; Fringe:
+ ;; file boundaries
+ indicate-buffer-boundaries 'left
+ ;; show lines after end of file
+ indicate-empty-lines t
+
  )
 
 ;;
@@ -280,6 +271,44 @@
   (interactive "*r")
   (let ((fill-column (point-max)))
     (fill-region beg end)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; mode line:
+;;   wiki: https://www.emacswiki.org/emacs/ModeLineConfiguration
+;;   doc: https://www.gnu.org/software/emacs/manual/html_node/elisp/Mode-Line-Format.html
+;;   example: http://www.holgerschurig.de/en/emacs-tayloring-the-built-in-mode-line
+;;
+
+(defface mode-line-buffer-id-modified
+  '((t :inherit mode-line-buffer-id :foreground "orange"))
+  "mode-line-buffer-id when buffer is modified."
+  :group 'mode-line-faces
+  :group 'basic-faces)
+
+(defvar my/mode-line-buffer
+  '(:eval (propertize
+           "%b"
+           'face (if (buffer-modified-p) 'mode-line-buffer-id-modified 'mode-line-buffer-id)
+           ))
+  "My mode-line-buffer-id.")
+(put 'my/mode-line-buffer 'risky-local-variable t)
+
+(defvar my/mode-line-ro-indicator
+  '(:eval (if buffer-read-only " " ""))
+  "Mode line read-only indicator (awesome font).")
+(put 'my/mode-line-ro-indicator 'risky-local-variable t)
+
+(setq-default
+ mode-line-format
+ '("%e" "  "
+   my/mode-line-ro-indicator
+   my/mode-line-buffer
+   "  %l:%c  %p/%I  "
+   mode-line-mule-info mode-line-client mode-line-modified mode-line-remote
+   " " (vc-mode vc-mode)
+   " " mode-line-modes mode-line-misc-info mode-line-end-spaces)
+ )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
