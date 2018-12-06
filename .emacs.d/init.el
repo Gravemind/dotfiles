@@ -295,16 +295,16 @@
 (put 'my/mode-line-buffer 'risky-local-variable t)
 
 (defvar my/mode-line-ro-indicator
-  '(:eval (if buffer-read-only " " ""))
+  '(:eval (if buffer-read-only "%% " ""))
   "Mode line read-only indicator (awesome font).")
 (put 'my/mode-line-ro-indicator 'risky-local-variable t)
 
 (setq-default
  mode-line-format
- '("%e" "  "
+ '("%e" " "
    my/mode-line-ro-indicator
    my/mode-line-buffer
-   "  %l:%c  %p/%I  "
+   "  %l:%c  %p  "
    mode-line-mule-info mode-line-client mode-line-modified mode-line-remote
    " " (vc-mode vc-mode)
    " " mode-line-modes mode-line-misc-info mode-line-end-spaces)
