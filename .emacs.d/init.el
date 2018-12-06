@@ -137,14 +137,6 @@
  split-height-threshold nil
  split-width-threshold 0
 
- tramp-verbose 2 ; warnings
- ;tramp-verbose 3 ; + connections (default)
- ;tramp-connection-timeout 10
- tramp-connection-timeout 14400 ; 4h
- password-cache-expiry nil
- tramp-shell-prompt "\\$ " ;; see ~/.zshrc
- ;tramp-chunksize 4050
-
  ;; Faster cursor ?
  ;; https://emacs.stackexchange.com/questions/28736/emacs-pointcursor-movement-lag/28746
  auto-window-vscroll nil
@@ -171,33 +163,6 @@
  indicate-empty-lines t
 
  )
-
-;;
-;; tramp 'ssha': ssh with agent forwarding
-;;
-(eval-after-load "tramp"
-  '(add-to-list 'tramp-methods
-               (list "ssha"
-                     '(tramp-login-program "ssh")
-                     '(tramp-login-args
-                       (("-l" "%u")
-                        ("-p" "%p")
-                        ("%c")
-                        ("-A")
-                        ("-e" "none")
-                        ("%h")))
-                     '(tramp-async-args
-                       (("-q")))
-                     '(tramp-remote-shell "/bin/sh")
-                     '(tramp-remote-shell-login
-                       ("-l"))
-                     '(tramp-remote-shell-args
-                       ("-c")))
-               t)
-  )
-;; might help tramp
-(setenv "SHELL" "/bin/bash")
-(setenv "ESHELL" "/bin/bash")
 
 ;;
 ;; show-paren-mode
@@ -309,6 +274,64 @@
    " " (vc-mode vc-mode)
    " " mode-line-modes mode-line-misc-info mode-line-end-spaces)
  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Tramp
+;;
+
+(setq-default
+ tramp-verbose 2 ; warnings
+ ;tramp-verbose 3 ; + connections (default)
+ ;tramp-verbose 6 ; verbose
+ ;tramp-connection-timeout 10
+ tramp-connection-timeout 14400 ; 4h
+ password-cache-expiry nil
+ ;tramp-chunksize 4050
+
+ ;; Simpler prompt when `TERM=dump ssh ...`
+ ;;   https://www.emacswiki.org/emacs/TrampMode#toc9
+ ;;
+ ;; bash: [[ "$TERM" == "dumb" ]] && { export PS1='$ '; return; }
+ ;;   can be added to: ~/.bashrc, /etc/bash.bashrc, /etc/profile ...
+ ;;
+ ;; zsh: see ~/.zshrc
+ ;;
+ tramp-shell-prompt "\\$ "
+
+ ;tramp-use-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no"
+ tramp-use-ssh-controlmaster-options t
+)
+
+;;
+;; tramp '/ssha:user@addr:/home/user': ssh with agent forwarding
+;;
+(eval-after-load "tramp"
+  '(add-to-list 'tramp-methods
+               (list "ssha"
+                     '(tramp-login-program "ssh")
+                     '(tramp-login-args
+                       (("-l" "%u")
+                        ("-p" "%p")
+                        ("%c")
+                        ("-A")
+                        ("-e" "none")
+                        ("%h")
+                        ;;("-t" "bash")
+                        ))
+                     '(tramp-async-args
+                       (("-q")))
+                     '(tramp-remote-shell "/bin/sh")
+                     '(tramp-remote-shell-login
+                       ("-l"))
+                     '(tramp-remote-shell-args
+                       ("-c")))
+               t  )
+  )
+;;(eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
+;; might help tramp
+(setenv "SHELL" "/bin/bash")
+(setenv "ESHELL" "/bin/bash")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
