@@ -165,6 +165,16 @@
  )
 
 ;;
+;; Fatter Window Divider/Border
+;;
+(setq-default
+ window-divider-default-bottom-width 3
+ window-divider-default-places t
+ window-divider-default-right-width 3
+ )
+(window-divider-mode)
+
+;;
 ;; show-paren-mode
 ;;
 (setq-default show-paren-delay 0)
