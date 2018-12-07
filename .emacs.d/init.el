@@ -46,8 +46,8 @@
 (setq-default
  ;; Log *Messages* if the use-package takes longer than 0.1s to load
  use-package-verbose t
- ;; Force :ensure everywhere, tries to package-install even :pin manual ones !?
- ;; use-package-always-ensure t
+ ;; Auto install packages as needed
+ use-package-always-ensure t
 )
 
 (require 'package)
@@ -352,6 +352,10 @@
 (req-package help-mode
   :pin manual
   :defer t
+
+  ;; Fix a bug where use-package tries to find help-mode in melpa even with :pin manual !?
+  :ensure nil
+
   :bind (:map help-mode-map
               ("j" . help-go-back)
               ("l" . help-go-forward)
