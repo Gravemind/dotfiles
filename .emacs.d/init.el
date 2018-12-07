@@ -77,6 +77,10 @@
   (package-install 'req-package))
 (require 'req-package)
 
+(req-package auto-package-update
+  :disabled
+  :defer t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Custom file path
