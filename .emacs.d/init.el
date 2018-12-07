@@ -16,9 +16,10 @@
 
 ;; Benchmark init https://github.com/dholm/benchmark-init-el
 ;; - Install:
-;;   $> cd ~/.emacs.d && git clone https://github.com/dholm/benchmark-init-el.git && cd benchmark-init-el && make
+;;   $> cd ~/.emacs.d && git clone https://github.com/dholm/benchmark-init-el && make -C benchmark-init-el
 ;; - Uncomment:
-;;(add-to-list 'load-path "~/.emacs.d/benchmark-init-el/") (require 'benchmark-init-loaddefs) (benchmark-init/activate)
+;; (add-to-list 'load-path "~/.emacs.d/benchmark-init-el/") (require 'benchmark-init-loaddefs) (benchmark-init/activate)
+;; (global-set-key (kbd "<f12>") (lambda () (interactive) (benchmark-init/deactivate) (benchmark-init/show-durations-tabulated)))
 
 ;(setq debug-on-error t)
 
