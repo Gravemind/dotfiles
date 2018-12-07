@@ -905,8 +905,11 @@ With argument, do this that many times."
   ;;(add-hook 'markdown-mode-hook '(lambda () (setq word-wrap t) (setq truncate-lines t) (toggle-truncate-lines t)))
 
   ;; bin launched to generate html (C-c C-c l), needs to be installed
-  (setq-default markdown-command "multimarkdown")
+  (setq-default markdown-command "cmark-gfm")
   )
+
+;; (req-package flymd
+;;   :commands (flymd-flyit))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -1632,6 +1635,7 @@ With argument, do this that many times."
 ;;
 
 (req-package helm
+  ;:disabled
   :bind (("M-x" . helm-M-x)
          ("C-f <C-return>" . helm-occur)
          ("C-f C-r" . helm-do-grep-rg-ripgrep)
@@ -1746,7 +1750,7 @@ With argument, do this that many times."
         )
   (define-key ivy-minibuffer-map (kbd "C-j") #'ivy-immediate-done)
   (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
-  (ivy-mode)
+  (ivy-mode 1)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
