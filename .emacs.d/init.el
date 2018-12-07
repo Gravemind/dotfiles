@@ -50,6 +50,10 @@
  use-package-always-ensure t
 )
 
+;; Enable f12: use-package-report: see which is package Decl/Init/Config + benchmark
+;; (setq-default use-package-compute-statistics t)
+;; (global-set-key (kbd "<f12>") (lambda () (interactive) (use-package-report)))
+
 (require 'package)
 (setq-default
  package-enable-at-startup nil
