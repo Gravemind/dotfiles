@@ -1180,6 +1180,7 @@ With argument, do this that many times."
 ;;
 
 (req-package d-mode
+  :defer t ;; Fix :hook should have imply :defer, but didn't !?
   :hook (d-mode . (lambda () (jo/cc-mode) (flycheck-dmd-dub-set-variables)))
   )
 
