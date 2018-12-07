@@ -51,15 +51,17 @@
 )
 
 (require 'package)
-(setq package-enable-at-startup nil)
-(setq-default package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                                 ("melpa" . "https://melpa.org/packages/")
-                                 ("melpa-stable" . "https://stable.melpa.org/packages/")
-                                 ;;("marmalade" . "https://marmalade-repo.org/packages/")
-              ))
-;; Make melpa-stable the default, use :pin to overwrite
-(setq-default use-package-always-pin "melpa-stable")
-
+(setq-default
+ package-enable-at-startup nil
+ package-archives '(("melpa-stable" . "https://stable.melpa.org/packages/")
+                    ("gnu" . "https://elpa.gnu.org/packages/")
+                    ("melpa" . "https://melpa.org/packages/")
+                    )
+ ;; https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/
+ package-archive-priorities '(("melpa-stable" . 50)
+                              ("gnu" . 10)
+                              ("melpa" . 0))
+ )
 (package-initialize)
 
 ;;
@@ -70,6 +72,8 @@
 (unless (package-installed-p 'req-package)
   (message "Installing use-package ...")
   (package-refresh-contents)
+  ;; Pin use-package to unstable melpa
+  ;;(add-to-list 'package-pinned-packages '(use-package . "melpa") t)
   (package-install 'req-package))
 (require 'req-package)
 
