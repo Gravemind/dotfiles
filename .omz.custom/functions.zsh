@@ -37,6 +37,7 @@ function _rmrf_ask() {
 function bak() {
 	for f in "$@"
 	do
+		f="${f%.bak}"
 		local bak="$f.bak"
 		_rmrf_ask "$f.bak" || return 1
 		cp -aT "$f" "$bak" || { echo -e "\033[1;31mbak failed: $f\033[0;0m" 1>&2 ; return 1; }
@@ -46,6 +47,7 @@ function bak() {
 function bakmv() {
 	for f in "$@"
 	do
+		f="${f%.bak}"
 		local bak="$f.bak"
 		_rmrf_ask "$f.bak" || return 1
 		mv -T "$f" "$bak" || { echo -e "\033[1;31mbak failed: $f\033[0;0m" 1>&2 ; return 1; }
@@ -55,6 +57,7 @@ function bakmv() {
 function unbak() {
 	for f in "$@"
 	do
+		f="${f%.bak}"
 		local bak="$f.bak"
 		_rmrf_ask "$f" || return 1
 		cp -aT "$bak" "$f" || { echo -e "\033[1;31mbak failed: $f\033[0;0m" 1>&2 ; return 1; }
