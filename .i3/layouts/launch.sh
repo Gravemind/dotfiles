@@ -7,8 +7,8 @@ usage() {
 
     Spawns `command args...` with a i3 placeholder
       -w WORKSPACE    : move placeholder to workspace WORKSPACE (default: current)
-      -c WIN_CLASS    : placeholder window'"'"'s "class" to match (default: command)
-      -i WIN_INSTANCE : placeholder window'"'"'s "instance" to match (no default)
+      -c WIN_CLASS    : match WM_CLASS'\''s second element, called "class" (usually the program name)
+      -i WIN_INSTANCE : match WM_CLASS'\''s first element, called "instance" (eg: emacs -name my_instance_name)
       -f WxH[+X+Y]    : make it floating, the geomerty is required.
                         negative X or Y positions the window from right or bottom
       -q              : be quiet about it
