@@ -123,9 +123,10 @@ print("clip", clip.width, "x", clip.height, "at", container_fps, "fps")
 
 max_fps = display_fps
 
-# Limit FullHD at 120 fps
-if clip.width >= 1920 and display_fps > 120:
-    max_fps = 120.0
+if clip.width > 1920:
+    max_fps = min(max_fps, 60)
+elif clip.width >= 1920:
+    max_fps = min(max_fps, 120)
 
 #max_fps = 60
 
