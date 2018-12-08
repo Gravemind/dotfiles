@@ -322,37 +322,42 @@
  ;;
  tramp-shell-prompt "\\$ "
 
- ;tramp-use-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no"
  tramp-use-ssh-controlmaster-options t
+ tramp-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath=~/.ssh/tramp.%%C -o ControlPersist=no"
 )
 
 ;;
-;; tramp '/ssha:user@addr:/home/user': ssh with agent forwarding
+;; Custom 'ssha' hop: '/ssha:user@addr:/home/user'
+;; - Enables ssh agent forwarding
+;; - Forces control master (the default disables it when multi-hop, even when first hop)
 ;;
 (eval-after-load "tramp"
   '(add-to-list 'tramp-methods
-               (list "ssha"
-                     '(tramp-login-program "ssh")
-                     '(tramp-login-args
-                       (("-l" "%u")
-                        ("-p" "%p")
-                        ("%c")
-                        ("-A")
-                        ("-e" "none")
-                        ("%h")
-                        ;;("-t" "bash")
-                        ))
-                     '(tramp-async-args
-                       (("-q")))
-                     '(tramp-remote-shell "/bin/sh")
-                     '(tramp-remote-shell-login
-                       ("-l"))
-                     '(tramp-remote-shell-args
-                       ("-c")))
-               t  )
+                (list "ssha"
+                      '(tramp-login-program "ssh")
+                      '(tramp-login-args
+                        (("-l" "%u")
+                         ("-p" "%p")
+                         ;; Force control master
+                         ("-o" "ControlMaster=auto" "-o" "ControlPath=~/.ssh/tramp.%%C" "-o" "ControlPersist=no") ;("%c")
+                         ;; Forward agent
+                         ("-A")
+                         ("-e" "none")
+                         ("%h")
+                         ;;("-t" "bash")
+                         ))
+                      '(tramp-async-args
+                        (("-q")))
+                      '(tramp-remote-shell "/bin/sh")
+                      '(tramp-remote-shell-login
+                        ("-l"))
+                      '(tramp-remote-shell-args
+                        ("-c")))
+                t)
   )
-;;(eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
+
 ;; might help tramp
+;;(eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
 (setenv "SHELL" "/bin/bash")
 (setenv "ESHELL" "/bin/bash")
 
