@@ -139,10 +139,10 @@ while dst_fps + container_fps <= max_fps:
 if not enable or dst_fps <= container_fps:
     print("NOT reflowing clip", clip.width, "x", clip.height, "at", container_fps, "fps (display:", display_fps, ").")
 else:
-    src_fps_num = int(container_fps * 1e6)
-    src_fps_den = int(1e6)
-    dst_fps_num = int(dst_fps * 1e6)
-    dst_fps_den = int(1e6)
+    src_fps_num = int(container_fps * 1e5)
+    src_fps_den = int(1e5)
+    dst_fps_num = int(dst_fps * 1e5)
+    dst_fps_den = int(1e5)
 
     print("Reflowing clip", clip.width, "x", clip.height, " from ", src_fps_num/src_fps_den, "fps to", dst_fps_num/dst_fps_den, "fps (display:", display_fps, ").")
 
