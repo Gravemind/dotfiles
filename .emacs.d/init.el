@@ -1464,14 +1464,14 @@ With argument, do this that many times."
 
   (add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell)
 
-  (defun my-magit-log-upstream (&optional args files)
-    "Logs current(o), ahead(<), and behind(>) commits."
-    (interactive (magit-log-arguments))
-    (magit-log (list "--graph" "--boundary" "--left-right" "@...@{u}") args files))
+  (defun my-magit-log-upstream (upstream &optional args files)
+    "Logs diverging commits between HEAD(<) and an upstream(>)."
+    (interactive (cons (magit-read-branch-or-commit "Upstream" "@{u}")
+                       (magit-log-arguments)))
+    (magit-log (list "--graph" "--boundary" "--left-right" (format "@...%s" upstream)) args files))
 
   (defun my-magit-pullff (&optional args)
-    "Pull fast forward only if possible
-\n(git pull --ff-only --no-rebase)"
+    "Pull fast forward only if possible (git pull --ff-only --no-rebase)"
     (interactive (list (magit-commit-arguments)))
     (magit-run-git-with-editor "pull" "--ff-only" "--no-rebase"))
 
