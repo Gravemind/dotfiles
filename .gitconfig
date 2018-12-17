@@ -42,14 +42,13 @@
 	# Force clean PATH to HEAD state
 	fclean = "!f() { set -eu; a=\"${1:-./}\"; echo -n \"Remove untracked and ignored and checkout $a ? [y/N] \" && read -n 1 r && echo && [[ $r == \"y\" ]] && cd \"$GIT_PREFIX\" && ls -d \"$a\" && git checkout @ -- \"$a\" && git clean -xdf -- \"$a\" && echo \"Cleaned $a\"; }; f"
 
-	# usage: git fo BRANCH
-	# Fetch any BRANCH to it's upstream
-	fo = "!f() { set -eu; git update-ref refs/heads/$1 $1@{upstream}; }; f"
+	# usage: git bo BRANCH
+	# Update other BRANCH to it's upstream
+	bo = "!f() { set -eu; git branch -f $1 $1@{upstream}; }; f"
 
-	# usage: git fco BRANCH
-	# Fetch any BRANCH to it's upstream, _then_ checkout it
-	# (reverse of git co BRANCH; git pull; )
-	fco = "!f() { set -eu; git fo $1; git checkout $1 && git submodule update; }; f"
+	# usage: git bco BRANCH
+	# Update other BRANCH to it's upstream, then checkout it
+	bco = "!f() { set -eu; git bo $1 && git checkout $1 && git submodule update; }; f"
 
 	# Fetch prune all
 	fp = fetch --all --prune --tags
