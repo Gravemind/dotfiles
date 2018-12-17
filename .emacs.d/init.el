@@ -1465,8 +1465,8 @@ With argument, do this that many times."
   (add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell)
 
   (defun my-magit-log-upstream (upstream &optional args files)
-    "Logs diverging commits between HEAD(<) and an upstream(>)."
-    (interactive (cons (magit-read-branch-or-commit "Upstream" "@{u}")
+    "Logs diverging commits between head(<) and an UPSTREAM(>)."
+    (interactive (list (magit-read-branch-or-commit "Upstream" "@{u}")
                        (magit-log-arguments)))
     (magit-log (list "--graph" "--boundary" "--left-right" (format "@...%s" upstream)) args files))
 
@@ -1475,6 +1475,12 @@ With argument, do this that many times."
     (interactive (list (magit-commit-arguments)))
     (magit-run-git-with-editor "pull" "--ff-only" "--no-rebase"))
 
+  (defun my-magit-branch-update-other (branch)
+    "Update other BRANCH to it's upstream."
+    (interactive (list (magit-read-local-branch "Other branch to update")))
+    (magit-run-git-with-editor "branch" "-f" branch (concat branch "@{upstream}")))
+
+  ;; log
   (magit-define-popup-switch
     'magit-log-popup
     ?i "Regexp ignore case" "--regexp-ignore-case")
@@ -1485,6 +1491,7 @@ With argument, do this that many times."
     'magit-log-popup
     ?u "Log upstream" 'my-magit-log-upstream)
 
+  ;; pull
   (magit-define-popup-action
     'magit-pull-popup
     ?f "Pull ff only" 'my-magit-pullff)
@@ -1492,6 +1499,7 @@ With argument, do this that many times."
     'magit-pull-popup
     ?a "Auto stash" "--autostash")
 
+  ;; diff
   (magit-define-popup-switch
     'magit-diff-refresh-popup
     ?W "Function context" "-W")
@@ -1504,6 +1512,11 @@ With argument, do this that many times."
   (magit-define-popup-switch
     'magit-diff-popup
     ?R "Reverse, show differences from index or on-disk file to tree contents" "-R")
+
+  ;; branch
+  (magit-define-popup-action
+    'magit-branch-popup
+    ?o "Update other" 'my-magit-branch-update-other)
 
   (setq-default
    magit-log-arguments '("--graph" "--color" "--decorate" "--date-order" "--follow" "-n256")
