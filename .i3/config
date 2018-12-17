@@ -357,6 +357,9 @@ bindsym $ModK+Return exec urxvt
 bindsym $ModK+Shift+Return exec --no-startup-id $layouts/launch.sh -- emacs
 bindsym $ModK+Ctrl+Return exec --no-startup-id $layouts/launch.sh -- emacs ~/TODO.org
 
+# Rtags rdm server
+bindsym $ModK+F4 exec --no-startup-id $layouts/launch.sh -w 4 -i rdm urxvt -name rdm -e zsh -is eval "~/bin/rdm_launch.sh"
+
 # Firefox
 set $browser firefox
 bindsym $ModK+F10       exec --no-startup-id $layouts/launch.sh -w 10 $browser
