@@ -1466,9 +1466,11 @@ With argument, do this that many times."
 
   (defun my-magit-log-upstream (upstream &optional args files)
     "Logs diverging commits between head(<) and an UPSTREAM(>)."
-    (interactive (list (magit-read-branch-or-commit "Upstream" "@{u}")
-                       (magit-log-arguments)))
-    (magit-log (list "--graph" "--boundary" "--left-right" (format "@...%s" upstream)) args files))
+    (interactive (cons
+                  ;;(read-from-minibuffer "Upstream: " "@{u}")
+                  (magit-read-branch-or-commit "Upstream" "@{u}")
+                  (magit-log-arguments)))
+    (magit-git-log (list "--graph" "--boundary" "--left-right" (concat "@..." upstream)) args files))
 
   (defun my-magit-pullff (&optional args)
     "Pull fast forward only if possible (git pull --ff-only --no-rebase)"
