@@ -145,6 +145,7 @@ opengl-swapinterval=1 # vsync
 #
 [protocol.http]
 force-window=immediate
+volume=80
 [protocol.https]
 profile=protocol.http
 [protocol.ytdl]

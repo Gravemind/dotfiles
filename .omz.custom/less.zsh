@@ -29,7 +29,7 @@ export LESS='-qRiSM -j3 -z-4'
 export MANPAGER='less -J'
 
 # for systemd (journalctl...)
-export SYSTEMD_LESS="$LESS"
+export SYSTEMD_LESS="$LESS -F"
 
 alias lesss='less -+S'
 

@@ -15,7 +15,7 @@ function agent() {
 	ssh-add -l >& /dev/null
 	if [[ $? == 0 || $? == 1 ]] ## returns 1 when connected but no keys
 	then
-		echo "agent already running"
+		echo "Agent already running"
 	else
 		export SSH_AGENT_OWNER_PID="$selfpid"
 		eval "$(ssh-agent -s)"
