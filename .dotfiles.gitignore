@@ -46,6 +46,7 @@
 !/.config/systemd
 !/.config/youtube-dl
 !/.config/dunst
+!/.config/feh
 
 !/bin
 !/dotfiles

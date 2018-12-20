@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -euo pipefail
+
+usage() {
+    echo "$0 FILE"
+}
+
+f="${1:-}"
+if [[ ! -e "$f" ]]
+then
+    echo "$0: no such file or directory: $f" >&2
+    usage
+    exit 1
+fi
+
+escape_markup() {
+    e="$@"
+    e="$"
+}
+
+prompt="rename to"
+mesg="Enter new file name for $f"$'\n'"Use <b>Ctrl-Space</b> to prefill with a suggestion below"
+
+newf="$(\ls | rofi -dmenu -format f -p "$prompt" -mesg "$mesg")"

@@ -1,0 +1,93 @@
+#!/bin/bash
+
+set -euo pipefail
+
+usage() {
+    echo "$0 [-hte] [-c MV_LIKE_CMD] FILE
+
+-t: use FILE's parent directory as destination instead of pwd
+-e: hide extension (keep the same)
+-c: run MV_LIKE_CMD instead of mv
+"
+
+}
+
+targetfile=0
+cmd="mv"
+keepextention=0
+
+options=$(getopt -o "htec:" -l "help" -n "$0" -- "$@")
+[[ $? -eq 0 ]] || exit 1
+eval set -- "$options"
+while true; do
+    case "$1" in
+    -h|--help) usage; exit 0; ;;
+    -t) targetfile=1; ;;
+    -e) keepextention=1; ;;
+    -c) shift; cmd="$1"; ;;
+    --) shift; break; ;;
+    *) break; ;;
+    esac
+    shift
+done
+
+f="${1:-}"
+if [[ ! -e "$f" ]]
+then
+    echo "$0: no such file or directory: $f" >&2
+    usage
+    exit 1
+fi
+
+if (( targetfile ))
+then
+    targetdir="$(dirname "$f")"
+else
+    targetdir="$(pwd)"
+fi
+
+escape_markup() {
+    e="$*"
+    e="${e//&/&amp;}"
+    e="${e//</&lt;}"
+    e="${e//>/&gt;}"
+    echo -n "$e"
+}
+
+bf="$(basename "$f")"
+if [[ "$keepextention" -ne 0 && -n "${bf##*.}" && -n "${bf%.*}" ]]
+then
+    ext=".${bf##*.}"
+    bf="${bf%.*}"
+    listsuggestions() {
+        ( cd "$targetdir" ; \ls ) | sed 's/\..*$//' | sort -u
+    }
+else
+    ext=""
+    listsuggestions() {
+        ( cd "$targetdir" ; \ls )
+    }
+fi
+
+prompt="$cmd to"
+mesg=""
+mesg+="Enter a name to $cmd <b>$(escape_markup "$f")</b> to $(escape_markup "$targetdir/...${ext}")"
+mesg+=$'\n'
+mesg+=$'\n'
+mesg+="---- Suggestions: (use Ctrl-Space) ----"
+
+newbf="$bf"
+while [[ "$newbf" = "$bf" ]]
+do
+    newbf="$( listsuggestions | rofi -dmenu -format f -p "$prompt" -mesg "$mesg" -filter "$newbf" || true)"
+    [[ -n "$newbf" ]] || { echo "$0: exit rofi, abort"; exit 1; }
+done
+
+if [[ -e "$newbf" ]]
+then
+    rofi -e "error: file already exists: $(escape_markup "$newbf")"
+    exit 1
+fi
+
+echo "$0: running $cmd $f $targetdir/$newbf$ext"
+$cmd "$f" "$targetdir/$newbf$ext"
