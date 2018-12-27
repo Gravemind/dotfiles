@@ -29,7 +29,7 @@
 URxvt*urgentOnBell:     true
 
 URxvt*loginShell:       true
-URxvt*saveLines:        300000  ! 600M RAM usage `cat -e /dev/urandom`
+URxvt*saveLines:        300000  ! 500M ram usage (RES) `cat -e /dev/urandom`
 URxvt*buffered:         true
 !URxvt*font:             xft:DejaVu Sans Mono:size=9
 ! URxvt*font:             xft:DejaVu Sans Mono:size=9,\
