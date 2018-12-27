@@ -68,5 +68,7 @@ xset b 0 &> /dev/null
 ## ssh agent
 #eval "$(ssh-agent)"
 
+~/.i3/wallpaper_cycle
+
 mv ~/.i3/log ~/.i3/log.1
 exec i3 >& ~/.i3/log

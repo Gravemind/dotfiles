@@ -404,7 +404,7 @@ bar { # bar
 # Run at startup
 #
 
-exec --no-startup-id $wallpaper #; $locker
+#exec --no-startup-id $locker
 #exec conky -c ~/.conky/balloon/conkyrc
 
 set $hook_idle_time_min 10
