@@ -10,8 +10,7 @@ import time
 import pprint
 pp = pprint.PrettyPrinter(indent=4).pprint
 
-rofi_exe = "/home/jo/documents/clones/rofi/build/rofi"
-#rofi_exe = "rofi"
+rofi_exe = "rofi"
 
 scrot_exe="scrot"
 scrot_out_dir=os.getenv("HOME")
