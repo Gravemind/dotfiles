@@ -48,9 +48,4 @@ cat /etc/pacman.d/mirrorlist
 rm -f "$tmpfile" "$tmpfile2"
 
 echo "$0: OK, now refreshing packages with pacman";
-if command -v pacaur >/dev/null 2>&1
-then
-	pacaur -Syy
-else
-	pacman -Syy
-fi
+$su pacman -Syy
