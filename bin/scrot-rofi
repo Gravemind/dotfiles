@@ -36,6 +36,10 @@ def flatten(inargs):
             args.append(arg)
     return args
 
+def stat_latest_time(f):
+    s = os.stat(f)
+    return max(s.st_ctime, s.st_mtime)
+
 def run(*args, **kwargs):
     args = flatten(args)
     #pp(args)
@@ -134,14 +138,21 @@ def scrot_rofi(rawargs):
 
     while True:
 
-        dir_entries = [ scrot_out_basename(f) for f in os.listdir(scrot_out_dir) if f.startswith(scrot_out_prefix) and f.endswith("." + scrot_out_ext) ]
+        dir_entries = os.listdir(scrot_out_dir)
+        # take "screen_....png" files
+        dir_entries = filter(lambda f: f.startswith(scrot_out_prefix) and f.endswith("." + scrot_out_ext), dir_entries)
+        # sort by date
+        dir_entries = sorted(dir_entries, key=lambda f: stat_latest_time(os.path.join(scrot_out_dir, f)), reverse=False)
+        # strip "screen_....png"
+        dir_entries = map(scrot_out_basename, dir_entries)
+        dir_entries = list(dir_entries)
 
+        # suffix with "_1" "_2"...
         new_entries = []
         for ent in dir_entries:
             ent = inc_basename(ent)
             if ent not in dir_entries and ent not in new_entries:
                 new_entries.append(ent)
-        new_entries.sort()
 
         entry_names = new_entries
 
