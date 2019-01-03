@@ -17,19 +17,19 @@ wget
 zsh-completions
 bash-completion
 pacutils
+reflector
+p7zip
+pigz
+zstd
+ripgrep
+fd
+gnu-netcat
 
 xorg
-
 emacs
-
-cower
-pacaur
-reflector
-
 i3
 dmenu
 rofi
-mesa-demos
 xterm
 rxvt-unicode
 ttf-dejavu
@@ -41,10 +41,11 @@ meld
 tk
 xautolock
 xdiskusage
-xlogin-git
-
-nvidia
-nvidia-settings
+xclip
+xdotool
+redshift
+pwgen
+neofetch
 
 clang
 clang-tools-extra
@@ -55,55 +56,43 @@ ldns
 bind-tools
 iftop
 iotop
+atop
+powertop
 gdb
 asciidoc
 dos2unix
 socat
 perf
-
-chromium
-
 lm_sensors
-
-synergy
-
-lib32-nvidia-utils
-steam
-steam-fonts
+smartmontools
+hdparm
+at
+nfs-utils
+net-tools
 
 pulseaudio
 pavucontrol
 
-smartmontools
-hdparm
-
-xclip
-xdotool
+firefox
+chromium
 
 mpv
 libva-vdpau-driver
-p7zip
-redshift
-ripgrep
-fd
-dtrx
-pwgen
-neofetch
-
-xkb-qwerty-fr
-
-at
-nfs-utils
 
 spotify
 youtube-dl
 
-ssmtp
-net-tools
+steam
+steam-fonts
 
 # Screenshot
 maim
 slop
+
+## AUR
+xlogin-git
+xkb-qwerty-fr
+
 
 # pacaur
 ./pacaur-install.sh
@@ -125,3 +114,10 @@ Server = https://mirror.archlinux.no/repo-ck/os/$arch
 Server = http://repo-ck.com/$arch
 
 _ pacman-key --lsign-key 5EE46C4C
+
+# nvidia
+
+mesa-demos
+nvidia
+nvidia-settings
+lib32-nvidia-utils
