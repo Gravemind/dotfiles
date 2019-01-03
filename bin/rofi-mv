@@ -3,11 +3,11 @@
 set -euo pipefail
 
 usage() {
-    echo "$0 [-hte] [-c MV_LIKE_CMD] FILE
+    echo "$0 [-hte] [-c MV_LIKE_BIN] FILE
 
 -t: use FILE's parent directory as destination instead of pwd
--e: hide extension (keep the same)
--c: run MV_LIKE_CMD instead of mv
+-e: keep the same extension (hide extension)
+-c: run MV_LIKE_BIN instead of mv
 "
 
 }
@@ -60,12 +60,12 @@ then
     ext=".${bf##*.}"
     bf="${bf%.*}"
     listsuggestions() {
-        ( cd "$targetdir" ; \ls ) | sed 's/\..*$//' | sort -u
+        ( cd "$targetdir" ; \ls -t) | sed 's/\..*$//' | sort -u
     }
 else
     ext=""
     listsuggestions() {
-        ( cd "$targetdir" ; \ls )
+        ( cd "$targetdir" ; \ls -t)
     }
 fi
 
