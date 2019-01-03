@@ -7,12 +7,21 @@ Tweaked version of the dotfiles as a git bare repo way:
 
 Here is a short How To:
 
-#### Setup: Clone --no-checkout --separate-git-dir:
+#### Setup: Bare clone:
 
 ```bash
 cd ~
-git clone --no-checkout --separate-git-dir=.dotfiles.git https://github.com/Gravemind/dotfiles .
-# Clone staged all files as deleted, un-stage that:
+git clone --bare https://github.com/Gravemind/dotfiles .dotfiles.git
+
+# Enable "HOME as git repo" (`rm .git` to disable)
+ln -s .dotfiles.git .git
+
+# Unbare
+git config --local core.bare false
+git config --local remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
+git fetch
+
+# Unstage "deleted" files
 git reset HEAD .
 ```
 
