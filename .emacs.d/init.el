@@ -1862,7 +1862,10 @@ With argument, do this that many times."
    diff-hl-flydiff-delay 0.01
    )
 
-  (add-hook 'dired-mode-hook 'diff-hl-dired-mode)
+  ;; diff-hl in dired
+  (add-hook 'dired-mode-hook 'diff-hl-dired-mode-unless-remote) ;; disabled with tramp (too slow)
+  ;;(add-hook 'dired-mode-hook 'diff-hl-dired-mode)
+
   (global-diff-hl-mode)
   (diff-hl-flydiff-mode t)
 )
