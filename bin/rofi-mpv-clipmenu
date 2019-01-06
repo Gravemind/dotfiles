@@ -1,0 +1,203 @@
+#!/bin/bash
+
+set -u
+
+shopt -s lastpipe
+
+default_dl_dir="$(xdg-user-dir DOWNLOAD)"
+
+base0="$(basename "$0")"
+
+usage() {
+    echo -n 'usage: '"$base0"' [OPTS...] [--] [ARGS...]
+
+    Asks before running `mpv ARGS... -- $(xclip -o)`.
+
+OPTS...:
+
+    -h|--help
+        print this message
+
+    --rofi-args ARGS...
+        pass ARGS to rofi
+
+    --dl-dir DL_DIR
+        download location directory (default: '"$default_dl_dir"')
+
+Environment variables:
+* CLIPMENU overrides the clipmenu program
+
+Tip to make mpv open a window ASAP for http/https/ytdl streams: add to your mpv config:
+```
+[protocol.http]
+force-window=immediate
+[protocol.https]
+profile=protocol.http
+[protocol.ytdl]
+profile=protocol.http
+```
+
+'
+}
+
+filter_urls() {
+    grep -E '^[a-z0-9]+://'
+}
+
+escape_markup() {
+    e="$(cat)"
+    e="${e//&/&amp;}"
+    e="${e//</&lt;}"
+    e="${e//>/&gt;}"
+    echo -n "$e"
+}
+
+escape_filename() {
+    sed -E 's/[^a-zA-Z0-9\.-]+/_/g'
+}
+
+LOGPID=$$
+
+log() {
+    echo "$base0 $LOGPID: $*"
+}
+err() {
+    echo "$base0 $LOGPID: error: $*" 1>&2
+}
+fatal() {
+    echo "$base0 $LOGPID: fatal error: $*" 1>&2
+    exit 2
+}
+checked() {
+    "$@"
+    r=$?
+    [[ $r = 0 ]] || fatal "$0 failed (exit $r)"
+}
+
+notify() {
+    checked notify-send --app-name "$base0" -h "string:synchronous:$base0-$LOGPID" -u "$@"
+}
+
+main() {
+
+    CLIPMENU="${CLIPMENU:-clipmenu}"
+
+    local dl_dir="$default_dl_dir"
+    local rofi_args=()
+    while (( $# )); do
+        case "$1" in
+            -h|--help)  usage; exit 0; ;;
+            --dl-dir)   dl_dir="$1"; shift; shift; ;;
+            --rofi-args)
+                shift
+                while [[ "$#" -gt 0 && "$1" != "--" ]]; do
+                    rofi_args+=("$1")
+                    shift
+                done
+                ;;
+            --) shift; break; ;;
+            *) break; ;;
+        esac
+    done
+
+    local mpvargs=( "$@" )
+
+    # Quiet mpv if not in a cli
+    [[ -t 0 ]] || mpvargs=( --really-quiet "${mpvargs[@]}" )
+
+    [[ "${#rofi_args[@]}" -gt 0 ]] || rofi_args=( -p "$base0" )
+
+    # rofi-script makes clipmenu list-only entries
+    # (we won't get multi-line clips, but don't really care here !?)
+    local url=
+    CM_LAUNCHER=rofi-script checked "$CLIPMENU" | \
+        filter_urls | \
+        checked rofi -dmenu "${rofi_args[@]}" | \
+        IFS= read -r url
+    [[ -n "$url" ]] || fatal "no url selected"
+
+    log "selected url: $url"
+
+    local msg="$(echo "$url" | escape_markup)"
+    local do=
+    local dummy=
+    {
+        echo "mpv: play with mpv";
+        echo "youtube-dl: download with youtube-dl";
+        echo "wget: download with wget";
+    } | \
+        rofi -dmenu "${rofi_args[@]}" -mesg "$msg" | \
+        read -r -d: do dummy
+
+    if [[ $do = youtube-dl || $do = wget ]]; then
+        dlwith=$do
+        do=
+
+        pushd "$dl_dir" > /dev/null || fatal "invalid dl dir: $dl_dir"
+
+        local filename=
+        local markupfilename=
+        local ok=0
+        if [[ $dlwith = youtube-dl ]]; then
+            filename="$(youtube-dl -q --restrict-filenames --get-filename -- "$url" | escape_filename)"
+            if [[ -n "$filename" ]]; then
+                markupfilename="$(echo "$filename" | escape_markup)"
+                log "youtube-dl $filename"
+                notify low "Launching $dlwith..." "$markupfilename"
+
+                youtube-dl -q -o "${filename//%/%%}" --no-mtime -- "$url" && ok=1 || err "youtube-dl failed"
+
+                if [[ $ok = 1 && ! -f "$filename" ]]; then
+                    ok=0
+                    other="$(\ls -t "${filename%\.*}."* | head -n1)"
+                    if [[ -f "$other" ]]; then
+                        filename="$other"
+                        log "youtube-dl output file not found, but found $filename"
+                        ok=1
+                    else
+                        err "youtube-dl output file not found: $filename"
+                    fi
+                fi
+
+            fi
+        else
+            filename="$(echo "${url##*/}" | escape_filename)"
+            markupfilename="$(echo "$filename" | escape_markup)"
+            log "wget $filename"
+            notify low "Launching $dlwith..." "$markupfilename"
+
+            wget -q -O "$filename" --no-use-server-timestamps -- "$url" && ok=1 || err "wget failed"
+
+            [[ -f "$filename" ]] || ok=0
+        fi
+
+        popd > /dev/null
+
+        if [[ $ok = 1 && -n "$filename" ]]; then
+            if hash dunstify 2> /dev/null ; then
+                local res=
+                notify normal "Finished $dlwith" "$markupfilename" | \
+                    read -r res
+                if [[ "$res" = "mpv" ]]; then
+                    url="$dl_dir/$filename"
+                    do=mpv
+                fi
+            else
+                notify normal "Finished $dlwith" "$markupfilename"
+            fi
+
+        else
+            notify critical "Failed ${dlwith} !" "$markupfilename"
+        fi
+
+    fi
+
+    if [[ $do = mpv ]]; then
+        local cmd=( mpv "${mpvargs[@]}" "--" "$url" )
+        log "launching ${cmd[@]}"
+        exec "${cmd[@]}"
+    fi
+
+}
+
+main "$@"

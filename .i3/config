@@ -265,11 +265,11 @@ bindsym $ModK+z exec --no-startup-id "rofi -show combi -display-combi ' launc
 
 # Cliboard Manager
 bindsym $ModK+Insert       exec --no-startup-id CM_LAUNCHER=rofi clipmenu -p ' clip' -i
-bindsym $ModK+Shift+Insert exec --no-startup-id CM_LAUNCHER=rofi ~/bin/clipmenu-del -p '-- clipdel' -i
+bindsym $ModK+Shift+Insert exec --no-startup-id CM_LAUNCHER=rofi ~/bin/clipmenu-del -p '~~~~ ~~clipdel~~' -i
 exec_always --no-startup-id systemctl --user restart clipmenud.service
 
-# Mpv Clipboard (mpvcb)
-bindsym $ModK+y exec --no-startup-id ~/bin/mpvcb --rofi --clipmenu-args -p ' mpv' -i
+# Mpv Clipboard
+bindsym $ModK+y exec --no-startup-id ~/bin/rofi-mpv-clipmenu --rofi-args -p ' mpv' -i
 
 # Overriding Shift-Insert to type what's in primary clipboard (selection)
 # (xdotool bugge ? seems to type while Shift is pressed ?)
