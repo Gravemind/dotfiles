@@ -52,8 +52,8 @@ profile=mydefault
 profile=gpu-hqer
 
 # GPU api
-profile=opengl
-#profile=vulkan
+#profile=opengl
+profile=vulkan
 
 # 60fps interopation
 #profile=interp
