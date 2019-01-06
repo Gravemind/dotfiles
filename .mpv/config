@@ -135,8 +135,8 @@ vulkan-swap-mode=auto
 
 [opengl]
 gpu-api=opengl
-#opengl-swapinterval=0 # no sync
-opengl-swapinterval=1 # vsync
+opengl-swapinterval=0 # no sync
+#opengl-swapinterval=1 # vsync
 # https://www.svp-team.com/wiki/SVP:mpv
 # Can fix stuttering in some cases, in other cases probably causes it. Try it if you experience stuttering on macOS.
 # opengl-early-flush=no
