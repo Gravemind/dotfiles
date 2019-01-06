@@ -28,7 +28,7 @@ if [[ -n "$PROMPT_USER" ]]; then
 	PROMPT_USER="$PROMPT_USER %F{white}%{∶%G%}"
 fi
 
-PROMPT='%K{black}%B%F{white}%{❰%G%}'"${PROMPT_USER}"' $(gravemind_prompt_info_short)%1(j. %F{white}%{∶%G%} %F{green}%j.)%(?.. %F{white}%{∶%G%} %F{red}%?) %F{white}%{❱%G%} %f%b%K{black}'
+PROMPT='%K{black}%B%F{white}%{❰%G%}'"${PROMPT_USER}"' $(gravemind_prompt_info_short)%1(j. %F{white}%{∶%G%} %F{green}%j.)%(?.. %F{white}%{∶%G%} %F{red}%?)$(gravemind_git_doing) %F{white}%{❱%G%} %f%b%K{black}'
 
 RPS1='%K{black}%B%F{white}%{❰%G%}$GRAVEMIND_PROMPT_CMD_TIME $(gravemind_prompt_info_long) %F{white}%{∶%G%} $(gravemind_promt_cc)%F{white}%{∶%G%} %F{blue}%D{%H:%M} %F{white}%{❱%G%}%f%b%k'
 
@@ -45,6 +45,36 @@ then
 	#GIT_PS1_SHOWUPSTREAM="verbose"
 	source $ZSH/plugins/gitfast/git-prompt.sh
 fi
+
+function gravemind_git_doing() {
+	## .oh-my-zsh/plugins/gitfast/git-prompt.sh
+	$GRAVEMIND_PROMPT_USE_GITFAST || return 0;
+	local g="$(command git rev-parse --git-dir 2> /dev/null)"
+	[[ -n "$g" ]] || return 0;
+	local r=
+	if [[ -e "$g/rebase-merge/interactive" ]]; then
+		r="REBASING-i"
+	elif [[ -e "$g/rebase-merge" ]]; then
+		r="REBASING-m"
+	elif [[ -e "$g/rebase-apply/rebasing" ]]; then
+		r="REBASING"
+	elif [[ -e "$g/rebase-apply/applying" ]]; then
+		r="AMING"
+	elif [[ -e "$g/rebase-apply" ]]; then
+		r="AMING/REBASING"
+	elif [[ -e "$g/MERGE_HEAD" ]]; then
+		r="MERGING"
+	elif [[ -e "$g/CHERRY_PICK_HEAD" ]]; then
+		r="CHERRY-PICKING"
+	elif [[ -e "$g/REVERT_HEAD" ]]; then
+		r="REVERTING"
+	elif [[ -e "$g/BISECT_LOG" ]]; then
+		r="BISECTING"
+	else
+		return 0;
+	fi
+	echo -n " %F{white}%{∶%G%} %F{red}$r"
+}
 
 function gravemind_git_prompt_current_branch() {
 	if $GRAVEMIND_PROMPT_USE_GITFAST
