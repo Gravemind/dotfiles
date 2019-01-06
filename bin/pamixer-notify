@@ -30,4 +30,4 @@ else
     icon="audio-volume-high$symbolic"
 fi
 
-notify-send -u low -i "$icon" -h int:value:$vol -h int:transient:1 -h string:synchronous:volume "$title"
+notify-send -u low -i "$icon" -a "$basename0" -h int:value:$vol -h int:transient:1 -h string:synchronous:volume "$title"
