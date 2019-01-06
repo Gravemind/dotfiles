@@ -11,6 +11,8 @@ sub-color=1.0/0.5
 sub-auto=fuzzy
 blend-subtitles=yes
 screenshot-format=png
+# allow any size window (with back bars)
+no-keepaspect-window=
 
 # MPV downmix better than pulseaudio ?!
 audio-channels=2
