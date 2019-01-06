@@ -1482,6 +1482,13 @@ With argument, do this that many times."
     (interactive (list (magit-read-local-branch "Other branch to update")))
     (magit-run-git-with-editor "branch" "-f" branch (concat branch "@{upstream}")))
 
+  (defun my-magit-checkout-merge (revision)
+    "Like magit-checkout, but with `-m`."
+    (interactive (list (magit-read-other-branch-or-commit "Checkout")))
+    (when (string-match "\\`heads/\\(.+\\)" revision)
+      (setq revision (match-string 1 revision)))
+    (magit-run-git "checkout" "-m" revision))
+
   ;; log
   (magit-define-popup-switch
     'magit-log-popup
@@ -1519,6 +1526,9 @@ With argument, do this that many times."
   (magit-define-popup-action
     'magit-branch-popup
     ?o "Update other" 'my-magit-branch-update-other)
+  (magit-define-popup-action
+    'magit-branch-popup
+    ?M "Checkout merge" 'my-magit-checkout-merge)
 
   (setq-default
    magit-log-arguments '("--graph" "--color" "--decorate" "--date-order" "--follow" "-n256")
