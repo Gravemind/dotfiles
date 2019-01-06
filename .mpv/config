@@ -65,7 +65,7 @@ profile=svp
 # (bound in input.conf)
 #
 [enable-myscaletempo]
-af-add=@myscaletempo:scaletempo=stride=14:search=8:overlap=0.8
+af-add=@myscaletempo:scaletempo=stride=14:search=10:overlap=0.5
 # remove vapoursynth filter. (profile mydefault will restore it.)
 vf=""
 
