@@ -621,7 +621,7 @@
 (req-package ido
   ;:disabled
   :bind (("C-x C-f" . ido-find-file)
-         ("C-x b"   . ido-switch-buffer)
+         ;("C-x b"   . ido-switch-buffer)
          ("C-x C-r" . sudo-edit-current-file)
          )
   :hook (ido-minibuffer-setup . (lambda ()
@@ -1688,6 +1688,7 @@ With argument, do this that many times."
 (req-package helm
   ;:disabled
   :bind (("M-x" . helm-M-x)
+         ("C-x b"   . helm-buffers-list)
          ("C-f <C-return>" . helm-occur)
          ("C-f C-r" . helm-do-grep-rg-ripgrep)
          )
