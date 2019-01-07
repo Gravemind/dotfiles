@@ -137,7 +137,7 @@
     #   %%  Literal %
     # Markup is allowed
     #format = "<b>%s</b>\n%b"
-    format = "<span size='x-large'><b>%s</b> %n </span>\n<span alpha='40%' size='small'>%a</span>\n%b"
+    format = "<span size='x-large'><b>%s</b> %n </span>\n<span alpha='40%%' size='small'>%a</span>\n%b"
 
     # Show age of message if message is older than show_age_threshold
     # seconds.
