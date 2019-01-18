@@ -972,13 +972,21 @@ With argument, do this that many times."
 (req-package markdown-mode
   :pin melpa ;; table mode is not stable yet
   :defer t
-  :hook (markdown-mode . (lambda () (setq word-wrap t) (setq truncate-lines t) (toggle-truncate-lines t))) ;; FIXME does not work !?
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ;; ("\\.md\\'" . markdown-mode)
+         ;; ("\\.markdown\\'" . markdown-mode)
+         ("\\.md\\'" . gfm-mode)
+         ("\\.markdown\\'" . gfm-mode)
+         )
+  :hook (markdown-mode . (lambda ()
+                           (toggle-word-wrap 1)
+                           ;;(visual-fill-column-mode)
+                       ))
   :config
-
-  ;;(add-hook 'markdown-mode-hook '(lambda () (setq word-wrap t) (setq truncate-lines t) (toggle-truncate-lines t)))
-
   ;; bin launched to generate html (C-c C-c l), needs to be installed
-  (setq-default markdown-command "cmark-gfm")
+  (setq-default markdown-command "cmark-gfm -e footnotes -e table -e strikethrough -e autolink")
+  ;;(setq-default markdown-command "multimarkdown --smart --notes")
   )
 
 ;; (req-package flymd
