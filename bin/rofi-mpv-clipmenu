@@ -75,7 +75,7 @@ checked() {
 }
 
 notify() {
-    checked notify-send --app-name "$base0" -h "string:synchronous:$base0-$LOGPID" -u "$@"
+    checked notify-send -a "$base0" -h "string:synchronous:$base0-$LOGPID" -u "$@"
 }
 
 main() {
@@ -176,7 +176,9 @@ main() {
         if [[ $ok = 1 && -n "$filename" ]]; then
             if hash dunstify 2> /dev/null ; then
                 local res=
-                notify normal "Finished $dlwith" "$markupfilename" | \
+                checked dunstify -a "$base0" -h "string:synchronous:$base0-$LOGPID" -u \
+                        normal "Finished $dlwith" "$markupfilename" \
+                        -A "default,play mpv"| \
                     read -r res
                 if [[ "$res" = "mpv" ]]; then
                     url="$dl_dir/$filename"
