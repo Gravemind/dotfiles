@@ -208,7 +208,7 @@
     # Print a notification on startup.
     # This is mainly for error detection, since dbus (re-)starts dunst
     # automatically after a crash.
-    startup_notification = true
+    startup_notification = false
 
     mouse_left_click = do_action
     mouse_right_click = close_current
