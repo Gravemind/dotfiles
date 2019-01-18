@@ -1338,7 +1338,10 @@ With argument, do this that many times."
   (defun jo/flycheck-grammalecte ()
     (interactive)
     (require 'flycheck-grammalecte)
-    (flycheck-mode t)
+    (flyspell-mode 1)
+    (ispell-change-dictionary "francais")
+    (flyspell-buffer)
+    (flycheck-mode 1)
     (flycheck-select-checker 'francais-grammalecte)
     )
 
@@ -1484,9 +1487,9 @@ With argument, do this that many times."
 
 (req-package flyspell
   :pin manual
+  :defer t
   :bind (:map flyspell-mode-map
-              ("C-;" . helm-flyspell-correct)
-              )
+              ("C-;" . flyspell-correct-wrapper))
   :hook ((prog-mode . (lambda () (flyspell-mode -1) (flyspell-prog-mode)))
          (text-mode . (lambda () (flyspell-mode 1))))
   )
@@ -1835,22 +1838,20 @@ With argument, do this that many times."
 
   )
 
-;;
-;; helm-flyspell
-;;
-
-(req-package helm-flyspell
-  ;:disabled
-  :pin melpa ; not in melpa-stable yet ?
+;; also see flyspell-correct-ivy
+(req-package flyspell-correct-helm
+  ;;:disabled t
   :defer t
+  :after (flyspell)
+  :config
+  (setq-default flyspell-correct-interface #'flyspell-correct-helm)
   )
 
-;;
 ;; helm dash (dash documentation sets)
-;;
-
 (req-package helm-dash
-  ;:disabled
+  ;;:disabled t
+  :defer t)
+
   :defer t)
 
 (req-package ivy
