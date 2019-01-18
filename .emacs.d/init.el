@@ -14,6 +14,8 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;(setq debug-on-error t)
+
 ;; Benchmark init https://github.com/dholm/benchmark-init-el
 ;; - Install:
 ;;   $> cd ~/.emacs.d && git clone https://github.com/dholm/benchmark-init-el && make -C benchmark-init-el
@@ -24,8 +26,6 @@
 ;; ;; Use-package report: [f12] (see which is package Decl/Init/Config + benchmark)
 ;; (setq-default use-package-compute-statistics t)
 ;; (global-set-key (kbd "<f12>") (lambda () (interactive) (use-package-report)))
-
-;(setq debug-on-error t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -131,13 +131,14 @@
  inhibit-startup-screen t
  inhibit-splash-screen t
 
- ;; no foo~ files
+ ;; No foo~ files
  make-backup-files nil
 
+ ;; Truncate lines by default
  truncate-lines t
- word-wrap t
+ word-wrap nil
 
- ;vc-handled-backends nil
+ ;;vc-handled-backends nil
 
  ;; Max recent files entries
  recentf-max-saved-items 300
@@ -178,6 +179,9 @@
  ;;indicate-buffer-boundaries '((top . left) (bottom . right))
  ;; - Show lines after end of file
  indicate-empty-lines nil
+
+ ;; Always select *Help* buffers
+ help-window-select t
 
  )
 
@@ -980,9 +984,10 @@ With argument, do this that many times."
          ("\\.markdown\\'" . gfm-mode)
          )
   :hook (markdown-mode . (lambda ()
+                           ;; Need both ! (but why?)
+                           (toggle-truncate-lines 0)
                            (toggle-word-wrap 1)
-                           ;;(visual-fill-column-mode)
-                       ))
+                           ))
   :config
   ;; bin launched to generate html (C-c C-c l), needs to be installed
   (setq-default markdown-command "cmark-gfm -e footnotes -e table -e strikethrough -e autolink")
