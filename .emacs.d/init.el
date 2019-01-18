@@ -527,29 +527,26 @@
 ;;
 
 (req-package zoom
-  :ensure t
-  :init
-  (defun zoom-size-in-char-to-ratio ()
-    (let ((ratio `( ,(/ (float (car zoom-size-in-char)) (frame-width)) . ,(/ (float (cdr zoom-size-in-char)) (frame-height)) )))
-      ratio
-      ))
+  ;;:disabled t
+  :demand t
+  :config
   (setq-default
-   ;; By ratio:
-   ;;zoom-size '(0.618 . 0.618)
-   ;;zoom-size '(0.5 . 0.7)
+   ;;zoom-size '(0.618 . 0.618) ;; golden-ratio
+   zoom-size '(140 . 0.75) ;; 120 columns width, 75% height
 
-   ;; By size in chars:
-   ;; Corresponds to the minimum window size (in char)
-   ;; If window smaller, zoom will make this size
-   zoom-size-in-char '(150 . 60)
-   zoom-size 'zoom-size-in-char-to-ratio
+   window-min-width 10
+   window-min-height 4
 
-   ;; '(zoom-ignore-predicates (quote ((lambda nil (window-minibuffer-p)))))
-   ;; '(zoom-ignored-major-modes (quote (helm-mode)))
-   ;; '(zoom-size (quote (0.618 . 0.618)))
+   ;;zoom-ignored-buffer-names '("*Diff*")
+   ;;zoom-ignored-buffer-name-regexps '("^*helm" "^helm")
+   ;;temp-buffer-resize-mode t
 
+   ;;zoom-ignore-predicates (quote ((lambda nil (window-minibuffer-p))))
+   ;;zoom-ignored-major-modes (quote (helm-mode))
    )
-  (zoom-mode t))
+
+  (zoom-mode t)
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
