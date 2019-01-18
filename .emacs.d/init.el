@@ -996,6 +996,38 @@ With argument, do this that many times."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; visual-fill-column
+;;   https://github.com/joostkremers/visual-fill-column
+;;
+
+(req-package visual-fill-column
+  ;;:disabled t
+  :demand t
+  :config
+
+  ;; Set a max width and center buffer inside window
+  (setq-default
+   visual-fill-column-width 140
+   visual-fill-column-center-text t
+   visual-fill-column-fringes-outside-margins nil
+   )
+
+  ;; Fix split wont split when wide margins
+  ;; https://github.com/joostkremers/visual-fill-column#splitting-a-window
+  (setq-default split-window-preferred-function 'visual-fill-column-split-window-sensibly)
+
+  ;; Force globally enable. By default it's only enabled when visual-line-mode
+  ;; is enabled, and I don't use visual-line-mode.
+  (defun force-turn-on-visual-fill-column-mode ()
+    (when (buffer-file-name)
+      (visual-fill-column-mode 1)))
+  (advice-add 'turn-on-visual-fill-column-mode :after #'force-turn-on-visual-fill-column-mode)
+  (global-visual-fill-column-mode 1)
+
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; popwin
 ;;
 
