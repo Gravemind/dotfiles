@@ -568,21 +568,35 @@
 ;;
 
 (req-package history
-  :ensure t
-  :bind (("C-c j" . history-prev-history)
-         ("C-c l" . history-next-history)
+  :demand t
+  :bind (("C-c C-j" . history-prev-history)
+         ("C-c M-j" . history-goto-history)
+         ("C-c C-l" . history-next-history)
          )
-  :init
-  (require 'history)
-  ;; rtags
-  (add-to-list 'history-advised-before-functions 'rtags-find-symbol-at-point t)
-  (add-to-list 'history-advised-after-functions 'rtags-find-symbol-at-point t)
-  ;; go-mode
-  (add-to-list 'history-advised-before-functions 'godef-jump t)
-  (add-to-list 'history-advised-after-functions 'godef-jump t)
-  ;; racer-mode (rust-mode)
-  (add-to-list 'history-advised-before-functions 'racer-find-definition t)
-  (add-to-list 'history-advised-after-functions 'racer-find-definition t)
+  :config
+  ;(require 'history)
+
+  (defun add-to-history-advised (funclist)
+    (dolist (f funclist)
+      (add-to-list 'history-advised-before-functions f)
+      (add-to-list 'history-advised-after-functions f)
+    ))
+
+  (add-to-history-advised
+   '(
+     rtags-find-symbol-at-point     ;; rtags
+     godef-jump                     ;; go-mode
+     racer-find-definition          ;; racer-mode (rust-mode)
+     ace-jump-line-mode             ;; ace-jump
+     ))
+
+  ;; helm
+  (add-hook 'helm-goto-line-before-hook (lambda () (history-add-history)))
+  (add-to-list 'history-advised-after-functions 'helm-occur t)
+
+  ;; isearch
+  (add-to-list 'history-advised-before-functions 'isearch-forward)
+  (add-to-list 'history-advised-before-functions 'isearch-backward)
 
   (setq-default history-window-local-history t)
   (history-mode 1)
