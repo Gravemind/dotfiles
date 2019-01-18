@@ -1,0 +1,51 @@
+#!/bin/bash
+
+set -euo pipefail
+
+usage() {
+    echo -n 'usage: '"$0"' [PATH]
+
+Hard cleans PATH working tree (defaults to "."):
+- Recurses sub-modules/gits
+- git checkout HEAD -- PATH
+- git clean -xdf -- PATH # untracked and ignored files
+
+'
+}
+
+path="${1:-./}"
+
+if [[ "$path" = "-h" ]]; then
+    usage
+    exit 0
+fi
+
+echo -n "Hard reset working tree \"$(ls -d "$path")\" (and sub-repos) to HEAD ? [y/N] "
+read -n 1 r
+echo
+[[ "$r" == "y" ]] || exit 1
+
+echo
+echo "Cleaning $path ..."
+git checkout HEAD -- "$path"
+git clean -xdf -- "$path"
+echo "Cleaned $path";
+
+while read -u3 -d $'\0' -r sub; do
+
+    sub="$(dirname "$sub")"
+    echo
+    echo "Cleaning $sub ..."
+
+    pushd "$sub" > /dev/null
+
+    git checkout HEAD -- "."
+    git clean -xdf -- "."
+    echo "Cleaned $sub";
+
+    popd > /dev/null
+
+done 3< <(find "$path" -mindepth 2 -name '.git' -print0)
+
+echo
+echo "All cleaned."

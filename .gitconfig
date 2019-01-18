@@ -34,10 +34,6 @@
 	# "un-add"
 	ua = reset HEAD
 
-	# usage: git fclean PATH
-	# Force clean PATH to HEAD state
-	fclean = "!f() { set -eu; a=\"${1:-./}\"; echo -n \"Remove untracked and ignored and checkout $a ? [y/N] \" && read -n 1 r && echo && [[ $r == \"y\" ]] && cd \"$GIT_PREFIX\" && ls -d \"$a\" && git checkout @ -- \"$a\" && git clean -xdf -- \"$a\" && echo \"Cleaned $a\"; }; f"
-
 	# usage: git bo BRANCH
 	# Update other BRANCH to it's upstream
 	bo = "!f() { set -eu; git branch -f $1 $1@{upstream}; }; f"
