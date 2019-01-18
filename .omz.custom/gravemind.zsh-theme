@@ -1,44 +1,54 @@
 #!/bin/zsh
 
+export OMZLVL="$((${OMZLVL:--1} + 1))"
+
 ## http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
 
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=white,bold'
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
 
-PROMPT_USER=""
-# level (shell recursion depth)
-export OMZLVL="$((${OMZLVL:--1} + 1))"
-if [[ "$OMZLVL" -gt 0 ]]; then
-	#PROMPT_USER="%F{yellow}$OMZLVL %F{white}:"
-	for i in {1..$OMZLVL}
-	do
-		PROMPT_USER+="%F{yellow}%{❰%G%}"
-	done
-fi
-# user
-if [[ $EUID -ne 1000 || -n "$SSH_CONNECTION" ]]; then
-	PROMPT_USER="${PROMPT_USER} %(!.%F{red}.%F{blue})%n"
-fi
-# @host
-if [[ -n "$SSH_CONNECTION" ]]; then
-	PROMPT_USER="${PROMPT_USER}%F{green}@$HOST"
-fi
-# end separator
-if [[ -n "$PROMPT_USER" ]]; then
-	PROMPT_USER="$PROMPT_USER %F{white}%{∶%G%}"
-fi
+# GraveMind PS SEParator/BEGin/END
+GMPSSEP="%F{white}%{∶%G%}"
+GMPSBEG="%{❰%G%}"
+GMPSEND="%{❱%G%}"
+# Git icon
+#GMPSGIT="%{%G%}"
+GMPSGIT="%{⌥%G%}"
+#GMPSGIT="%{%G%}"
+#GMPSGIT="%{%G%}"
 
-PROMPT='%K{black}%B%F{white}%{❰%G%}'"${PROMPT_USER}"' $(gravemind_prompt_info_short)%1(j. %F{white}%{∶%G%} %F{green}%j.)%(?.. %F{white}%{∶%G%} %F{red}%?)$(gravemind_git_doing) %F{white}%{❱%G%} %f%b%K{black}'
+function gravemind_prompt_user() {
+	local user=""
+	# level/shell recursion depth
+	if [[ "$OMZLVL" -gt 0 ]]; then
+		#user="%F{yellow}$OMZLVL %F{white}:"
+		for i in {1..$OMZLVL}
+		do
+			user+="%F{yellow}$GMPSBEG"
+		done
+	fi
+	# user
+	if [[ $EUID -ne 1000 || -n "$SSH_CONNECTION" ]]; then
+		user="${user} %(!.%F{red}.%F{blue})%n"
+	fi
+	# @host
+	if [[ -n "$SSH_CONNECTION" ]]; then
+		user="${user}%F{green}@$HOST"
+	fi
+	[[ -n "$user" ]] || return 0;
+	echo -n "$user $GMPSSEP"
+}
 
-RPS1='%K{black}%B%F{white}%{❰%G%}$GRAVEMIND_PROMPT_CMD_TIME $(gravemind_prompt_info_long) %F{white}%{∶%G%} $(gravemind_promt_cc)%F{white}%{∶%G%} %F{blue}%D{%H:%M} %F{white}%{❱%G%}%f%b%k'
+# (`\$` will be eval at each prompt [re]draw)
 
-PROMPT2='%K{black}%B  %F{blue}%_ %F{white}%{❱%G%} %f%b%k'
+PROMPT="%K{black}%B%F{white}$GMPSBEG$(gravemind_prompt_user) \$(gravemind_prompt_info_short)%1(j. $GMPSSEP %F{green}%j.)%(?.. $GMPSSEP %F{red}%?)\$(gravemind_git_doing) %F{white}$GMPSEND %f%b%K{black}"
 
-unset PROMPT_USER
+RPS1="%K{black}%B%F{white}$GMPSBEG\$(gravemind_prompt_cmd_time) \$(gravemind_prompt_info_long) $GMPSSEP \$(gravemind_promt_cc)$GMPSSEP %F{blue}%D{%H:%M} %F{white}$GMPSEND%f%b%k"
+
+PROMPT2="%K{black}%B  %F{blue}%_ %F{white}$GMPSEND %f%b%k"
 
 GRAVEMIND_PROMPT_USE_GITFAST=true
-if $GRAVEMIND_PROMPT_USE_GITFAST
-then
+if $GRAVEMIND_PROMPT_USE_GITFAST; then
 	#GIT_PS1_SHOWDIRTYSTATE=true ## a bit slow
 	#GIT_PS1_SHOWCOLORHINTS=true
 	#GIT_PS1_SHOWUNTRACKEDFILES=true ## quite slow
@@ -73,12 +83,11 @@ function gravemind_git_doing() {
 	else
 		return 0;
 	fi
-	echo -n " %F{white}%{∶%G%} %F{red}$r"
+	echo -n " $GMPSSEP %F{red}$r"
 }
 
 function gravemind_git_prompt_current_branch() {
-	if $GRAVEMIND_PROMPT_USE_GITFAST
-	then
+	if $GRAVEMIND_PROMPT_USE_GITFAST; then
 		__git_ps1 "%s"
 	else
 		git_current_branch
@@ -109,11 +118,7 @@ function gravemind_prompt_info_short() {
 			shortsubgit="/%{…%G%}/$subgitlast"
 		fi
 	fi
-	#local giticon=""
-	local giticon="⌥"
-	#local giticon=""
-	#local giticon=""
-	echo -n "%F{blue}$giticon %20>…>$gitrootname%<<%F{black}%20>…>$shortsubgit%<</"
+	echo -n "%F{blue}$GMPSGIT %20>…>$gitrootname%<<%F{black}%20>…>$shortsubgit%<</"
 }
 
 function gravemind_prompt_info_long() {
@@ -123,7 +128,7 @@ function gravemind_prompt_info_long() {
 		return
 	fi
 	if [[ "$(command git config --get oh-my-zsh.hide-status 2>/dev/null)" = "1" ]]; then
-		echo -n "%F{black}%~ %F{white}%{∶%G%} %F{black}(oh-my-zsh.hide-status)"
+		echo -n "%F{black}%~ $GMPSSEP %F{black}(oh-my-zsh.hide-status)"
 		return
 	fi
 	## FIXME when pwd is outside toplevel
@@ -132,7 +137,7 @@ function gravemind_prompt_info_long() {
 	local pwdbegin="${toplevelparent/#$HOME\//~/}"
 	local pwdgit="$toplevelbase"
 	local pwdend="${$(pwd)#$toplevel}"
-	echo -n "%F{blue}$(gravemind_git_prompt_current_branch) %F{white}%{∶%G%} %F{black}$pwdbegin%F{blue}$pwdgit%F{black}$pwdend"
+	echo -n "%F{blue}$(gravemind_git_prompt_current_branch) $GMPSSEP %F{black}$pwdbegin%F{blue}$pwdgit%F{black}$pwdend"
 }
 
 function gravemind_promt_cc() {
@@ -154,11 +159,9 @@ function gravemind_promt_cc() {
 	else
 		progs+="%F{black}C"
 	fi
-	if [[ -n "$SSH_AUTH_SOCK" ]]
-	then
+	if [[ -n "$SSH_AUTH_SOCK" ]]; then
 		ssh-add -l >& /dev/null
-		if [[ $? == 0 || $? == 1 ]] ## returns 1 when connected but no keys
-		then
+		if [[ $? == 0 || $? == 1 ]]; then ## returns 1 when connected but no keys
 			local selfpid=$$
 			if [[ "$SSH_AGENT_OWNER_PID" == "$selfpid" ]]; then
 				progs+="%F{green}A"
@@ -174,34 +177,50 @@ function gravemind_promt_cc() {
 	echo -n "$cc $progs "
 }
 
-GRAVEMIND_CMD_START=$SECONDS
+GRAVEMIND_CMD_START=-1
+GRAVEMIND_CMD_TIME=-1
+
+# Called when the command is about to be executed
 function gravemind_preexec() {
+	# local cmd="$1"
+
 	# make sure prompt color doesn't leak (black background ?)
 	echo -n $'\033[0m'
+
+	GRAVEMIND_CMD_TIME=-1
 	GRAVEMIND_CMD_START=$SECONDS
 }
 
-GRAVEMIND_PROMPT_CMD_TIME=""
+# Called once before each new prompt
 function gravemind_precmd() {
-	if [[ $GRAVEMIND_CMD_START -lt 0 ]]
-	then
-		GRAVEMIND_PROMPT_CMD_TIME=""
-		return
-	fi
-	last_cmd_time=$(($SECONDS - $GRAVEMIND_CMD_START))
-	GRAVEMIND_CMD_START=-1
-	if [[ $last_cmd_time -ge 1 ]]
-	then
-		## .Xresource: URxvt*urgentOnBell: true
-		echo -ne '\a'
-		GRAVEMIND_PROMPT_CMD_TIME=" %F{blue}↳"
-		[[ $last_cmd_time -lt 3600 ]] || { GRAVEMIND_PROMPT_CMD_TIME+="$(($last_cmd_time / 3600))h"; last_cmd_time=$(($last_cmd_time % 3600)) }
-		[[ $last_cmd_time -lt 60 ]] || { GRAVEMIND_PROMPT_CMD_TIME+="$(($last_cmd_time / 60))m"; last_cmd_time=$(($last_cmd_time % 60)) }
-		[[ $last_cmd_time -lt 1 ]] || { GRAVEMIND_PROMPT_CMD_TIME+="$(($last_cmd_time))s"; }
-		GRAVEMIND_PROMPT_CMD_TIME+="↲ %F{white}%{∶%G%}"
+	local now=$SECONDS
+
+	# Urgent after each commands
+	# .Xresource: URxvt*urgentOnBell: true
+	echo -n $'\a'
+
+	if [[ $GRAVEMIND_CMD_START -ge 0 && $GRAVEMIND_CMD_TIME -eq -1 ]]; then
+		GRAVEMIND_CMD_TIME=$(($now - $GRAVEMIND_CMD_START))
+
+		# Urgent if command took more than 1sec
+		# .Xresource: URxvt*urgentOnBell: true
+		#[[ $GRAVEMIND_CMD_TIME -lt 1 ]] || echo -n $'\a'
+
 	else
-		GRAVEMIND_PROMPT_CMD_TIME=""
+		GRAVEMIND_CMD_TIME=-1
+		GRAVEMIND_CMD_START=-1
 	fi
+}
+
+function gravemind_prompt_cmd_time() {
+	[[ $GRAVEMIND_CMD_TIME -gt 0 ]] || return 0;
+	local sec=$GRAVEMIND_CMD_TIME
+	[[ $sec -ge 1 ]] || return 0;
+	local r=
+	[[ $sec -lt 3600 ]] || { r+="$(($sec / 3600))h"; sec=$(($sec % 3600)); }
+	[[ $sec -lt 60 ]] || { r+="$(($sec / 60))m"; sec=$(($sec % 60)); }
+	[[ $sec -lt 1 ]] || { r+="$(($sec))s"; }
+	echo -n " %F{blue}↳$r↲ $GMPSSEP"
 }
 
 ## prepend
