@@ -2180,13 +2180,19 @@ With argument, do this that many times."
 (req-package org
   :pin manual
   :defer t
-  :hook (org-mode . (lambda ()
-                      (unbind-key "S-<up>" org-mode-map)
-                      (unbind-key "S-<down>" org-mode-map)
-                      (unbind-key "S-<left>" org-mode-map)
-                      (unbind-key "S-<right>" org-mode-map)
-                      ))
+  :init
+  (setq-default
+   ;; Replace conflicting keys:
+   ;;   S-UP ⇒ M-p	S-DOWN ⇒ M-n
+   ;;   S-LEFT ⇒ M--	S-RIGHT ⇒ M-+
+   ;;   C-S-LEFT ⇒ M-S--	C-S-RIGHT ⇒ M-S-+
+   ;; https://www.emacswiki.org/emacs/OrgMode
+   org-replace-disputed-keys t
+   )
   )
+
+(req-package htmlize
+  :defer t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
