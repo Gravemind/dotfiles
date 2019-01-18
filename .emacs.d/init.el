@@ -21,6 +21,10 @@
 ;; (add-to-list 'load-path "~/.emacs.d/benchmark-init-el/") (require 'benchmark-init-loaddefs) (benchmark-init/activate)
 ;; (global-set-key (kbd "<f12>") (lambda () (interactive) (benchmark-init/deactivate) (benchmark-init/show-durations-tabulated)))
 
+;; ;; Use-package report: [f12] (see which is package Decl/Init/Config + benchmark)
+;; (setq-default use-package-compute-statistics t)
+;; (global-set-key (kbd "<f12>") (lambda () (interactive) (use-package-report)))
+
 ;(setq debug-on-error t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -49,10 +53,6 @@
  ;; Auto install packages as needed
  use-package-always-ensure t
 )
-
-;; Enable f12: use-package-report: see which is package Decl/Init/Config + benchmark
-;; (setq-default use-package-compute-statistics t)
-;; (global-set-key (kbd "<f12>") (lambda () (interactive) (use-package-report)))
 
 (require 'package)
 (setq-default
@@ -116,7 +116,7 @@
   (interactive)
   (let ((window (or window (selected-window))))
     (with-current-buffer (window-buffer window)
-                                        ;(message "window %d %d" (window-width) (window-height))
+      ;;(message "window %d %d" (window-width) (window-height))
       (if (>= (window-pixel-width) (window-pixel-height))
           ;; split horizontally
           (let ((split-height-threshold nil) (split-width-threshold 0))
@@ -137,7 +137,9 @@
  word-wrap t
 
  ;vc-handled-backends nil
- recentf-max-saved-items 92
+
+ ;; Max recent files entries
+ recentf-max-saved-items 300
 
  org-startup-folded 'showeverything
  Man-width 100
@@ -169,11 +171,12 @@
 
  x-gtk-use-system-tooltips nil
 
- ;; Fringe:
- ;; file boundaries
+ ;; Fringe indicators:
+ ;; - File boundaries
  indicate-buffer-boundaries 'left
- ;; show lines after end of file
- indicate-empty-lines t
+ ;;indicate-buffer-boundaries '((top . left) (bottom . right))
+ ;; - Show lines after end of file
+ indicate-empty-lines nil
 
  )
 
@@ -262,7 +265,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; mode line:
+;; modeline mode-line:
 ;;   wiki: https://www.emacswiki.org/emacs/ModeLineConfiguration
 ;;   doc: https://www.gnu.org/software/emacs/manual/html_node/elisp/Mode-Line-Format.html
 ;;   example: http://www.holgerschurig.de/en/emacs-tayloring-the-built-in-mode-line
@@ -306,7 +309,8 @@
 (req-package tramp
   :pin manual
   :defer t
-
+  :bind (("C-x C-r" . sudo-edit-current-file)
+         )
   :config
   (setq-default
    tramp-verbose 2 ; warnings
@@ -374,6 +378,29 @@
                                         ;(tramp-remote-shell-login   ("-l"))
      (tramp-remote-shell-args    ("-c"))
      (tramp-connection-timeout   10)))
+
+  ;;
+  ;; Open in tramp sudo.
+  ;;   https://www.emacswiki.org/emacs/TrampMode#toc30
+  ;; CHANGELOG:
+  ;;   - modified to work in dired too
+  ;;
+  (defun sudo-edit-current-file ()
+    (interactive)
+    (require 'tramp)
+    (let ((position (point))
+          (fname (or buffer-file-name
+                     dired-directory)))
+      (find-alternate-file
+       (if (file-remote-p fname)
+           (let ((vec (tramp-dissect-file-name fname)))
+             (tramp-make-tramp-file-name
+              "sudo"
+              (tramp-file-name-user vec)
+              (tramp-file-name-host vec)
+              (tramp-file-name-localname vec)))
+         (concat "/sudo:root@localhost:" fname)))
+      (goto-char position)))
 
 )
 
@@ -507,6 +534,7 @@
 ;;
 
 (req-package winner
+  :demand t
   :config (winner-mode 1))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -589,6 +617,7 @@
 ;;
 
 (req-package savehist
+  :demand t
   :config
   ;; Save minibuffer history for compile
   (setq-default savehist-additional-variables '(compile-command))
@@ -600,30 +629,11 @@
 ;; ido
 ;;
 
-;; https://www.emacswiki.org/emacs/TrampMode#toc30
-;; modified to work in dired too
-(defun sudo-edit-current-file ()
-  (interactive)
-  (let ((position (point))
-        (fname (or buffer-file-name
-                   dired-directory)))
-    (find-alternate-file
-     (if (file-remote-p fname)
-         (let ((vec (tramp-dissect-file-name fname)))
-           (tramp-make-tramp-file-name
-            "sudo"
-            (tramp-file-name-user vec)
-            (tramp-file-name-host vec)
-            (tramp-file-name-localname vec)))
-       (concat "/sudo:root@localhost:" fname)))
-    (goto-char position)))
-
 (req-package ido
-  ;:disabled
-  :bind (("C-x C-f" . ido-find-file)
-         ;("C-x b"   . ido-switch-buffer)
-         ("C-x C-r" . sudo-edit-current-file)
-         )
+  ;;:disabled
+  ;;:demand t
+  ;;:defer t
+  :bind (("C-x C-f" . ido-find-file))
   :hook (ido-minibuffer-setup . (lambda ()
                                   (unbind-key "C-<backspace>" ido-completion-map)
                                   (unbind-key "M-<backspace>" ido-completion-map)
@@ -631,20 +641,20 @@
                                   (unbind-key "M-<delete>" ido-completion-map)
                                   ))
   :config
-    (setq-default
-     ido-enable-flex-matching t
-     ido-auto-merge-work-directories-length -1
-     ido-create-new-buffer 'always
-     ido-everywhere t
-     ido-default-buffer-method 'selected-window
-     ido-max-prospects 32
-     ;ido-case-fold nil ; case sensitive
-     ido-case-fold t ; case sensitive
-     ;; ido-use-filename-at-point 'guess
-     )
-    (ido-mode 1)
+  (setq-default
+   ido-enable-flex-matching t
+   ido-auto-merge-work-directories-length -1
+   ido-create-new-buffer 'always
+   ido-default-buffer-method 'selected-window
+   ido-max-prospects 32
+   ;;ido-case-fold nil ; case sensitive
+   ido-case-fold t ; case sensitive
+   ;; ido-use-filename-at-point 'guess
+   )
 
-    )
+  (setq-default ido-everywhere t)
+  (ido-mode 1)
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -720,8 +730,8 @@ spaces are treated."
   (setq whitespace-style '(face trailing indentation space-before-tab))
   (whitespace-mode 0)
   (whitespace-mode 1)
-  ;(local-set-key [f5] 'jo/iwb-space)
-  (message "tab space")
+  ;;(local-set-key [f5] 'jo/iwb-space)
+  ;;(message "tab space")
   )
 
 (defun jo/tab-tab (&optional opt-tab-width)
@@ -736,8 +746,8 @@ spaces are treated."
   (setq whitespace-style '(face trailing indentation space-before-tab))
   (whitespace-mode 0)
   (whitespace-mode 1)
-  ;(local-set-key [f5] 'jo/iwb-tab)
-  (message "tab tab")
+  ;;(local-set-key [f5] 'jo/iwb-tab)
+  ;;(message "tab tab")
   )
 
 (defun jo/tab-absurde ()
@@ -776,6 +786,8 @@ spaces are treated."
 ;; https://github.com/jwiegley/use-package/blob/master/bind-key.el#L29
 ;;
 
+;;(windmove-default-keybindings)
+
 (bind-keys
 
  ;; M-i and C-tab
@@ -791,10 +803,10 @@ spaces are treated."
  ("S-<f8>"      . find-file)
  ("<f9>"        . delete-window)
  ("S-<f9>"      . delete-other-windows)
- ("M-S-<right>" . enlarge-window-horizontally)
- ("M-S-<left>"  . shrink-window-horizontally)
- ("M-S-<up>"    . shrink-window)
- ("M-S-<down>"  . enlarge-window)
+ ;; ("M-S-<right>" . enlarge-window-horizontally)
+ ;; ("M-S-<left>"  . shrink-window-horizontally)
+ ;; ("M-S-<up>"    . shrink-window)
+ ;; ("M-S-<down>"  . enlarge-window)
  ("S-<right>"   . windmove-right)
  ("S-<left>"    . windmove-left)
  ("S-<up>"      . windmove-up)
@@ -942,10 +954,15 @@ With argument, do this that many times."
 ;; popwin
 ;;
 
-;;(req-package popwin
-;;  :bind (("C-v" . popwin:keymap))
-;;  :init (popwin-mode 1)
-;;  )
+(req-package popwin
+  :disabled t
+  :demand t
+  :bind-keymap ("C-v" . popwin:keymap)
+  :config
+  (popwin-mode 1)
+  ;;(global-set-key (kbd "C-v") popwin:keymap)
+ )
+
 ;; C-v then:
 ;; | Key  | Command               |
 ;; |--------+---------------------------------------|
@@ -1245,7 +1262,7 @@ With argument, do this that many times."
   (editorconfig-mode 1)
   (add-hook 'editorconfig-custom-hooks
             (lambda (hash)
-              (message "editorconfig hook")
+              ;;(message "editorconfig hook")
               (whitespace-mode 0)
               (whitespace-mode +1)
               ))
@@ -2254,18 +2271,19 @@ With argument, do this that many times."
 ;; pdf-tools
 ;;
 
-;; (req-package pdf-tools
-;;   :if (file-exists-p "~/documents/clones/pdf-tools/server/epdfinfo")
-;;   :load-path "~/documents/clones/pdf-tools/lisp"
-;;   :mode (("\\.pdf\\'" . pdf-view-mode))
-;;   :config
-;;   (setq-default
-;;    pdf-info-epdfinfo-program "~/documents/clones/pdf-tools/server/epdfinfo"
-;;    pdf-view-use-imagemagick t
-;;    pdf-info-log t
-;;    )
-;;   (pdf-tools-install)
-;;   )
+(req-package pdf-tools
+  :disabled t
+  :if (file-exists-p "~/documents/clones/pdf-tools/server/epdfinfo")
+  :load-path "~/documents/clones/pdf-tools/lisp"
+  :mode (("\\.pdf\\'" . pdf-view-mode))
+  :config
+  (setq-default
+   pdf-info-epdfinfo-program "~/documents/clones/pdf-tools/server/epdfinfo"
+   pdf-view-use-imagemagick t
+   pdf-info-log t
+   )
+  (pdf-tools-install)
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
