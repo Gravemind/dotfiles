@@ -62,9 +62,10 @@
                     ("melpa" . "https://melpa.org/packages/")
                     )
  ;; https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/
- package-archive-priorities '(("melpa-stable" . 50)
+ package-archive-priorities '(("melpa-stable" . 0)
                               ("gnu" . 10)
-                              ("melpa" . 0))
+                              ("melpa" . 40)
+                              )
  )
 (package-initialize)
 
