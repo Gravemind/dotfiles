@@ -4,5 +4,6 @@ if [ -z "$DISPLAY" ]
 then
     emacs -nw "$@"
 else
-    ~/.i3/layouts/launch.sh -q emacs "$@"
+    # background due to ~/.omz.custom/gravemind.zsh-theme urgent
+    ~/.i3/layouts/launch.sh -q emacs "$@" &
 fi
