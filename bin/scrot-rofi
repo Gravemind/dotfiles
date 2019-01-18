@@ -102,6 +102,7 @@ def scrot_rofi(rawargs):
         "window: capture currently focused window",
         "all: capture all screens",
         "select: select window or rectangle to capture",
+        "flameshot: run flameshot gui",
         "quit"
     ], "-dmenu", "-i", "-p", "scrot capture")
     if res is None:
@@ -115,6 +116,11 @@ def scrot_rofi(rawargs):
         time.sleep(0.1)
     elif res == "select":
         scrot_opts.append("--select")
+
+    elif res == "flameshot":
+        run("flameshot", "gui")
+        return True
+
     elif res == "all":
         pass # default
     elif res == "quit":
