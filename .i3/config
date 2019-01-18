@@ -17,6 +17,8 @@ set $layouts        ~/.i3/layouts
 
 ipc-socket ~/.i3/ipc.sock
 
+set $Alt            Mod1
+
 #
 # Style and behaviors
 #
@@ -264,8 +266,9 @@ bindsym $ModK+r mode $mode_resize
 bindsym $ModK+z exec --no-startup-id "rofi -show combi -display-combi ' launch' -modi combi -combi-modi 'drun,flatpak:~/.i3/rofi_flatpak.sh,run,window'"
 
 # Cliboard Manager
-bindsym $ModK+Insert       exec --no-startup-id CM_LAUNCHER=rofi clipmenu -p ' clip' -i
-bindsym $ModK+Shift+Insert exec --no-startup-id CM_LAUNCHER=rofi ~/bin/clipmenu-del -p '~~~~ ~~clipdel~~' -i
+bindsym $ModK+Insert       exec --no-startup-id CM_LAUNCHER=rofi clipmenu -p ' clipmenu' -i
+bindsym $ModK+Shift+Insert exec --no-startup-id CM_LAUNCHER=rofi ~/bin/clipmenu-del -p '̶ ̶c̶l̶i̶p̶m̶e̶n̶u̶-̶d̶e̶l̶' -i
+bindsym $ModK+$Alt+Insert  exec --no-startup-id CM_LAUNCHER=rofi ~/bin/clipmenu-sanitize -p ' clipmenu-sanitize' -i
 exec_always --no-startup-id systemctl --user restart clipmenud.service
 
 # Mpv Clipboard
@@ -355,7 +358,7 @@ bindsym $ModK+Return exec urxvt
 
 # Emacs
 bindsym $ModK+Shift+Return exec --no-startup-id $layouts/launch.sh -- emacs
-bindsym $ModK+Ctrl+Return exec --no-startup-id $layouts/launch.sh -- emacs ~/TODO.org
+bindsym $ModK+$Alt+Return  exec --no-startup-id $layouts/launch.sh -- emacs ~/NOTE.md
 
 # Rtags rdm server
 bindsym $ModK+F4 exec --no-startup-id $layouts/launch.sh -w 4 -i rdm urxvt -name rdm -e zsh -is eval "~/bin/rdm_launch.sh"

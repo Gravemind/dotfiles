@@ -1,0 +1,45 @@
+#!/bin/bash
+
+set -u
+
+: "${CM_LAUNCHER=dmenu}"
+
+usage() {
+    echo -n "usage: [CM_LAUNCHER=rofi] $0 [-h|--help] [LAUNCHER_ARGS...]
+
+Sanitize a clipboard entry.
+
+"
+}
+
+if [[ "${1:-}" = "-h" || "${1:-}" = "--help" ]]
+then
+    usage
+    exit 0
+fi
+
+if [[ "$CM_LAUNCHER" == rofi ]]; then
+    # rofi supports dmenu-like arguments through the -dmenu flag
+    set -- -dmenu "$@"
+fi
+
+menu_cmd=($CM_LAUNCHER "$@")
+
+res="$( CM_LAUNCHER=rofi-script clipmenu | "${menu_cmd[@]}" )"
+if [[ -z "$res" ]]
+then
+    return;
+fi
+
+sanitize() {
+    cat -v | \
+        head -n1 | \
+        sed -E 's/[^a-zA-Z0-9\.-]+/_/g' | \
+        sed -E 's/_?-_?/-/g'
+}
+
+sane="$(echo "$res" | sanitize)"
+
+[[ ! -t 1 ]] || { echo "$0: $res ---> $sane" | cat -v; }
+
+echo "$sane" | xclip -i -r
