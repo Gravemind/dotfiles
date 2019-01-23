@@ -1695,7 +1695,11 @@ With argument, do this that many times."
 
 (req-package magit
   :pin melpa
-  :bind ("C-x g" . magit-status)
+  :commands (magit-list-repositories-here)
+  :bind (("C-x g" . magit-status)
+         :map magit-repolist-mode-map
+         ("x" . magit-repolist-popup)
+         )
   :config
 
   (if jo/helm-or-ivy
@@ -1800,6 +1804,86 @@ With argument, do this that many times."
 
   ;(setq-default git-commit-turn-on-auto-fill nil)
   ;(add-hook 'git-commit-mode-hook 'turn-off-auto-fill)
+
+  ;;
+  ;; Magit Repositories
+  ;;   https://magit.vc/manual/2.90.0/magit/Repository-List.html
+  ;;   https://github.com/magit/magit/issues/2971#issuecomment-336644529
+  ;;   https://emacs.stackexchange.com/questions/32696/how-to-use-magit-list-repositories
+  ;;
+
+  (defun magit-list-repositories-here ()
+    "magit-list-repositories with repo list globally set to default-directory."
+    (interactive)
+    (setq magit-repository-directories `((,default-directory . 5)))
+    (message "Listing repos in %s (depth %s)..." (car (car magit-repository-directories)) (car (cdr magit-repository-directories)))
+    (magit-list-repositories)
+    )
+
+  (defun magit-repolist-column-relative-path (_id)
+    "Insert the path of the repository relative to the first magit-repository-directories entry."
+    (file-relative-name default-directory (car (car magit-repository-directories))))
+
+  (setq-default
+   magit-repolist-columns
+        '(
+          ("Path"    30 magit-repolist-column-relative-path          ())
+          ;;("Name"  25 magit-repolist-column-ident                  ())
+          ("Branch"  15 magit-repolist-column-branch                 ())
+          ("↓"        2 magit-repolist-column-unpulled-from-upstream ())
+          ("↑"        2 magit-repolist-column-unpushed-to-upstream   ())
+          ("s"        2 magit-repolist-column-dirty                  ())
+          ("Version" 25 magit-repolist-column-version                ())
+          ))
+
+  (magit-define-popup magit-repolist-popup
+    "Popup console for repolist commands.
+Commands bound in this popup should use the
+macro `magit-with-repositories' (which see)."
+    :actions '((?f "Fetch in all repositories" magit-repolist-fetch)
+               (?F "Fetch in all repositories asynchronously"
+                   magit-repolist-fetch-async)
+               (?x "Run a command in all repositores"
+                   magit-repolist-run))
+    :max-action-columns 1)
+
+  (defun magit-repolist-fetch ()
+    "Fetch all remotes in repositories returned by `magit-list-repos'.
+Fetching is done synchronously."
+    (interactive)
+    (run-hooks 'magit-credential-hook)
+    (let* ((repos (magit-list-repos))
+           (l (length repos))
+           (i 0))
+      (dolist (repo repos)
+        (let* ((default-directory (file-name-as-directory repo))
+               (msg (format "(%s/%s) Fetching in %s..."
+                            (cl-incf i) l default-directory)))
+          (message msg)
+          (magit-run-git "remote" "update" (magit-fetch-arguments))
+          (message (concat msg "done")))))
+    (magit-refresh))
+
+  (defun magit-repolist-fetch-async ()
+    "Fetch all remotes in repositories returned by `magit-list-repos'.
+Fetching is done asynchronously."
+    (interactive)
+    (run-hooks 'magit-credential-hook)
+    (dolist (repo (magit-list-repos))
+      (let ((default-directory (file-name-as-directory repo)))
+        (magit-run-git-async "remote" "update" (magit-fetch-arguments)))))
+
+  (defun magit-repolist-call-command (command)
+    "Read a command and run it in repositories returned by `magit-list-repos'.
+
+If the COMMAND does its job asynchronously, then that likely
+won't be done for all repositories by the time this function
+returns.  If it does its job synchronously, then doing it
+many times might take a long time."
+    (interactive (list (read-command "Call in all repositories: ")))
+    (magit-with-repositories
+     (call-interactively command))
+    (magit-refresh))
 
   )
 
