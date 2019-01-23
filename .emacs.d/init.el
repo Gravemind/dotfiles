@@ -570,9 +570,9 @@
 
 (req-package history
   :demand t
-  :bind (("C-c C-j" . history-prev-history)
+  :bind (("C-c j" . history-prev-history)
          ("C-c M-j" . history-goto-history)
-         ("C-c C-l" . history-next-history)
+         ("C-c l" . history-next-history)
          )
   :config
   ;(require 'history)
