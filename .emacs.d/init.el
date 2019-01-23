@@ -189,9 +189,9 @@
 ;; Fatter Window Divider/Border
 ;;
 (setq-default
- window-divider-default-bottom-width 3
- window-divider-default-places t
- window-divider-default-right-width 3
+ window-divider-default-places t ;; 'right-only
+ window-divider-default-bottom-width 4
+ window-divider-default-right-width 4
  )
 (window-divider-mode)
 
@@ -588,7 +588,6 @@
 ;;   :after (evil magit)
 ;;   :ensure t
 ;;   )
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -1623,7 +1622,7 @@ With argument, do this that many times."
   :pin manual
   :defer t
   :bind (:map flyspell-mode-map
-              ("C-;" . flyspell-correct-wrapper))
+              ("C-;" . flyspell-correct-at-point))
   :hook ((prog-mode . (lambda () (flyspell-mode -1) (flyspell-prog-mode)))
          (text-mode . (lambda () (flyspell-mode 1))))
   )
@@ -1650,6 +1649,9 @@ With argument, do this that many times."
    git-commit-fill-column 72
 
    magit-revision-show-gravatars '("^Author:     " . "^Commit:     ")
+
+   ;; After how many seconds not to expand anymore diffs
+   magit-diff-expansion-threshold 10
 
    ;; Abbreviate age in margins
    magit-default-margin '(t age-abbreviated magit-log-margin-width t 18)
