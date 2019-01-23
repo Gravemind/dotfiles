@@ -814,6 +814,21 @@ spaces are treated."
 (defun do-apply-jo/tab ()
   (or (eq buffer-file-name nil) (eq (editorconfig-core-get-properties) nil)))
 
+;;
+;; TEST: complete with dabbrev
+;;
+(defun dabbrev-complation-at-point ()
+  (require 'dabbrev)
+  (dabbrev--reset-global-variables)
+  (let* ((abbrev (dabbrev--abbrev-at-point))
+         (candidates (dabbrev--find-all-expansions abbrev t))
+         (bnd (bounds-of-thing-at-point 'symbol)))
+    (list (car bnd) (cdr bnd) candidates)))
+(add-hook 'prog-mode-hook
+          (lambda ()
+            (add-to-list 'completion-at-point-functions 'dabbrev-complation-at-point)
+            ))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; bindings
