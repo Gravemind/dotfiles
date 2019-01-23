@@ -4,20 +4,23 @@
 #
 
 # Variables
-set $ModK           Mod4
-set $screenL        DP-4
-set $screenR        DP-2
+set $ModK        Mod4
+set $screenL     DP-4
+set $screenR     DP-2
 
-set $keyLeft        j
-set $keyRight       l
-set $keyUp          i
-set $keyDown        k
+set $keyLeft     j
+set $keyRight    l
+set $keyUp       i
+set $keyDown     k
 
-set $layouts        ~/.i3/layouts
+set $layouts     ~/.i3/layouts
+
+set $Alt         Mod1
+
+set $move_step   150 px
+set $resize_step 150 px
 
 ipc-socket ~/.i3/ipc.sock
-
-set $Alt            Mod1
 
 #
 # Style and behaviors
@@ -50,7 +53,7 @@ default_border pixel 2
 default_floating_border normal 2
 
 # Floating window size range
-floating_minimum_size 16 x 16
+floating_minimum_size 64 x 64
 floating_maximum_size -1 x -1
 
 # Default border for programs
@@ -182,14 +185,14 @@ bindsym $ModK+Up                focus up
 bindsym $ModK+Right             focus right
 
 # Move focused window
-bindsym $ModK+Shift+$keyLeft    move left
-bindsym $ModK+Shift+$keyDown    move down
-bindsym $ModK+Shift+$keyUp      move up
-bindsym $ModK+Shift+$keyRight   move right
-bindsym $ModK+Shift+Left        move left
-bindsym $ModK+Shift+Down        move down
-bindsym $ModK+Shift+Up          move up
-bindsym $ModK+Shift+Right       move right
+bindsym $ModK+Shift+$keyLeft    move left  $move_step
+bindsym $ModK+Shift+$keyDown    move down  $move_step
+bindsym $ModK+Shift+$keyUp      move up    $move_step
+bindsym $ModK+Shift+$keyRight   move right $move_step
+bindsym $ModK+Shift+Left        move left  $move_step
+bindsym $ModK+Shift+Down        move down  $move_step
+bindsym $ModK+Shift+Up          move up    $move_step
+bindsym $ModK+Shift+Right       move right $move_step
 
 # Focus other output (when multi screen)
 bindsym $ModK+Tab focus output right
@@ -215,36 +218,40 @@ bindsym $ModK+d layout toggle split
 bindsym $ModK+f fullscreen
 
 # Toggle tiling / floating
-bindsym $ModK+Shift+space floating toggle
+bindsym $ModK+Shift+space floating toggle, resize set 62 ppt 62 ppt, move absolute position center
 
 # Change focus between tiling / floating windows
 bindsym $ModK+space focus mode_toggle
 
 # Change Window Size and Modes
-set $resize_step 100
-set $mode_resize "    [S-]←→↓↑ resize  ·  <u>s</u>ticky-float  <u>u</u>nsticky  ·  cycle-<u>b</u>order  ·  <u>w</u>allpaper  setup-<u>x</u>randr    "
+set $mode_resize "    [S-]←→↓↑ resize  ·  <u>s</u>ticky-float  <u>u</u>nsticky  ·  <u>w</u>allpaper  setup-<u>x</u>randr    "
 mode --pango_markup $mode_resize {
-    bindsym $keyLeft        resize shrink left  $resize_step px
-    bindsym Shift+$keyLeft  resize grow   left  $resize_step px
-    bindsym $keyDown        resize shrink down  $resize_step px
-    bindsym Shift+$keyDown  resize grow   down  $resize_step px
-    bindsym $keyUp          resize shrink up    $resize_step px
-    bindsym Shift+$keyUp    resize grow   up    $resize_step px
-    bindsym $keyRight       resize shrink right $resize_step px
-    bindsym Shift+$keyRight resize grow   right $resize_step px
-    bindsym Left            resize shrink left  $resize_step px
-    bindsym Shift+Left      resize grow   left  $resize_step px
-    bindsym Down            resize shrink down  $resize_step px
-    bindsym Shift+Down      resize grow   down  $resize_step px
-    bindsym Up              resize shrink up    $resize_step px
-    bindsym Shift+Up        resize grow   up    $resize_step px
-    bindsym Right           resize shrink right $resize_step px
-    bindsym Shift+Right     resize grow   right $resize_step px
+    bindsym $keyLeft        resize grow   left  $resize_step
+    bindsym Left            resize grow   left  $resize_step
+    bindsym $keyRight       resize shrink left  $resize_step
+    bindsym Right           resize shrink left  $resize_step
+
+    bindsym Shift+$keyLeft  resize shrink right $resize_step
+    bindsym Shift+Left      resize shrink right $resize_step
+    bindsym Shift+$keyRight resize grow   right $resize_step
+    bindsym Shift+Right     resize grow   right $resize_step
+
+    bindsym $keyUp          resize grow   up    $resize_step
+    bindsym Up              resize grow   up    $resize_step
+    bindsym $keyDown        resize shrink up    $resize_step
+    bindsym Down            resize shrink up    $resize_step
+
+    bindsym Shift+$keyUp    resize shrink down  $resize_step
+    bindsym Shift+Up        resize shrink down  $resize_step
+    bindsym Shift+$keyDown  resize grow   down  $resize_step
+    bindsym Shift+Down      resize grow   down  $resize_step
+
+    bindsym minus       resize shrink up $resize_step, resize shrink down $resize_step, resize shrink left $resize_step, resize shrink right $resize_step
+    bindsym equal       resize grow   up $resize_step, resize grow   down $resize_step, resize grow   left $resize_step, resize grow   right $resize_step
+    bindsym Shift+equal resize grow   up $resize_step, resize grow   down $resize_step, resize grow   left $resize_step, resize grow   right $resize_step
 
     bindsym s floating enable , sticky enable , mode "default"
     bindsym u floating disable, sticky disable, mode "default"
-
-    bindsym b border toggle
 
     bindsym w exec --no-startup-id $wallpaper, mode "default"
     bindsym x exec --no-startup-id ~/bin/setup-xrandr, mode "default"
