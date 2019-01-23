@@ -666,9 +666,9 @@
 ;;
 
 (req-package ido
-  ;;:disabled
+  :disabled
   ;;:demand t
-  ;;:defer t
+  :defer t
   :bind (("C-x C-f" . ido-find-file))
   :hook (ido-minibuffer-setup . (lambda ()
                                   (unbind-key "C-<backspace>" ido-completion-map)
