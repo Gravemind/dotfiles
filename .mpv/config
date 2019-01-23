@@ -5,6 +5,7 @@ input-ipc-server=/tmp/mpvsocket
 hr-seek=yes
 sub-pos=84
 sub-scale=0.6
+sid=no # no subtitle by default
 #sub-font-size=30
 sub-color=1.0/0.5
 #exact|fuzzy|all
