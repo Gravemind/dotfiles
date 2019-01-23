@@ -837,7 +837,17 @@ spaces are treated."
 ;; https://github.com/jwiegley/use-package/blob/master/bind-key.el#L29
 ;;
 
-;;(windmove-default-keybindings)
+;; Force forward-paragraph on empty lines
+(defun jo/forward-paragraph (&optional arg)
+  "Forward paragraph but forced to look for empty lines only"
+  (interactive "^p")
+  (let ((paragraph-start "\f\\|[ \t]*$")
+        (paragraph-separate "[ \t\f]*$"))
+    (forward-paragraph (or arg 1))))
+(defun jo/backward-paragraph (&optional arg)
+  "Backward jo/forward-paragraph."
+  (interactive "^p")
+  (jo/forward-paragraph (- (or arg 1))))
 
 (bind-keys
 
@@ -862,6 +872,9 @@ spaces are treated."
  ("S-<left>"    . windmove-left)
  ("S-<up>"      . windmove-up)
  ("S-<down>"    . windmove-down)
+
+ ("C-<down>"    . jo/forward-paragraph)
+ ("C-<up>"      . jo/backward-paragraph)
 
  ;; buffer table
  ("C-x C-b"     . ibuffer)
