@@ -398,15 +398,53 @@ bindsym $ModK+u         exec --no-startup-id ~/.i3/goto_urgent_and_back.sh
 # Bar
 #
 
-# Bar
-bar { # bar
-    status_command i3status -c ~/.i3/i3status.conf
+# bar {
+#     status_command i3status -c ~/.i3/i3status.conf
+#     separator_symbol "   "
+#     mode hide
+#     #font pango:Hack Nerd Font Mono Bold 9
+#     #tray_output none
+#     position bottom
+#     colors {
+#         background #101010
+#         statusline #E0E0E0
+#     }
+# }
+
+#
+# REQUIRES forked i3(i3bar) and i3status with progress bars:
+#   https://github.com/Gravemind/i3/tree/progress-bar-wip
+#   https://github.com/Gravemind/i3status/tree/progress-wip
+#
+bar {
+    status_command ~/documents/clones/i3status/i3status -c ~/.i3/i3status_progress.conf
+    i3bar_command ~/documents/clones/i3/build/i3bar/i3bar --bar_id=bar-1 --socket=~/.i3/ipc.sock
     separator_symbol "   "
     mode hide
     position bottom
+    progress bottom_bar 0 1
     colors {
         background #101010
         statusline #E0E0E0
+        separator #666666
+        focused_workspace  #557da1 #557da1 #ffffff
+        active_workspace   #606060 #606060 #ffffff
+        inactive_workspace #484848 #484848 #888888
+        urgent_workspace   #c02020 #c02020 #ffffff
+        binding_mode       #c02020 #c02020 #ffffff
+        #                  border  bg      fg
+        #progress #80BEED #505050
+
+        ## Defaults
+        # background #000000
+        # statusline #ffffff
+        # separator #666666
+        # focused_workspace  #4c7899 #285577 #ffffff
+        # active_workspace   #333333 #5f676a #ffffff
+        # inactive_workspace #333333 #222222 #888888
+        # urgent_workspace   #2f343a #900000 #ffffff
+        # binding_mode       #2f343a #900000 #ffffff
+        #                    border  bg      fg
     }
 }
 
