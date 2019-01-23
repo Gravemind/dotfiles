@@ -107,6 +107,9 @@
 ;; delete current selection when typing http://www.emacswiki.org/emacs/DeleteSelectionMode
 (delete-selection-mode 1)
 
+(setq-default
+ jo/helm-or-ivy t)
+
 (if window-system
     (progn (tool-bar-mode -1)
            (scroll-bar-mode -1)
@@ -608,16 +611,47 @@
    window-min-width 10
    window-min-height 4
 
-   ;;zoom-ignored-buffer-names '("*Diff*")
-   ;;zoom-ignored-buffer-name-regexps '("^*helm" "^helm")
+   window-resize-pixelwise t
+
+   ;; Fix? "Why when there are several horizontal splits the completions buffer is very small"
    ;;temp-buffer-resize-mode t
 
+   ;;zoom-ignored-buffer-names '("*Diff*")
+   ;;zoom-ignored-buffer-name-regexps '("^*helm")
+
    ;;zoom-ignore-predicates (quote ((lambda nil (window-minibuffer-p))))
-   ;;zoom-ignored-major-modes (quote (helm-mode))
+   ;;zoom-ignored-major-modes '(helm-mode)
+
    )
+
+  (add-hook 'window-configuration-change-hook 'zoom--handler)
 
   (zoom-mode t)
 )
+
+;;
+;; Highlight current **BUFFER**
+;;   https://emacs.stackexchange.com/questions/24630/is-there-a-way-to-change-color-of-active-windows-fringe
+;; FIXME: we want "highlight current **WINDOW**"
+;;
+;; (defun highlight-selected-window ()
+;;   "Highlight selected window with a different background color."
+;;   ;;(message "highli")
+;;   (let ((curr (selected-window)))
+;;     (walk-windows (lambda (w)
+;;                     (unless (eq w curr)
+;;                     (with-current-buffer (window-buffer w)
+;;                       (buffer-face-set '(:background "#101010"))
+;;                       (set (make-local-variable 'font-lock-comment-face)
+;;                            'php-comment-face)
+;;                       ))))
+;;     ;;(message "selectd %s" (selected-window))
+;;     (with-current-buffer (window-buffer curr)
+;;       (buffer-face-set '(:background "#202020"))
+;;       )
+;;     )
+;;   )
+;; (add-hook 'buffer-list-update-hook 'highlight-selected-window)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -1637,7 +1671,9 @@ With argument, do this that many times."
   :bind ("C-x g" . magit-status)
   :config
 
-  (require 'helm) ;; to get helm in minibuffers etc...
+  (if jo/helm-or-ivy
+      (require 'ivy)
+    (require 'helm))
 
   (setq-default
    magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1
@@ -1885,88 +1921,146 @@ With argument, do this that many times."
 ;;
 
 (req-package helm
-  ;:disabled
-  :bind (("M-x" . helm-M-x)
-         ("C-x b"   . helm-buffers-list)
+  :if jo/helm-or-ivy
+  ;;:disabled
+  :demand t
+  ;;:defer t
+  :bind (
+         ("M-x" . helm-M-x)
+         ("C-c C-x" . helm-resume)
+         ("C-x b"   . helm-mini) ;; helm-buffers-list
          ("C-f <C-return>" . helm-occur)
          ("C-f C-r" . helm-do-grep-rg-ripgrep)
+         ;;("C-f C-r" . helm-do-grep-ag-dir)
+         ("C-x C-f". helm-find-files)
+         ("C-f C-x" . helm-recentf)
+
+         :map helm-map
+         ("<tab>" . helm-execute-persistent-action)
+         ("C-i" . helm-execute-persistent-action)
+         ;; ("C-i" . helm-execute-persistent-action)
+         ("C-z" . helm-select-action)
+         ("RET" . helm-maybe-exit-minibuffer)
+         ("C-j" . helm-maybe-exit-minibuffer)
+
+         :map helm-find-files-map
+         ("C-f C-r" . helm-ff-run-grep-ag)
+         ;;("C-<backspace>" . helm-find-files-up-one-level)
+         ("C-<backspace>" . backward-delete-word)
+
+         ;;:map helm-grep-map
+         ;;("C-l" . helm-do-grep-ag-up-one-level)
+
          )
+
   :config
   ;; http://tuhdo.github.io/helm-intro.html
   ;; must set before helm-config,  otherwise helm use default
   ;; prefix "C-x c", which is inconvenient because you can
   ;; accidentially pressed "C-x C-c"
-
-  ;;(setq-default helm-command-prefix-key "C-x c")
-
-  (require 'helm-config)
-  (require 'helm-eshell)
-  (require 'helm-files)
-  (require 'helm-grep)
-  (require 'helm-command)
-
-  ;; Golden-ratio compat
-  ;; (defun pl/helm-alive-p ()
-  ;;   (if (boundp 'helm-alive-p)
-  ;;       (symbol-value 'helm-alive-p)))
-  ;; (add-to-list 'golden-ratio-inhibit-functions 'pl/helm-alive-p)
-
-  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebihnd tab to do persistent action
-  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
-  (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
-
-  (define-key helm-grep-mode-map (kbd "<return>")  'helm-grep-mode-jump-other-window)
-  (define-key helm-grep-mode-map (kbd "n")  'helm-grep-mode-jump-other-window-forward)
-  (define-key helm-grep-mode-map (kbd "p")  'helm-grep-mode-jump-other-window-backward)
-
-  (helm-autoresize-mode t)
+  ;; ;;(setq-default helm-command-prefix-key "C-x c")
 
   (setq-default
 
-   helm-google-suggest-use-curl-p t
-   helm-scroll-amount 8 ; scroll 4 lines other window using M-<next>/M-<prior>
-   helm-quick-update t ; do not display invisible candidates
-   helm-idle-delay 0.01 ; be idle for this many seconds, before updating in delayed sources.
-   helm-input-idle-delay 0.01 ; be idle for this many seconds, before updating candidate buffer
+   enable-recursive-minibuffers t
 
+   ;;helm-google-suggest-use-curl-p t
+   ;;helm-scroll-amount 8 ; scroll 4 lines other window using M-<next>/M-<prior>
+   ;;helm-idle-delay 0.01 ; be idle for this many seconds, before updating in delayed sources.
+   ;;helm-input-idle-delay 0.01 ; be idle for this many seconds, before updating candidate buffer
+
+   ;; fuzzy matching everywhere
+   helm-mode-fuzzy-match t
+   helm-completion-in-region-fuzzy-match t
+
+   helm-moccur-show-buffer-fontification t
+
+   ;; Find files opens with '.' selected
+   helm-ff-no-preselect t
+
+   ;; Increase helm-buffers buffer name column width
+   helm-buffer-max-length 30
+
+   ;; ;; Hide first header "C-j: describe this command ... "
+   helm-display-header-line nil
+
+   ;; helm-ff-search-library-in-sexp t ; search for library in `require' and `declare-function' sexp.
+   ;; ;;  helm-split-window-default-side 'other ;; open helm buffer in another window
+   ;; ;;  helm-buffers-favorite-modes (append helm-buffers-favorite-modes
+   ;; ;;                                      '(picture-mode artist-mode))
+   ;; helm-candidate-number-limit 200 ; limit the number of displayed canidates
+   ;; helm-boring-file-regexp-list
+   ;; '("\\.git$" "\\.hg$" "\\.svn$" "\\.CVS$" "\\._darcs$" "\\.la$" "\\.o$" "\\.i$") ; do not show these files in helm buffer
+   ;; helm-ff-file-name-history-use-recentf t
+
+   ;; ido-use-virtual-buffers t    ; Needed in helm-buffers-list
+   ;; helm-buffers-fuzzy-matching t      ; fuzzy matching buffer names when non--nil
+   ;;                                      ; useful in helm-mini that lists buffers
+
+   ;; ;; helm-move-to-line-cycle-in-source t ; move to end or beginning of source
+   ;; ;;                                     ; when reaching top or bottom of source.
+   )
+
+  ;; Fixed height
+  (setq-default
+   helm-display-buffer-default-height 60
+   helm-display-buffer-height 60
+   helm-display-buffer-default-width 140
+   helm-display-buffer-width 140
+   )
+
+  ;; Auto resize height
+  (helm-autoresize-mode t)
+  (setq-default
+   helm-autoresize-min-height 10
+   helm-autoresize-max-height 60
+   )
+
+;;   ;; Split window kind-of like ivy at the bottom (but not in minibuffer)
+;;   ;;   https://github.com/casouri/lunarymacs-stars/blob/master/completion/helm/config.el
+;;   (defun helm-split-window-my-fn (window)
+;;     "Replace `helm-split-window-preferred-function'.
+;; WINDOW."
+;;     (display-buffer-in-side-window "*scratch*" '((side . bottom))))
+;;   (setq-default
+;;    helm-split-window-preferred-function 'helm-split-window-my-fn
+;;    helm-window-prefer-horizontal-split t
+;;    helm-split-window-in-side-p t ;; open helm buffer inside current window, not occupy whole other window
+;;    )
+
+  ;; Split window horizontally
+  (setq-default
+   helm-window-prefer-horizontal-split t
    helm-split-window-in-side-p t ;; open helm buffer inside current window, not occupy whole other window
-   ;;helm-split-window-default-side 'below ;; open helm buffer in another window
    helm-split-window-default-side 'above ;; open helm buffer in another window
-
-   helm-autoresize-min-height 30
-   helm-autoresize-max-height 70
-
-   helm-ff-search-library-in-sexp t ; search for library in `require' and `declare-function' sexp.
-
-   ;;  helm-split-window-default-side 'other ;; open helm buffer in another window
-   ;;  helm-buffers-favorite-modes (append helm-buffers-favorite-modes
-   ;;                                      '(picture-mode artist-mode))
-   helm-candidate-number-limit 200 ; limit the number of displayed canidates
-   helm-M-x-requires-pattern 0   ; show all candidates when set to 0
-   helm-boring-file-regexp-list
-   '("\\.git$" "\\.hg$" "\\.svn$" "\\.CVS$" "\\._darcs$" "\\.la$" "\\.o$" "\\.i$") ; do not show these files in helm buffer
-   helm-ff-file-name-history-use-recentf t
-
-   ido-use-virtual-buffers t    ; Needed in helm-buffers-list
-   helm-buffers-fuzzy-matching t      ; fuzzy matching buffer names when non--nil
-                                        ; useful in helm-mini that lists buffers
-
-   ;; helm-move-to-line-cycle-in-source t ; move to end or beginning of source
-   ;;                                     ; when reaching top or bottom of source.
    )
 
   ;; Save current position to mark ring when jumping to a different place
   (add-hook 'helm-goto-line-before-hook #'helm-save-current-pos-to-mark-ring)
+
+  ;; Disable zoom-mode when helm is alive
+  (fset 'original-zoom--update (symbol-function 'zoom--update))
+  (advice-add 'zoom--update :override
+              (lambda ()
+                ;;(message "zoom-update")
+                ;; (if helm-alive-p
+                ;;     (with-helm-window
+                ;;       (original-zoom--update)
+                ;;     )
+                ;; (original-zoom--update))
+                (unless helm-alive-p
+                  (original-zoom--update))
+                ))
 
   ;;
   ;; use ripgrep
   ;;    https://github.com/BurntSushi/ripgrep
   ;;
   (setq-default
-   helm-grep-ag-command "rg --color=always --colors 'match:fg:red' --colors 'match:style:bold' --smart-case --no-heading --line-number %s %s %s"
-   helm-grep-ag-pipe-cmd-switches '("--colors 'match:fg:red'" "--colors 'match:style:bold'")
+   helm-grep-ag-command "rg --color=always --colors 'match:fg:yellow' --colors 'match:style:nobold' --max-columns 512 --smart-case --no-heading --line-number %s %s %s"
+   helm-grep-ag-pipe-cmd-switches '("--colors 'match:fg:yellow'" "--colors 'match:style:nobold'")
    helm-grep-file-path-style 'relative
-  )
+   )
   (defalias 'helm-do-grep-rg-ripgrep 'helm-do-grep-ag)
 
   ;; helm everywhere
@@ -1976,7 +2070,7 @@ With argument, do this that many times."
 
 ;; also see flyspell-correct-ivy
 (req-package flyspell-correct-helm
-  ;;:disabled t
+  :if jo/helm-or-ivy
   :defer t
   :after (flyspell)
   :config
@@ -1988,18 +2082,104 @@ With argument, do this that many times."
   ;;:disabled t
   :defer t)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; ivy/counsel/swiper
+;;    https://github.com/abo-abo/swiper
+;;
+
+;; for ivy--regex-fuzzy sorting
+(req-package flx
+  :if (not jo/helm-or-ivy)
   :defer t)
 
 (req-package ivy
-  :disabled
+  :if (not jo/helm-or-ivy)
   :demand
+  :bind (
+         ("C-c C-x" . ivy-resume)
+         ;; ido style folder navigation
+         ;;   https://github.com/abo-abo/swiper/wiki/ido-style-folder-navigation
+         :map ivy-minibuffer-map
+         ("C-j" . ivy-immediate-done)
+         ("RET" . ivy-alt-done)
+         ("M-RET" . ivy-dispatching-done) ;; done menu
+         ("TAB" . ivy-call) ;; non-exiting ivy-done
+         ("M-TAB" . ivy-dispatching-call) ;; call menu
+
+         ("C-x C-s" . ivy-occur)
+         )
   :config
-  (setq ivy-use-virtual-buffers t
-        ivy-count-format "%d/%d "
-        )
-  (define-key ivy-minibuffer-map (kbd "C-j") #'ivy-immediate-done)
-  (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
+  (unbind-key "C-c C-x") ;; default is bind to a keymap ??
+  (setq-default
+   ivy-use-virtual-buffers t
+   ivy-count-format "(%d/%d) "
+   enable-recursive-minibuffers t
+
+   ;; Force always height of
+   ivy-height 40
+   ivy-fixed-height-minibuffer t
+
+   ;; Wrap candidates
+   ivy-wrap t
+
+   ;; Remove the '^' initial input everywhere
+   ivy-initial-inputs-alist '()
+
+   ;; Match space-separated fuzzy
+   ivy-re-builders-alist '((t . ivy--regex-ignore-order))
+
+   ;; Match full fuzzy
+   ;;ivy-re-builders-alist '((t . ivy--regex-fuzzy))
+
+    ivy-sort-matches-functions-alist '(
+                                       ;;(t . nil)
+                                       ;;(t . ivy--flx-sort) ;; use flx sort
+                                       (ivy-switch-buffer . ivy-sort-function-buffer)
+                                       ;;(t . ivy--prefix-sort)
+                                       (t . ivy--prefix-sort)
+                                       )
+
+   )
   (ivy-mode 1)
+  )
+
+(req-package counsel
+  :if (not jo/helm-or-ivy)
+  :demand
+  :bind (("C-f C-r" . (lambda () (interactive)
+                        ;; FIXME set current directory by default wont work
+                        ;;(message "dir %s" default-directory)
+                        (counsel-rg "" default-directory)))
+         ("C-f C-x" . counsel-recentf)
+         )
+  :config
+  (unbind-key "C-f C-x") ;; default is bind to a keymap ??
+  (counsel-mode 1)
+  )
+
+(req-package swiper
+  :if (not jo/helm-or-ivy)
+  :defer
+  :bind (("C-f <C-return>" . swiper)
+         )
+)
+
+;; also see flyspell-correct-helm
+(req-package flyspell-correct-ivy
+  :if (not jo/helm-or-ivy)
+  :defer
+  :after (flyspell)
+  :config
+  (setq-default flyspell-correct-interface #'flyspell-correct-ivy))
+
+;; https://github.com/Yevgnen/ivy-rich
+(req-package ivy-rich
+  :if (not jo/helm-or-ivy)
+  ;;:demand
+  :require ivy
+  :config
+  (ivy-rich-mode 1)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2015,6 +2195,7 @@ With argument, do this that many times."
   )
 
 (req-package wgrep-helm
+  :if jo/helm-or-ivy
   :commands (wgrep-change-to-wgrep-mode)
   )
 
@@ -2253,9 +2434,13 @@ With argument, do this that many times."
    rtags-jump-to-first-match nil
    ;;rtags-enable-unsaved-reparsing t
    ;;rtags-autostart-diagnostics t
-   rtags-use-helm t
-   rtags-display-result-backend 'helm
    )
+
+  (if jo/helm-or-ivy
+      (setq-default
+       rtags-use-helm t
+       rtags-display-result-backend 'helm
+       ))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
