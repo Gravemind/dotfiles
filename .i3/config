@@ -14,6 +14,7 @@ set $keyUp       i
 set $keyDown     k
 
 set $layouts     ~/.i3/layouts
+set $launcher    ~/.i3/layouts/launch.sh -q
 
 set $Alt         Mod1
 
@@ -29,7 +30,7 @@ ipc-socket ~/.i3/ipc.sock
 # Font for window titles
 font xft:Hack Bold 9
 
-# hide boarder if single window/container in output
+# Hide border if single window/container in workspace
 hide_edge_borders smart
 
 # Delay the reset of urgent hint workspace focus
@@ -290,7 +291,7 @@ bindsym Print       exec --no-startup-id ~/bin/scrot-rofi
 bindsym Shift+Print exec --no-startup-id scrot "screen_%y-%m-%d_%H:%M:%S.png"
 
 # Volume: Pulse Audio
-#set $volume_mute      exec --no-startup-id pactl set-sink-mute   '@DEFAULT_SINK@' toggle
+# set $volume_mute      exec --no-startup-id pactl set-sink-mute   '@DEFAULT_SINK@' toggle
 # set $volume_inc       exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@' +10%
 # set $volume_dec       exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@' -10%
 # set $volume_inc_shift exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@' +10%
@@ -336,9 +337,9 @@ set $player_prev  exec --no-startup-id playerctl previous
 # set $player_next  exec --no-startup-id mpc -q next
 # set $player_prev  exec --no-startup-id mpc -q prev
 # Page Up/Down, End
-bindsym $ModK+End $player_play
+bindsym $ModK+End   $player_play
 bindsym $ModK+Prior $player_prev
-bindsym $ModK+Next $player_next
+bindsym $ModK+Next  $player_next
 # Media Keys
 bindsym XF86AudioPlay $player_play
 bindsym XF86AudioPrev $player_prev
@@ -356,29 +357,29 @@ bindsym $ModK+XF86AudioStop $player_pause
 bindsym XF86TouchpadToggle exec --no-startup-id zsh ~/bin/toggletouchpad
 
 # Lock
-bindsym $ModK+w exec --no-startup-id $locker
+bindsym $ModK+w       exec --no-startup-id $locker
 bindsym $ModK+Shift+w exec --no-startup-id $suspend
 
 # Terminal
-#bindsym $ModK+Return exec --no-startup-id $layouts/launch.sh urxvt
+#bindsym $ModK+Return exec --no-startup-id $launcher -- urxvt
 bindsym $ModK+Return exec urxvt
 
 # Emacs
-bindsym $ModK+Shift+Return exec --no-startup-id $layouts/launch.sh -- emacs
-bindsym $ModK+$Alt+Return  exec --no-startup-id $layouts/launch.sh -- emacs ~/NOTE.md
+bindsym $ModK+Shift+Return exec --no-startup-id $launcher -- emacs
+bindsym $ModK+$Alt+Return  exec --no-startup-id $launcher -- emacs ~/NOTE.md
 
 # Rtags rdm server
-bindsym $ModK+F4 exec --no-startup-id $layouts/launch.sh -w 4 -i rdm urxvt -name rdm -e zsh -is eval "~/bin/rdm_launch.sh"
+bindsym $ModK+F4 exec --no-startup-id $launcher -w 4 -i rdm -- urxvt -name rdm -e zsh -is eval "~/bin/rdm_launch.sh"
 
 # Firefox
 set $browser firefox
-bindsym $ModK+F10       exec --no-startup-id $layouts/launch.sh -w 10 $browser
-bindsym $ModK+Shift+F10 exec --no-startup-id $layouts/launch.sh $browser
-bindsym $ModK+F3        exec --no-startup-id $layouts/launch.sh -w 3 $browser
-bindsym $ModK+Shift+F3  exec --no-startup-id $layouts/launch.sh $browser
+bindsym $ModK+F10       exec --no-startup-id $launcher -w 10 -- $browser
+bindsym $ModK+Shift+F10 exec --no-startup-id $launcher       -- $browser
+bindsym $ModK+F3        exec --no-startup-id $launcher -w 3  -- $browser
+bindsym $ModK+Shift+F3  exec --no-startup-id $launcher       -- $browser
 
 # Qalculate
-bindsym $ModK+F5 exec $layouts/launch.sh -f 800x800 qalculate-gtk -n
+bindsym $ModK+F5 exec $launcher -f 800x800 -- qalculate-gtk -n
 
 # Redshift
 bindsym $ModK+o       exec --no-startup-id ~/bin/red +1
