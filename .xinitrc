@@ -71,4 +71,4 @@ xset b 0 &> /dev/null
 ~/.i3/wallpaper_cycle
 
 mv ~/.i3/log ~/.i3/log.1
-exec i3 >& ~/.i3/log
+exec $HOME/documents/clones/i3/build/i3 >& ~/.i3/log

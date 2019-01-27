@@ -418,7 +418,7 @@ bindsym $ModK+u         exec --no-startup-id ~/.i3/goto_urgent_and_back.sh
 #   https://github.com/Gravemind/i3status/tree/progress-wip
 #
 bar {
-    status_command ~/documents/clones/i3status/i3status -c ~/.i3/i3status_progress.conf
+    status_command ~/documents/clones/i3status/build/i3status -c ~/.i3/i3status_progress.conf
     i3bar_command ~/documents/clones/i3/build/i3bar/i3bar --bar_id=bar-1 --socket=~/.i3/ipc.sock
     separator_symbol "   "
     mode hide
