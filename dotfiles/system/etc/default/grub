@@ -1,0 +1,5 @@
+
+# https://wiki.archlinux.org/index.php/GRUB/Tips_and_tricks#Multiple_entries
+
+# No submenus (must be exacty "y")
+GRUB_DISABLE_SUBMENU=y
