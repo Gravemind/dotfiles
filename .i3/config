@@ -224,7 +224,7 @@ bindsym $ModK+Shift+space floating toggle, resize set 62 ppt 62 ppt, move absolu
 bindsym $ModK+space focus mode_toggle
 
 # Change Window Size and Modes
-set $mode_resize "    [S-]←→↓↑ resize  ·  <u>s</u>ticky-float  <u>u</u>nsticky  ·  <u>w</u>allpaper  setup-<u>x</u>randr    "
+set $mode_resize "    [S-]←→↓↑ resize  ·  <u>s</u>ticky  ·  <u>w</u>allpaper  ·  setup-<u>x</u>randr    "
 mode --pango_markup $mode_resize {
     bindsym $keyLeft        resize grow   left  $resize_step
     bindsym Left            resize grow   left  $resize_step
@@ -250,8 +250,7 @@ mode --pango_markup $mode_resize {
     bindsym equal       resize grow   up $resize_step, resize grow   down $resize_step, resize grow   left $resize_step, resize grow   right $resize_step
     bindsym Shift+equal resize grow   up $resize_step, resize grow   down $resize_step, resize grow   left $resize_step, resize grow   right $resize_step
 
-    bindsym s floating enable , sticky enable , mode "default"
-    bindsym u floating disable, sticky disable, mode "default"
+    bindsym s sticky toggle, mode "default"
 
     bindsym w exec --no-startup-id $wallpaper, mode "default"
     bindsym x exec --no-startup-id ~/bin/setup-xrandr, mode "default"
