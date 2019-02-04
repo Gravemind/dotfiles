@@ -8,7 +8,7 @@ User=%I
 Type=forking
 Environment=DISPLAY=:0
 ExecStartPre= 
-ExecStart=/home/%I/bin/lock
+ExecStart=/home/%I/bin/lock --fork
 
 [Install]
 WantedBy=sleep.target
