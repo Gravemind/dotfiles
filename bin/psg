@@ -1,0 +1,29 @@
+#!/bin/bash
+
+main() {
+    local pattern="$1"
+    shift
+    for arg in "$@"
+    do
+        pattern+=".*$arg"
+    done
+
+    local pgrepf="-f"
+    local pgrepi="-i"
+    local selfpid=$$
+
+    local pg=( pgrep $pgrepi $pgrepf -- "$pattern" )
+    local pids=( $("${pg[@]}") )
+    pids=( $(printf "%s\n" "${pids[@]}" | grep -vFx "$selfpid") ) ## grep -v separately so it doesn't get pgrep
+    if [[ $? -ne 0 || "${#pids[@]}" -le 0 ]]
+    then
+        echo "${COL_KO}No process found by ${pg[@]}${COL_RESET}"
+    else
+        echo "${COL_OK}${pg[@]}"
+        echo "${pids[@]}${COL_RESET}"
+        ps u --pid "${pids[@]}"
+    fi
+
+}
+
+main "$@"
