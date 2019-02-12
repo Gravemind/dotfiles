@@ -2074,8 +2074,13 @@ many times might take a long time."
   ;; accidentially pressed "C-x C-c"
   ;; ;;(setq-default helm-command-prefix-key "C-x c")
 
-  (setq-default
+  ;; Disable sorting of helm-find-files candidates
+  (defun my-helm-no-sort (candidates input)
+    "No sorting"
+    candidates)
+  (advice-add 'helm-ff-sort-candidates-1 :override #'my-helm-no-sort)
 
+  (setq-default
    enable-recursive-minibuffers t
 
    ;;helm-google-suggest-use-curl-p t
@@ -2086,6 +2091,8 @@ many times might take a long time."
    ;; fuzzy matching everywhere
    helm-mode-fuzzy-match t
    helm-completion-in-region-fuzzy-match t
+   ;; fuzzy sort try preserve order
+   helm-fuzzy-sort-fn 'helm-fuzzy-matching-sort-fn-preserve-ties-order
 
    helm-moccur-show-buffer-fontification t
 
@@ -2126,7 +2133,7 @@ many times might take a long time."
   ;; Auto resize height
   (helm-autoresize-mode t)
   (setq-default
-   helm-autoresize-min-height 10
+   helm-autoresize-min-height 20
    helm-autoresize-max-height 60
    )
 
