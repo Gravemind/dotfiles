@@ -3,8 +3,22 @@
 alias mpa="mpv --no-video "
 alias mpw="mpv --force-window=immediate "
 
-getfirstvalidfile() {
-	while IFS= read -r -d $'\n' file
+GRAVEMIND_NO_URGENT_CMD+=( mpv mpn mpf )
+
+MPN_SORT_VER=0
+MPN_MPV_ARGS= # --fullscreen
+
+_mpn_sort_files() {
+	if [[ "${MPN_SORT_VER}" = "1" ]]
+	then
+		sort -fiV
+	else
+		sort -fi
+	fi
+}
+
+_mpn_get_first_valid_file() {
+	while read -r file
 	do
 		#echo "FILE $file" >&2
 		# file=$(echo "$file")
@@ -29,19 +43,21 @@ getfirstvalidfile() {
 		fi
 		#echo "W? $file"
 	done
-	return 0
+	return 1
+}
+
+_mpn_last_valid_file_from_history() {
+	while read -r n bin args
+	do
+		[[ "$bin" == "mpv" ]] || continue;
+		echo "$args" | xargs -n1 echo | _mpn_get_first_valid_file && return 0
+	done < <(history | grep mpv | tac)
 }
 
 mpn() {
 	echo
 
-	FOUNDFILE="$( history | \
-			grep mpv | \
-			tac | \
-			# extract mpv's entire parameters, and also print just the filename if found "/" \
-			awk '/\s*[0-9]+\s+mpv\s+(.*)\s*/ { $1=""; $2=""; $0=$0; $1=$1; print $0; } /\// { sub(/.*\//,""); print $0; }' | \
-			#sed -rn 's/\s*[0-9]+\s+mpv\s+(.*)/\1/gp' | \
-			getfirstvalidfile )"
+	FOUNDFILE="$(_mpn_last_valid_file_from_history)"
 
 	if [[ -z "$FOUNDFILE" ]]
 	then
@@ -52,7 +68,7 @@ mpn() {
 
 	echo "  Last played: \"$FOUNDFILE\""
 
-	NEXTFILE="$(\ls | sort -fiV | \grep -F "$FOUNDFILE" -A 100 | tail -n '+2' | getfirstvalidfile)"
+	NEXTFILE="$(\ls | _mpn_sort_files | \grep -F "$FOUNDFILE" -A 100 | tail -n '+2' | _mpn_get_first_valid_file)"
 
 	if [[ ! -e "$NEXTFILE" ]]
 	then
@@ -62,18 +78,20 @@ mpn() {
 	fi
 
 	echo "  Now playing: \"$NEXTFILE\""
+
 	echo
-	echo "  $(wdiff -n <( echo "$FOUNDFILE" ) <( echo "$NEXTFILE" ) | colordiff)"
+	local common="$({ echo "$FOUNDFILE"; echo "$NEXTFILE"; } | sed -e 'N;s/^\(.*\).*\n\1.*$/\1/')"
+	local len="${#common}"
+	echo "  ${common}"$'\e[31m'"${FOUNDFILE:$len}"$'\e[0m'
+	echo "  ${common}"$'\e[32m'"${NEXTFILE:$len}"$'\e[0m'
 	echo
 
-	#return 0
-
-	mpv "$NEXTFILE" && \
+	mpv "$NEXTFILE" $MPN_MPV_ARGS "$@" && \
 		print -s "mpv \"$NEXTFILE\""
 }
 
 mpf() {
-	FIRST="$(ls | sort -fiV | getfirstvalidfile)"
+	FIRST="$(\ls | _mpn_sort_files | _mpn_get_first_valid_file)"
 	echo
 	echo "  Now playing: \"$FIRST\""
 	echo
