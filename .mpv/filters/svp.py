@@ -131,9 +131,10 @@ elif clip.width >= 1920:
 #max_fps = 60
 
 # Interpolate to a multiple of the original source fps
-dst_fps = container_fps
-while dst_fps + container_fps <= max_fps:
-    dst_fps += container_fps
+i = 1
+while container_fps * float(i + 1) <= max_fps:
+    i += 1
+dst_fps = container_fps * float(i)
 
 #dst_fps = display_fps
 
