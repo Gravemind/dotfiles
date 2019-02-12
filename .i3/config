@@ -68,6 +68,9 @@ floating_maximum_size -1 x -1
 #for_window [class="(?i)mplayer"] border none
 #for_window [class="(?i)mpv"] border none
 
+# Window title format
+for_window [class=".*"] title_format " <span rise='-1000'>%class</span> <span rise='-1000' alpha='80%' size='small' weight='normal'>%title</span>"
+
 # Colors
 # class                 border  backgr. text    split_indicator child_border
 client.focused          #285577 #285577 #dddddd #2e9ef4   #285577
