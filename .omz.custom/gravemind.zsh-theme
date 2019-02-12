@@ -179,6 +179,7 @@ function gravemind_promt_cc() {
 
 GRAVEMIND_CMD_START=-1
 GRAVEMIND_CMD_TIME=-1
+GRAVEMIND_LAST_CMD=
 
 # Called when the command is about to be executed
 function gravemind_preexec() {
@@ -187,17 +188,29 @@ function gravemind_preexec() {
 	# make sure prompt color doesn't leak (black background ?)
 	echo -n $'\033[0m'
 
+	GRAVEMIND_LAST_CMD="$1"
 	GRAVEMIND_CMD_TIME=-1
 	GRAVEMIND_CMD_START=$SECONDS
 }
+
+GRAVEMIND_NO_URGENT_CMD+=( mpv )
 
 # Called once before each new prompt
 function gravemind_precmd() {
 	local now=$SECONDS
 
-	# Urgent after each commands
-	# .Xresource: URxvt*urgentOnBell: true
-	echo -n $'\a'
+	# Urgent alert after commands
+	local urgent=1
+	local last_cmd="$GRAVEMIND_LAST_CMD"
+	#echo "last $last_cmd"
+	for exclude in "${GRAVEMIND_NO_URGENT_CMD[@]}"; do
+		if [[ "$last_cmd" =~ ^"$exclude"$ ||
+			  "$last_cmd" =~ ^"$exclude"" " ]]; then
+			urgent=0
+			break
+		fi
+	done
+	[[ $urgent -eq 0 ]] || echo -n $'\a'
 
 	if [[ $GRAVEMIND_CMD_START -ge 0 && $GRAVEMIND_CMD_TIME -eq -1 ]]; then
 		GRAVEMIND_CMD_TIME=$(($now - $GRAVEMIND_CMD_START))

@@ -3,7 +3,7 @@
 alias mpa="mpv --no-video "
 alias mpw="mpv --force-window=immediate "
 
-GRAVEMIND_NO_URGENT_CMD+=( mpv mpn mpf )
+GRAVEMIND_NO_URGENT_CMD+=( mpn mpf )
 
 MPN_SORT_VER=0
 MPN_MPV_ARGS= # --fullscreen
