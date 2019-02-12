@@ -377,6 +377,9 @@
    my/mode-line-buffer-long
    )
 
+ ;; frame title (X window title)
+ frame-title-format '("" "%b")
+
  )
 
 ;; Don't let dired change the mode-line !
