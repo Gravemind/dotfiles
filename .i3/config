@@ -172,6 +172,8 @@ bindsym $ModK+e border toggle
 
 # Kill focused window
 bindsym $ModK+q kill
+# Rofi menu xkill
+bindsym $ModK+Shift+q exec --no-startup-id rofi -show-icons -show window -window-command 'xkill -id {window}' -kb-accept-entry '' -kb-accept-alt 'Return' -display-window ' xkill'
 
 # Move to scrathpad
 bindsym $ModK+Shift+grave move scratchpad
