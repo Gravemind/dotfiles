@@ -1729,6 +1729,13 @@ With argument, do this that many times."
    magit-log-select-margin magit-default-margin
    magit-reflog-margin magit-default-margin
    magit-log-margin magit-default-margin
+
+   ;; Detect key binding conflicts
+   transient-detect-key-conflicts t
+   ;; Show all switches
+   transient-default-level 7
+   ;; Highlight switches mismatching their true CLI switch
+   transient-highlight-mismatched-keys t
    )
 
   (add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell)
@@ -1758,46 +1765,34 @@ With argument, do this that many times."
       (setq revision (match-string 1 revision)))
     (magit-run-git "checkout" "-m" revision))
 
+  ;; transient replaced magit popup
+  ;; https://github.com/magit/magit/wiki/Converting-popup-modifications-to-transient-modifications
+
   ;; log
-  (magit-define-popup-switch
-    'magit-log-popup
-    ?i "Regexp ignore case" "--regexp-ignore-case")
-  (magit-define-popup-switch
-    'magit-log-popup
-    ?s "Sort by date" "--date-order")
-  (magit-define-popup-action
-    'magit-log-popup
-    ?u "Log upstream" 'my-magit-log-upstream)
+  (transient-append-suffix 'magit-log "=p"
+    '("-i" "Regexp ignore case" "--regexp-ignore-case"))
+  (transient-append-suffix 'magit-log "a"
+    '("u" "upstream" my-magit-log-upstream))
 
   ;; pull
-  (magit-define-popup-action
-    'magit-pull-popup
-    ?f "Pull ff only" 'my-magit-pullff)
-  (magit-define-popup-switch
-    'magit-pull-popup
-    ?a "Auto stash" "--autostash")
+  (transient-append-suffix 'magit-pull "e"
+    '("f" "Pull ff only" my-magit-pullff))
+  (transient-append-suffix 'magit-pull "r"
+    '("-a" "Auto stash" "--autostash"))
 
   ;; diff
-  (magit-define-popup-switch
-    'magit-diff-refresh-popup
-    ?W "Function context" "-W")
-  (magit-define-popup-switch
-    'magit-diff-popup
-    ?W "Ignore changes in whitespace at EOL" "--ignore-space-at-eol")
-  (magit-define-popup-switch
-    'magit-diff-popup
-    ?b "Ignore changes in amount of whitespace" "--ignore-space-change")
-  (magit-define-popup-switch
-    'magit-diff-popup
-    ?R "Reverse, show differences from index or on-disk file to tree contents" "-R")
+  (transient-append-suffix 'magit-diff "-s"
+    '("-R" "Reverse" "--reverse"))
+  ;; (magit-define-popup-switch
+  ;;   'magit-diff-popup
+  ;;   ?W "Ignore changes in whitespace at EOL" "--ignore-space-at-eol")
 
   ;; branch
-  (magit-define-popup-action
-    'magit-branch-popup
-    ?o "Update other" 'my-magit-branch-update-other)
-  (magit-define-popup-action
-    'magit-branch-popup
-    ?M "Checkout merge" 'my-magit-checkout-merge)
+  (transient-remove-suffix 'magit-branch "o") ;; was checkout --orphan
+  (transient-append-suffix 'magit-branch "k"
+    '("o" "Update other" my-magit-branch-update-other))
+  (transient-append-suffix 'magit-branch "b"
+    '("M" "Merge other (-m)" my-magit-checkout-merge))
 
   (setq-default
    magit-log-arguments '("--graph" "--color" "--decorate" "--date-order" "--follow" "-n256")
@@ -1839,16 +1834,17 @@ With argument, do this that many times."
           ("Version" 25 magit-repolist-column-version                ())
           ))
 
-  (magit-define-popup magit-repolist-popup
-    "Popup console for repolist commands.
-Commands bound in this popup should use the
-macro `magit-with-repositories' (which see)."
-    :actions '((?f "Fetch in all repositories" magit-repolist-fetch)
-               (?F "Fetch in all repositories asynchronously"
-                   magit-repolist-fetch-async)
-               (?x "Run a command in all repositores"
-                   magit-repolist-run))
-    :max-action-columns 1)
+;; @TODO transient replaced magit popup
+;;   (magit-define-popup magit-repolist-popup
+;;     "Popup console for repolist commands.
+;; Commands bound in this popup should use the
+;; macro `magit-with-repositories' (which see)."
+;;     :actions '((?f "Fetch in all repositories" magit-repolist-fetch)
+;;                (?F "Fetch in all repositories asynchronously"
+;;                    magit-repolist-fetch-async)
+;;                (?x "Run a command in all repositores"
+;;                    magit-repolist-run))
+;;     :max-action-columns 1)
 
   (defun magit-repolist-fetch ()
     "Fetch all remotes in repositories returned by `magit-list-repos'.
