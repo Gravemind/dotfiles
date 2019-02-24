@@ -86,8 +86,12 @@ mpn() {
 	echo "  ${common}"$'\e[32m'"${NEXTFILE:$len}"$'\e[0m'
 	echo
 
-	mpv "$NEXTFILE" $MPN_MPV_ARGS "$@" && \
-		print -s "mpv \"$NEXTFILE\""
+	# return 0
+
+	local args=( $MPN_MPV_ARGS "$@" -- "$NEXTFILE")
+
+	mpv "${args[@]}" && \
+		print -s "mpv" "${(q-)args[@]}" # print -s is not printf-like
 }
 
 mpf() {
