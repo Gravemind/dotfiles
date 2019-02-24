@@ -124,15 +124,15 @@ print("clip", clip.width, "x", clip.height, "at", container_fps, "fps")
 max_fps = display_fps
 
 if clip.width > 1920:
-    max_fps = min(max_fps, 60)
+    max_fps = min(max_fps, 60)  # > 1080p
 elif clip.width >= 1920:
-    max_fps = min(max_fps, 120)
+    max_fps = min(max_fps, 150) # <= 1080p
 
 #max_fps = 60
 
 # Interpolate to a multiple of the original source fps
 i = 1
-while container_fps * float(i + 1) <= max_fps:
+while container_fps * float(i + 1) <= max_fps + 0.5:
     i += 1
 dst_fps = container_fps * float(i)
 
