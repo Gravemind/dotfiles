@@ -1006,7 +1006,7 @@ spaces are treated."
  ("S-<f6>" . uncomment-region)
  ("C-c C-c" . comment-or-uncomment-region)
 
- ("C-x C-l" . jo/filenum-to-clipboard)
+ ("C-x C-l" . jo/file-to-clipboard-plus)
  ("C-x l" . jo/file-to-clipboard)
 
  ("M-k" . kill-whole-line)
@@ -1049,23 +1049,25 @@ With argument, do this that many times."
   (interactive "p")
   (delete-word (- arg)))
 
-(defun jo/filenum-to-clipboard ()
-  "Copy \"file:linenum\" to clipboard"
+(defun jo/file-to-clipboard-plus ()
+  "Copy current file path and linenum, or dired file at point, to clipboard"
   (interactive)
   (save-restriction
     (widen)
     (save-excursion
       (beginning-of-line)
-      (let* ((fname (or buffer-file-name
-                        dired-directory))
-             (location (format "%s:%d"
-                               fname
-                               (1+ (count-lines 1 (point))))))
+      (let ((location
+             (if-let* ((dir dired-directory)
+                       (fname (dired-get-filename nil t)))
+                 fname
+               (format "%s:%d" (or buffer-file-name dired-directory)
+                       (1+ (count-lines 1 (point))))
+               )))
         (message location)
         (gui-set-selection nil location)))))
 
 (defun jo/file-to-clipboard ()
-  "Copy \"file:linenum\" to clipboard"
+  "Copy current file path to clipboard"
   (interactive)
   (save-restriction
     (widen)
