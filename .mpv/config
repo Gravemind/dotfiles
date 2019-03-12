@@ -20,9 +20,9 @@ screenshot-directory=~/
 # MPV downmix better than pulseaudio ?!
 audio-channels=2
 
-# (copied from ~/.config/youtube-dl)
+# Default youtube-dl config ignored
+ytdl-raw-options=ignore-config=,prefer-free-formats=
 ytdl-format=(bestvideo[vcodec^=av01]+bestaudio/bestvideo[vcodec^=vp9]+bestaudio/bestvideo+bestaudio/best)[height<=?1440][protocol=https]
-ytdl-raw-options=prefer-free-formats=
 
 #cache-default=
 #cache-secs=300

@@ -7,9 +7,9 @@
 --format (bestvideo[vcodec^=av01]+bestaudio/bestvideo[vcodec^=vp9]+bestaudio/bestvideo+bestaudio/best)[height<=?1440][protocol=https]
 --prefer-free-formats
 
-# --write-sub
-# --write-auto-sub
+--embed-subs
+--write-sub
+--write-auto-sub
 # --sub-lang=en
-# --embed-subs
-# --sub-format=ass
-# --convert-subs=ass
+#--sub-format=ass
+#--convert-subs=ass
