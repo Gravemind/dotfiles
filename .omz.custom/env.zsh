@@ -25,3 +25,6 @@ export HISTSIZE=100000
 export SAVEHIST=100000
 
 export ORIG_PATH="$PATH"
+
+# add bell (urgent alert) to sudo password prompt
+export SUDO_PROMPT=$'\a'"[sudo] [%u@%h] password for %p: "
