@@ -17,7 +17,9 @@ _mpn_sort_files() {
 	fi
 }
 
-_mpn_get_first_valid_file() {
+_mpn_get_valid_files() {
+	local first=0
+	[[ "${1:-}" != "-1" ]] || first=1
 	while read -r file
 	do
 		#echo "FILE $file" >&2
@@ -32,16 +34,30 @@ _mpn_get_first_valid_file() {
 				continue
 			fi
 		fi
-		ext="${file##*.}"
-		mime="$(file -b --mime-type	"$file")"
-		# echo "FILE $file $mime $ext" >&2
-		# mkv mime type sometimes does not report as video/audio
-		if [[ "$mime" =~ video\|audio\|directory || "$ext" =~ mkv\|mka\|mp4\|webm\|avi ]]
+
+		if [[ -d "$file" ]]
 		then
 			echo "$file"
-			return 0
+			[[ $first = 0 ]] || return 0
+			continue
 		fi
-		#echo "W? $file"
+
+		local ext="${file##*.}"
+		if [[ "$ext" =~ mkv\|mka\|mp4\|webm\|avi ]]
+		then
+			echo "$file"
+			[[ $first = 0 ]] || return 0
+			continue
+		fi
+
+		local mime="$(file -b --mime-type "$file")"
+		if [[ "$mime" =~ video\|audio ]]
+		then
+			echo "_mpn_get_valid_files debug: slow mime type used, consider adding extensions: $file" >&2
+			echo "$file"
+			[[ $first = 0 ]] || return 0
+			continue
+		fi
 	done
 	return 1
 }
@@ -50,55 +66,87 @@ _mpn_last_valid_file_from_history() {
 	while read -r n bin args
 	do
 		[[ "$bin" == "mpv" ]] || continue;
-		echo "$args" | xargs -n1 echo | _mpn_get_first_valid_file && return 0
+		echo "$args" | xargs -n1 echo | _mpn_get_valid_files -1 && return 0
 	done < <(history | grep mpv | tac)
 }
 
 mpn() {
 	echo
 
-	FOUNDFILE="$(_mpn_last_valid_file_from_history)"
+	local last_file="$(_mpn_last_valid_file_from_history)"
 
-	if [[ -z "$FOUNDFILE" ]]
+	if [[ -z "$last_file" ]]
 	then
 		echo "No files in history have been found here"
 		echo
 		return 1
 	fi
 
-	echo "  Last played: \"$FOUNDFILE\""
+	echo "Last played: $last_file"
+	echo
 
-	NEXTFILE="$(\ls | _mpn_sort_files | \grep -F "$FOUNDFILE" -A 100 | tail -n '+2' | _mpn_get_first_valid_file)"
+	local found=0
+	local next_file=
+	while read -r file
+	do
+		if [[ ! -e "$file" ]]
+		then
+			echo "Escaping error ? file not found: $file" >&2
+			return 1
+		fi
+		if [[ $found = 0 ]]
+		then
+			if [[ "$file" != "$last_file" ]]
+			then
+				echo "      $file"
+			else
+				echo "last: $file"
+				found=1
+			fi
+		elif [[ $found = 1 ]]
+		then
+			 next_file="$file"
 
-	if [[ ! -e "$NEXTFILE" ]]
+			 local common="$({ echo "$last_file"; echo "$next_file"; } | sed -e 'N;s/^\(.*\).*\n\1.*$/\1/')"
+			 local len="${#common}"
+			 #echo "last: ${common}"$'\e[31m'"${last_file:$len}"$'\e[0m'
+			 echo "next: ${common}"$'\e[32m'"${next_file:$len}"$'\e[0m'
+
+			 found=2
+		else
+			echo "      $file"
+		fi
+	done < <( \ls | _mpn_sort_files | _mpn_get_valid_files )
+	echo
+
+	if [[ -z "$next_file" ]]
 	then
-		echo "  Did not found a next one after that"
+		echo "Could not find next file after $last"
 		echo
 		return 1
 	fi
 
-	echo "  Now playing: \"$NEXTFILE\""
+	local cmd=( mpv $MPN_MPV_ARGS "$@" -- "$next_file")
 
-	echo
-	local common="$({ echo "$FOUNDFILE"; echo "$NEXTFILE"; } | sed -e 'N;s/^\(.*\).*\n\1.*$/\1/')"
-	local len="${#common}"
-	echo "  ${common}"$'\e[31m'"${FOUNDFILE:$len}"$'\e[0m'
-	echo "  ${common}"$'\e[32m'"${NEXTFILE:$len}"$'\e[0m'
+	echo "Now playing: ${(q-)cmd[@]}"
 	echo
 
-	# return 0
+	#return 0
 
-	local args=( $MPN_MPV_ARGS "$@" -- "$NEXTFILE")
-
-	mpv "${args[@]}" && \
-		print -s "mpv" "${(q-)args[@]}" # print -s is not printf-like
+	"${cmd[@]}" && \
+		print -sf "%s " "${(q-)cmd[@]}"
 }
 
 mpf() {
-	FIRST="$(\ls | _mpn_sort_files | _mpn_get_first_valid_file)"
+	local first="$(\ls | _mpn_sort_files | _mpn_get_valid_files -1)"
+
+	local cmd=( mpv $MPN_MPV_ARGS "$@" -- "$first")
+
+	echo "Now playing: ${(q-)cmd[@]}"
 	echo
-	echo "  Now playing: \"$FIRST\""
-	echo
-	mpv "$FIRST" && \
-		print -s "mpv \"$FIRST\""
+
+	#return 0
+
+	"${cmd[@]}" && \
+		print -sf "%s " "${(q-)cmd[@]}"
 }
