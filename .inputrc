@@ -10,4 +10,6 @@
 "\e[8^": end-of-line       # [Ctrl-End]
 "\e[7^": beginning-of-line # [Ctrl-Home]
 
-#set enable-bracketed-paste on
+# safer paste
+# https://cirw.in/blog/bracketed-paste
+set enable-bracketed-paste on
