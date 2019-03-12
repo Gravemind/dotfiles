@@ -1797,7 +1797,7 @@ With argument, do this that many times."
   (transient-append-suffix 'magit-branch "k"
     '("o" "Update other" my-magit-branch-update-other))
   (transient-append-suffix 'magit-branch "b"
-    '("M" "Merge other (-m)" my-magit-checkout-merge))
+    '("M" "with merge (-m)" my-magit-checkout-merge))
 
   (setq-default
    magit-log-arguments '("--graph" "--color" "--decorate" "--date-order" "--follow" "-n256")
