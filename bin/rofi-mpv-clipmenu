@@ -41,7 +41,7 @@ profile=protocol.http
 }
 
 filter_urls() {
-    grep -E '^[a-z0-9]+://'
+    grep -E '^[A-Za-z0-9]+://'
 }
 
 escape_markup() {
@@ -52,8 +52,8 @@ escape_markup() {
     echo -n "$e"
 }
 
-escape_filename() {
-    sed -E 's/[^a-zA-Z0-9\.-]+/_/g'
+sanitize_filename() {
+    sed -E 's/[^a-zA-Z0-9\+\,\-\.\:]+/_/g'
 }
 
 LOGPID=$$
@@ -139,7 +139,7 @@ main() {
         local markupfilename=
         local ok=0
         if [[ $dlwith = youtube-dl ]]; then
-            filename="$(youtube-dl -q --restrict-filenames --get-filename -- "$url" | escape_filename)"
+            filename="$(youtube-dl -q --restrict-filenames --get-filename -- "$url" | sanitize_filename)"
             if [[ -n "$filename" ]]; then
                 markupfilename="$(echo "$filename" | escape_markup)"
                 log "youtube-dl $filename"
@@ -161,7 +161,7 @@ main() {
 
             fi
         else
-            filename="$(echo "${url##*/}" | escape_filename)"
+            filename="$(echo "${url##*/}" | sanitize_filename)"
             markupfilename="$(echo "$filename" | escape_markup)"
             log "wget $filename"
             notify low "Launching $dlwith..." "$markupfilename"
