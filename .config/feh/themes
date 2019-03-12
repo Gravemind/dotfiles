@@ -1,4 +1,4 @@
 
 i --verbose --geometry '1200x1200' --auto-zoom --scale-down --zoom 100 --draw-actions --draw-filename --draw-tinted --conversion-timeout 5 --image-bg "#202020" --recursive
 t --verbose --geometry '1200x1200' --auto-zoom --scale-down --zoom 100 --draw-actions --draw-filename --draw-tinted --conversion-timeout 5 --image-bg "#202020" --recursive --thumbnails --index-info "%n" --stretch --thumb-width 300 --thumb-height 300 --limit-width 2400
-e --verbose --geometry '1200x1200' --auto-zoom --scale-down --zoom 100 --draw-actions --draw-filename --draw-tinted --conversion-timeout 5 --image-bg "#202020" --recursive --edit --action1 "[MV]~/bin/rofi-mv -t -c mv -e %F" --action2 "[CONVERT]~/bin/rofi-mv -t -c convert %F && rm %F" --action9 "[REMOVE]rm %F"
+e --verbose --geometry '1200x1200' --auto-zoom --scale-down --zoom 100 --draw-actions --draw-filename --draw-tinted --conversion-timeout 5 --image-bg "#202020" --recursive --edit --action1 "[Rename]~/bin/rofi-mv -t -c mv -e %F" --action2 "[Convert]~/bin/rofi-mv -t -c convert %F && rm %F" --action9 "[Remove]rm %F"
