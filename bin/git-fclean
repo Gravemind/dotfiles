@@ -3,7 +3,7 @@
 set -euo pipefail
 
 usage() {
-    echo -n 'usage: '"$0"' [PATH]
+    echo -n 'usage: '"$0"' [-h|--help] [-n] [--] [PATH]
 
 Hard cleans PATH working tree (defaults to "."):
 - Recurses sub-modules/gits
@@ -13,39 +13,57 @@ Hard cleans PATH working tree (defaults to "."):
 '
 }
 
-path="${1:-./}"
+fclean() {
+    local clean_fn="$1"
+    local path="$2"
 
-if [[ "$path" = "-h" ]]; then
-    usage
-    exit 0
-fi
+    #echo
+    pushd "$path" > /dev/null
+    echo ":::: fclean $path ..."
 
-echo -n "Hard reset working tree \"$(ls -d "$path")\" (and sub-repos) to HEAD ? [y/N] "
+    #echo ":::: checkout $path ..."
+    #git --no-pager diff --name-only HEAD -- "."
+    if [[ $clean_fn = "-f" ]]; then
+        git checkout HEAD -- "."
+    fi
+    git clean -xd $clean_fn -- "."
+
+    popd > /dev/null
+}
+
+clean_fn="-f"
+
+for arg in "$@" ; do
+    case "$arg" in
+        -h|--help) usage; exit 0; ;;
+        -n) clean_fn="-n"; shift; ;;
+        --) shift; break; ;;
+        -*) echo "$0: error: invalid argument $arg" >&2; exit 1; ;;
+        *) break; ;;
+    esac
+done
+
+paths=( "${@:-.}" )
+for path in "${paths[@]}" ; do
+    if [[ ! -d "$path" ]]; then
+        echo "$0: error: no such directory: $path" >&2
+        exit 2
+    fi
+done
+
+echo -n "Recursively reset and clean $clean_fn ${paths[@]} ? [y/N] "
 read -n 1 r
 echo
 [[ "$r" == "y" ]] || exit 1
-
 echo
-echo "Cleaning $path ..."
-git checkout HEAD -- "$path"
-git clean -xdf -- "$path"
-echo "Cleaned $path";
 
-while read -u3 -d $'\0' -r sub; do
-
-    sub="$(dirname "$sub")"
-    echo
-    echo "Cleaning $sub ..."
-
-    pushd "$sub" > /dev/null
-
-    git checkout HEAD -- "."
-    git clean -xdf -- "."
-    echo "Cleaned $sub";
-
-    popd > /dev/null
-
-done 3< <(find "$path" -mindepth 2 -name '.git' -print0)
+for path in "${paths[@]}" ; do
+    fclean $clean_fn "$path"
+    while read -u3 -d $'\0' -r sub; do
+        sub="$(dirname "$sub")"
+        fclean $clean_fn "$sub"
+    done 3< <(find "$path" -mindepth 2 -name '.git' -print0)
+done
 
 echo
 echo "All cleaned."
