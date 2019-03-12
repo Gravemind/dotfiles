@@ -1651,8 +1651,11 @@ With argument, do this that many times."
       (ansi-color-apply-on-region (point-min) (point-max))))
   (add-hook 'compilation-filter-hook #'colorize-compilation-buffer)
 
-  (setq-default compilation-scroll-output 0
-                compilation-window-height 12)
+  (setq-default
+   compilation-auto-jump-to-first-error nil
+   compilation-scroll-output 'first-error
+   compilation-window-height 12
+   )
   (add-hook 'compilation-finish-functions #'jo/compilation-finished)
   )
 
