@@ -2722,20 +2722,39 @@ many times might take a long time."
 ;;   https://areweideyet.com/#emacs
 ;;
 
+;; https://github.com/rust-lang/rust-mode
 (req-package rust-mode
+  :defer t
+  :bind (:map rust-mode-map
+              ("<f3>" . cargo-process-build)
+              ("<S-f3>" . cargo-process-build)
+              )
+  )
+
+;; https://github.com/kwrooijen/cargo.el
+(req-package cargo
   :defer t
   )
 
+;; https://github.com/flycheck/flycheck-rust
 (req-package flycheck-rust
   :pin melpa ; only in unstable
   :defer t
+  :hook (flycheck-mode . (lambda () (if (eq major-mode 'rust-mode) (flycheck-rust-setup))))
   )
 
+;; https://github.com/racer-rust/emacs-racer
 (req-package racer
+  ;;:disabled t
   :defer t
   :hook (rust-mode . racer-mode)
   :bind (("C-c i" . racer-find-definition)
          )
+  )
+
+;; https://github.com/flycheck/flycheck-inline
+(req-package flycheck-inline
+  :defer t
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
