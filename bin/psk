@@ -14,7 +14,7 @@ echorun() {
     if [[ "$r" -ne 0 ]]
     then
         echo "Command failed ($r): $@"
-        exit 1
+        #exit 1
     fi
 }
 
