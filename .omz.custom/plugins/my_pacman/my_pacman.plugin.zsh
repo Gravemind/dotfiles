@@ -110,9 +110,9 @@ pacupg() {
 
 	yay -Syu --noconfirm "$@" || { echo "${fg_bold[red]}$0: yay -Syu failed !!$reset_color"; return 1; }
 
-	echo "${fg_bold[green]}packages updated$reset_color"
-
 	checkpacnew
+
+	echo "${fg_bold[green]}packages updated$reset_color"
 }
 
 checkpacnew() {
@@ -131,6 +131,8 @@ checkpacnew() {
 		echo
 		echo "${fg_bold[red]}$0: found ${#pacnews[@]} pacnew: ${pacnews[@]}$reset_color"
 		echo
+	else
+		echo "${fg_bold[black]}$0: found 0 pacnew$reset_color"
 	fi
 }
 
