@@ -143,9 +143,6 @@
 
  ;;vc-handled-backends nil
 
- ;; Max recent files entries
- recentf-max-saved-items 300
-
  org-startup-folded 'showeverything
  Man-width 100
 
@@ -531,6 +528,27 @@
               ("C-c l" . help-go-forward)
               )
   )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; recentf
+;;
+
+(req-package recentf
+  :pin manual
+  :demand t
+  :config
+  (setq-default
+   ;; Max recent files entries
+   recentf-max-saved-items 300
+
+   ;; Stat all files to remove deleted ones (recentf-cleanup)
+   recentf-auto-cleanup 60 ;; after N seconds
+   ;;recentf-auto-cleanup 'never
+
+   )
+  (recentf-mode 1)
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
