@@ -1,0 +1,11 @@
+#!/bin/bash
+
+w=$( tput cols )
+
+pad="$(printf "%*s" $w "" )"
+pad="${pad// /-}"
+echo "$pad"
+
+# echo $'\e[1;34;44m;'
+# tput cup 
+# echo -n $'\e[0;0;0m'
