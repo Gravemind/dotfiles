@@ -2060,13 +2060,17 @@ many times might take a long time."
   ;;:defer t
   :bind (
          ("M-x" . helm-M-x)
-         ("C-c C-x" . helm-resume)
          ("C-x b"   . helm-mini) ;; helm-buffers-list
          ("C-f <C-return>" . helm-occur)
          ("C-f C-r" . helm-do-grep-rg-ripgrep)
          ;;("C-f C-r" . helm-do-grep-ag-dir)
          ("C-x C-f". helm-find-files)
          ("C-f C-x" . helm-recentf)
+
+         :map global-map
+         ("C-M-x" . helm-resume)
+         ;; :map python-mode-map
+         ;; ("C-M-x" . helm-resume)
 
          :map helm-map
          ("<tab>" . helm-execute-persistent-action)
@@ -2087,6 +2091,7 @@ many times might take a long time."
          )
 
   :config
+
   ;; http://tuhdo.github.io/helm-intro.html
   ;; must set before helm-config,  otherwise helm use default
   ;; prefix "C-x c", which is inconvenient because you can
@@ -2117,6 +2122,8 @@ many times might take a long time."
 
    ;; Find files opens with '.' selected
    helm-ff-no-preselect t
+   ;; Don't pre-fill find-files with whats at point
+   helm-find-files-ignore-thing-at-point t
 
    ;; Increase helm-buffers buffer name column width
    helm-buffer-max-length 30
