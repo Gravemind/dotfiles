@@ -2656,7 +2656,21 @@ many times might take a long time."
    ;;   C-S-LEFT ⇒ M-S--	C-S-RIGHT ⇒ M-S-+
    ;; https://www.emacswiki.org/emacs/OrgMode
    org-replace-disputed-keys t
-   )
+
+   org-babel-load-languages '((emacs-lisp . t) (python . t) (gnuplot . t))
+   org-confirm-babel-evaluate nil
+   org-src-preserve-indentation nil
+   org-src-tab-acts-natively t
+   org-startup-with-inline-images t
+
+   mm-html-inhibit-images t
+   mm-inline-large-images 'resize
+  )
+
+  ;; auto redisplay images
+  ;;   https://emacs.stackexchange.com/questions/30520/org-mode-c-c-c-c-to-display-inline-image
+  (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
+
   )
 
 (req-package htmlize
