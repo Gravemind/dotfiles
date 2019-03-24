@@ -33,10 +33,10 @@ pacupmir() {
 	#local ago=10000
 	if [[ "$1" = "-f" || $ago -gt $pacmirrorfile_expire_sec ]]
 	then
-		echo "$0: mirrorlist is $(durationtostr $ago old), updating:"
+		echo "${fg_bold[yellow]}mirrorlist is $(durationtostr $ago old), updating now:$reset_color"
 		pacupdatemirrors || { echo "${fg_bold[red]}$0: pacupdatemirrors failed !!$reset_color"; return 1 }
 	else
-		#echo "$0: mirrorlist is $(durationtostr $ago old), not updating yet"
+		echo "${fg_bold[black]}mirrorlist is $(durationtostr $ago old), updating at $(durationtostr $pacmirrorfile_expire_sec old).$reset_color"
 	fi
 }
 
@@ -108,11 +108,15 @@ pacupg() {
 	#sudo pacman -Syu --noconfirm "$@" || { echo "${fg_bold[red]}$0: pacman -Syu failed !!$reset_color"; return 1; }
 	#pacaur --aur -Syu --noconfirm --noedit "$@" || { echo "${fg_bold[red]}$0: pacaur --aur -Syu failed !!$reset_color"; return 1; }
 
+	date="$(date -Im)"
+
 	yay -Syu --noconfirm "$@" || { echo "${fg_bold[red]}$0: yay -Syu failed !!$reset_color"; return 1; }
 
-	checkpacnew
-
-	echo "${fg_bold[green]}packages updated$reset_color"
+	{
+		echo "${fg_bold[green]}packages updated$reset_color";
+		checkpacnew;
+		paclog --after="$date" --color;
+	} | less --quit-if-one-screen --RAW-CONTROL-CHARS --no-init
 }
 
 checkpacnew() {
@@ -129,10 +133,10 @@ checkpacnew() {
 	if [[ "${#pacnews[@]}" -gt 0 ]]
 	then
 		echo
-		echo "${fg_bold[red]}$0: found ${#pacnews[@]} pacnew: ${pacnews[@]}$reset_color"
+		echo "${fg_bold[red]}$0: found ${#pacnews[@]} pacnew: ${pacnews[@]}.$reset_color"
 		echo
 	else
-		echo "${fg_bold[black]}$0: found 0 pacnew$reset_color"
+		echo "${fg_bold[black]}$0: found 0 pacnew.$reset_color"
 	fi
 }
 
