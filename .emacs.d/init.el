@@ -252,8 +252,12 @@
   (get-buffer-create buffername)
   (copy-to-buffer buffername (point-min) (point-max)))
 
-;; https://www.emacswiki.org/emacs/UnfillParagraph
-;;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; unfill
+;;   https://www.emacswiki.org/emacs/UnfillParagraph
+;;
+
 (defun unfill-paragraph (&optional region)
   "Takes a multi-line paragraph and makes it into a single line of text."
   (interactive (progn (barf-if-buffer-read-only) '(t)))
@@ -271,10 +275,12 @@
   (let ((fill-column (point-max)))
     (fill-region beg end)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; Change cursor color according to mode (normal, overwrite (insert), read-only)
+;; Cursor color according to mode (normal, overwrite (insert), read-only)
 ;;   https://www.emacswiki.org/emacs/ChangingCursorDynamically
 ;;
+
 (defvar hcz-set-cursor-color-color "")
 (defvar hcz-set-cursor-color-buffer "")
 (defun hcz-set-cursor-color-according-to-mode ()
@@ -293,7 +299,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; modeline mode-line:
+;; modeline (mode-line):
 ;;   wiki: https://www.emacswiki.org/emacs/ModeLineConfiguration
 ;;   doc: https://www.gnu.org/software/emacs/manual/html_node/elisp/Mode-Line-Format.html
 ;;   example: http://www.holgerschurig.de/en/emacs-tayloring-the-built-in-mode-line
