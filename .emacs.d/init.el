@@ -1167,6 +1167,7 @@ With argument, do this that many times."
 
 (req-package visual-fill-column
   ;;:disabled t
+  :if window-system
   :demand t
   :config
 
@@ -2393,6 +2394,7 @@ many times might take a long time."
 
 (req-package diff-hl
   ;:disabled
+  :if window-system
   :demand
   :bind (("M-n" . diff-hl-next-hunk)
          ("M-p" . diff-hl-previous-hunk))
@@ -2417,6 +2419,7 @@ many times might take a long time."
 
 (req-package git-gutter-fringe
   :disabled
+  :if window-system
   :demand
   :bind (("M-n" . git-gutter:next-hunk)
          ("M-p" . git-gutter:previous-hunk))
@@ -2480,6 +2483,7 @@ many times might take a long time."
 
 ;; (req-package git-gutter-fringe+
 ;;   :disabled
+;;   :if window-system
 ;;   :demand
 ;;   ;;:defer 1
 ;;   :bind (("M-n" . git-gutter+-next-hunk)
