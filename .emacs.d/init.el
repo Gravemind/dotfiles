@@ -546,14 +546,24 @@
 (req-package recentf
   :pin manual
   :demand t
+  ;;:defer t
   :config
+
+  ;; (elp-instrument-package "recentf")
+  ;; (elp-instrument-function 'abbreviate-file-name)
+
   (setq-default
    ;; Max recent files entries
    recentf-max-saved-items 300
 
    ;; Stat all files to remove deleted ones (recentf-cleanup)
-   recentf-auto-cleanup 60 ;; after N seconds
-   ;;recentf-auto-cleanup 'never
+   ;;recentf-auto-cleanup 60 ;; after N seconds
+   recentf-auto-cleanup 'never
+
+   ;; Fix slow recentf-mode startup (0.60s to 0.06s):
+   ;; Initializing `file-name-history` is slow only when there are tramp files
+   ;; (eg "/sudo:") (seems to come from abbreviate-file-name !?).
+   recentf-initialize-file-name-history nil
 
    )
   (recentf-mode 1)
