@@ -76,6 +76,7 @@ sed -rn '/## AUR ##/,/## OTHER ##/ bk;d;:k;s/^- ([[:alnum:]_-]+).*/\1/gp' base-p
 - pacutils
 - reflector
 - pacman-contrib
+- expac
 - pyalpm
 - pkgfile
 - expac
@@ -154,6 +155,8 @@ sed -rn '/## AUR ##/,/## OTHER ##/ bk;d;:k;s/^- ([[:alnum:]_-]+).*/\1/gp' base-p
 - qalculate-gtk
 - gnumeric
 - xdiskusage
+- gimp
+- gpick
 
 - mpv
 - youtube-dl
