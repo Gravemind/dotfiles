@@ -114,7 +114,8 @@ pacupg() {
 
 	{
 		echo "${fg_bold[green]}packages updated$reset_color";
-		checkpacnew;
+		# checkpacnew; # breaks less !?
+		\cat <(checkpacnew);
 		paclog --after="$date" --color;
 	} | less --quit-if-one-screen --RAW-CONTROL-CHARS --no-init
 }
