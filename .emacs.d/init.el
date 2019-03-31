@@ -27,6 +27,9 @@
 ;; (setq-default use-package-compute-statistics t)
 ;; (global-set-key (kbd "<f12>") (lambda () (interactive) (use-package-report)))
 
+;; silent startup message
+(setq inhibit-startup-echo-area-message "jo")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Theme
@@ -49,7 +52,7 @@
 
 (setq-default
  ;; Log *Messages* if the use-package takes longer than 0.1s to load
- use-package-verbose t
+ use-package-verbose nil
  ;; Auto install packages as needed
  use-package-always-ensure t
 )
@@ -92,7 +95,7 @@
 ;;
 
 (setq-default custom-file "~/.emacs.d/custom.el")
-(load custom-file)
+(load custom-file nil t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
