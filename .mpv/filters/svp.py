@@ -118,8 +118,10 @@ scene: {
 }
 '''
 
+pprefix="svp.py: "
+
 print()
-print("clip", clip.width, "x", clip.height, "at", container_fps, "fps")
+print(pprefix+"Clip", clip.width, "x", clip.height, clip.format.name, "at", container_fps, "fps")
 
 max_fps = display_fps
 
@@ -139,18 +141,30 @@ dst_fps = container_fps * float(i)
 #dst_fps = display_fps
 
 if not enable or dst_fps <= container_fps:
-    print("NOT reflowing clip", clip.width, "x", clip.height, "at", container_fps, "fps (display:", display_fps, ").")
+    print(pprefix+"NOT reflowing clip", clip.width, "x", clip.height, "at", container_fps, "fps (display:", display_fps, ").")
 else:
     src_fps_num = int(container_fps * 1e5)
     src_fps_den = int(1e5)
     dst_fps_num = int(dst_fps * 1e5)
     dst_fps_den = int(1e5)
 
-    print("Reflowing clip", clip.width, "x", clip.height, " from ", src_fps_num/src_fps_den, "fps to", dst_fps_num/dst_fps_den, "fps (display:", display_fps, ").")
+    print(pprefix+"Reflowing from", src_fps_num/src_fps_den, "fps to", dst_fps_num/dst_fps_den, "fps (display:", round(display_fps, 5), ").")
 
-    clip = core.std.AssumeFPS(clip, fpsnum = src_fps_num, fpsden = src_fps_den)
+    orig_clip = clip
 
-    sup = core.svp1.Super(clip, "{"+super_params+"}")
+    ENABLE_CONVERSION_YV12 = False # Using vf=format=yuv420p gives better results !?
+    ok = False
+    while not ok:
+        try:
+            clip = core.std.AssumeFPS(clip, fpsnum = src_fps_num, fpsden = src_fps_den)
+            sup = core.svp1.Super(clip, "{"+super_params+"}")
+            ok = True
+        except Exception as err:
+            if ENABLE_CONVERSION_YV12 and str(err) == "SVSuper: Clip must be YV12":
+                print(pprefix+"Convert clip to YV12")
+                clip = orig_clip.resize.Bicubic(format=vs.YUV420P8) # convert to YV12
+            else:
+                raise err
 
     vectors = core.svp1.Analyse(sup["clip"], sup["data"], clip, "{"+analyse_params+"}")
 
