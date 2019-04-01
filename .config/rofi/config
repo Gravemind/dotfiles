@@ -1,36 +1,31 @@
-
-! State:           'bg',       'fg',     'bgalt',    'hlbg',     'hlfg'
-!rofi.color-normal: #00000000,  #p4B86B3,  #00000000,  #00000000,  #e0e0e0
-!rofi.color-urgent: #00000000,  #4B86B3,  #00000000,  #00000000,  #777777
-!rofi.color-active: #00000000,  #4B86B3,  #00000000,  #00000000,  #777777
-!                  'background', 'border', 'separator'
-!rofi.color-window: #e0000000,  #e0000000,  #4B86B3
+! rofi 1.5.2
+! (rofi -dump-xresources)
 
 ! "Enabled modi" Set from: Default
 ! rofi.modi:                           window,run,ssh
 ! "Window width" Set from: Default
-!rofi.width:                          60
+! rofi.width:                          50
 ! "Number of lines" Set from: Default
-!rofi.lines:                          30
+! rofi.lines:                          15
 ! "Number of columns" Set from: Default
 ! rofi.columns:                        1
-! "Font to use" Set from: Default
+! "Font to use" Set from: File
 rofi.font:                           Hack 11
 ! "Border width" Set from: Default
 ! rofi.bw:                             1
 ! "Location on screen" Set from: Default
 ! rofi.location:                       0
 ! "Padding" Set from: Default
-! rofi.padding:                        170
+! rofi.padding:                        5
 ! "Y-offset relative to location" Set from: Default
 ! rofi.yoffset:                        0
 ! "X-offset relative to location" Set from: Default
 ! rofi.xoffset:                        0
 ! "Always show number of lines" Set from: Default
-! rofi.fixed-num-lines:                false
-! "Whether to load and show icons" Set from: Default
+! rofi.fixed-num-lines:                true
+! "Whether to load and show icons" Set from: File
 rofi.show-icons:                     true
-! "Terminal to use" Set from: Default
+! "Terminal to use" Set from: File
 rofi.terminal:                       urxvt -e zsh -is eval
 ! "Ssh client to use" Set from: Default
 ! rofi.ssh-client:                     ssh
@@ -47,23 +42,27 @@ rofi.terminal:                       urxvt -e zsh -is eval
 ! "Window fields to match in window mode" Set from: Default
 ! rofi.window-match-fields:            all
 ! "Theme to use to look for icons" Set from: Default
-rofi.drun-icon-theme:                true
+! rofi.icon-theme:
 ! "Desktop entry fields to match in drun" Set from: Default
 ! rofi.drun-match-fields:              name,generic,exec,categories
+! "Desktop entry show actions." Set from: Default
+! rofi.drun-show-actions:              false
+! "DRUN format string. (Supports: generic,name,comment,exec,categories)" Set from: Default
+! rofi.drun-display-format:            {name} [<span weight='light' size='small'><i>({generic})</i></span>]
 ! "Disable history in run/ssh" Set from: Default
 ! rofi.disable-history:                false
 ! "Use sorting" Set from: Default
 ! rofi.sort:                           false
-! "Use levenshtein sorting also for fuzzy matching" Set from: Default
-! rofi.levenshtein-sort:               false
-! "Set case-sensitivity" Set from: Default
-rofi.case-sensitive:                   false
+! "Choose the strategy used for sorting: normal (levenshtein) or fzf." Set from: Default
+! rofi.sorting-method:
+! "Set case-sensitivity" Set from: File
+rofi.case-sensitive:                 false
 ! "Cycle through the results list" Set from: Default
 ! rofi.cycle:                          true
 ! "Enable sidebar-mode" Set from: Default
 ! rofi.sidebar-mode:                   false
 ! "Row height (in chars)" Set from: Default
-! rofi.eh:                             2
+! rofi.eh:                             1
 ! "Enable auto select mode" Set from: Default
 ! rofi.auto-select:                    false
 ! "Parse hosts file for ssh mode" Set from: Default
@@ -85,13 +84,13 @@ rofi.case-sensitive:                   false
 ! "Pre-set filter" Set from: Default
 ! rofi.filter:
 ! "Separator style (none, dash, solid) *DEPRECATED*" Set from: Default
-! rofi.separator-style:                none
+! rofi.separator-style:                dash
 ! "Hide scroll-bar *DEPRECATED*" Set from: Default
 ! rofi.hide-scrollbar:                 false
 ! "Fullscreen" Set from: Default
-! rofi.fullscreen:                     true
+! rofi.fullscreen:                     false
 ! "Fake transparency *DEPRECATED*" Set from: Default
-! rofi.fake-transparency:              true
+! rofi.fake-transparency:              false
 ! "DPI" Set from: Default
 ! rofi.dpi:                            -1
 ! "Threads to use for string matching" Set from: Default
@@ -108,10 +107,8 @@ rofi.case-sensitive:                   false
 ! rofi.click-to-exit:                  true
 ! "Indicate how it match by underlining it." Set from: Default
 ! rofi.show-match:                     true
-! "New style theme file" Set from: Default
-!rofi.theme:                         transparent-dark-blue
-!rofi.theme:                         flat-soft-white
-rofi.theme:                         flat-i3-blue
+! "New style theme file" Set from: File
+rofi.theme:                          flat-i3-blue
 ! "Color scheme for normal row" Set from: Default
 ! rofi.color-normal:
 ! "Color scheme for urgent row" Set from: Default
@@ -124,6 +121,8 @@ rofi.theme:                         flat-i3-blue
 ! rofi.max-history-size:               25
 ! "Hide the prefix mode prefix on the combi view." Set from: Default
 ! rofi.combi-hide-mode-prefix:         false
+! "Set the character used to negate the matching. ('\0' to disable)" Set from: Default
+! rofi.matching-negate-char:           -
 ! "Pidfile location" Set from: Default
 ! rofi.pid:                            /run/user/1000/rofi.pid
 ! "The display name of this browser" Set from: Default
@@ -151,9 +150,9 @@ rofi.theme:                         flat-i3-blue
 ! "End of line" Set from: Default
 ! rofi.kb-move-end:                    Control+e
 ! "Move back one word" Set from: Default
-! rofi.kb-move-word-back:              Alt+b
+! rofi.kb-move-word-back:              Alt+b,Control+Left
 ! "Move forward one word" Set from: Default
-! rofi.kb-move-word-forward:           Alt+f
+! rofi.kb-move-word-forward:           Alt+f,Control+Right
 ! "Move back one char" Set from: Default
 ! rofi.kb-move-char-back:              Left,Control+b
 ! "Move forward one char" Set from: Default
@@ -165,17 +164,17 @@ rofi.theme:                         flat-i3-blue
 ! "Delete next char" Set from: Default
 ! rofi.kb-remove-char-forward:         Delete,Control+d
 ! "Delete previous char" Set from: Default
-! rofi.kb-remove-char-back:            BackSpace,Control+h
+! rofi.kb-remove-char-back:            BackSpace,Shift+BackSpace,Control+h
 ! "Delete till the end of line" Set from: Default
 ! rofi.kb-remove-to-eol:               Control+k
 ! "Delete till the start of line" Set from: Default
 ! rofi.kb-remove-to-sol:               Control+u
 ! "Accept entry" Set from: Default
 ! rofi.kb-accept-entry:                Control+j,Control+m,Return,KP_Enter
-! "Use entered text as command (in ssh/run modi)" Set from: Default
-rofi.kb-accept-custom:                 Control+Shift+Return
-! "Use alternate accept command." Set from: Default
-rofi.kb-accept-alt:                    Shift+Return,Control+Return
+! "Use entered text as command (in ssh/run modi)" Set from: File
+rofi.kb-accept-custom:               Control+Shift+Return
+! "Use alternate accept command." Set from: File
+rofi.kb-accept-alt:                  Shift+Return,Control+Return
 ! "Delete entry from history" Set from: Default
 ! rofi.kb-delete-entry:                Shift+Delete
 ! "Switch to the next mode." Set from: Default
@@ -248,25 +247,25 @@ rofi.kb-accept-alt:                    Shift+Return,Control+Return
 ! rofi.kb-custom-18:                   Alt+asterisk
 ! "Custom Keybinding 19" Set from: Default
 ! rofi.kb-custom-19:                   Alt+parenleft
-! "Select row 1" Set from: Default
+! "Select row 1" Set from: File
 rofi.kb-select-1:                    Control+1
-! "Select row 2" Set from: Default
+! "Select row 2" Set from: File
 rofi.kb-select-2:                    Control+2
-! "Select row 3" Set from: Default
+! "Select row 3" Set from: File
 rofi.kb-select-3:                    Control+3
-! "Select row 4" Set from: Default
+! "Select row 4" Set from: File
 rofi.kb-select-4:                    Control+4
-! "Select row 5" Set from: Default
+! "Select row 5" Set from: File
 rofi.kb-select-5:                    Control+5
-! "Select row 6" Set from: Default
+! "Select row 6" Set from: File
 rofi.kb-select-6:                    Control+6
-! "Select row 7" Set from: Default
+! "Select row 7" Set from: File
 rofi.kb-select-7:                    Control+7
-! "Select row 8" Set from: Default
+! "Select row 8" Set from: File
 rofi.kb-select-8:                    Control+8
-! "Select row 9" Set from: Default
+! "Select row 9" Set from: File
 rofi.kb-select-9:                    Control+9
-! "Select row 10" Set from: Default
+! "Select row 10" Set from: File
 rofi.kb-select-10:                   Control+0
 ! "Go to the previous column" Set from: Default
 ! rofi.ml-row-left:                    ScrollLeft
