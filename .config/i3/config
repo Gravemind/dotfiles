@@ -13,15 +13,16 @@ set $keyRight    l
 set $keyUp       i
 set $keyDown     k
 
-set $layouts     ~/.i3/layouts
-set $launcher    ~/.i3/layouts/launch.sh -q
+set $here        ~/.config/i3
+set $layouts     ~/.config/i3/layouts
+set $launcher    ~/.config/i3/layouts/launch.sh -q
 
 set $Alt         Mod1
 
 set $move_step   150 px
 set $resize_step 150 px
 
-ipc-socket ~/.i3/ipc.sock
+ipc-socket $here/ipc.sock
 
 #
 # Style and behaviors
@@ -143,8 +144,6 @@ set $locker    ~/bin/lock
 set $suspend   ~/bin/slock suspend
 set $hibernate ~/bin/slock hibernate
 
-set $wallpaper ~/.i3/wallpaper_cycle
-
 # Lock, Restart, Reboot...
 set $mode_system "    <u>e</u>xit  relo<u>a</u>d  <u>r</u>estart  ·  <u>s</u>hutdown  re<u>b</u>oot  ·  s<u>u</u>spend  <u>h</u>ibernate    "
 mode --pango_markup $mode_system {
@@ -258,7 +257,7 @@ mode --pango_markup $mode_resize {
 
     bindsym s sticky toggle, mode "default"
 
-    bindsym w exec --no-startup-id $wallpaper, mode "default"
+    bindsym w exec --no-startup-id $here/wallpaper_cycle, mode "default"
     bindsym x exec --no-startup-id ~/bin/setup-xrandr, mode "default"
 
     bindsym q mode "default"
@@ -272,7 +271,7 @@ bindsym $ModK+r mode $mode_resize
 #
 
 # Start rofi program launcher
-bindsym $ModK+z exec --no-startup-id ~/.i3/exec_app_launcher.sh
+bindsym $ModK+z exec --no-startup-id $here/exec_app_launcher.sh
 
 # Cliboard Manager
 bindsym $ModK+Insert       exec --no-startup-id CM_LAUNCHER=rofi clipmenu -p ' clipmenu' -i
@@ -392,8 +391,8 @@ bindsym $ModK+Shift+o exec --no-startup-id ~/bin/red -c +1
 bindsym $ModK+Shift+p exec --no-startup-id ~/bin/red -c -1
 
 # Go to urgent window, and go back
-bindsym $ModK+BackSpace exec --no-startup-id ~/.i3/exec_goto_urgent_and_back.sh
-bindsym $ModK+u         exec --no-startup-id ~/.i3/exec_goto_urgent_and_back.sh
+bindsym $ModK+BackSpace exec --no-startup-id $here/exec_goto_urgent_and_back.sh
+bindsym $ModK+u         exec --no-startup-id $here/exec_goto_urgent_and_back.sh
 
 # set $search_polybar_win --name "^polybar-mybar-big$"
 # bindsym $ModK+g exec xdotool search $search_polybar_win windowmove --relative %@ 0 -21
@@ -404,7 +403,7 @@ bindsym $ModK+u         exec --no-startup-id ~/.i3/exec_goto_urgent_and_back.sh
 #
 
 # bar {
-#     status_command i3status -c ~/.i3/i3status.conf
+#     status_command i3status -c $here/i3status.conf
 #     separator_symbol "   "
 #     mode hide
 #     #font pango:Hack Nerd Font Mono Bold 9
@@ -422,8 +421,8 @@ bindsym $ModK+u         exec --no-startup-id ~/.i3/exec_goto_urgent_and_back.sh
 #   https://github.com/Gravemind/i3status/tree/progress-wip
 #
 bar {
-    status_command ~/documents/clones/i3status/build/i3status -c ~/.i3/i3status_progress.conf
-    i3bar_command ~/documents/clones/i3/build/i3bar/i3bar --bar_id=bar-1 --socket=~/.i3/ipc.sock
+    status_command ~/documents/clones/i3status/build/i3status -c $here/i3status_progress.conf
+    i3bar_command ~/documents/clones/i3/build/i3bar/i3bar --bar_id=bar-1 --socket=$here/ipc.sock
     separator_symbol "   "
     mode hide
     position bottom

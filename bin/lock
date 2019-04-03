@@ -5,7 +5,7 @@ nofork="--nofork"
 
 echo "$0: locking at $(date -Is)"
 
-i3lock $nofork --show-failed-attempts --ignore-empty-password --color=202020 -i ~/.i3/wallpaper.blured.png --tiling || {
+i3lock $nofork --show-failed-attempts --ignore-empty-password --color=202020 -i ~/.config/i3/wallpaper.blured.png --tiling || {
     echo "$0: i3lock failed at $(date -Is)"
     exit 1
 }

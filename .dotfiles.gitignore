@@ -47,6 +47,7 @@
 !/.config/youtube-dl
 !/.config/dunst
 !/.config/feh
+!/.config/i3
 
 !/bin
 !/dotfiles

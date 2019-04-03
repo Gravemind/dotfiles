@@ -2,8 +2,11 @@
 
 set -euo pipefail
 
-wallpapers="$HOME/.i3/wallpapers"
-dst_list="$HOME/.i3/wallpapers.list"
+cd "$(dirname "$0")"
+here="$(pwd)"
+
+wallpapers="wallpapers"
+dst_list="wallpapers.list"
 dst_blured_ext=".blured.png"
 
 force=

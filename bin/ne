@@ -5,5 +5,5 @@ then
     emacs -nw "$@"
 else
     # background due to ~/.omz.custom/gravemind.zsh-theme urgent
-    ~/.i3/layouts/launch.sh -q emacs "$@" &
+    ~/.config/i3/layouts/launch.sh -q emacs "$@" &
 fi
