@@ -105,12 +105,12 @@ tscale=oversample
 #
 [mvtools]
 profile=_vapoursynth-common
-vf=vapoursynth=~/.mpv/filters/mvtools.py
+vf=vapoursynth=~/.config/mpv/filters/mvtools.py
 
 [svp]
 profile=_vapoursynth-common
-#vf=vapoursynth=~/.mpv/filters/svp.py
-vf=format=yuv420p,vapoursynth=~/.mpv/filters/svp.py
+#vf=vapoursynth=~/.config/mpv/filters/svp.py
+vf=format=yuv420p,vapoursynth=~/.config/mpv/filters/svp.py
 
 [_vapoursynth-common]
 # https://www.svp-team.com/wiki/SVP:mpv

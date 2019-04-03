@@ -48,6 +48,7 @@
 !/.config/dunst
 !/.config/feh
 !/.config/i3
+!/.config/mpv
 
 !/bin
 !/dotfiles
