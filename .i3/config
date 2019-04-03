@@ -272,10 +272,7 @@ bindsym $ModK+r mode $mode_resize
 #
 
 # Start rofi program launcher
-#bindsym $ModK+z exec dmenu_run -b -p ">>" -nb '#222222' -nf '#CCCCCC' -sb '#4c7899' -sf '#FFFFFF'
-#bindsym $ModK+z exec rofi -show run
-#bindsym $ModK+z exec --no-startup-id "rofi -show combi -combi-modi 'run,ssh,window' -modi combi"
-bindsym $ModK+z exec --no-startup-id "rofi -show combi -display-combi ' launch' -modi combi -combi-modi 'drun,flatpak:~/.i3/rofi_flatpak.sh,run,window'"
+bindsym $ModK+z exec --no-startup-id ~/.i3/exec_app_launcher.sh
 
 # Cliboard Manager
 bindsym $ModK+Insert       exec --no-startup-id CM_LAUNCHER=rofi clipmenu -p ' clipmenu' -i
@@ -395,8 +392,8 @@ bindsym $ModK+Shift+o exec --no-startup-id ~/bin/red -c +1
 bindsym $ModK+Shift+p exec --no-startup-id ~/bin/red -c -1
 
 # Go to urgent window, and go back
-bindsym $ModK+BackSpace exec --no-startup-id ~/.i3/goto_urgent_and_back.sh
-bindsym $ModK+u         exec --no-startup-id ~/.i3/goto_urgent_and_back.sh
+bindsym $ModK+BackSpace exec --no-startup-id ~/.i3/exec_goto_urgent_and_back.sh
+bindsym $ModK+u         exec --no-startup-id ~/.i3/exec_goto_urgent_and_back.sh
 
 # set $search_polybar_win --name "^polybar-mybar-big$"
 # bindsym $ModK+g exec xdotool search $search_polybar_win windowmove --relative %@ 0 -21
