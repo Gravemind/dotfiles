@@ -2142,6 +2142,11 @@ many times might take a long time."
          :map helm-find-files-map
          ("C-f C-r" . helm-ff-run-grep-ag)
          ;;("C-<backspace>" . helm-find-files-up-one-level)
+
+         ;; Restore keys
+         :map helm-find-files-map
+         ("C-<backspace>" . backward-delete-word)
+         :map helm-read-file-map
          ("C-<backspace>" . backward-delete-word)
 
          ;;:map helm-grep-map
@@ -2710,6 +2715,9 @@ many times might take a long time."
 (req-package org
   :pin manual
   :defer t
+  :hook (org-mode . (lambda ()
+                      (unbind-key "C-<return>" org-mode-map)
+                      ))
   :init
   (setq-default
    ;; Replace conflicting keys:
