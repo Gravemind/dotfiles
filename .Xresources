@@ -58,9 +58,9 @@ URxvt*scrollTtyKeypress:    true
 
 URxvt*cutchars:             ":\\`\"'&()*,;<=>?@[]^{|}/! "
 
-! Extensions:
+! Extensions (urxvt-perls):
 !   - matcher: Clickable URL
-!   - keyboard-select: vim-style selection via keyboard (https://github.com/muennich/urxvt-perls)
+!   - keyboard-select: vim-style selection via keyboard (/usr/lib/urxvt/perl/keyboard-select)
 URxvt.perl-ext-common:  default,matcher,keyboard-select
 URxvt.matcher.button:   2
 URxvt.url-launcher:     /usr/bin/firefox
