@@ -820,9 +820,10 @@
 
 (req-package savehist
   :demand t
+  :pin manual
   :config
   ;; Save minibuffer history for compile
-  (setq-default savehist-additional-variables '(compile-command))
+  ;;(setq-default savehist-additional-variables '(compile-command))
   (savehist-mode 1)
   )
 
