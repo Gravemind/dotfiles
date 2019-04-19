@@ -17,7 +17,7 @@ _mpn_sort_files() {
 	fi
 }
 
-_mpn_get_valid_files() {
+_mpn_grep_valid_files() {
 	local first=0
 	[[ "${1:-}" != "-1" ]] || first=1
 	while read -r file
@@ -35,6 +35,7 @@ _mpn_get_valid_files() {
 			fi
 		fi
 
+		# Allow directories
 		if [[ -d "$file" ]]
 		then
 			echo "$file"
@@ -42,6 +43,7 @@ _mpn_get_valid_files() {
 			continue
 		fi
 
+		# Allow by extension
 		local ext="${file##*.}"
 		if [[ "$ext" =~ mkv\|mka\|mp4\|webm\|avi ]]
 		then
@@ -50,10 +52,11 @@ _mpn_get_valid_files() {
 			continue
 		fi
 
+		# Allow by mime (slow)
 		local mime="$(file -b --mime-type "$file")"
 		if [[ "$mime" =~ video\|audio ]]
 		then
-			echo "_mpn_get_valid_files debug: slow mime type used, consider adding extensions: $file" >&2
+			echo "_mpn_grep_valid_files: note: slow mime type used, consider matching the extension of $file" >&2
 			echo "$file"
 			[[ $first = 0 ]] || return 0
 			continue
@@ -66,7 +69,7 @@ _mpn_last_valid_file_from_history() {
 	while read -r n bin args
 	do
 		[[ "$bin" == "mpv" ]] || continue;
-		echo "$args" | xargs -n1 echo | _mpn_get_valid_files -1 && return 0
+		echo "$args" | xargs -n1 echo | _mpn_grep_valid_files -1 && return 0
 	done < <(history | grep mpv | tac)
 }
 
@@ -98,9 +101,9 @@ mpn() {
 		then
 			if [[ "$file" != "$last_file" ]]
 			then
-				echo "      $file"
+				echo "  $file"
 			else
-				echo "last: $file"
+				echo "- $file"
 				found=1
 			fi
 		elif [[ $found = 1 ]]
@@ -110,13 +113,13 @@ mpn() {
 			 local common="$({ echo "$last_file"; echo "$next_file"; } | sed -e 'N;s/^\(.*\).*\n\1.*$/\1/')"
 			 local len="${#common}"
 			 #echo "last: ${common}"$'\e[31m'"${last_file:$len}"$'\e[0m'
-			 echo "next: ${common}"$'\e[32m'"${next_file:$len}"$'\e[0m'
+			 echo "+ ${common}"$'\e[1;32m'"${next_file:$len}"$'\e[0;0m'
 
 			 found=2
 		else
-			echo "      $file"
+			echo "  $file"
 		fi
-	done < <( \ls | _mpn_sort_files | _mpn_get_valid_files )
+	done < <( \ls | _mpn_sort_files | _mpn_grep_valid_files )
 	echo
 
 	if [[ -z "$next_file" ]]
@@ -126,7 +129,7 @@ mpn() {
 		return 1
 	fi
 
-	local cmd=( mpv $MPN_MPV_ARGS "$@" -- "$next_file")
+	local cmd=( mpv $MPN_MPV_ARGS "$@" "$next_file")
 
 	echo "Now playing: ${(q-)cmd[@]}"
 	echo
@@ -138,9 +141,9 @@ mpn() {
 }
 
 mpf() {
-	local first="$(\ls | _mpn_sort_files | _mpn_get_valid_files -1)"
+	local first="$(\ls | _mpn_sort_files | _mpn_grep_valid_files -1)"
 
-	local cmd=( mpv $MPN_MPV_ARGS "$@" -- "$first")
+	local cmd=( mpv $MPN_MPV_ARGS "$@" "$first")
 
 	echo "Now playing: ${(q-)cmd[@]}"
 	echo
