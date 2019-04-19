@@ -108,6 +108,11 @@ sed -rn '/## AUR ##/,/## OTHER ##/ bk;d;:k;s/^- ([[:alnum:]_-]+).*/\1/gp' base-p
 - asciidoc
 - dos2unix
 
+- python-i3-py
+- python-matplotlib
+- python-pyserial
+- python-pyqt5
+
 ## Desktop Environment (Xorg, WM, Tools)
 
 - xorg
