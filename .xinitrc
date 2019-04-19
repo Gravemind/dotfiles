@@ -55,8 +55,7 @@ numlockx on
 ##
 
 # set volume
-#pactl set-sink-volume @DEFAULT_SINK@ 50%
-pactl set-sink-volume @DEFAULT_SINK@ 70%
+pactl set-sink-volume @DEFAULT_SINK@ 50%
 # no bell
 xset b 0 &> /dev/null
 
