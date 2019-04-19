@@ -878,9 +878,11 @@
   "Indent whole buffer, see jo/tab-space."
   (interactive)
   (delete-trailing-whitespace)
-  ;;(indent-region (point-min) (point-max) nil)
+  ;;(unless (eq major-mode 'python-mode)
+  ;;(indent-region (point-min) (point-max) nil))
   (untabify (point-min) (point-max))
-  (indent-region (point-min) (point-max) nil)
+  (unless (eq major-mode 'python-mode)
+    (indent-region (point-min) (point-max) nil))
   (untabify (point-min) (point-max))
   )
 
@@ -889,7 +891,8 @@
   (interactive)
   (delete-trailing-whitespace)
   (tabify (point-min) (point-max))
-  ;;(indent-region (point-min) (point-max) nil)
+  ;;(unless (eq major-mode 'python-mode)
+  ;;(indent-region (point-min) (point-max) nil))
   ;;(tabify (point-min) (point-max))
   )
 
@@ -915,7 +918,8 @@ spaces are treated."
   (if (eq indent-tabs-mode t)
       (tabify-leading (point-min) (point-max))
     (untabify (point-min) (point-max)))
-  (indent-region (point-min) (point-max) nil)
+  (unless (eq major-mode 'python-mode)
+    (indent-region (point-min) (point-max) nil))
   (if (eq indent-tabs-mode t)
       (tabify-leading (point-min) (point-max))
     (untabify (point-min) (point-max)))
