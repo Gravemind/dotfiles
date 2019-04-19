@@ -112,12 +112,15 @@ pacupg() {
 
 	yay -Syu --noconfirm "$@" || { echo "${fg_bold[red]}$0: yay -Syu failed !!$reset_color"; return 1; }
 
-	{
-		echo "${fg_bold[green]}packages updated$reset_color";
-		# checkpacnew; # breaks less !?
-		\cat <(checkpacnew);
-		paclog --after="$date" --color;
-	} | less --quit-if-one-screen --RAW-CONTROL-CHARS --no-init
+	checkpacnew
+	echo "${fg_bold[green]}packages updated$reset_color";
+
+	# {
+	# 	echo "${fg_bold[green]}packages updated$reset_color";
+	# 	# checkpacnew; # breaks less !?
+	# 	\cat <(checkpacnew);
+	# 	paclog --after="$date" --color;
+	# } | less --quit-if-one-screen --RAW-CONTROL-CHARS --no-init
 }
 
 checkpacnew() {
