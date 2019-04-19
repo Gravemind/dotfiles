@@ -1813,11 +1813,20 @@ With argument, do this that many times."
 
   (add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell)
 
+  ;; Prepends the custom list to candidates
+  (defun magit-read-custom-or-branch-or-commit (prompt custom)
+    (or (magit-completing-read prompt (nconc custom (magit-list-refnames nil t))
+                               nil nil nil
+                               'magit-revision-history
+                               (or (magit-branch-or-commit-at-point)
+                                   (magit-get-current-branch)))
+        (user-error "Nothing selected")))
+
   (defun my-magit-log-upstream (upstream &optional args files)
     "Logs diverging commits between head(<) and an UPSTREAM(>)."
     (interactive (cons
-                  ;;(read-from-minibuffer "Upstream: " "@{u}")
-                  (magit-read-branch-or-commit "Upstream" "@{u}")
+                  (magit-read-custom-or-branch-or-commit "Upstream" '("@{upstream}"))
+                  ;;(magit-read-custom-or-branch-or-commit "Upstream" `( ,(magit-get-upstream-branch) ))
                   (magit-log-arguments)))
     (magit-git-log (list "--graph" "--boundary" "--left-right" (concat "@..." upstream)) args files))
 
