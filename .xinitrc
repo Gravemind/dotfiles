@@ -26,6 +26,9 @@ export __GL_SYNC_DISPLAY_DEVICE=DP-4
 
 nvidia-settings -l
 
+# Steam
+export PROTON_DUMP_DEBUG_COMMANDS=1
+
 ##
 ## Font
 ##
