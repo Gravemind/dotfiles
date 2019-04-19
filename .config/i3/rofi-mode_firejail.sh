@@ -8,7 +8,7 @@ if [[ -z "$*" ]]
 then
     echo -en "\0markup-rows\x1ftrue\n" # enable markup
 
-    echo "jails firestats $fstats"
+    echo "firestats $fstats"
 
     while IFS=: read -u3 -r pid user dd cmd
     do

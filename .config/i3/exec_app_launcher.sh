@@ -7,12 +7,18 @@
 here="$(dirname "$0")"
 
 cmd=(
-    rofi -show combi
-    -display-combi ' launch'
-    -modi combi
-    -combi-modi "drun,flatpak:$here/rofi-mode_flatpak.sh,run,firejail:$here/rofi-mode_firejail.sh,window"
+    rofi
+    -i
+
+    -show drun -modi
+    "drun, flatpak:$here/rofi-mode_flatpak.sh,run, firejail:$here/rofi-mode_firejail.sh,window"
+    -display-drun ' drun'
+    -display-run ' run'
+    -display-window ' window'
+
     -drun-match-fields name,exec
     -drun-display-format '{name} <span size="small" alpha="80%">{exec}</span>'
+
     # -drun-show-actions
 )
 "${cmd[@]}"
