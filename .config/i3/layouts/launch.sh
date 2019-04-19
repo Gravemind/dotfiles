@@ -77,6 +77,7 @@ layout_win_name="${name} ..."
 layout_rect=""
 if [[ -n "$geometry" ]]
 then
+	geometry="${geometry// /}"
 	read screenw screenh < <(i3-msg -t get_workspaces | jq 'map(select(.focused))[0].rect | .width, .height' | tr $'\n' ' ')
 	if [[ "$geometry" =~ ^([0-9]+)x([0-9]+)\+([0-9]+)\+([0-9]+)$ ]]
 	then

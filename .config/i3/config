@@ -19,8 +19,13 @@ set $launcher    ~/.config/i3/layouts/launch.sh -q
 
 set $Alt         Mod1
 
-set $move_step   150 px
-set $resize_step 150 px
+# N * [2560, 1440] / 8
+set $move_step_x   320
+set $move_step_y   180
+set $resize_step_x 320
+set $resize_step_y 180
+set $float_w       640
+set $float_h       720
 
 ipc-socket $here/ipc.sock
 
@@ -55,7 +60,7 @@ default_border pixel 2
 default_floating_border normal 2
 
 # Floating window size range
-floating_minimum_size 64 x 64
+floating_minimum_size $resize_step_x x $resize_step_y
 floating_maximum_size -1 x -1
 
 # Default border for programs
@@ -180,24 +185,24 @@ bindsym $ModK+Shift+grave move scratchpad
 bindsym $ModK+grave scratchpad show
 
 # Change focus
-bindsym $ModK+$keyLeft          focus left
-bindsym $ModK+$keyDown          focus down
-bindsym $ModK+$keyUp            focus up
-bindsym $ModK+$keyRight         focus right
-bindsym $ModK+Left              focus left
-bindsym $ModK+Down              focus down
-bindsym $ModK+Up                focus up
-bindsym $ModK+Right             focus right
+bindsym $ModK+$keyLeft  focus left
+bindsym $ModK+$keyDown  focus down
+bindsym $ModK+$keyUp    focus up
+bindsym $ModK+$keyRight focus right
+bindsym $ModK+Left      focus left
+bindsym $ModK+Down      focus down
+bindsym $ModK+Up        focus up
+bindsym $ModK+Right     focus right
 
 # Move focused window
-bindsym $ModK+Shift+$keyLeft    move left  $move_step
-bindsym $ModK+Shift+$keyDown    move down  $move_step
-bindsym $ModK+Shift+$keyUp      move up    $move_step
-bindsym $ModK+Shift+$keyRight   move right $move_step
-bindsym $ModK+Shift+Left        move left  $move_step
-bindsym $ModK+Shift+Down        move down  $move_step
-bindsym $ModK+Shift+Up          move up    $move_step
-bindsym $ModK+Shift+Right       move right $move_step
+bindsym $ModK+Shift+$keyLeft  move left  $move_step_x
+bindsym $ModK+Shift+$keyDown  move down  $move_step_y
+bindsym $ModK+Shift+$keyUp    move up    $move_step_y
+bindsym $ModK+Shift+$keyRight move right $move_step_x
+bindsym $ModK+Shift+Left      move left  $move_step_x
+bindsym $ModK+Shift+Down      move down  $move_step_y
+bindsym $ModK+Shift+Up        move up    $move_step_y
+bindsym $ModK+Shift+Right     move right $move_step_x
 
 # Focus other output (when multi screen)
 bindsym $ModK+Tab focus output right
@@ -223,37 +228,49 @@ bindsym $ModK+d layout toggle split
 bindsym $ModK+f fullscreen
 
 # Toggle tiling / floating
-bindsym $ModK+Shift+space floating toggle, resize set 62 ppt 62 ppt, move absolute position center
+#bindsym $ModK+Shift+space floating toggle, resize set 40 ppt 60 ppt, move absolute position center
+bindsym $ModK+Shift+space floating toggle, resize set $float_w $float_h, move absolute position center
 
 # Change focus between tiling / floating windows
 bindsym $ModK+space focus mode_toggle
 
 # Change Window Size and Modes
-set $mode_resize "    [S-]←→↓↑ resize  ·  <u>s</u>ticky  ·  <u>w</u>allpaper  ·  setup-<u>x</u>randr    "
+set $mode_resize "    [S-]←→↓↑ resize  ·  <u>s</u>ticky  ·  <u>w</u>allpaper  ·  setup-<u>x</u>randr  ·  <u>n</u>vidia-settings-menu    "
 mode --pango_markup $mode_resize {
-    bindsym $keyLeft        resize grow   left  $resize_step
-    bindsym Left            resize grow   left  $resize_step
-    bindsym $keyRight       resize shrink left  $resize_step
-    bindsym Right           resize shrink left  $resize_step
+    # Move focused window
+    bindsym $ModK+Shift+$keyLeft  move left  $move_step_x
+    bindsym $ModK+Shift+$keyDown  move down  $move_step_y
+    bindsym $ModK+Shift+$keyUp    move up    $move_step_y
+    bindsym $ModK+Shift+$keyRight move right $move_step_x
+    bindsym $ModK+Shift+Left      move left  $move_step_x
+    bindsym $ModK+Shift+Down      move down  $move_step_y
+    bindsym $ModK+Shift+Up        move up    $move_step_y
+    bindsym $ModK+Shift+Right     move right $move_step_x
 
-    bindsym Shift+$keyLeft  resize shrink right $resize_step
-    bindsym Shift+Left      resize shrink right $resize_step
-    bindsym Shift+$keyRight resize grow   right $resize_step
-    bindsym Shift+Right     resize grow   right $resize_step
+    bindsym $keyLeft  resize grow   left  $resize_step_x
+    bindsym Left      resize grow   left  $resize_step_x
+    bindsym $keyRight resize shrink left  $resize_step_x
+    bindsym Right     resize shrink left  $resize_step_x
 
-    bindsym $keyUp          resize grow   up    $resize_step
-    bindsym Up              resize grow   up    $resize_step
-    bindsym $keyDown        resize shrink up    $resize_step
-    bindsym Down            resize shrink up    $resize_step
+    bindsym Shift+$keyLeft  resize shrink right $resize_step_x
+    bindsym Shift+Left      resize shrink right $resize_step_x
+    bindsym Shift+$keyRight resize grow   right $resize_step_x
+    bindsym Shift+Right     resize grow   right $resize_step_x
 
-    bindsym Shift+$keyUp    resize shrink down  $resize_step
-    bindsym Shift+Up        resize shrink down  $resize_step
-    bindsym Shift+$keyDown  resize grow   down  $resize_step
-    bindsym Shift+Down      resize grow   down  $resize_step
+    bindsym $keyUp   resize grow   up    $resize_step_y
+    bindsym Up       resize grow   up    $resize_step_y
+    bindsym $keyDown resize shrink up    $resize_step_y
+    bindsym Down     resize shrink up    $resize_step_y
 
-    bindsym minus       resize shrink up $resize_step, resize shrink down $resize_step, resize shrink left $resize_step, resize shrink right $resize_step
-    bindsym equal       resize grow   up $resize_step, resize grow   down $resize_step, resize grow   left $resize_step, resize grow   right $resize_step
-    bindsym Shift+equal resize grow   up $resize_step, resize grow   down $resize_step, resize grow   left $resize_step, resize grow   right $resize_step
+    bindsym Shift+$keyUp   resize shrink down  $resize_step_y
+    bindsym Shift+Up       resize shrink down  $resize_step_y
+    bindsym Shift+$keyDown resize grow   down  $resize_step_y
+    bindsym Shift+Down     resize grow   down  $resize_step_y
+
+    bindsym Shift+minus resize shrink down $resize_step_y, resize shrink right $resize_step_x
+    bindsym Shift+equal resize grow   down $resize_step_y, resize grow   right $resize_step_x
+    bindsym minus       resize shrink up   $resize_step_y, resize shrink left  $resize_step_x
+    bindsym equal       resize grow   up   $resize_step_y, resize grow   left  $resize_step_x
 
     bindsym s sticky toggle, mode "default"
 
@@ -382,7 +399,7 @@ bindsym $ModK+F3        exec --no-startup-id $launcher -w 3  -- $browser
 bindsym $ModK+Shift+F3  exec --no-startup-id $launcher       -- $browser
 
 # Qalculate
-bindsym $ModK+F5 exec --no-startup-id $launcher -f 800x800 -- qalculate-gtk -n
+bindsym $ModK+F5 exec --no-startup-id $launcher -f "$float_w x $float_h"  -- qalculate-gtk -n
 
 # Redshift
 bindsym $ModK+o       exec --no-startup-id ~/bin/red +1
