@@ -2168,7 +2168,7 @@ many times might take a long time."
   (defun my-helm-no-sort (candidates input)
     "No sorting"
     candidates)
-  (advice-add 'helm-ff-sort-candidates-1 :override #'my-helm-no-sort)
+  ;;(advice-add 'helm-ff-sort-candidates-1 :override #'my-helm-no-sort)
 
   (setq-default
    enable-recursive-minibuffers t
