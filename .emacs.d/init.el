@@ -1643,11 +1643,15 @@ With argument, do this that many times."
     (x-change-window-property "WM_HINTS" wm-hints frame "WM_HINTS" 32 t)))
 
 (defun jo/get-compile-dir ()
+  ;; (if (eq jo/compile-dir nil)
+  ;;     (let ((dir (file-name-directory (get-closest-pathname "Makefile"))))
+  ;;       (progn (message "jo/set-compile-dir to %s" dir)
+  ;;              (setq jo/compile-dir dir)))
+  ;;   jo/compile-dir)
   (if (eq jo/compile-dir nil)
-      (let ((dir (file-name-directory (get-closest-pathname "Makefile"))))
-        (progn (message "jo/set-compile-dir to %s" dir)
-               (setq jo/compile-dir dir)))
-    jo/compile-dir))
+      (setq jo/compile-dir default-directory))
+  jo/compile-dir
+)
 
 (defun jo/unset-compile-dir-here ()
   (interactive)
