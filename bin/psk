@@ -37,14 +37,14 @@ printk() {
     local k="$1"
     local msg="$2"
     local e="$3"
-    [[ -n "$e" ]] && echo "$COL_ENA[$k]: $msg$COL_RESET" || echo "$COL_DISA[$k]: $msg$COL_RESET"
+    [[ -n "$e" ]] && echo "$COL_ENA[$k] $msg$COL_RESET" || echo "$COL_DISA[$k] $msg$COL_RESET"
 }
 
 COL_OK=$'\e[1;32m'
 COL_KO=$'\e[1;31m'
 COL_KEY=$'\e[1;34m'
 COL_RESET=$'\e[0m'
-COL_ENA=$'\e[1;34m'
+COL_ENA=$'\e[1;32m'
 COL_DISA=$'\e[1;30m'
 
 main() {
@@ -60,6 +60,7 @@ main() {
 
     local pgrepf=""
     local pgrepi=""
+    local kill9=""
     local selfpid=$$
     local sudo=
     local quitifnomore=false
@@ -67,36 +68,35 @@ main() {
     while true
     do
         echo
+        local killcmd=()
         local pg=( pgrep $pgrepi $pgrepf -- "$pattern" )
         local pids=( $("${pg[@]}") )
         pids=( $(printf "%s\n" "${pids[@]}" | grep -vFx "$selfpid") ) ## grep -v separately so it doesn't get pgrep
         if [[ $? -ne 0 || "${#pids[@]}" -le 0 ]]
         then
-            echo "${COL_KO}No process found by ${pg[@]}${COL_RESET}"
+            echo "${COL_KO}${pg[@]}${COL_RESET}"
             $quitifnomore && exit 1
+            killcmd=()
         else
-            echo "${COL_OK}${pg[@]}"
-            echo "${pids[@]}${COL_RESET}"
+            echo "${COL_OK}${pg[@]}${COL_RESET}"
             ps u --pid "${pids[@]}"
+            killcmd=( $sudo kill $kill9 "${pids[@]}" )
             quitifnomore=false
         fi
 
         echo
-        echo "$COL_KEY[r]$COL_RESET:grep again, $COL_KEY[e]$COL_RESET:edit pattern, $COL_KEY[y|k]$COL_RESET:${sudo} kill, $COL_KEY[9]$COL_RESET:${sudo} kill -9"
-        echo "$(printk "i" "pgrep -i" "$pgrepi"), $(printk "f" "pgrep -f" "$pgrepf"), $(printk "s" "sudo" "$sudo")"
+        [[ "${#killcmd[@]}" -eq 0 ]] || echo "$COL_KEY[y|k]$COL_RESET:$COL_ENA" "${killcmd[@]}" "$COL_RESET"
+        echo "$(printk "s" "sudo" "$sudo")  $(printk "9" "kill -9" "$kill9")  $(printk "i" "pgrep -i" "$pgrepi")  $(printk "f" "pgrep -f" "$pgrepf")"
+        echo "$COL_KEY[r] grep again$COL_RESET  $COL_KEY[e] edit pattern$COL_RESET"
         read -p "${COL_KEY}press key>$COL_RESET " -r -n1 r
         echo
         case "$r" in
             y|k)
-                echorun $sudo kill "${pids[@]}"
+                echorun "${killcmd[@]}"
                 sleep $delay_after_kill
-                quitifnomore=true
+                #quitifnomore=true
                 ;;
-            9)
-                echorun $sudo kill -9 "${pids[@]}"
-                sleep $delay_after_kill
-                quitifnomore=true
-                ;;
+            9) read kill9 < <(toggle "-9" "$kill9") ;;
             i) read pgrepi < <(toggle "-i" "$pgrepi") ;;
             f) read pgrepf < <(toggle "-f" "$pgrepf") ;;
             s) read sudo < <(toggle "sudo" "$sudo") ;;
