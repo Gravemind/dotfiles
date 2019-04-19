@@ -792,9 +792,18 @@
 ;; isearch
 ;;
 
+;; https://emacs.stackexchange.com/questions/525/delete-some-matches-of-an-incremental-search
+(defun isearch-kill-current ()
+  (interactive)
+  (delete-region isearch-other-end (point))
+  (isearch-exit)
+  )
+
 (bind-keys
  :map isearch-mode-map
- ("C-<backspace>" . isearch-del-char))
+ ("<backspace>" . isearch-kill-current)
+ ("C-<backspace>" . isearch-del-char)
+ )
 
 ;; FIXME:
 ;;(req-package isearch
