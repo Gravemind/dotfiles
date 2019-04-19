@@ -2162,6 +2162,8 @@ many times might take a long time."
   ;; accidentially pressed "C-x C-c"
   ;; ;;(setq-default helm-command-prefix-key "C-x c")
 
+  (require 'helm-config) ;; actually setups more stuff, like (C-r) helm-minibuffer-history
+
   ;; Disable sorting of helm-find-files candidates
   (defun my-helm-no-sort (candidates input)
     "No sorting"
