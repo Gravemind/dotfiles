@@ -546,6 +546,7 @@
 (req-package recentf
   :pin manual
   :demand t
+  :hook (dired-mode . recentf-add-dired-directory)
   ;;:defer t
   :config
 
@@ -554,7 +555,7 @@
 
   (setq-default
    ;; Max recent files entries
-   recentf-max-saved-items 300
+   recentf-max-saved-items 1000
 
    ;; Stat all files to remove deleted ones (recentf-cleanup)
    ;;recentf-auto-cleanup 60 ;; after N seconds
@@ -567,7 +568,18 @@
 
    )
   (recentf-mode 1)
+
+  ;; https://www.emacswiki.org/emacs/recentf-ext.el
+  (defun recentf-add-dired-directory ()
+    (when (and (stringp dired-directory)
+               (equal "" (file-name-nondirectory dired-directory)))
+      (recentf-add-file dired-directory)))
+
 )
+
+(req-package sync-recentf
+  :demand t
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
