@@ -1,0 +1,99 @@
+#!/bin/bash
+
+#set -x
+set -euo pipefail
+
+base0="$(basename "$0")"
+
+usage() {
+    echo -n "usage: $base0 [-h] [-isS] [-f=FILE] [--] WORDS...
+
+Looks for man pages containing all WORDS using rg (ripgrep).
+
+    -h --help   : this
+    -f FILE     : filter pages by file name matching FILE
+    -i -s -S    : be case insensitive, sensitive, or smart (smart by default)
+
+"
+}
+
+MANGREP_FIND_CMD="rg --null -uu --files /usr/share/man" ## slightly faster than `find` when cold
+MANGREP_GREPFILE_CMD="rg --null -uu --null-data"
+MANGREP_GREP_CMD="xargs --null --no-run-if-empty rg -uu -zl"
+
+## ag is buggy !? `ag -zl urxvt /usr/share/man/man2/memfd_create.2.gz`: "truncated file"
+## and does not support --null-data
+# MANGREP_FIND_CMD="find /usr/share/man -type f -print0"
+# MANGREP_GREPFILE_CMD=???
+# MANGREP_GREP_CMD="xargs --null --no-run-if-empty ag -zl0"
+
+## parallel zgrep is mhok, still ~x5 slower than rg
+## and does not support -Z/--null/--null-data
+# MANGREP_FIND_CMD="find /usr/share/man -type f"
+# MANGREP_GREPFILE_CMD=???
+# MANGREP_GREP_CMD="xargs --null --no-run-if-empty -P$(nproc) -n50 zgrep -l"
+
+main() {
+    if ! hash rg >& /dev/null
+    then
+        echo "$base0: error: rg (ripgrep) not installed !?" >&2
+        usage
+        exit 0
+    fi
+
+    local grep_i=-S
+    local files=()
+    local words=()
+
+    while [[ $# -gt 0 ]]
+    do
+        case "$1"
+        in
+            -h|--help) usage; exit 0; ;;
+            -[Ssi]) grep_i="$1"; ;;
+            -f) files+=("$2"); shift; ;;
+            -f=*) files+=("${1:3}"); ;;
+            #\\*) words+=("${1:1}"); ;;
+            --) shift; break; ;;
+            -*) echo "$base0: note: '$1' is not a flag, it will be treated as WORD '$1'." >&2; words+=("$1"); ;;
+            *) words+=("$1"); ;;
+        esac
+        shift
+    done
+    words+=("$@")
+
+    local cmd=()
+
+    cmd+=( $MANGREP_FIND_CMD )
+
+    for file in "${files[@]}"
+    do
+        cmd+=( "|" $MANGREP_GREPFILE_CMD $grep_i "$(escape_arg "$file")" )
+    done
+
+    for word in "${words[@]}"
+    do
+        cmd+=( "|" $MANGREP_GREP_CMD --null $grep_i "$(escape_arg "$word")" )
+    done
+    cmd+=( "|" tr '\\0' '\\n' )
+
+    # for ((i = 0 ; i < ${#words[@]} ; i++))
+    # do
+    #     local n=
+    #     [[ $((i + 1)) = ${#words[@]} ]] || n=--null
+    #     cmd+=( "|" $MANGREP_GREP_CMD $n $grep_i "$(escape_arg "${words[i]}")" )
+    # done
+
+    echo "$base0: running...: ${cmd[@]}" >&2
+    eval "${cmd[@]}"
+
+    echo "(hint: man -l FILE)"
+}
+
+escape_arg() {
+    local a="$1"
+    [[ "${a:0:1}" != "-" ]] || a="\\$a"
+    printf "%q" "$a"
+}
+
+main "$@"
