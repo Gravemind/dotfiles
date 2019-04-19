@@ -18,7 +18,19 @@ no-keepaspect-window=
 screenshot-directory=~/
 
 # MPV downmix better than pulseaudio ?!
-audio-channels=2
+#audio-channels=2
+audio-channels=stereo
+
+audio-swresample-o=lfe_mix_level=1
+
+# Dolby Pro Logic II downmix
+#   https://github.com/mpv-player/mpv/issues/2214
+#audio-swresample-o=matrix_encoding=dplii,lfe_mix_level=1
+
+# Dolby Pro Logic II downmix, from wikipedia
+#   https://en.wikipedia.org/wiki/Matrix_decoder#Dolby_Pro_Logic_II_matrix_(5:2:5)
+# (sqrt(1/2)=0.7071; sqrt(3)/2 = 0.8660)
+#af=pan="stereo| FL = FL + LFE + 0.7071*FC + 0.8660*BL + 0.5*BR | FR = FR + LFE + 0.7071*FC + 0.8660*BR + 0.5*BL"
 
 # Default youtube-dl config ignored
 ytdl-raw-options=ignore-config=,prefer-free-formats=
