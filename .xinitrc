@@ -69,7 +69,8 @@ xset b 0 &> /dev/null
 ## ssh agent
 #eval "$(ssh-agent)"
 
-~/.i3/wallpaper_cycle
+~/.config/i3/wallpaper_cycle
 
-mv ~/.i3/log ~/.i3/log.1
-exec $HOME/documents/clones/i3/build/i3 >& ~/.i3/log
+i3log="~/.config/i3/log"
+mv "$i3log" "$i3log.bak"
+exec ~/documents/clones/i3/build/i3 >& "$i3log"
