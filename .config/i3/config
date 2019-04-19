@@ -235,7 +235,7 @@ bindsym $ModK+Shift+space floating toggle, resize set $float_w $float_h, move ab
 bindsym $ModK+space focus mode_toggle
 
 # Change Window Size and Modes
-set $mode_resize "    [S-]←→↓↑ resize  ·  <u>s</u>ticky  ·  <u>w</u>allpaper  ·  setup-<u>x</u>randr  ·  <u>n</u>vidia-settings-menu    "
+set $mode_resize "    [S-]←→↓↑ resize  ·  <u>s</u>ticky  ·  <u>w</u>allpaper  ·  setup-<u>x</u>randr  ·  <u>v</u>ideo-mode    "
 mode --pango_markup $mode_resize {
     # Move focused window
     bindsym $ModK+Shift+$keyLeft  move left  $move_step_x
@@ -276,7 +276,7 @@ mode --pango_markup $mode_resize {
 
     bindsym w exec --no-startup-id $here/wallpaper_cycle, mode "default"
     bindsym x exec --no-startup-id ~/bin/setup-xrandr, mode "default"
-    bindsym n exec --no-startup-id exec $here/exec_video_mode.sh, mode "default"
+    bindsym v exec --no-startup-id exec $here/exec_video_mode.sh, mode "default"
 
     bindsym q mode "default"
     bindsym Return mode "default"
