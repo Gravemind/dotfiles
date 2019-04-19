@@ -276,6 +276,7 @@ mode --pango_markup $mode_resize {
 
     bindsym w exec --no-startup-id $here/wallpaper_cycle, mode "default"
     bindsym x exec --no-startup-id ~/bin/setup-xrandr, mode "default"
+    bindsym n exec --no-startup-id exec $here/exec_video_mode.sh, mode "default"
 
     bindsym q mode "default"
     bindsym Return mode "default"
