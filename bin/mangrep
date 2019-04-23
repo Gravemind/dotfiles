@@ -76,6 +76,7 @@ main() {
         cmd+=( "|" $MANGREP_GREP_CMD --null $grep_i "$(escape_arg "$word")" )
     done
     cmd+=( "|" tr '\\0' '\\n' )
+    cmd+=( "|" sort )
 
     # for ((i = 0 ; i < ${#words[@]} ; i++))
     # do
