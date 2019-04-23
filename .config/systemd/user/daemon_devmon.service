@@ -1,0 +1,27 @@
+[Unit]
+Description=Devmon daemon
+
+[Service]
+
+# ExecStart=devmon \
+#   --exec-on-drive \
+#   'notify-send -a devmon -h string:synchronous:%fdevmon "Mounted "%f %d" ("%l")" -i media-removable-symbolic.symbolic' \
+#   --exec-on-remove \
+#   'notify-send -a devmon -h string:synchronous:%fdevmon "Removed "%f -i edit-delete-symbolic.symbolic' \
+#   --sync
+
+ExecStart=bash %h/.config/i3/daemon_devmon.sh
+
+# Restart=always
+# RestartSec=0
+# Environment=DISPLAY=:0
+
+# MemoryDenyWriteExecute=yes
+# NoNewPrivileges=yes
+# ProtectControlGroups=yes
+# ProtectKernelTunables=yes
+# RestrictAddressFamilies=
+# RestrictRealtime=yes
+
+[Install]
+WantedBy=default.target

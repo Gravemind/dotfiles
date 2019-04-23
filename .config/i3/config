@@ -472,6 +472,10 @@ bar {
 # Run at startup
 #
 
+# Device manager (auto user mount, umount, notify)
+exec_always --no-startup-id systemctl --user restart daemon_devmon.service
+#exec_always --no-startup-id systemctl --user restart daemon_battery.service
+
 #exec --no-startup-id $locker
 #exec conky -c ~/.conky/balloon/conkyrc
 
