@@ -177,7 +177,7 @@
     #icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
     #icon_path = /usr/share/icons/Adwaita/16x16/status:/usr/share/icons/Adwaita/16x16/devices
     #icon_path = /usr/share/icons/Adwaita/16x16/status:/usr/share/icons/Adwaita/16x16/devices
-    icon_path = /usr/share/icons/Adwaita/32x32/status:/usr/share/icons/Adwaita/32x32/devices:~/.config/dunst/icons
+    icon_path = /usr/share/icons/Adwaita/32x32/status:/usr/share/icons/Adwaita/32x32/devices:/usr/share/icons/Adwaita/32x32/actions:~/.config/dunst/icons
 
     ### History ###
 
