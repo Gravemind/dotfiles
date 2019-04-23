@@ -33,9 +33,11 @@ notify_icon_on="/usr/share/icons/hicolor/scalable/apps/redshift-status-on.svg"
 notify_icon_off="/usr/share/icons/hicolor/scalable/apps/redshift-status-off.svg"
 _notify-send() {
 	if hash notify-send 2>/dev/null; then
-		notify-send -h int:transient:1 -h string:synchronous:red "$@"
+		notify-send -a red -h int:transient:1 -h string:synchronous:red "$@"
 	fi
 }
+
+_notify-send -u low -i "$notify_icon_on" "Red…"
 
 if [[ "${1-}" = '-h' || "${1-}" = '--help' ]]
 then
@@ -155,7 +157,7 @@ then
 
 	redshift -P -O $col -b $bri -g $gam $redopt || {
 		echo "$0: redshift failed"
-		_notify-send -u low -i "$icon" -h "int:value:$value" "red" " FAILED"
+		_notify-send -u low -i "$icon" -h "int:value:$value" "Red" " FAILED"
         exit 1
 	}
 
@@ -180,4 +182,4 @@ else
 	redshift -x $redopt
 fi
 
-_notify-send -u low -i "$icon" -h "int:value:$value" "red"
+_notify-send -u low -i "$icon" -h "int:value:$value" "Red"
