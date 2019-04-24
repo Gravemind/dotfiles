@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-export PACPEND='-g explicit -s name,vdiff'
+export PACPEND='-g explicit -s name,vdiff -H linux,emacs,nvidia'
 
 if ! command which yay > /dev/null
 then
