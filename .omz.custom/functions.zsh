@@ -19,7 +19,7 @@ function dolast() {
 }
 
 function mnt() {
-	sudo mount -o gid=`id -g`,uid=`id -u` "$@"
+	sudo mount -o gid=`id -g`,uid=`id -u`,noexec,nosuid,nodev,noatime,flush "$@"
 }
 
 function _rmrf_ask() {
