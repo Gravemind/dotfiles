@@ -361,27 +361,52 @@
   "Returns as much whitespaces as the window left margin")
 (put 'my/mode-line-left-margin-padd 'risky-local-variable t)
 
+(defun my/indent-info ()
+  (require 'editorconfig)
+  (require 'dtrt-indent)
+  (concat
+   ;; ↹ → ⇀ ⇁ ↦ ⇥
+   (format "%s" (symbol-value (jo/dtrt-offset-var)))
+   (if indent-tabs-mode "↹" "∙")
+   (format "%s" tab-width)
+   (if dtrt-indent-original-indent
+       ".dtrt" "")
+   (if (and editorconfig-properties-hash (> (hash-table-count editorconfig-properties-hash) 0))
+       ".edco" "")
+   ))
+
+(defvar my/mode-line-indent-info
+  '(:eval (my/indent-info))
+  "Indentation info")
+(put 'my/mode-line-indent-info 'risky-local-variable t)
 
 (setq-default
 
  ;; Window margin padd here so it works for helm too (because helm use this first in its modeline)
- mode-line-buffer-identification '("" my/mode-line-left-margin-padd " " my/mode-line-buffer)
+ mode-line-buffer-identification '("" my/mode-line-left-margin-padd " " my/mode-line-ro-indicator my/mode-line-buffer)
 
  mode-line-format
  '(""
-   mode-line-buffer-identification
-   "%e" " "
-   my/mode-line-ro-indicator
-   "  %l:%c  %p  "
-   mode-line-mule-info mode-line-client mode-line-modified mode-line-remote
-   " " (vc-mode vc-mode)
-   " " mode-line-modes mode-line-misc-info mode-line-end-spaces
+   mode-line-buffer-identification  ;; buffer name
+           ;; ro symbol
+   ":%l:%c"                         ;; line column
+   " %p"                            ;; scroll percent
+   " " mode-line-mule-info          ;; encoding (%Z)
+   " " my/mode-line-indent-info     ;; indent info
+   ;; mode-line-client
+   ;; mode-line-modified
+   ;; mode-line-remote
+   (vc-mode vc-mode)                ;; vc (branch)
+   " " mode-line-modes              ;; modes
+   mode-line-misc-info              ;; ?
+   ;; mode-line-end-spaces          ;; trailing dashes in terminal mode
    )
 
  header-line-format
  '(""
    my/mode-line-left-margin-padd
    " "
+   my/mode-line-ro-indicator
    my/mode-line-buffer-long
    )
 
@@ -552,6 +577,7 @@
   ;;:defer t
   :config
 
+  ;; ;; elp-results
   ;; (elp-instrument-package "recentf")
   ;; (elp-instrument-function 'abbreviate-file-name)
 
