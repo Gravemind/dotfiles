@@ -14,7 +14,7 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;(setq debug-on-error t)
+(setq debug-on-error t)
 
 ;; Benchmark init https://github.com/dholm/benchmark-init-el
 ;; - Install:
