@@ -7,7 +7,7 @@ cmd=(
     rofi
     -i
     -show " nvidia" -modi
-    " nvidia:$here/rofi-mode_nv_mode.sh"
+    " nvidia:$here/rofi-mode_nvidia_mode.sh"
 )
 "${cmd[@]}"
 
