@@ -1206,8 +1206,8 @@ With argument, do this that many times."
       (let ((location
              (if-let* ((dir dired-directory)
                        (fname (dired-get-filename nil t)))
-                 fname
-               (format "%s:%d" (or buffer-file-name dired-directory)
+                 (abbreviate-file-name fname)
+               (format "%s:%d" (abbreviate-file-name (or buffer-file-name dired-directory))
                        (1+ (count-lines 1 (point))))
                )))
         (message location)
@@ -1222,7 +1222,7 @@ With argument, do this that many times."
       (beginning-of-line)
       (let* ((fname (or buffer-file-name
                         dired-directory))
-             (location fname))
+             (location (abbreviate-file-name fname)))
         (message location)
         (gui-set-selection nil location)))))
 
