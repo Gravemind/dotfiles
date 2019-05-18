@@ -2,6 +2,8 @@
 
 export CM_LAUNCHER=rofi-script
 
+#set -x
+
 sanitize() {
     cat -v | \
         sed -E 's/[^a-zA-Z0-9\.-]+/_/g' | \
@@ -16,10 +18,12 @@ if ! (( $# )); then
 else
     # https://github.com/koalaman/shellcheck/issues/1141
     # shellcheck disable=SC2124
-    chosen_line="${@: -1}"
+    chosen_line="$*"
 
     res="$chosen_line"
 
-    echo -n "$res" | xclip -i
+    echo -n "$res" | xsel --logfile /dev/null -i --primary
+    # BUG: xclip freezes !? logging "Waiting for selection request number "...
+    #echo -n "$res" | xclip -i -verbose >&2 &
+    #disown
 fi
-
