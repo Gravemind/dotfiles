@@ -866,38 +866,154 @@
 ;; Indent default 4 spaces
 ;;
 
+
+;;
+;; EditorConfig is awesome: http://EditorConfig.org
+;;
+(req-package editorconfig
+  :ensure t
+  ;;:defer t
+  :commands (editorconfig-mode-apply)
+  :config
+  ;;(editorconfig-mode 1)
+  (setq-default editorconfig-mode-lighter " EdConf")
+  (add-hook 'editorconfig-after-apply-functions
+            (lambda (props)
+              ;;(message "editorconfig %s" props)
+              (whitespace-mode 0)
+              (whitespace-mode +1)
+              ))
+)
+
+;;
+;; dtrt-indent guess indent
+;;   https://github.com/jscheid/dtrt-indent
+;;
+(req-package dtrt-indent
+  :ensure t
+  ;;:defer t
+  :commands (dtrt-indent-try-set-offset)
+  :config
+  ;;(setq-default dtrt-indent-verbosity 3)
+)
+
+;;
+;; Default indentations
+;;
+
 (setq-default
- tab-stop-list (number-sequence 4 180 4)
- c-basic-offset 4
+ indent-tabs-mode t
  tab-width 4
  standard-indent 4
- indent-tabs-mode nil)
+ tab-stop-list (number-sequence 4 180 4)
+
+ my-default-indentations-by-mode
+ '(
+   ;; (mode indent-width with-tabs tab-width)
+   (sh-mode         4 nil 8)
+   (lisp-mode       4 nil 8)
+   (emacs-lisp-mode 4 nil 8)
+   (asm-mode        8 t   8)
+   (conf-unix-mode  8 t   8)
+
+   (gud-mode                8 t 8)
+   (gdb-inferior-io-mode    8 t 8)
+   )
+
+ my-default-indentations-by-dtrt-lang
+ '(
+   ;; (dtrt-lang indent-width with-tabs tab-width) ;; see dtrt-indent-hook-mapping-list
+   (c/c++/java  4 t   4)
+   (javascript  2 nil 8)
+   (lua         4 t   4)
+   (ruby        2 nil 8)
+   (perl        4 t   4)
+   (sgml        2 nil 8)
+   (css         4 t   4)
+   )
+ )
 
 (setq-default whitespace-style '(face trailing indentation space-before-tab))
 (add-hook 'prog-mode-hook (lambda () (whitespace-mode 1)))
 
-(defun jo/iwb-space ()
-  "Indent whole buffer, see jo/tab-space."
+(defun jo/dtrt-offset-var ()
+  (require 'dtrt-indent)
+  (nth 2 (dtrt-indent--search-hook-mapping major-mode)))
+
+(defun jo/default-indentation ()
+  "Setup indentation"
+  (require 'editorconfig)
+  (require 'dtrt-indent)
+  (when-let ((indentations
+              (cond ((assoc major-mode my-default-indentations-by-mode))
+                    ((assoc (nth 1 (dtrt-indent--search-hook-mapping major-mode)) my-default-indentations-by-dtrt-lang))))
+             )
+    (message "indentations: %s" indentations)
+    (jo/setup-indentation (nth 1 indentations) (nth 2 indentations) (nth 3 indentations) nil)
+    )
+
+  (dtrt-indent-adapt)
+  (editorconfig-mode-apply)
+
+  ;; re-setup tab-stop-list if offset changed
+  ;; (let ((offset (symbol-value (jo/dtrt-offset-var))))
+  ;;   (setq tab-stop-list (number-sequence offset 180 offset))
+  ;; )
+)
+;;(elp-instrument-function 'jo/default-indentation) ;; elp-results
+
+(dolist (hook '(change-major-mode-after-body-hook
+                read-only-mode-hook))
+  (add-hook hook 'jo/default-indentation))
+;;(add-hook 'text-mode-hook (lambda () (jo/default-indentation)))
+;;(add-hook 'prog-mode-hook (lambda () (jo/default-indentation)))
+
+(cl-defun jo/setup-indentation (offset tabs tabw &optional (ws '(face trailing indentation space-before-tab)))
+  "Setup indentation.
+
+Indentation of OFFSET width, using tabs of width TABW if TABS, and with WS whitespace-style (nil to disable)"
+  (setq
+   indent-tabs-mode tabs
+   tab-width        tabw
+   ;;standard-indent  offset
+   ;;c-basic-offset   offset
+   tab-stop-list    (number-sequence offset 180 offset)
+   )
+
+  (let ((offset-var (jo/dtrt-offset-var)))
+    (set offset-var offset)
+    (message "setup-indentation %s: tabs:%s tabw:%s %s:%s" major-mode indent-tabs-mode tab-width offset-var (symbol-value offset-var))
+    )
+
+  ;; (whitespace-mode 0)
+  ;; (when ws
+  ;;   (setq whitespace-style ws)
+  ;;   (whitespace-mode 1))
+)
+
+(cl-defun jo/tab-space (&optional (offset 4))
+  "Indent with 4 spaces."
   (interactive)
-  (delete-trailing-whitespace)
-  ;;(unless (eq major-mode 'python-mode)
-  ;;(indent-region (point-min) (point-max) nil))
-  (untabify (point-min) (point-max))
-  (unless (eq major-mode 'python-mode)
-    (indent-region (point-min) (point-max) nil))
-  (untabify (point-min) (point-max))
+  (jo/setup-indentation offset nil 8)
   )
 
-(defun jo/iwb-tab ()
-  "Indent whole buffer, see jo/tab-tab."
+(cl-defun jo/tab-tab (&optional (offset 4))
+  "Indent with 1 tabulation of 4 spaces width."
   (interactive)
-  (delete-trailing-whitespace)
-  (tabify (point-min) (point-max))
-  ;;(unless (eq major-mode 'python-mode)
-  ;;(indent-region (point-min) (point-max) nil))
-  ;;(tabify (point-min) (point-max))
+  (jo/setup-indentation offset t offset)
   )
 
+(defun jo/tab-absurde ()
+  "Indent absurde (4 spaces indent but replace 8 spaces by tabulation)"
+  (interactive)
+  (jo/setup-indentation 4 t 8 '(face trailing))
+  )
+
+(defun jo/tab-term-8 ()
+  "Indent 8 tab like a terminal."
+  (interactive)
+  (jo/setup-indentation 8 t 8 nil)
+  )
 
 ;; https://stackoverflow.com/questions/11623721/can-i-just-tabify-begnning-of-lines-in-emacs
 (defun tabify-leading (start end)
@@ -917,75 +1033,15 @@ spaces are treated."
   "Indent whole buffer, see jo/tab-tab."
   (interactive)
   (delete-trailing-whitespace)
-  (if (eq indent-tabs-mode t)
+  (if indent-tabs-mode
       (tabify-leading (point-min) (point-max))
     (untabify (point-min) (point-max)))
   (unless (eq major-mode 'python-mode)
     (indent-region (point-min) (point-max) nil))
-  (if (eq indent-tabs-mode t)
+  (if indent-tabs-mode
       (tabify-leading (point-min) (point-max))
     (untabify (point-min) (point-max)))
   )
-
-(defun jo/tab-space (&optional opt-tab-width)
-  "Indent with 4 spaces."
-  (interactive)
-  (let ((tabw (if (eq opt-tab-width nil) 4 opt-tab-width)))
-    (progn
-      (setq c-basic-offset tabw
-            tab-width tabw
-            standard-indent tabw
-            indent-tabs-mode nil)))
-  (setq whitespace-style '(face trailing indentation space-before-tab))
-  (whitespace-mode 0)
-  (whitespace-mode 1)
-  ;;(local-set-key [f5] 'jo/iwb-space)
-  ;;(message "tab space")
-  )
-
-(defun jo/tab-tab (&optional opt-tab-width)
-  "Indent with 1 tabulation of 4 spaces width."
-  (interactive)
-  (let ((tabw (if (eq opt-tab-width nil) 4 opt-tab-width)))
-    (progn
-      (setq c-basic-offset tabw
-            tab-width tabw
-            standard-indent tabw
-            indent-tabs-mode t)))
-  (setq whitespace-style '(face trailing indentation space-before-tab))
-  (whitespace-mode 0)
-  (whitespace-mode 1)
-  ;;(local-set-key [f5] 'jo/iwb-tab)
-  ;;(message "tab tab")
-  )
-
-(defun jo/tab-absurde ()
-  "Indent absurde (4 spaces indent but replace 8 spaces by tabulation)"
-  (interactive)
-  ;(local-set-key [f5] 'jo/iwb-absurde)
-  (setq c-basic-offset 4
-        tab-width 8
-        standard-indent 4
-        indent-tabs-mode t)
-  (setq whitespace-style '(face trailing))
-  (whitespace-mode 0)
-  (whitespace-mode 1)
-  )
-
-(defun jo/tab-term-8 ()
-  "Indent 8 tab like a terminal."
-  (interactive)
-  (setq c-basic-offset 8
-        tab-width 8
-        standard-indent 8
-        indent-tabs-mode t)
-  ;(setq whitespace-style '(face trailing))
-  (whitespace-mode 0)
-  ;(whitespace-mode 1)
-  )
-
-(defun do-apply-jo/tab ()
-  (or (eq buffer-file-name nil) (eq (editorconfig-core-get-properties) nil)))
 
 ;;
 ;; TEST: complete with dabbrev
@@ -1436,7 +1492,6 @@ With argument, do this that many times."
      ("\\<\\(null\\)\\>" 1 font-lock-keyword-face)
      ("\\<\\(co_await\\|co_yield\\|co_return\\)\\>" 1 font-lock-keyword-face)
      ))
-  (if (do-apply-jo/tab) (jo/tab-space))
 
   ; original: "[ \t]*\\(//+\\|\\**\\)[ \t]*$\\|^\f"
   ;;(setq fill-indent-according-to-mode 1)
@@ -1514,9 +1569,6 @@ With argument, do this that many times."
 
 (req-package lua-mode
   :defer t
-  :config
-  (add-hook 'lua-mode-hook (lambda () (if (do-apply-jo/tab) (jo/tab-tab))))
-  (setq-default lua-indent-level 4)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1527,9 +1579,8 @@ With argument, do this that many times."
 (req-package ruby-mode
   :defer t
   :config
-  (add-hook 'ruby-mode-hook (lambda () (if (do-apply-jo/tab) (jo/tab-space))))
-  ;(setq-default ruby-deep-arglist 4)
-  ;(setq-default ruby-deep-indent-paren nil)
+  ;;(setq-default ruby-deep-arglist 4)
+  ;;(setq-default ruby-deep-indent-paren nil)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1554,27 +1605,7 @@ With argument, do this that many times."
 ;; lisp-mode not a package anymore ?
 ;; (req-package lisp-mode
 ;;   :pin manual
-;;   :config
-  (add-hook 'emacs-lisp-mode-hook (lambda () (if (do-apply-jo/tab) (jo/tab-space 2))))
-  (add-hook 'lisp-mode-hook (lambda () (if (do-apply-jo/tab) (jo/tab-space 2))))
-  ;; )
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;; EditorConfig is awesome: http://EditorConfig.org
-;;
-
-(req-package editorconfig
-  :ensure t
-  :config
-  (editorconfig-mode 1)
-  (add-hook 'editorconfig-custom-hooks
-            (lambda (hash)
-              ;;(message "editorconfig hook")
-              (whitespace-mode 0)
-              (whitespace-mode +1)
-              ))
-)
+;; )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -1749,8 +1780,6 @@ With argument, do this that many times."
 
 ;;(setq-default gdb-many-windows t)
 (setq-default gdb-create-source-file-list nil)
-
-(add-hook 'gdb-mode-hook (lambda () (if (do-apply-jo/tab) (jo/tab-tab 8))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -2786,8 +2815,6 @@ many times might take a long time."
 
 (req-package sgml-mode
   :defer t
-  :config
-  (add-hook 'html-mode-hook (lambda () (if (do-apply-jo/tab) (jo/tab-space 2))))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2806,18 +2833,14 @@ many times might take a long time."
 (defun jo/init-asm-mode ()
   "asm-mode but with disaster--shadow-non-assembly-code"
   (interactive)
-  (if (do-apply-jo/tab) (jo/tab-term-8))
-  (setq
-   paragraph-ignore-fill-prefix t ;; Fixes forward-paragraph walking each line
-   )
+  (setq paragraph-ignore-fill-prefix t ;; Fixes forward-paragraph walking each line
+        )
 )
 
 (req-package asm-mode
-  :commands (asm-mode my-disaster-asm-mode)
-  :hook (asm-mode . jo/init-asm-mode)
   :defer t
-  :config
-  ;;(add-hook 'asm-mode-hook (lambda () ))
+  :commands (asm-mode)
+  :hook (asm-mode . jo/init-asm-mode)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
