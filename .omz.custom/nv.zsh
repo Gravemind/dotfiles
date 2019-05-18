@@ -27,6 +27,7 @@ nvoverclock() {
 	sudo nvidia-smi -pl 216
 
 	# clock offsets
+	# tested `gputest /test=fur`: Clock+200:crash, Mem+700:artefacts
 	nvidia-settings -a "[gpu:0]/GPUMemoryTransferRateOffset[3]=500"
 	nvidia-settings -a "[gpu:0]/GPUGraphicsClockOffset[3]=150"
 
