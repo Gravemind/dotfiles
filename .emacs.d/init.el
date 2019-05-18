@@ -343,7 +343,9 @@
 (put 'my/mode-line-buffer-long 'risky-local-variable t)
 
 (defvar my/mode-line-ro-indicator
-  '(:eval (if buffer-read-only "%% " ""))
+  ;; !! if the icon/glyph is not from the main/first font directly, it will be slow to load !!
+  ;; !!  is included in Hack, but NOT in DejaVu !!
+  '(:eval (if buffer-read-only " " ""))
   "Mode line read-only indicator (awesome font).")
 (put 'my/mode-line-ro-indicator 'risky-local-variable t)
 
