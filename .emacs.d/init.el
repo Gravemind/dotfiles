@@ -50,44 +50,52 @@
 ;; Packages, use-package, req-package
 ;;
 
-(setq-default
- ;; Log *Messages* if the use-package takes longer than 0.1s to load
- use-package-verbose nil
- ;; Auto install packages as needed
- use-package-always-ensure t
-)
+(setq elpagit (concat user-emacs-directory "elpa-git/"))
+
+;; FIXME: only depth 1 ?
+(let ((default-directory "~/.emacs.d/elpa-git"))
+  (normal-top-level-add-subdirs-to-load-path))
 
 (require 'package)
+
 (setq-default
- package-enable-at-startup nil
- package-archives '(("melpa-stable" . "https://stable.melpa.org/packages/")
-                    ("gnu" . "https://elpa.gnu.org/packages/")
-                    ("melpa" . "https://melpa.org/packages/")
-                    )
- ;; https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/
- package-archive-priorities '(("melpa-stable" . 0)
-                              ("gnu" . 10)
-                              ("melpa" . 40)
-                              )
+ ;; Log *Messages* if the use-package takes longer than 0.1s to load
+ ;;use-package-verbose nil
+ ;; Auto install packages as needed
+ ;;use-package-always-ensure t
+)
+
+(setq-default
+ package-archives '()
  )
-(package-initialize)
+
+;; (require 'package)
+;; (setq-default
+;;  package-enable-at-startup nil
+;;  package-archives '(("melpa-stable" . "https://stable.melpa.org/packages/")
+;;                     ("gnu" . "https://elpa.gnu.org/packages/")
+;;                     ("melpa" . "https://melpa.org/packages/")
+;;                     )
+;;  ;; https://codehopper.nl/2018/05/28/a-tale-of-emacs-clojure-and-pinned-packages/
+;;  package-archive-priorities '(("melpa-stable" . 0)
+;;                               ("gnu" . 10)
+;;                               ("melpa" . 40)
+;;                               )
+;;  )
+;;(package-initialize)
 
 ;;
 ;; Auto install req-package
 ;;   https://github.com/jwiegley/use-package/issues/313
 ;;   https://github.com/edvorg/emacs-configs/blob/master/init-real.el
 ;;
-(unless (package-installed-p 'req-package)
-  (message "Installing use-package ...")
-  (package-refresh-contents)
-  ;; Pin use-package to unstable melpa
-  ;;(add-to-list 'package-pinned-packages '(use-package . "melpa") t)
-  (package-install 'req-package))
+;; (unless (package-installed-p 'req-package)
+;;   (message "Installing use-package ...")
+;;   ;;(package-refresh-contents)
+;;   ;; Pin use-package to unstable melpa
+;;   ;;(add-to-list 'package-pinned-packages '(use-package . "melpa") t)
+;;   (package-install 'req-package))
 (require 'req-package)
-
-(req-package auto-package-update
-  :disabled
-  :defer t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -847,8 +855,8 @@
 ;;
 
 (req-package savehist
-  :demand t
   :pin manual
+  :demand t
   :config
   ;; Save minibuffer history for compile
   ;;(setq-default savehist-additional-variables '(compile-command))
@@ -861,6 +869,7 @@
 ;;
 
 (req-package ido
+  :pin manual
   :disabled
   ;;:demand t
   :defer t
@@ -892,12 +901,11 @@
 ;; Indent default 4 spaces
 ;;
 
-
 ;;
 ;; EditorConfig is awesome: http://EditorConfig.org
 ;;
 (req-package editorconfig
-  :ensure t
+  ;;:ensure t
   ;;:defer t
   :commands (editorconfig-mode-apply)
   :config
@@ -916,7 +924,7 @@
 ;;   https://github.com/jscheid/dtrt-indent
 ;;
 (req-package dtrt-indent
-  :ensure t
+  ;;:ensure t
   ;;:defer t
   :commands (dtrt-indent-try-set-offset)
   :config
@@ -1237,6 +1245,7 @@ With argument, do this that many times."
 ;;
 
 (req-package sh-script
+  :pin manual
   :mode (("PKGBUILD" . sh-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1256,7 +1265,6 @@ With argument, do this that many times."
 ;;
 
 (req-package markdown-mode
-  :pin melpa ;; table mode is not stable yet
   :defer t
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
@@ -1433,7 +1441,6 @@ With argument, do this that many times."
 (add-hook 'sh-mode-hook 'jo/tweak-sh-mode-syntax-table)
 
 (req-package auto-highlight-symbol
-  :pin melpa ; not in melpa-stable yet ?
   :hook (prog-mode . auto-highlight-symbol-mode)
   :bind (:map auto-highlight-symbol-mode-map
               ("M-<up>" . ahs-backward-whole-buffer)
@@ -1827,7 +1834,6 @@ With argument, do this that many times."
 ;;
 
 (req-package magit
-  :pin melpa
   :commands (magit-list-repositories-here)
   :bind (("C-x g" . magit-status)
          :map magit-repolist-mode-map
@@ -2349,6 +2355,7 @@ many times might take a long time."
 
 ;; helm dash (dash documentation sets)
 (req-package helm-dash
+  ;;:disabled
   ;;:disabled t
   :defer t)
 
@@ -2549,6 +2556,8 @@ many times might take a long time."
   ;;(add-hook 'dired-mode-hook 'diff-hl-dired-mode)
 
   (global-diff-hl-mode)
+  (require 'diff-hl-flydiff)
+  (require 'diff-hl-dired)
   (diff-hl-flydiff-mode t)
 )
 
@@ -2764,7 +2773,6 @@ many times might take a long time."
 ;;
 
 (req-package rainbow-mode
-  :pin gnu ; not in melpa  ?
   :commands (rainbow-mode)
   :config
   (add-to-list 'rainbow-hexadecimal-colors-font-lock-keywords
@@ -2785,7 +2793,6 @@ many times might take a long time."
 ;; down :C-M-=
 
 (req-package centered-cursor-mode
-  :pin melpa ; not in melpa-stable yet ?
   :commands (centered-cursor-mode global-centered-cursor-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2844,7 +2851,6 @@ many times might take a long time."
 ;;
 
 (req-package disaster
-  :pin melpa ; not in melpa-stable yet ?
   :commands (disaster)
 )
 
@@ -2862,6 +2868,7 @@ many times might take a long time."
 ;;
 
 (req-package sgml-mode
+  :pin manual
   :defer t
   )
 
@@ -2886,6 +2893,7 @@ many times might take a long time."
 )
 
 (req-package asm-mode
+  :pin manual
   :defer t
   :commands (asm-mode)
   :hook (asm-mode . jo/init-asm-mode)
@@ -2922,7 +2930,6 @@ many times might take a long time."
 
 ;; https://github.com/flycheck/flycheck-rust
 (req-package flycheck-rust
-  :pin melpa ; only in unstable
   :defer t
   :hook (flycheck-mode . (lambda () (if (eq major-mode 'rust-mode) (flycheck-rust-setup))))
   )
