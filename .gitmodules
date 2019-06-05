@@ -16,3 +16,204 @@
 [submodule ".omz.custom/plugins/history-substring-search-git/zsh-history-substring-search"]
 	path = .omz.custom/plugins/history-substring-search-git/zsh-history-substring-search
 	url = https://github.com/zsh-users/zsh-history-substring-search.git
+[submodule ".emacs.d/elpa-git/zoom"]
+	path = .emacs.d/elpa-git/zoom
+	url = https://github.com/cyrus-and/zoom
+[submodule ".emacs.d/elpa-git/with-editor"]
+	path = .emacs.d/elpa-git/with-editor
+	url = https://github.com/magit/with-editor
+[submodule ".emacs.d/elpa-git/use-package"]
+	path = .emacs.d/elpa-git/use-package
+	url = https://github.com/jwiegley/use-package
+[submodule ".emacs.d/elpa-git/sync-recentf"]
+	path = .emacs.d/elpa-git/sync-recentf
+	url = https://github.com/ffevotte/sync-recentf
+[submodule ".emacs.d/elpa-git/swiper"]
+	path = .emacs.d/elpa-git/swiper
+	url = https://github.com/abo-abo/swiper
+[submodule ".emacs.d/elpa-git/rust-mode"]
+	path = .emacs.d/elpa-git/rust-mode
+	url = https://github.com/rust-lang/rust-mode
+[submodule ".emacs.d/elpa-git/req-package"]
+	path = .emacs.d/elpa-git/req-package
+	url = https://gitlab.com/edvorg/req-package
+[submodule ".emacs.d/elpa-git/racer"]
+	path = .emacs.d/elpa-git/racer
+	url = https://github.com/racer-rust/emacs-racer
+[submodule ".emacs.d/elpa-git/pkg-info"]
+	path = .emacs.d/elpa-git/pkg-info
+	url = https://github.com/lunaryorn/pkg-info.el
+[submodule ".emacs.d/elpa-git/php-mode"]
+	path = .emacs.d/elpa-git/php-mode
+	url = https://github.com/emacs-php/php-mode
+[submodule ".emacs.d/elpa-git/log4e"]
+	path = .emacs.d/elpa-git/log4e
+	url = https://github.com/aki2o/log4e
+[submodule ".emacs.d/elpa-git/iy-go-to-char"]
+	path = .emacs.d/elpa-git/iy-go-to-char
+	url = https://github.com/doitian/iy-go-to-char
+[submodule ".emacs.d/elpa-git/ivy"]
+	path = .emacs.d/elpa-git/ivy
+	url = https://github.com/abo-abo/swiper
+[submodule ".emacs.d/elpa-git/helm-dash"]
+	path = .emacs.d/elpa-git/helm-dash
+	url = https://github.com/dash-docs-el/helm-dash
+[submodule ".emacs.d/elpa-git/go-mode"]
+	path = .emacs.d/elpa-git/go-mode
+	url = https://github.com/dominikh/go-mode.el
+[submodule ".emacs.d/elpa-git/gnuplot-mode"]
+	path = .emacs.d/elpa-git/gnuplot-mode
+	url = https://github.com/mkmcc/gnuplot-mode
+[submodule ".emacs.d/elpa-git/git-commit"]
+	path = .emacs.d/elpa-git/git-commit
+	url = https://github.com/magit/magit
+[submodule ".emacs.d/elpa-git/flyspell-correct-ivy"]
+	path = .emacs.d/elpa-git/flyspell-correct-ivy
+	url = https://github.com/d12frosted/flyspell-correct
+[submodule ".emacs.d/elpa-git/flyspell-correct-helm"]
+	path = .emacs.d/elpa-git/flyspell-correct-helm
+	url = https://github.com/d12frosted/flyspell-correct
+[submodule ".emacs.d/elpa-git/flyspell-correct"]
+	path = .emacs.d/elpa-git/flyspell-correct
+	url = https://github.com/d12frosted/flyspell-correct
+[submodule ".emacs.d/elpa-git/flycheck-rust"]
+	path = .emacs.d/elpa-git/flycheck-rust
+	url = https://github.com/flycheck/flycheck-rust
+[submodule ".emacs.d/elpa-git/flycheck-inline"]
+	path = .emacs.d/elpa-git/flycheck-inline
+	url = https://github.com/flycheck/flycheck-inline
+[submodule ".emacs.d/elpa-git/flx"]
+	path = .emacs.d/elpa-git/flx
+	url = https://github.com/lewang/flx
+[submodule ".emacs.d/elpa-git/dockerfile-mode"]
+	path = .emacs.d/elpa-git/dockerfile-mode
+	url = https://github.com/spotify/dockerfile-mode
+[submodule ".emacs.d/elpa-git/disaster"]
+	path = .emacs.d/elpa-git/disaster
+	url = https://github.com/jart/disaster
+[submodule ".emacs.d/elpa-git/dired-k"]
+	path = .emacs.d/elpa-git/dired-k
+	url = https://github.com/syohex/emacs-dired-k
+[submodule ".emacs.d/elpa-git/diminish"]
+	path = .emacs.d/elpa-git/diminish
+	url = https://github.com/myrjola/diminish.el
+[submodule ".emacs.d/elpa-git/diff-hl"]
+	path = .emacs.d/elpa-git/diff-hl
+	url = https://github.com/dgutov/diff-hl
+[submodule ".emacs.d/elpa-git/demangle-mode"]
+	path = .emacs.d/elpa-git/demangle-mode
+	url = https://github.com/liblit/demangle-mode
+[submodule ".emacs.d/elpa-git/counsel"]
+	path = .emacs.d/elpa-git/counsel
+	url = https://github.com/abo-abo/swiper
+[submodule ".emacs.d/elpa-git/centered-cursor-mode"]
+	path = .emacs.d/elpa-git/centered-cursor-mode
+	url = https://github.com/andre-r/centered-cursor-mode.el
+[submodule ".emacs.d/elpa-git/bind-key"]
+	path = .emacs.d/elpa-git/bind-key
+	url = https://github.com/jwiegley/use-package
+[submodule ".emacs.d/elpa-git/async"]
+	path = .emacs.d/elpa-git/async
+	url = https://github.com/jwiegley/emacs-async
+[submodule ".emacs.d/elpa-git/ace-jump-mode"]
+	path = .emacs.d/elpa-git/ace-jump-mode
+	url = https://github.com/winterTTr/ace-jump-mode/
+[submodule ".emacs.d/elpa-git/yasnippet"]
+	path = .emacs.d/elpa-git/yasnippet
+	url = https://github.com/joaotavora/yasnippet
+[submodule ".emacs.d/elpa-git/lua-mode"]
+	path = .emacs.d/elpa-git/lua-mode
+	url = https://github.com/immerrr/lua-mode
+[submodule ".emacs.d/elpa-git/markdown-mode"]
+	path = .emacs.d/elpa-git/markdown-mode
+	url = https://github.com/jrblevin/markdown-mode
+[submodule ".emacs.d/elpa-git/helm"]
+	path = .emacs.d/elpa-git/helm
+	url = https://github.com/emacs-helm/helm
+[submodule ".emacs.d/elpa-git/expand-region"]
+	path = .emacs.d/elpa-git/expand-region
+	url = https://github.com/magnars/expand-region.el
+[submodule ".emacs.d/elpa-git/auto-highlight-symbol"]
+	path = .emacs.d/elpa-git/auto-highlight-symbol
+	url = https://github.com/gennad/auto-highlight-symbol
+[submodule ".emacs.d/elpa-git/wgrep"]
+	path = .emacs.d/elpa-git/wgrep
+	url = https://github.com/mhayashi1120/Emacs-wgrep
+[submodule ".emacs.d/elpa-git/f"]
+	path = .emacs.d/elpa-git/f
+	url = https://github.com/rejeep/f.el
+[submodule ".emacs.d/elpa-git/discover-my-major"]
+	path = .emacs.d/elpa-git/discover-my-major
+	url = https://framagit.org/steckerhalter/discover-my-major
+[submodule ".emacs.d/elpa-git/visual-fill-column"]
+	path = .emacs.d/elpa-git/visual-fill-column
+	url = https://github.com/joostkremers/visual-fill-column
+[submodule ".emacs.d/elpa-git/s"]
+	path = .emacs.d/elpa-git/s
+	url = https://github.com/magnars/s.el
+[submodule ".emacs.d/elpa-git/pos-tip"]
+	path = .emacs.d/elpa-git/pos-tip
+	url = https://github.com/pitkali/pos-tip
+[submodule ".emacs.d/elpa-git/popwin"]
+	path = .emacs.d/elpa-git/popwin
+	url = https://github.com/m2ym/popwin-el
+[submodule ".emacs.d/elpa-git/popup"]
+	path = .emacs.d/elpa-git/popup
+	url = https://github.com/auto-complete/popup-el
+[submodule ".emacs.d/elpa-git/multiple-cursors"]
+	path = .emacs.d/elpa-git/multiple-cursors
+	url = https://github.com/magnars/multiple-cursors.el
+[submodule ".emacs.d/elpa-git/makey"]
+	path = .emacs.d/elpa-git/makey
+	url = https://github.com/mickeynp/makey
+[submodule ".emacs.d/elpa-git/magit"]
+	path = .emacs.d/elpa-git/magit
+	url = https://github.com/magit/magit
+[submodule ".emacs.d/elpa-git/ivy-rich"]
+	path = .emacs.d/elpa-git/ivy-rich
+	url = https://github.com/Yevgnen/ivy-rich
+[submodule ".emacs.d/elpa-git/htmlize"]
+	path = .emacs.d/elpa-git/htmlize
+	url = https://github.com/hniksic/emacs-htmlize
+[submodule ".emacs.d/elpa-git/ht"]
+	path = .emacs.d/elpa-git/ht
+	url = https://github.com/Wilfred/ht.el
+[submodule ".emacs.d/elpa-git/gnuplot"]
+	path = .emacs.d/elpa-git/gnuplot
+	url = https://github.com/bruceravel/gnuplot-mode
+[submodule ".emacs.d/elpa-git/flycheck-dmd-dub"]
+	path = .emacs.d/elpa-git/flycheck-dmd-dub
+	url = https://github.com/atilaneves/flycheck-dmd-dub
+[submodule ".emacs.d/elpa-git/flycheck"]
+	path = .emacs.d/elpa-git/flycheck
+	url = https://github.com/flycheck/flycheck
+[submodule ".emacs.d/elpa-git/epl"]
+	path = .emacs.d/elpa-git/epl
+	url = https://github.com/cask/epl
+[submodule ".emacs.d/elpa-git/el-get"]
+	path = .emacs.d/elpa-git/el-get
+	url = https://github.com/dimitri/el-get
+[submodule ".emacs.d/elpa-git/dtrt-indent"]
+	path = .emacs.d/elpa-git/dtrt-indent
+	url = https://github.com/jscheid/dtrt-indent
+[submodule ".emacs.d/elpa-git/dash"]
+	path = .emacs.d/elpa-git/dash
+	url = https://github.com/magnars/dash.el
+[submodule ".emacs.d/elpa-git/d-mode"]
+	path = .emacs.d/elpa-git/d-mode
+	url = https://github.com/Emacs-D-Mode-Maintainers/Emacs-D-Mode
+[submodule ".emacs.d/elpa-git/cmake-mode"]
+	path = .emacs.d/elpa-git/cmake-mode
+	url = https://github.com/Kitware/CMake
+[submodule ".emacs.d/elpa-git/cargo"]
+	path = .emacs.d/elpa-git/cargo
+	url = https://github.com/kwrooijen/cargo.el
+[submodule ".emacs.d/elpa-git/editorconfig"]
+	path = .emacs.d/elpa-git/editorconfig
+	url = https://github.com/editorconfig/editorconfig-emacs
+[submodule ".emacs.d/elpa-git/transient"]
+	path = .emacs.d/elpa-git/transient
+	url = https://github.com/magit/transient
+[submodule ".emacs.d/elpa-git/history"]
+	path = .emacs.d/elpa-git/history
+	url = https://github.com/boyw165/history
