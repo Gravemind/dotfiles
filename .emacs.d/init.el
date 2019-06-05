@@ -712,7 +712,8 @@
 
    )
 
-  (add-hook 'window-configuration-change-hook 'zoom--handler)
+  ;; infinite recurse ?
+  ;;(add-hook 'window-configuration-change-hook 'zoom--handler)
 
   (zoom-mode t)
 )
