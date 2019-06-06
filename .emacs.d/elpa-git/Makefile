@@ -1,24 +1,106 @@
 
 
-ELPAGIT=${HOME}/.emacs.d/elpa-git
+ELPAGIT = ${HOME}/.emacs.d/elpa-git
 
-all: helm
+CASK=
+export CASK
 
-.PHONY: all
+# (the empty ":" at the end keeps the default paths)
+EMACSLOADPATH=$(subst / ,:,$(patsubst %,${ELPAGIT}/%,$(wildcard */))):$(subst / ,:,$(patsubst %,${ELPAGIT}/%,$(wildcard */lisp/))):
+export EMACSLOADPATH
 
-helm:
-	make -C helm clean
-	make -C helm LOADPATH="-L . -L ${ELPAGIT}/async"
-.PHONY: helm
+BUILD_MAGIT_LIBGIT=false
+export
 
-# libegit2:
-# 	make -C libegit2 clean
-# 	make -C libegit2 LOAD_PATH="-L . -L build -L ${ELPAGIT}/transient" lisp
-# .PHONY: libegit2
+DEFCOMPILE += ace-jump-mode
+DEFMAKE += async
+DEFCOMPILE += auto-highlight-symbol
+DEFMAKE += bind-key
+DEFCOMPILE += cargo
+DEFCOMPILE += centered-cursor-mode
+DEFCOMPILE += cmake-mode
+DEFMAKE += counsel
+DEFCOMPILE += dash
+DEFCOMPILE += demangle-mode
+DEFCOMPILE += diff-hl
+DEFCOMPILE += diminish
+# DEFMAKE += dired-k			# no compile
+DEFCOMPILE += dired-k
+DEFMAKE += disaster
+# DEFMAKE += discover-my-major	# no compile
+DEFCOMPILE += discover-my-major
+DEFMAKE += d-mode
+DEFCOMPILE += dockerfile-mode
+DEFCOMPILE += dtrt-indent
+DEFMAKE += editorconfig
+DEFCOMPILE += el-get
+DEFMAKE += epl
+DEFCOMPILE += expand-region
+DEFMAKE += f
+DEFMAKE += flx
+# DEFMAKE += flycheck			# FIXME: CASK not overidable
+DEFCOMPILE += flycheck
+DEFMAKE += flycheck-dmd-dub
+DEFCOMPILE += flycheck-inline
+# DEFMAKE += flycheck-rust		# no compile
+DEFCOMPILE += flycheck-rust
+DEFCOMPILE += flyspell-correct
+DEFCOMPILE += flyspell-correct-helm
+DEFCOMPILE += flyspell-correct-ivy
+DEFCOMPILE += gnuplot
+DEFCOMPILE += gnuplot-mode
+DEFCOMPILE += go-mode
+#NODEF += helm
+DEFMAKE += helm
+DEFCOMPILE += helm-dash
+DEFMAKE += history
+DEFMAKE += ht
+DEFCOMPILE += htmlize
+DEFMAKE += ivy
+DEFCOMPILE += ivy-rich
+# DEFMAKE += iy-go-to-char		# no compile
+DEFCOMPILE += iy-go-to-char
+DEFMAKE += log4e
+DEFMAKE += lua-mode
+#NODEF += magit
+DEFMAKE += magit
+DEFCOMPILE += makey
+DEFMAKE += markdown-mode
+DEFCOMPILE += multiple-cursors
+DEFMAKE += php-mode
+# DEFMAKE += pkg-info			# FIXME: CASK not overidable
+DEFCOMPILE += pkg-info
+# DEFMAKE += popup				# no compile
+DEFCOMPILE += popup
+DEFMAKE += popwin
+DEFCOMPILE += pos-tip
+DEFMAKE += racer
+DEFCOMPILE += rainbow-mode
+DEFCOMPILE += req-package
+DEFCOMPILE += rust-mode
+DEFCOMPILE += s
+DEFMAKE += swiper
+DEFCOMPILE += sync-recentf
+DEFMAKE += transient
+DEFMAKE += use-package
+DEFCOMPILE += visual-fill-column
+DEFMAKE += wgrep
+DEFMAKE += with-editor
+DEFCOMPILE += yasnippet
+DEFCOMPILE += zoom
 
-magit: # libegit2
-	echo "# Generated..." > magit/config.mk
-	echo "LOAD_PATH= -L ${ELPAGIT}/magit/lisp -L ${ELPAGIT}/dash -L ${ELPAGIT}/hydra -L ${ELPAGIT}/lv -L ${ELPAGIT}/transient -L ${ELPAGIT}/with-editor -L ${ELPAGIT}/libegit2" >> magit/config.mk
-	make -C magit clean
-	make -C magit
-.PHONY: magit
+all:		${DEFCOMPILE} ${DEFMAKE} ${NODEF}
+.PHONY: all ${DEFCOMPILE} ${DEFMAKE} ${NODEF}
+
+${DEFMAKE}:
+	@echo -e "\n-------- $@ (make) --------\n"
+	make -C $@ clean || make -C $@ clean-elc || { echo -e "\nNO MAKE CLEAN for $@, manual clean\n" ; find $@ -name '*.elc' -delete; }
+	make -C $@ batch-compile || make -C $@ compile || make -C $@
+
+${DEFCOMPILE}:
+	@echo -e "\n-------- $@ (batch compile) --------\n"
+	find $@ -type f -name "$@*.elc" -delete
+	emacs -Q -batch -L $@ -f batch-byte-compile $(shell find $@ -type f -name "$@*.el" -print) || { echo -e "\nerror: Batch compile $@ FAILED\n"; }
+
+info:
+	@echo EMACSLOADPATH: ${EMACSLOADPATH}
