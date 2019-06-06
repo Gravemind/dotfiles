@@ -62,7 +62,7 @@
  ;; Log *Messages* if the use-package takes longer than 0.1s to load
  ;;use-package-verbose nil
  ;; Auto install packages as needed
- ;;use-package-always-ensure t
+ use-package-always-ensure t
 )
 
 (setq-default
@@ -614,6 +614,7 @@
 )
 
 (req-package sync-recentf
+  :load-path (elpagit "sync-recentf")
   :demand t
   )
 
@@ -689,6 +690,7 @@
 ;;
 
 (req-package zoom
+  :load-path (elpagit "zoom")
   ;;:disabled t
   :demand t
   :config
@@ -750,6 +752,7 @@
 ;;
 
 (req-package winner
+  :load-path (elpagit "winner")
   :demand t
   :config (winner-mode 1))
 
@@ -763,6 +766,7 @@
 ;;
 
 (req-package history
+  :load-path (elpagit "history")
   :demand t
   :bind (("C-c j" . history-prev-history)
          ("C-c M-j" . history-goto-history)
@@ -805,6 +809,7 @@
 ;;
 
 (req-package visible-mark
+  :load-path (elpagit "visible-mark")
   :disabled t
   :hook (prog-mode . visible-mark-mode)
   :config
@@ -815,6 +820,7 @@
   )
 
 (req-package auto-mark
+  :load-path (elpagit "auto-mark")
   :disabled t
   :pin manual
   :load-path "~/.emacs.d/lisp"
@@ -906,6 +912,7 @@
 ;; EditorConfig is awesome: http://EditorConfig.org
 ;;
 (req-package editorconfig
+  :load-path (elpagit "editorconfig")
   ;;:ensure t
   ;;:defer t
   :commands (editorconfig-mode-apply)
@@ -925,6 +932,7 @@
 ;;   https://github.com/jscheid/dtrt-indent
 ;;
 (req-package dtrt-indent
+  :load-path (elpagit "dtrt-indent")
   ;;:ensure t
   ;;:defer t
   :commands (dtrt-indent-try-set-offset)
@@ -1255,6 +1263,7 @@ With argument, do this that many times."
 ;;
 
 (req-package cmake-mode
+  :load-path (elpagit "cmake-mode")
   :defer t
   :config
   (setq-default cmake-tab-width 4)
@@ -1266,6 +1275,7 @@ With argument, do this that many times."
 ;;
 
 (req-package markdown-mode
+  :load-path (elpagit "markdown-mode")
   :defer t
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
@@ -1295,6 +1305,7 @@ With argument, do this that many times."
 ;;
 
 (req-package visual-fill-column
+  :load-path (elpagit "visual-fill-column")
   ;;:disabled t
   :if window-system
   :demand t
@@ -1354,6 +1365,7 @@ With argument, do this that many times."
 ;;
 
 (req-package popwin
+  :load-path (elpagit "popwin")
   :disabled t
   :demand t
   :bind-keymap ("C-v" . popwin:keymap)
@@ -1396,6 +1408,7 @@ With argument, do this that many times."
 ;;
 
 (req-package expand-region
+  :load-path (elpagit "expand-region")
   :bind ("C-=" . er/expand-region)
   )
 
@@ -1442,6 +1455,7 @@ With argument, do this that many times."
 (add-hook 'sh-mode-hook 'jo/tweak-sh-mode-syntax-table)
 
 (req-package auto-highlight-symbol
+  :load-path (elpagit "auto-highlight-symbol")
   :hook (prog-mode . auto-highlight-symbol-mode)
   :bind (:map auto-highlight-symbol-mode-map
               ("M-<up>" . ahs-backward-whole-buffer)
@@ -1602,6 +1616,7 @@ With argument, do this that many times."
 ;;
 
 (req-package lua-mode
+  :load-path (elpagit "lua-mode")
   :defer t
   )
 
@@ -1611,6 +1626,7 @@ With argument, do this that many times."
 ;;
 
 (req-package ruby-mode
+  :pin manual
   :defer t
   :config
   ;;(setq-default ruby-deep-arglist 4)
@@ -1623,11 +1639,13 @@ With argument, do this that many times."
 ;;
 
 (req-package d-mode
+  :load-path (elpagit "d-mode")
   :defer t ;; Fix :hook should have imply :defer, but didn't !?
   :hook (d-mode . (lambda () (jo/cc-mode) (flycheck-dmd-dub-set-variables)))
   )
 
 (req-package flycheck-dmd-dub
+  :load-path (elpagit "flycheck-dmd-dub")
   :defer t
   )
 
@@ -1647,6 +1665,7 @@ With argument, do this that many times."
 ;;
 
 (req-package flycheck
+  :load-path (elpagit "flycheck")
   :commands (flycheck-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1656,6 +1675,7 @@ With argument, do this that many times."
 ;;
 
 (req-package flycheck-grammalecte
+  :load-path (elpagit "flycheck-grammalecte")
   :commands (jo/flycheck-grammalecte)
   :config
   (setq-default
@@ -1771,6 +1791,7 @@ With argument, do this that many times."
              '("." nil (reusable-frames . t)))
 
 (req-package compile
+  :pin manual
   :bind (("<f3>" . jo/compile)
          ("S-<f3>" . jo/compile-here)
          ("C-<f3>" . jo/compile-reset)
@@ -1823,8 +1844,6 @@ With argument, do this that many times."
 (req-package flyspell
   :pin manual
   :defer t
-  :bind (:map flyspell-mode-map
-              ("C-;" . flyspell-correct-at-point))
   :hook ((prog-mode . (lambda () (flyspell-mode -1) (flyspell-prog-mode)))
          (text-mode . (lambda () (flyspell-mode 1))))
   )
@@ -1835,6 +1854,7 @@ With argument, do this that many times."
 ;;
 
 (req-package magit
+  :load-path (elpagit "magit")
   :commands (magit-list-repositories-here)
   :bind (("C-x g" . magit-status)
          :map magit-repolist-mode-map
@@ -2082,6 +2102,7 @@ many times might take a long time."
 ;; (works well with multiple-cursors)
 
 (req-package iy-go-to-char
+  :load-path (elpagit "iy-go-to-char")
   :bind (
          ("C-f C-f" . iy-go-up-to-char)
          ("C-f C-d" . iy-go-to-char-backward)
@@ -2103,6 +2124,7 @@ many times might take a long time."
 ;;
 
 (req-package ace-jump-mode
+  :load-path (elpagit "ace-jump-mode")
   :bind (
          ;("C-f <SPC>" . ace-jump-two-chars-word-mode)
          ;("C-f <RET>" . ace-jump-line-mode)
@@ -2161,6 +2183,7 @@ many times might take a long time."
 ;;
 
 (req-package multiple-cursors
+  :load-path (elpagit "multiple-cursors")
   :bind (("C-S-c C-S-c" . mc/edit-lines)
          ("C->" . mc/mark-next-like-this)
          ("C-<" . mc/mark-previous-like-this)
@@ -2177,6 +2200,7 @@ many times might take a long time."
 ;;
 
 (req-package helm
+  :load-path (elpagit "helm")
   :if jo/helm-or-ivy
   ;;:disabled
   :demand t
@@ -2347,8 +2371,11 @@ many times might take a long time."
 
 ;; also see flyspell-correct-ivy
 (req-package flyspell-correct-helm
+  :load-path (elpagit "flyspell-correct")
   :if jo/helm-or-ivy
-  :defer t
+  :bind (:map flyspell-mode-map
+              ("C-;" . flyspell-correct-at-point))
+  :defer
   :after (flyspell)
   :config
   (setq-default flyspell-correct-interface #'flyspell-correct-helm)
@@ -2356,6 +2383,7 @@ many times might take a long time."
 
 ;; helm dash (dash documentation sets)
 (req-package helm-dash
+  :load-path (elpagit "helm-dash")
   ;;:disabled
   ;;:disabled t
   :defer t)
@@ -2368,10 +2396,12 @@ many times might take a long time."
 
 ;; for ivy--regex-fuzzy sorting
 (req-package flx
+  :load-path (elpagit "flx")
   :if (not jo/helm-or-ivy)
   :defer t)
 
 (req-package ivy
+  :load-path (elpagit "swiper")
   :if (not jo/helm-or-ivy)
   :demand
   :bind (
@@ -2423,6 +2453,7 @@ many times might take a long time."
   )
 
 (req-package counsel
+  :load-path (elpagit "swiper")
   :if (not jo/helm-or-ivy)
   :demand
   :bind (("C-f C-r" . (lambda () (interactive)
@@ -2437,6 +2468,7 @@ many times might take a long time."
   )
 
 (req-package swiper
+  :load-path (elpagit "swiper")
   :if (not jo/helm-or-ivy)
   :defer
   :bind (("C-f <C-return>" . swiper)
@@ -2445,7 +2477,10 @@ many times might take a long time."
 
 ;; also see flyspell-correct-helm
 (req-package flyspell-correct-ivy
+  :load-path (elpagit "flyspell-correct")
   :if (not jo/helm-or-ivy)
+  :bind (:map flyspell-mode-map
+              ("C-;" . flyspell-correct-at-point))
   :defer
   :after (flyspell)
   :config
@@ -2453,6 +2488,7 @@ many times might take a long time."
 
 ;; https://github.com/Yevgnen/ivy-rich
 (req-package ivy-rich
+  :load-path (elpagit "ivy-rich")
   :if (not jo/helm-or-ivy)
   ;;:demand
   :require ivy
@@ -2469,10 +2505,12 @@ many times might take a long time."
 ;; @FIXME why wgrep gets loaded when helm is loaded (eg on M-x)
 
 (req-package wgrep
+  :load-path (elpagit "wgrep")
   :commands (wgrep-change-to-wgrep-mode)
   )
 
 (req-package wgrep-helm
+  :load-path (elpagit "wgrep")
   :if jo/helm-or-ivy
   :commands (wgrep-change-to-wgrep-mode)
   )
@@ -2515,6 +2553,7 @@ many times might take a long time."
   (dired-sort-other (concat dired-listing-switches "")))
 
 (req-package dired-k
+  :load-path (elpagit "dired-k")
   :disabled
   :hook ((dired-initial-position . dired-k)
          (dired-after-readin . dired-k-no-revert))
@@ -2536,6 +2575,7 @@ many times might take a long time."
 ;;
 
 (req-package diff-hl
+  :load-path (elpagit "diff-hl")
   ;:disabled
   :if window-system
   :demand
@@ -2563,6 +2603,7 @@ many times might take a long time."
 )
 
 (req-package git-gutter-fringe
+  :pin manual
   :disabled
   :if window-system
   :demand
@@ -2700,8 +2741,8 @@ many times might take a long time."
 ;;
 
 (req-package rtags
-  :if (file-exists-p "~/bin/rtags/bin/rdm")
   :load-path "~/bin/rtags/src"
+  :if (file-exists-p "~/bin/rtags/bin/rdm")
   :commands (rtags-diagnostics)
   :after (cc-mode) ;; makes `:bind (:map c-mode-base-map)` work
   :bind
@@ -2754,6 +2795,7 @@ many times might take a long time."
 ;;
 
 (req-package discover-my-major
+  :load-path (elpagit "discover-my-major")
   :commands (discover-my-major))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2762,6 +2804,7 @@ many times might take a long time."
 ;;
 
 (req-package yasnippet
+  :load-path (elpagit "yasnippet")
   :hook (c-mode-common . yas-minor-mode) ;; NOTE: cc-mode-hook does not work, c-mode-common-hook do.
   :config
   (setq-default yas-snippet-dirs '("~/.emacs.d/snippets"))
@@ -2774,6 +2817,7 @@ many times might take a long time."
 ;;
 
 (req-package rainbow-mode
+  :load-path (elpagit "rainbow-mode")
   :commands (rainbow-mode)
   :config
   (add-to-list 'rainbow-hexadecimal-colors-font-lock-keywords
@@ -2794,6 +2838,7 @@ many times might take a long time."
 ;; down :C-M-=
 
 (req-package centered-cursor-mode
+  :load-path (elpagit "centered-cursor-mode")
   :commands (centered-cursor-mode global-centered-cursor-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2833,6 +2878,7 @@ many times might take a long time."
   )
 
 (req-package htmlize
+  :load-path (elpagit "htmlize")
   :defer t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2843,6 +2889,7 @@ many times might take a long time."
 ;;
 
 (req-package gnuplot
+  :load-path (elpagit "gnuplot")
   :defer t
   )
 
@@ -2852,6 +2899,7 @@ many times might take a long time."
 ;;
 
 (req-package disaster
+  :load-path (elpagit "disaster")
   :commands (disaster)
 )
 
@@ -2861,6 +2909,7 @@ many times might take a long time."
 ;;
 
 (req-package demangle-mode
+  :load-path (elpagit "demangle-mode")
   :commands (demangle-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2906,6 +2955,7 @@ many times might take a long time."
 ;;
 
 (req-package dockerfile-mode
+  :load-path (elpagit "dockerfile-mode")
   :defer t
   )
 
@@ -2917,6 +2967,7 @@ many times might take a long time."
 
 ;; https://github.com/rust-lang/rust-mode
 (req-package rust-mode
+  :load-path (elpagit "rust-mode")
   :defer t
   :bind (:map rust-mode-map
               ("<f3>" . cargo-process-build)
@@ -2926,17 +2977,20 @@ many times might take a long time."
 
 ;; https://github.com/kwrooijen/cargo.el
 (req-package cargo
+  :load-path (elpagit "cargo")
   :defer t
   )
 
 ;; https://github.com/flycheck/flycheck-rust
 (req-package flycheck-rust
+  :load-path (elpagit "flycheck-rust")
   :defer t
   :hook (flycheck-mode . (lambda () (if (eq major-mode 'rust-mode) (flycheck-rust-setup))))
   )
 
 ;; https://github.com/racer-rust/emacs-racer
 (req-package racer
+  :load-path (elpagit "racer")
   ;;:disabled t
   :defer t
   :hook (rust-mode . racer-mode)
@@ -2946,6 +3000,7 @@ many times might take a long time."
 
 ;; https://github.com/flycheck/flycheck-inline
 (req-package flycheck-inline
+  :load-path (elpagit "flycheck-inline")
   :defer t
   )
 
@@ -2955,6 +3010,7 @@ many times might take a long time."
 ;;
 
 (req-package go-mode
+  :load-path (elpagit "go-mode")
   :defer t
   :bind (:map go-mode-map
               ("C-c i" . godef-jump)
@@ -2967,6 +3023,7 @@ many times might take a long time."
 ;;
 
 (req-package php-mode
+  :load-path (elpagit "php-mode")
   :defer t
   )
 
@@ -2976,6 +3033,7 @@ many times might take a long time."
 ;;
 
 (req-package pdf-tools
+  :load-path (elpagit "pdf-tools")
   :disabled t
   :if (file-exists-p "~/documents/clones/pdf-tools/server/epdfinfo")
   :load-path "~/documents/clones/pdf-tools/lisp"
