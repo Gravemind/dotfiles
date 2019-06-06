@@ -52,9 +52,6 @@
 [submodule ".emacs.d/elpa-git/iy-go-to-char"]
 	path = .emacs.d/elpa-git/iy-go-to-char
 	url = https://github.com/doitian/iy-go-to-char
-[submodule ".emacs.d/elpa-git/ivy"]
-	path = .emacs.d/elpa-git/ivy
-	url = https://github.com/abo-abo/swiper
 [submodule ".emacs.d/elpa-git/helm-dash"]
 	path = .emacs.d/elpa-git/helm-dash
 	url = https://github.com/dash-docs-el/helm-dash
@@ -64,15 +61,6 @@
 [submodule ".emacs.d/elpa-git/gnuplot-mode"]
 	path = .emacs.d/elpa-git/gnuplot-mode
 	url = https://github.com/mkmcc/gnuplot-mode
-[submodule ".emacs.d/elpa-git/git-commit"]
-	path = .emacs.d/elpa-git/git-commit
-	url = https://github.com/magit/magit
-[submodule ".emacs.d/elpa-git/flyspell-correct-ivy"]
-	path = .emacs.d/elpa-git/flyspell-correct-ivy
-	url = https://github.com/d12frosted/flyspell-correct
-[submodule ".emacs.d/elpa-git/flyspell-correct-helm"]
-	path = .emacs.d/elpa-git/flyspell-correct-helm
-	url = https://github.com/d12frosted/flyspell-correct
 [submodule ".emacs.d/elpa-git/flyspell-correct"]
 	path = .emacs.d/elpa-git/flyspell-correct
 	url = https://github.com/d12frosted/flyspell-correct
@@ -103,15 +91,9 @@
 [submodule ".emacs.d/elpa-git/demangle-mode"]
 	path = .emacs.d/elpa-git/demangle-mode
 	url = https://github.com/liblit/demangle-mode
-[submodule ".emacs.d/elpa-git/counsel"]
-	path = .emacs.d/elpa-git/counsel
-	url = https://github.com/abo-abo/swiper
 [submodule ".emacs.d/elpa-git/centered-cursor-mode"]
 	path = .emacs.d/elpa-git/centered-cursor-mode
 	url = https://github.com/andre-r/centered-cursor-mode.el
-[submodule ".emacs.d/elpa-git/bind-key"]
-	path = .emacs.d/elpa-git/bind-key
-	url = https://github.com/jwiegley/use-package
 [submodule ".emacs.d/elpa-git/async"]
 	path = .emacs.d/elpa-git/async
 	url = https://github.com/jwiegley/emacs-async
