@@ -28,6 +28,7 @@
 [submodule ".emacs.d/elpa-git/sync-recentf"]
 	path = .emacs.d/elpa-git/sync-recentf
 	url = https://github.com/ffevotte/sync-recentf
+	ignore = untracked
 [submodule ".emacs.d/elpa-git/swiper"]
 	path = .emacs.d/elpa-git/swiper
 	url = https://github.com/abo-abo/swiper
@@ -40,6 +41,7 @@
 [submodule ".emacs.d/elpa-git/racer"]
 	path = .emacs.d/elpa-git/racer
 	url = https://github.com/racer-rust/emacs-racer
+	ignore = untracked
 [submodule ".emacs.d/elpa-git/pkg-info"]
 	path = .emacs.d/elpa-git/pkg-info
 	url = https://github.com/lunaryorn/pkg-info.el
@@ -49,9 +51,11 @@
 [submodule ".emacs.d/elpa-git/log4e"]
 	path = .emacs.d/elpa-git/log4e
 	url = https://github.com/aki2o/log4e
+	ignore = untracked
 [submodule ".emacs.d/elpa-git/iy-go-to-char"]
 	path = .emacs.d/elpa-git/iy-go-to-char
 	url = https://github.com/doitian/iy-go-to-char
+	ignore = untracked
 [submodule ".emacs.d/elpa-git/helm-dash"]
 	path = .emacs.d/elpa-git/helm-dash
 	url = https://github.com/dash-docs-el/helm-dash
@@ -70,12 +74,14 @@
 [submodule ".emacs.d/elpa-git/flycheck-inline"]
 	path = .emacs.d/elpa-git/flycheck-inline
 	url = https://github.com/flycheck/flycheck-inline
+	ignore = untracked
 [submodule ".emacs.d/elpa-git/flx"]
 	path = .emacs.d/elpa-git/flx
 	url = https://github.com/lewang/flx
 [submodule ".emacs.d/elpa-git/dockerfile-mode"]
 	path = .emacs.d/elpa-git/dockerfile-mode
 	url = https://github.com/spotify/dockerfile-mode
+	ignore = untracked
 [submodule ".emacs.d/elpa-git/disaster"]
 	path = .emacs.d/elpa-git/disaster
 	url = https://github.com/jart/disaster
@@ -85,9 +91,11 @@
 [submodule ".emacs.d/elpa-git/diminish"]
 	path = .emacs.d/elpa-git/diminish
 	url = https://github.com/myrjola/diminish.el
+	ignore = untracked
 [submodule ".emacs.d/elpa-git/diff-hl"]
 	path = .emacs.d/elpa-git/diff-hl
 	url = https://github.com/dgutov/diff-hl
+	ignore = untracked
 [submodule ".emacs.d/elpa-git/demangle-mode"]
 	path = .emacs.d/elpa-git/demangle-mode
 	url = https://github.com/liblit/demangle-mode
@@ -100,6 +108,7 @@
 [submodule ".emacs.d/elpa-git/ace-jump-mode"]
 	path = .emacs.d/elpa-git/ace-jump-mode
 	url = https://github.com/winterTTr/ace-jump-mode/
+	ignore = untracked
 [submodule ".emacs.d/elpa-git/yasnippet"]
 	path = .emacs.d/elpa-git/yasnippet
 	url = https://github.com/joaotavora/yasnippet
@@ -118,12 +127,14 @@
 [submodule ".emacs.d/elpa-git/auto-highlight-symbol"]
 	path = .emacs.d/elpa-git/auto-highlight-symbol
 	url = https://github.com/gennad/auto-highlight-symbol
+	ignore = untracked
 [submodule ".emacs.d/elpa-git/wgrep"]
 	path = .emacs.d/elpa-git/wgrep
 	url = https://github.com/mhayashi1120/Emacs-wgrep
 [submodule ".emacs.d/elpa-git/f"]
 	path = .emacs.d/elpa-git/f
 	url = https://github.com/rejeep/f.el
+	ignore = untracked
 [submodule ".emacs.d/elpa-git/discover-my-major"]
 	path = .emacs.d/elpa-git/discover-my-major
 	url = https://framagit.org/steckerhalter/discover-my-major
@@ -133,9 +144,11 @@
 [submodule ".emacs.d/elpa-git/s"]
 	path = .emacs.d/elpa-git/s
 	url = https://github.com/magnars/s.el
+	ignore = untracked
 [submodule ".emacs.d/elpa-git/pos-tip"]
 	path = .emacs.d/elpa-git/pos-tip
 	url = https://github.com/pitkali/pos-tip
+	ignore = untracked
 [submodule ".emacs.d/elpa-git/popwin"]
 	path = .emacs.d/elpa-git/popwin
 	url = https://github.com/m2ym/popwin-el
@@ -166,6 +179,7 @@
 [submodule ".emacs.d/elpa-git/flycheck-dmd-dub"]
 	path = .emacs.d/elpa-git/flycheck-dmd-dub
 	url = https://github.com/atilaneves/flycheck-dmd-dub
+	ignore = untracked
 [submodule ".emacs.d/elpa-git/flycheck"]
 	path = .emacs.d/elpa-git/flycheck
 	url = https://github.com/flycheck/flycheck
@@ -187,15 +201,18 @@
 [submodule ".emacs.d/elpa-git/cmake-mode"]
 	path = .emacs.d/elpa-git/cmake-mode
 	url = https://github.com/Kitware/CMake
+	ignore = untracked
 [submodule ".emacs.d/elpa-git/cargo"]
 	path = .emacs.d/elpa-git/cargo
 	url = https://github.com/kwrooijen/cargo.el
+	ignore = untracked
 [submodule ".emacs.d/elpa-git/editorconfig"]
 	path = .emacs.d/elpa-git/editorconfig
 	url = https://github.com/editorconfig/editorconfig-emacs
 [submodule ".emacs.d/elpa-git/transient"]
 	path = .emacs.d/elpa-git/transient
 	url = https://github.com/magit/transient
+	ignore = untracked
 [submodule ".emacs.d/elpa-git/history"]
 	path = .emacs.d/elpa-git/history
 	url = https://github.com/boyw165/history
