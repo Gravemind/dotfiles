@@ -6,11 +6,14 @@ CASK=
 export CASK
 
 # (the empty ":" at the end keeps the default paths)
-EMACSLOADPATH=$(subst / ,:,$(patsubst %,${ELPAGIT}/%,$(wildcard */))):$(subst / ,:,$(patsubst %,${ELPAGIT}/%,$(wildcard */lisp/))):
+LISP_DIRS=$(wildcard */) $(wildcard */lisp/)
+EMACSLOADPATH=$(subst / ,:,$(patsubst %,${ELPAGIT}/%, ${LISP_DIRS})):
 export EMACSLOADPATH
 
 BUILD_MAGIT_LIBGIT=false
 export BUILD_MAGIT_LIBGIT
+
+LOAD_PATHS_EL=load-paths.el
 
 DEFCOMPILE += ace-jump-mode
 DEFMAKE += async
@@ -46,8 +49,8 @@ DEFCOMPILE += flyspell-correct
 DEFCOMPILE += gnuplot
 DEFCOMPILE += gnuplot-mode
 DEFCOMPILE += go-mode
-#NODEF += helm
-DEFMAKE += helm
+NODEF += helm
+#DEFMAKE += helm
 DEFCOMPILE += helm-dash
 DEFMAKE += history
 DEFMAKE += ht
@@ -84,8 +87,18 @@ DEFMAKE += with-editor
 DEFCOMPILE += yasnippet
 DEFCOMPILE += zoom
 
-all:		${DEFCOMPILE} ${DEFMAKE} ${NODEF}
-.PHONY: all ${DEFCOMPILE} ${DEFMAKE} ${NODEF}
+all:	${LOAD_PATHS_EL} ${DEFCOMPILE} ${DEFMAKE} ${NODEF}
+.PHONY: ${LOAD_PATHS_EL} ${DEFCOMPILE} ${DEFMAKE} ${NODEF}
+.PHONY: all
+
+${LOAD_PATHS_EL}:
+	@echo ';; Generated' > ${LOAD_PATHS_EL}
+	@echo '(setq load-path (nconc load-path (list' >> ${LOAD_PATHS_EL}
+	@for p in ${LISP_DIRS} ; do \
+		echo "\"${ELPAGIT}/$$p\""; \
+	done >> ${LOAD_PATHS_EL}
+	@echo ')))' >> ${LOAD_PATHS_EL}
+	@echo "Generated ${LOAD_PATHS_EL}"
 
 ${DEFMAKE}:
 	@echo -e "\n-------- $@ (make) --------\n"
@@ -96,6 +109,11 @@ ${DEFCOMPILE}:
 	@echo -e "\n-------- $@ (batch compile) --------\n"
 	find $@ -type f -name "$@*.elc" -delete
 	emacs -Q -batch -L $@ -f batch-byte-compile $(shell find $@ -type f -name "$@*.el" -print) || { echo -e "\nerror: Batch compile $@ FAILED\n"; }
+
+helm:
+	@echo -e "\n-------- $@ (custom) --------\n"
+	make -C $@ clean
+	make -C $@
 
 info:
 	@echo EMACSLOADPATH: ${EMACSLOADPATH}

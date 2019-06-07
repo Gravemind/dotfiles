@@ -53,8 +53,11 @@
 (setq elpagit (concat user-emacs-directory "elpa-git/"))
 
 ;; FIXME: only depth 1 ?
-(let ((default-directory "~/.emacs.d/elpa-git"))
-  (normal-top-level-add-subdirs-to-load-path))
+;; (let ((default-directory "~/.emacs.d/elpa-git"))
+;;   (normal-top-level-add-subdirs-to-load-path))
+(load (concat elpagit "load-paths.el"))
+
+;; (message "%s" load-path)
 
 (require 'package)
 
