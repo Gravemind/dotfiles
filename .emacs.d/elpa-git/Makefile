@@ -10,16 +10,14 @@ EMACSLOADPATH=$(subst / ,:,$(patsubst %,${ELPAGIT}/%,$(wildcard */))):$(subst / 
 export EMACSLOADPATH
 
 BUILD_MAGIT_LIBGIT=false
-export
+export BUILD_MAGIT_LIBGIT
 
 DEFCOMPILE += ace-jump-mode
 DEFMAKE += async
 DEFCOMPILE += auto-highlight-symbol
-DEFMAKE += bind-key
 DEFCOMPILE += cargo
 DEFCOMPILE += centered-cursor-mode
 DEFCOMPILE += cmake-mode
-DEFMAKE += counsel
 DEFCOMPILE += dash
 DEFCOMPILE += demangle-mode
 DEFCOMPILE += diff-hl
@@ -45,8 +43,6 @@ DEFCOMPILE += flycheck-inline
 # DEFMAKE += flycheck-rust		# no compile
 DEFCOMPILE += flycheck-rust
 DEFCOMPILE += flyspell-correct
-DEFCOMPILE += flyspell-correct-helm
-DEFCOMPILE += flyspell-correct-ivy
 DEFCOMPILE += gnuplot
 DEFCOMPILE += gnuplot-mode
 DEFCOMPILE += go-mode
@@ -56,7 +52,6 @@ DEFCOMPILE += helm-dash
 DEFMAKE += history
 DEFMAKE += ht
 DEFCOMPILE += htmlize
-DEFMAKE += ivy
 DEFCOMPILE += ivy-rich
 # DEFMAKE += iy-go-to-char		# no compile
 DEFCOMPILE += iy-go-to-char
