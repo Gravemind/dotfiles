@@ -118,7 +118,11 @@
 
 # Pretty log format
 [pretty]
-	my = "tformat:%C(magenta)%h%C(reset)%C(auto)% D %C(reset)%s%C(blue)%>|(90) %an %C(bold black)%ar%C(reset)"
+	my = "tformat:%C(magenta)%h%C(reset)%C(auto)% D %C(reset)%s%C(blue)%>|(90) %an %C(bold black)%ad%C(reset)"
+[log]
+	date = auto:relative # git v2.21 (also: "auto:human")
+[blame]
+	date = auto:relative # git v2.21 (also: "auto:human")
 
 [color "branch"]
 	current = bold white
