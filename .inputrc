@@ -13,3 +13,15 @@
 # safer paste
 # https://cirw.in/blog/bracketed-paste
 set enable-bracketed-paste on
+
+# Bash: cycle completion candidates inplace instead of showing them all
+#"\t": menu-complete
+
+# Bash: add completion color
+set menu-complete-display-prefix on
+set colored-completion-prefix on
+set colored-stats on
+
+# Bash: TAB completes immediately
+set show-all-if-ambiguous on	# always displays candidates if ambigious
+#set show-all-if-unmodified on  # ... but not if prefix was found and added
