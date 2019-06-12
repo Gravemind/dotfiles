@@ -14,6 +14,9 @@ BUILD_MAGIT_LIBGIT=false
 export BUILD_MAGIT_LIBGIT
 
 LOAD_PATHS_EL=load-paths.el
+AUTOLOADS_EL=autoloads.el
+
+SHELL=bash
 
 DEFCOMPILE += ace-jump-mode
 DEFMAKE += async
@@ -87,7 +90,7 @@ DEFMAKE += with-editor
 DEFCOMPILE += yasnippet
 DEFCOMPILE += zoom
 
-all:	${LOAD_PATHS_EL} ${DEFCOMPILE} ${DEFMAKE} ${NODEF}
+all:	${LOAD_PATHS_EL} ${DEFCOMPILE} ${DEFMAKE} ${NODEF} ${AUTOLOADS_EL}
 .PHONY: ${LOAD_PATHS_EL} ${DEFCOMPILE} ${DEFMAKE} ${NODEF}
 .PHONY: all
 
@@ -114,6 +117,19 @@ helm:
 	@echo -e "\n-------- $@ (custom) --------\n"
 	make -C $@ clean
 	make -C $@
+
+${AUTOLOADS_EL}: Makefile
+	@echo -e "\n-------- $@ --------\n"
+	emacs -Q -batch --eval "(progn (setq generated-autoload-file (expand-file-name \"$@\" \".\")) \
+	 (setq backup-inhibited t) (apply 'update-directory-autoloads (split-string \"${EMACSLOADPATH}\" \":\")))"
+
+# 	@for p in ${LISP_DIRS} ; do \
+# 		pushd "$$p"; \
+# 		echo -e "\n-------- AUTOLOADS $$p --------\n"; \
+# 		emacs -Q -batch --eval "(progn (setq generated-autoload-file (expand-file-name \"helm-autoloads.el\" \".\")) \
+# (setq backup-inhibited t) (update-directory-autoloads \".\"))"; \
+# 		popd; \
+# 	done
 
 info:
 	@echo EMACSLOADPATH: ${EMACSLOADPATH}
