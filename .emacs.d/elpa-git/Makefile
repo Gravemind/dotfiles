@@ -118,7 +118,7 @@ helm:
 	make -C $@ clean
 	make -C $@
 
-${AUTOLOADS_EL}: Makefile
+${AUTOLOADS_EL}:
 	@echo -e "\n-------- $@ --------\n"
 	emacs -Q -batch --eval "(progn (setq generated-autoload-file (expand-file-name \"$@\" \".\")) \
 	 (setq backup-inhibited t) (apply 'update-directory-autoloads (split-string \"${EMACSLOADPATH}\" \":\")))"
@@ -130,6 +130,8 @@ ${AUTOLOADS_EL}: Makefile
 # (setq backup-inhibited t) (update-directory-autoloads \".\"))"; \
 # 		popd; \
 # 	done
+
+.PHONY: ${AUTOLOADS_EL} # always make
 
 info:
 	@echo EMACSLOADPATH: ${EMACSLOADPATH}
