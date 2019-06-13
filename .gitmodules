@@ -108,7 +108,7 @@
 	url = https://github.com/jwiegley/emacs-async.git
 [submodule ".emacs.d/elpa-git/ace-jump-mode"]
 	path = .emacs.d/elpa-git/ace-jump-mode
-	url = https://github.com/winterTTr/ace-jump-mode/.git
+	url = https://github.com/winterTTr/ace-jump-mode.git
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/yasnippet"]
 	path = .emacs.d/elpa-git/yasnippet
