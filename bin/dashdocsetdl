@@ -1,0 +1,160 @@
+#!/bin/bash
+
+# https://kapeli.com/dash
+# https://gist.github.com/lucasg/174e04125391f6e24b6f1070fc489a8d
+# https://github.com/dash-docs-el/dash-docs
+
+set -euo pipefail
+
+basename0="$(basename "$0")"
+
+#tmpdir="$(mktemp -d -t "$basename0.XXXXXXXX")"
+#cleanup() { rm -rf "$tmpdir"; }
+#trap cleanup EXIT
+tmpdir="/tmp/$basename0"; mkdir -p "$tmpdir"
+
+KAPELI_CDN=london
+
+assert() {
+    test "$@" || { echo "ASSERT FAIL $@" >&2 ; exit 1; }
+}
+
+loginfo() {
+    echo "$*" >& 2
+}
+
+dl_file() {
+    local f="$1"
+    local u="$2"
+    local dl=false
+
+    [[ ! -e "$f.part" ]] || rm -f "$f"
+
+    [[ -e "$f" ]] || dl=true
+
+    if ! $dl ; then
+        local expire_sec=$(( 24 * 60 * 60))
+        local ago=$(( $(date +%s) - $(date +%s -r "$f") ))
+        [[ $ago -le $expire_sec ]] || dl=true
+    fi
+
+    if $dl; then
+        loginfo "Downloading $f $u ..."
+        curl -C - -o "$f.part" "$u" || { echo "DL failed" >&2; exit 1; }
+        mv -f "$f.part" "$f"
+    else
+        loginfo "Up to date $f"
+    fi
+}
+
+dl_docsets_index() {
+    cd "$tmpdir"
+
+    dl_file contents.json 'https://api.github.com/repos/Kapeli/feeds/contents/'
+    dl_file contributed_index.json "https://$KAPELI_CDN.kapeli.com/feeds/zzz/user_contributed/build/index.json"
+
+    mv -uf index index.b
+
+    while read -u3 -r name url
+    do
+        [[ "${name##*.}" == xml ]] || continue
+        name="${name%.xml}"
+        t="${name//+/%2B}"
+
+        #loginfo "official: $name"
+
+        assert "$url" == 'https://api.github.com/repos/Kapeli/feeds/contents/'"$t"'.xml?ref=master'
+
+        echo "$name http://sanfrancisco.kapeli.com/feeds/$t.tgz" >&4
+
+    done 3< <( jq -r 'map([.name,.url]) | .[] | join(" ")' contents.json ) 4>> index
+
+    while read -u3 -r name archive
+    do
+        #[[ "${name##*.}" == xml ]] || continue
+
+        #loginfo "contributed: $name"
+
+        echo "$name http://london.kapeli.com/feeds/zzz/user_contributed/build/$name/$archive" >&4
+
+    done 3< <( jq -r '.docsets | to_entries | map([.key,.value.archive]) | .[] | join(" ")' contributed_index.json ) 4>> index
+
+    #cat index
+}
+
+search_docsets() {
+    cd "$tmpdir"
+
+    local reg="h;"
+    reg+="s/ .*//;"
+    reg+="s/^.*/\L&/;"
+    for term in "$@"; do
+        term="${term,,}"
+        term_esc="${term//[^a-zA-Z0-9\+_-]/}"
+        reg+="/$term_esc/!d;"
+    done
+    reg+="g;p"
+    #loginfo sed -n "$reg" index
+    sed -n "$reg" index
+}
+
+dl_docsets() {
+    cd "$tmpdir"
+
+    mkdir -p docsets
+    for term in "$@"; do
+        while read -u3 -r name url
+        do
+            #loginfo $name -- $url
+
+            dl_file "docsets/$name.tgz" "$url"
+
+            loginfo "Extracting docsets/$name"
+
+            pushd docsets > /dev/null
+            rm -rf "$name.docset"
+            tar xf "$name.tgz"
+            assert -e "$name.docset/Contents"
+            popd > /dev/null
+
+            loginfo "$name done."
+
+        done 3< <(
+            { grep -i "^$term " index | head -n1; }  || {
+                echo "Docset not found: $term" >&2;
+                exit 1;
+            }
+        )
+    done
+}
+
+main() {
+    case "$1" in
+        -h|--help)
+            echo -n "
+usage:
+    $basename0 list
+    $basename0 search WORDS...
+    $basename0 dl DOCSETS...
+
+"
+            ;;
+        list)
+            shift
+            dl_docsets_index
+            cat "$tmpdir/index"
+            ;;
+        search)
+            shift
+            dl_docsets_index
+            search_docsets "$@"
+            ;;
+        dl)
+            shift
+            dl_docsets_index
+            dl_docsets "$@"
+            ;;
+    esac
+}
+
+main "$@"
