@@ -53,7 +53,7 @@ dl_docsets_index() {
     dl_file contents.json 'https://api.github.com/repos/Kapeli/feeds/contents/'
     dl_file contributed_index.json "https://$KAPELI_CDN.kapeli.com/feeds/zzz/user_contributed/build/index.json"
 
-    mv -uf index index.b
+    [[ ! -f index ]] || mv -f index index.b
 
     while read -u3 -r name url
     do
@@ -95,7 +95,7 @@ search_docsets() {
     done
     reg+="g;p"
     #loginfo sed -n "$reg" index
-    sed -n "$reg" index
+    sed -n "$reg" index | column -t
 }
 
 dl_docsets() {
@@ -142,7 +142,7 @@ usage:
         list)
             shift
             dl_docsets_index
-            cat "$tmpdir/index"
+            cat "$tmpdir/index" | column -t
             ;;
         search)
             shift
