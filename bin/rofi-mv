@@ -83,11 +83,13 @@ do
     [[ -n "$newbf" ]] || { echo "$0: exit rofi, abort"; exit 1; }
 done
 
-if [[ -e "$newbf" ]]
+newf="$targetdir/$newbf$ext"
+if [[ -e "$newf" ]]
 then
     rofi -e "error: file already exists: $(escape_markup "$newbf")"
     exit 1
 fi
 
-echo "$0: running $cmd $f $targetdir/$newbf$ext"
-$cmd "$f" "$targetdir/$newbf$ext"
+echo "$0: running $cmd $f $newf"
+
+$cmd "$f" "$newf"
