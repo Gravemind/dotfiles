@@ -102,8 +102,11 @@
 	# Log left-right with boundaries
 	lb = log --pretty=my --graph --full-history --simplify-merges --date-order --left-right --boundary
 
-	# Log HEAD and its upstream
-	lu = "!f() { set -eu; git l --left-right --boundary @...${1:-@\\{upstream\\}}; }; f"
+	# Log commits between HEAD and its upstream
+	lu = "!f() { set -eu; git l --left-right --boundary @...@{u} \"${@}\"; }; f"
+
+	# Log commits between HEAD and another branch
+	lo = "!f() { set -eu; git l --left-right --boundary @...$1 \"${@:1}\"; }; f"
 
 	# Fuller show
 	showf = show --format=fuller

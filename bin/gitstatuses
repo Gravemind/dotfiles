@@ -42,8 +42,10 @@ root="."
 tmpdir="$(mktemp -d -t gitstatuses.XXXXXXXXXX)"
 trap "{ rm -rf $tmpdir; }" EXIT
 
+quiet=false
+
 logdeb() {
-    echo "$@" 1>&2
+    $quiet || echo "$@" 1>&2
 }
 
 printfrepo() {
@@ -241,17 +243,20 @@ FETCH_IF_OLDER_THAN=$(( "$(date "+%s")" - $fetch_timeout ))
 find_type="-type d"
 find_follow=""
 numjobs_fetch=6 # limit at 6 fetches at the same time
+wait_before_run=0
 
-options=$(getopt -o "+hfFsdLj:" -l "help" -n "$0" -- "$@")
+options=$(getopt -o "+hfFsdLwqj:" -l "help" -n "$0" -- "$@")
 [[ $? -eq 0 ]] || exit 1
 eval set -- "$options"
 while true; do
     case "$1" in
     -h|--help)
-        echo 'usage: '"$0"' [-fFsdL] [-j N] [--] [nums...] [command...]
+        echo 'usage: '"$0"' [-fFsdLw] [-j N] [--] [nums...] [command...]
+-q : quiet
 -f : git fetch if older than '$fetch_timeout' seconds
 -F : force git fetch
 -L : follow symlinks
+-w : wait a user input before running command...
 -s|-d: include submodules
 -j N: num parallel jobs (default: max(nproc*2, num_repo/2), or '$numjobs_fetch' when fetching)
 nums...: example: `2-4 8`: only use repo 2, 3, 4, and 8
@@ -259,21 +264,28 @@ command...: run command at the root of each repos'
         exit 0
         ;;
     -f)
-        logdeb Fetching all
+        #logdeb Fetching all
         FETCHALL=1
         ;;
     -F)
-        logdeb Force fetching all
+        #logdeb Force fetching all
         FETCHALL=1
         FETCH_IF_OLDER_THAN=9999999999
         ;;
     -s|-d)
-        logdeb Will include submodules
+        #logdeb Will include submodules
         find_type=""
         ;;
     -L)
-        logdeb Will follow symlinks
+        #logdeb Will follow symlinks
         find_follow=-L
+        ;;
+    -w)
+        #logdeb Will wait before run
+        wait_before_run=1
+        ;;
+    -q)
+        quiet=true
         ;;
     -j)
         numjobs="$2"
@@ -330,7 +342,7 @@ then
 fi
 # logdeb Running $numjobs parallel jobs
 
-echo "Found ${#repos[@]} repos, running $numjobs parallel jobs..."
+$quiet || echo "Found ${#repos[@]} repos, running $numjobs parallel jobs..."
 
 # check nums...
 [[ "${#selectedrepos[@]}" -gt 0 ]] || selectedrepos=( $(seq 0 "$((${#repos[@]} - 1))" ) )
@@ -345,12 +357,18 @@ then
     for i in "${selectedrepos[@]}"
     do
         repo="${repos[i]}"
-        echo
-        printfrepo "$i" "$repo"
-        echo "; $@"
+        if ! $quiet
+        then
+            echo
+            printfrepo "$i" "$repo"
+            echo "; $@"
+        fi
+        if [[ $wait_before_run != 0 ]]; then
+            read -p 'press any key...' -n1
+        fi
         ( cd "$repo" ; "$@" || echo -e "${C_ERROR}error: exited $?$C_RESET" ; )
     done
-    echo
+    $quiet || echo
     exit 0
 fi
 

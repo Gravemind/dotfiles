@@ -7,7 +7,7 @@ usage() {
 
 Hard cleans PATH working tree (defaults to "."):
 - Recurses sub-modules/gits
-- git checkout HEAD -- PATH
+- git checkout -- PATH
 - git clean -xdf -- PATH # untracked and ignored files
 
 '
@@ -22,9 +22,9 @@ fclean() {
     echo ":::: fclean $path ..."
 
     #echo ":::: checkout $path ..."
-    #git --no-pager diff --name-only HEAD -- "."
+    #git --no-pager diff --name-only -- "."
     if [[ $clean_fn = "-f" ]]; then
-        git checkout HEAD -- "."
+        git checkout -- "."
     fi
     git clean -xd $clean_fn -- "."
 
