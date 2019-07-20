@@ -1916,7 +1916,8 @@ With argument, do this that many times."
                   (magit-read-custom-or-branch-or-commit "Upstream" '("@{upstream}"))
                   ;;(magit-read-custom-or-branch-or-commit "Upstream" `( ,(magit-get-upstream-branch) ))
                   (magit-log-arguments)))
-    (magit-git-log (list "--graph" "--boundary" "--left-right" (concat "@..." upstream)) args files))
+    (magit-log-setup-buffer (list (concat "@..." upstream)) (append args (list "--graph" "--boundary" "--left-right")) files)
+    )
 
   (defun my-magit-pullff (&optional args)
     "Pull fast forward only if possible (git pull --ff-only --no-rebase)"
