@@ -36,7 +36,7 @@ audio-swresample-o=lfe_mix_level=1
 ytdl-raw-options=ignore-config=,prefer-free-formats=
 ytdl-format=(bestvideo[vcodec^=av01]+bestaudio/bestvideo[vcodec^=vp9]+bestaudio/bestvideo+bestaudio/best)[height<=?1440][protocol=https]
 
-#cache-default=
+cache-default=100000 # 100MiB
 #cache-secs=300
 # When out of data, wait before re-playing
 cache-pause-wait=10
@@ -164,6 +164,8 @@ opengl-swapinterval=0 # no sync
 [protocol.http]
 force-window=immediate
 volume=80
+cache-secs=300
+
 [protocol.https]
 profile=protocol.http
 [protocol.ytdl]
