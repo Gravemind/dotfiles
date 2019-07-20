@@ -1993,16 +1993,42 @@ With argument, do this that many times."
     "Insert the path of the repository relative to the first magit-repository-directories entry."
     (file-relative-name default-directory (car (car magit-repository-directories))))
 
+  (defun my-magit-repolist-column-version (_id)
+    "Insert a description of the repository's `HEAD' revision."
+    (if-let* ((v (or (magit-git-string "describe" "--tags" "--abbrev=0")
+                    (magit-git-string "describe" "--all" "--abbrev=0")
+                    ))
+              (ahead (magit-git-string "rev-list" "--count" "HEAD" "--not" v))
+              )
+        (concat (if (not (string-match "\\`v[0-9]" v)) (concat " " v) v)
+                (if (equal ahead "0") "" (concat "+" ahead)))
+      ""))
+
+  (defun my-magit-repolist-column-new-tags (_id)
+    "Insert new tags"
+    (if-let* ((curr-tag (magit-git-string "describe" "--tags" "--abbrev=0"))
+              (all-tags (magit-git-lines "tag" "--sort=creatordate"))
+              (new-tags (reverse (cdr (--drop-while (not (equal it curr-tag)) all-tags))))
+              (new-tags-len (length new-tags))
+              (max-tags 3)
+              )
+        (if (> new-tags-len max-tags)
+            (concat (string-join (-slice new-tags 0 max-tags) " ") "…")
+          (string-join new-tags " "))
+      "")
+    )
+
   (setq-default
    magit-repolist-columns
         '(
-          ("Path"    30 magit-repolist-column-relative-path          ())
-          ;;("Name"  25 magit-repolist-column-ident                  ())
-          ("Branch"  15 magit-repolist-column-branch                 ())
-          ("↓"        2 magit-repolist-column-unpulled-from-upstream ())
-          ("↑"        2 magit-repolist-column-unpushed-to-upstream   ())
-          ("s"        2 magit-repolist-column-dirty                  ())
-          ("Version" 25 magit-repolist-column-version                ())
+          ("Path"     30 magit-repolist-column-relative-path          ())
+          ;;("Name"   25 magit-repolist-column-ident                  ())
+          ("Branch"   10 magit-repolist-column-branch                 ())
+          ("↓"         2 magit-repolist-column-unpulled-from-upstream ())
+          ("↑"         2 magit-repolist-column-unpushed-to-upstream   ())
+          ("s"         2 magit-repolist-column-dirty                  ())
+          ("Version"  15 my-magit-repolist-column-version             ())
+          ("New Tags" 25 my-magit-repolist-column-new-tags            ())
           ))
 
 ;; @TODO transient replaced magit popup
@@ -2013,7 +2039,7 @@ With argument, do this that many times."
 ;;     :actions '((?f "Fetch in all repositories" magit-repolist-fetch)
 ;;                (?F "Fetch in all repositories asynchronously"
 ;;                    magit-repolist-fetch-async)
-;;                (?x "Run a command in all repositores"
+;;                (?x "Run a command in all repositories"
 ;;                    magit-repolist-run))
 ;;     :max-action-columns 1)
 
