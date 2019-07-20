@@ -2771,9 +2771,13 @@ many times might take a long time."
 ;;   https://www.gnu.org/software/emacs/manual/html_node/ccmode/Sample-_002eemacs-File.html
 ;;
 
+(setq my-rtags-path (concat (getenv "HOME") "/bin/rtags/src"))
+
+(add-to-list 'load-path my-rtags-path)
+
 (req-package rtags
-  :load-path "~/bin/rtags/src"
-  :if (file-exists-p "~/bin/rtags/bin/rdm")
+  :if (file-exists-p (concat my-rtags-path "/rtags.el"))
+  :load-path my-rtags-path
   :commands (rtags-diagnostics)
   :after (cc-mode) ;; makes `:bind (:map c-mode-base-map)` work
   :bind
