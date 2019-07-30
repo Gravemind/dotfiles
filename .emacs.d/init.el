@@ -1995,27 +1995,53 @@ With argument, do this that many times."
 
   (defun my-magit-repolist-column-version (_id)
     "Insert a description of the repository's `HEAD' revision."
-    (if-let* ((v (or (magit-git-string "describe" "--tags" "--abbrev=0")
-                    (magit-git-string "describe" "--all" "--abbrev=0")
-                    ))
-              (ahead (magit-git-string "rev-list" "--count" "HEAD" "--not" v))
-              )
-        (concat (if (not (string-match "\\`v[0-9]" v)) (concat " " v) v)
-                (if (equal ahead "0") "" (concat "+" ahead)))
-      ""))
+    (if-let
+        ((v (magit-git-string "describe" "--tags" "--exact"))
+         ;;(v vstr)
+         (vstr (if (not (string-match "\\`v[0-9]" v)) (concat " " v) v))
+         )
+        vstr
 
-  (defun my-magit-repolist-column-new-tags (_id)
+      (if-let* ((v (magit-git-string "describe" "--tags" "--abbrev=0"))
+                (ahead (magit-git-string "rev-list" "--count" "HEAD" "--not" v))
+                (vstr (if (not (string-match "\\`v[0-9]" v)) (concat " " v) v))
+                ;;(vstr v)
+                )
+          (if (equal ahead "0")
+              vstr
+            (propertize (concat vstr "↑" ahead) 'face 'shadow)
+            )
+        "")))
+
+  (defun my-magit-repolist-column-new (_id)
     "Insert new tags"
-    (if-let* ((curr-tag (magit-git-string "describe" "--tags" "--abbrev=0"))
-              (all-tags (magit-git-lines "tag" "--sort=creatordate"))
-              (new-tags (reverse (cdr (--drop-while (not (equal it curr-tag)) all-tags))))
-              (new-tags-len (length new-tags))
-              (max-tags 3)
-              )
-        (if (> new-tags-len max-tags)
-            (concat (string-join (-slice new-tags 0 max-tags) " ") "…")
-          (string-join new-tags " "))
-      "")
+    (let* ((curr-tag (magit-git-string "describe" "--tags" "--abbrev=0"))
+           (all-tags (magit-git-lines "tag" "--sort=creatordate"))
+           (new-tags (cond
+                      (curr-tag (reverse (cdr (--drop-while (not (equal it curr-tag)) all-tags))))
+                      (all-tags all-tags)
+                      ))
+           )
+      (if new-tags
+          (let ((new-tags-len (length new-tags))
+                (max-tags 3))
+            (propertize
+             (if (> new-tags-len max-tags)
+                 (concat (string-join (-slice new-tags 0 max-tags) " ") "…")
+               (string-join new-tags " "))
+             'face 'bold))
+
+        (let* ((upstream (magit-get-upstream-branch))
+               (behind (cond (upstream (cadr (magit-rev-diff-count "HEAD" upstream)))))
+               )
+          (if (and behind (> behind 0))
+              (propertize
+               (concat "↓" (number-to-string behind))
+               'face (if all-tags 'shadow 'default))
+            "")
+          )
+        )
+      )
     )
 
   (setq-default
@@ -2024,11 +2050,11 @@ With argument, do this that many times."
           ("Path"     30 magit-repolist-column-relative-path          ())
           ;;("Name"   25 magit-repolist-column-ident                  ())
           ("Branch"   10 magit-repolist-column-branch                 ())
-          ("↓"         2 magit-repolist-column-unpulled-from-upstream ())
-          ("↑"         2 magit-repolist-column-unpushed-to-upstream   ())
+          ("↓"         3 magit-repolist-column-unpulled-from-upstream ())
+          ("↑"         3 magit-repolist-column-unpushed-to-upstream   ())
           ("s"         2 magit-repolist-column-dirty                  ())
-          ("Version"  15 my-magit-repolist-column-version             ())
-          ("New Tags" 25 my-magit-repolist-column-new-tags            ())
+          ("Version"  18 my-magit-repolist-column-version             ())
+          ("New"      25 my-magit-repolist-column-new                 ())
           ))
 
 ;; @TODO transient replaced magit popup
