@@ -1861,6 +1861,7 @@ With argument, do this that many times."
   :load-path (elpagit "magit")
   :commands (magit-list-repositories-here)
   :bind (("C-x g" . magit-status)
+         ("C-x C-g" . magit-status-here)
          :map magit-repolist-mode-map
          ("x" . magit-repolist-popup)
          )
