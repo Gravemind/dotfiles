@@ -2033,12 +2033,15 @@ With argument, do this that many times."
              'face 'bold))
 
         (let* ((upstream (magit-get-upstream-branch))
-               (behind (cond (upstream (cadr (magit-rev-diff-count "HEAD" upstream)))))
-               )
+               (behind (cond (upstream (cadr (magit-rev-diff-count "HEAD" upstream))))))
           (if (and behind (> behind 0))
-              (propertize
-               (concat "↓" (number-to-string behind))
-               'face (if all-tags 'shadow 'default))
+              (let* ((curr-date (magit--age (magit-rev-format "%ct" "@") t))
+                     (exact-tag (not (not (magit-git-string "describe" "--tags" "--exact"))))
+                     )
+                (propertize
+                 (concat (format "↓%d (%d%c)" behind (car curr-date) (cadr curr-date)))
+                 'face (if exact-tag 'shadow 'default))
+                )
             "")
           )
         )
