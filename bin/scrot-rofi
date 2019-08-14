@@ -23,6 +23,7 @@ feh_cmd=[ "feh", "--full-screen", "--draw-filename", "--auto-zoom", "--" ]
 def log(msg):
     name = sys.argv[0]
     print(name + ": " + msg)
+    sys.stdout.flush()
 
 def isiterable(a):
     return hasattr(a, '__iter__') and not isinstance(a, str)
@@ -257,9 +258,15 @@ def scrot_rofi(rawargs):
 
 
 def main(rawargs):
-    if not scrot_rofi(rawargs):
-        return 1
-    return 0
+    try:
+        if not scrot_rofi(rawargs):
+            return 1
+    except Exception as e:
+        if not sys.stdout.isatty():
+            rofi_error("Error: {}".format(e))
+        else:
+            raise
+    return 1
 
 if __name__ == "__main__":
     ret = main(sys.argv[1:])
