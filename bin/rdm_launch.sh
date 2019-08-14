@@ -10,7 +10,8 @@ git submodule update --init
 
 nproc="$(nproc)"
 
-cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .
+# ./configure --without-tests
+cmake . -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DBUILD_TESTING=0
 
 make -j$nproc
 
