@@ -132,7 +132,7 @@ helm:
 ${DEFMAKE}:
 	@echo -e "\n-------- $@ (make) --------\n"
 	make -C $@ clean || make -C $@ clean-elc || { echo -e "\nNO MAKE CLEAN for $@, manual clean\n" ; find $@ -name '*.elc' -delete; }
-	make -C $@ batch-compile || make -C $@ compile || make -C $@
+	make -C $@ lisp || make -C $@ batch-compile || make -C $@ compile || make -C $@
 .PHONY: ${DEFMAKE}
 
 ${DEFCOMPILE}:
