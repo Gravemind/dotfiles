@@ -199,10 +199,6 @@
 [submodule ".emacs.d/elpa-git/d-mode"]
 	path = .emacs.d/elpa-git/d-mode
 	url = https://github.com/Emacs-D-Mode-Maintainers/Emacs-D-Mode.git
-[submodule ".emacs.d/elpa-git/cmake-mode"]
-	path = .emacs.d/elpa-git/cmake-mode
-	url = https://github.com/Kitware/CMake.git
-	ignore = untracked
 [submodule ".emacs.d/elpa-git/cargo"]
 	path = .emacs.d/elpa-git/cargo
 	url = https://github.com/kwrooijen/cargo.el.git
