@@ -333,7 +333,9 @@
 
 ;; dired-k.el:197
 (defsubst my/project-directory (file)
-  (locate-dominating-file file ".git"))
+  (or (locate-dominating-file file ".git")
+      (locate-dominating-file file ".svn")
+      ))
 
 (defvar my/mode-line-buffer-long
   '(:eval
