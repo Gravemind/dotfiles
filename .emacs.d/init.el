@@ -1909,7 +1909,7 @@ With argument, do this that many times."
 
 (req-package magit
   :load-path (elpagit "magit")
-  :commands (magit-list-repositories-here)
+  :commands (magit-repolist-here)
   :bind (("C-x g" . magit-status)
          ("C-x C-g" . magit-status-here)
          :map magit-repolist-mode-map
@@ -2032,7 +2032,7 @@ With argument, do this that many times."
   ;;   https://emacs.stackexchange.com/questions/32696/how-to-use-magit-list-repositories
   ;;
 
-  (defun magit-list-repositories-here ()
+  (defun magit-repolist-here ()
     "magit-list-repositories with repo list globally set to default-directory."
     (interactive)
     (setq magit-repository-directories `((,default-directory . 5)))
