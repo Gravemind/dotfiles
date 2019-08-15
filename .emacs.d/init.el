@@ -937,6 +937,12 @@
   (setq-default editorconfig-mode-lighter " EdConf")
   (add-hook 'editorconfig-after-apply-functions
             (lambda (props)
+              ;; set tab-stop-list
+              (when-let ((indent_size (gethash 'indent_size props)))
+                (when-let (((editorconfig-string-integer-p indent_size))
+                           (indent_size (string-to-number indent_size)))
+                  (setq tab-stop-list (number-sequence indent_size 200 indent_size))
+                  ))
               ;;(message "editorconfig %s" props)
               (whitespace-mode 0)
               (whitespace-mode +1)
