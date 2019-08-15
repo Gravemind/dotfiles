@@ -980,6 +980,7 @@
    (emacs-lisp-mode 4 nil 8)
    (asm-mode        8 t   8)
    (conf-unix-mode  8 t   8)
+   (cmake-mode      2 nil 8)
 
    (gud-mode                8 t 8)
    (gdb-inferior-io-mode    8 t 8)
@@ -1288,7 +1289,6 @@ With argument, do this that many times."
   :load-path (elpagit "cmake-mode")
   :defer t
   :config
-  (setq-default cmake-tab-width 4)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
