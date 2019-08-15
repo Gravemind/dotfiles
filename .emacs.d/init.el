@@ -2476,6 +2476,22 @@ many times might take a long time."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; dumb-jump
+;;    https://github.com/jacktasia/dumb-jump
+;;
+
+(req-package dumb-jump
+  :load-path (elpagit "dumb-jump")
+  :defer t
+  :after helm
+  :config
+  (setq-default
+   dumb-jump-selector 'helm
+   )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;; ivy/counsel/swiper
 ;;    https://github.com/abo-abo/swiper
 ;;

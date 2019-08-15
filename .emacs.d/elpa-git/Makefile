@@ -90,6 +90,7 @@ DEFMAKE		+= with-editor
 DEFCOMPILE	+= yasnippet
 DEFCOMPILE	+= zoom
 DEFMAKE		+= yaml-mode
+NODEF		+= dumb-jump
 DEFMAKE		+= emacs-async
 
 all:	${LOAD_PATHS_EL} ${DEFCOMPILE} ${DEFMAKE} ${AUTOLOADS_EL} ${NODEF}
@@ -130,6 +131,11 @@ helm: emacs-async popup
 	make -C $@ clean
 	make -C $@
 .PHONY: helm
+
+dumb-jump: helm
+#	dumb-jump + helm doesn't work when compiled:
+#	get: "invalid function helm-build-sync-source"
+	rm -f dumb-jump/dumb-jump.elc
 
 ${DEFMAKE}:
 	@echo -e "\n-------- $@ (make) --------\n"
