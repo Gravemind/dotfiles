@@ -1176,7 +1176,7 @@ spaces are treated."
   (interactive "^p")
   (jo/forward-paragraph (- (or arg 1))))
 
-(setq-default backward-delete-char-untabify-method 'hungry) ;; nil
+(setq-default backward-delete-char-untabify-method nil)
 
 (bind-keys
 
