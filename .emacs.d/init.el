@@ -1151,6 +1151,8 @@ spaces are treated."
   (interactive "^p")
   (jo/forward-paragraph (- (or arg 1))))
 
+(setq-default backward-delete-char-untabify-method 'hungry) ;; nil
+
 (bind-keys
 
  ;; M-i and C-tab
@@ -1183,13 +1185,11 @@ spaces are treated."
 
  ("C-g"         . jo/keyboard-quit)
 
- ("<backspace>" . delete-backward-char)     ;; Force delete entire tabulation.
  ("C-<backspace>" . backward-delete-word)   ;; do not save it to kill-ring/clipboard.
  ("M-<backspace>" . backward-kill-word)     ;; save it.
 
- ("<delete>" . delete-char)                 ;; Force delete entire tabulation.
- ("M-<delete>" . kill-word)                 ;; do not save it to kill-ring/clipboard.
  ("C-<delete>" . delete-word)               ;; save it.
+ ("M-<delete>" . kill-word)                 ;; do not save it to kill-ring/clipboard.
 
  ("C-<end>" . move-end-of-line)
  ("C-<home>" . move-beginning-of-line)
