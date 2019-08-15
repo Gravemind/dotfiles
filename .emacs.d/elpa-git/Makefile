@@ -90,6 +90,7 @@ DEFMAKE		+= with-editor
 DEFCOMPILE	+= yasnippet
 DEFCOMPILE	+= zoom
 DEFMAKE		+= yaml-mode
+DEFMAKE		+= emacs-async
 
 all:	${LOAD_PATHS_EL} ${DEFCOMPILE} ${DEFMAKE} ${AUTOLOADS_EL} ${NODEF}
 .PHONY: all
@@ -124,7 +125,7 @@ info:
 	@echo EMACSLOADPATH=\"${EMACSLOADPATH}\"
 .PHONY: info
 
-helm:
+helm: emacs-async popup
 	@echo -e "\n-------- $@ (custom) --------\n"
 	make -C $@ clean
 	make -C $@
