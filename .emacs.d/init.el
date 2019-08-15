@@ -959,7 +959,9 @@
   ;;:defer t
   :commands (dtrt-indent-try-set-offset)
   :config
-  ;;(setq-default dtrt-indent-verbosity 3)
+  (add-to-list 'dtrt-indent-hook-mapping-list
+               '(cmake-mode default cmake-tab-width)
+               )
 )
 
 ;;
