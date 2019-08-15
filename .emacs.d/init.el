@@ -337,20 +337,24 @@
 
 (defvar my/mode-line-buffer-long
   '(:eval
-    (if-let* ((bfname (or buffer-file-truename buffer-file-name dired-directory))
-              (fname (file-truename bfname)))
-        (if-let* ((_proj (my/project-directory fname))
-                  (proj (directory-file-name (file-truename _proj)))
-                  (proj-parent (directory-file-name (file-name-directory proj)))
-                  (proj-name (file-name-nondirectory proj))
-                  (sub-proj (file-relative-name fname proj)))
-            (concat
-             (abbreviate-file-name proj-parent)
-             "/"
-             (propertize proj-name 'face 'mode-line-buffer-id)
-             (if (equal sub-proj "./") "" (concat "/" sub-proj)))
-          (abbreviate-file-name fname))
-      "%b"))
+    (let* ((bfname (or buffer-file-truename buffer-file-name dired-directory))
+           (fname (when bfname (file-truename bfname))))
+      (if fname
+          (if-let ((_proj (my/project-directory fname)))
+              (let* ((proj (directory-file-name (file-truename _proj)))
+                     (proj-parent (directory-file-name (file-name-directory proj)))
+                     (proj-name (file-name-nondirectory proj))
+                     (sub-proj (file-relative-name fname proj)))
+                (concat
+                 (abbreviate-file-name proj-parent)
+                 "/"
+                 (propertize proj-name 'face 'mode-line-buffer-id)
+                 (if (equal sub-proj "./") "" (concat "/" sub-proj)))
+                )
+            (abbreviate-file-name fname)
+            )
+        "%b")
+      ))
   "My mode-line-buffer-id.")
 (put 'my/mode-line-buffer-long 'risky-local-variable t)
 
