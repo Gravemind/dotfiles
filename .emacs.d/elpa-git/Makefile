@@ -89,6 +89,7 @@ DEFMAKE		+= wgrep
 DEFMAKE		+= with-editor
 DEFCOMPILE	+= yasnippet
 DEFCOMPILE	+= zoom
+DEFMAKE		+= yaml-mode
 
 all:	${LOAD_PATHS_EL} ${DEFCOMPILE} ${DEFMAKE} ${AUTOLOADS_EL} ${NODEF}
 .PHONY: all
