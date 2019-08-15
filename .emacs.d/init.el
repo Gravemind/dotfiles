@@ -1038,8 +1038,15 @@
   "Setup indentation.
 
 Indentation of OFFSET width, using tabs of width TABW if TABS, and with WS whitespace-style (nil to disable)"
+  (interactive (list
+                (read-number (concat "Indent offset (" (symbol-name (jo/dtrt-offset-var)) ") ? ")
+                             (symbol-value (jo/dtrt-offset-var)))
+                (y-or-n-p (concat "Indent with tabs ? (default " (if indent-tabs-mode "y" "n")  ") "))
+                (read-number (concat "Tab width ? ") tab-width)
+                ))
+
   (setq
-   indent-tabs-mode tabs
+   indent-tabs-mode (or tabs)
    tab-width        tabw
    ;;standard-indent  offset
    ;;c-basic-offset   offset
