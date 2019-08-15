@@ -36,6 +36,7 @@
 !/.oh-my-zsh
 !/.omz.custom
 !/.ssh
+!/.userscripts
 
 !/.config
 /.config/*
