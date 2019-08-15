@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-alias grep='grep --color=auto'
+alias grep='grep --binary-files=without-match --color=auto'
 alias cat='cat -v'
 # for less, see ./less.zsh
 
