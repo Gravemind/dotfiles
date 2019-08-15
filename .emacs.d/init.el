@@ -2584,9 +2584,18 @@ many times might take a long time."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; wgrep
+;; grep and wgrep
 ;;   write in grep buffers C-c C-p
 ;;
+
+(req-package grep
+  :pin manual
+  :config
+  (setq-default
+   grep-command "grep --color --exclude-dir=\".*\" -IHnr -e "
+   grep-find-command '("find . -type f -name \"**\" -exec grep --color -IHnZ -e  \\{\\} +" . 54)
+   )
+  )
 
 ;; @FIXME why wgrep gets loaded when helm is loaded (eg on M-x)
 
