@@ -94,7 +94,7 @@ DEFMAKE		+= yaml-mode
 all:	${LOAD_PATHS_EL} ${DEFCOMPILE} ${DEFMAKE} ${AUTOLOADS_EL} ${NODEF}
 .PHONY: all
 
-genfiles: ${LOAD_PATHS_EL} ${AUTOLOADS_EL}
+gen:	${LOAD_PATHS_EL} ${AUTOLOADS_EL}
 
 fclean:
 	@echo -e "\n-------- fclean --------\n"
@@ -118,7 +118,7 @@ ${AUTOLOADS_EL}:
 	@echo -e "\n-------- generate $@ --------\n"
 	emacs -Q -batch --eval "(progn (setq generated-autoload-file (expand-file-name \"$@\" \".\")) \
 	 (setq backup-inhibited t) (apply 'update-directory-autoloads (split-string \"${EMACSLOADPATH}\" \":\")))"
-.PHONY: ${LOAD_PATHS_EL}
+.PHONY: ${AUTOLOADS_EL}
 
 info:
 	@echo EMACSLOADPATH=\"${EMACSLOADPATH}\"
