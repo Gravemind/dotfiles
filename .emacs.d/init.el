@@ -205,8 +205,8 @@
 ;;
 (setq-default
  window-divider-default-places t ;; 'right-only
- window-divider-default-bottom-width 4
- window-divider-default-right-width 4
+ window-divider-default-bottom-width 2
+ window-divider-default-right-width 2
  )
 (window-divider-mode)
 
