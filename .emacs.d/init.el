@@ -2046,7 +2046,7 @@ With argument, do this that many times."
 
   (defun my-magit-repolist-column-version (_id)
     "Insert a description of the repository's `HEAD' revision."
-    (if-let
+    (if-let*
         ((v (magit-git-string "describe" "--tags" "--exact"))
          ;;(v vstr)
          (vstr (if (not (string-match "\\`v[0-9]" v)) (concat " " v) v))
