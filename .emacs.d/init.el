@@ -1910,8 +1910,8 @@ With argument, do this that many times."
 (req-package magit
   :load-path (elpagit "magit")
   :commands (magit-repolist-here)
-  :bind (("C-x g" . magit-status)
-         ("C-x C-g" . magit-status-here)
+  :bind (("C-x g" . magit-status-here)
+         ("C-x C-g" . magit-status)
          :map magit-repolist-mode-map
          ("x" . magit-repolist-popup)
          )
