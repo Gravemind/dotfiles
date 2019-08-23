@@ -2633,7 +2633,7 @@ many times might take a long time."
   :pin manual
   :config
   (setq-default
-   grep-command "grep --color --exclude-dir=\".*\" -IHnr -e "
+   grep-command "grep --color --exclude-dir=\".[^.]*\" -IHnr -e "
    grep-find-command '("find . -type f -name \"**\" -exec grep --color -IHnZ -e  \\{\\} +" . 54)
    )
   )
