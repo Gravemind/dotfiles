@@ -2383,6 +2383,20 @@ many times might take a long time."
    ;; fuzzy sort try preserve order
    helm-fuzzy-sort-fn 'helm-fuzzy-matching-sort-fn-preserve-ties-order
 
+   ;; Force fuzzy everywhere (helm-mode-fuzzy-match doesn't !?)
+   helm-ff-fuzzy-matching t
+   helm-recentf-fuzzy-match t
+   helm-buffers-fuzzy-matching t ;; not enabled by helm-mode-fuzzy-match !?
+   helm-locate-fuzzy-match t
+   helm-M-x-fuzzy-match t
+   helm-semantic-fuzzy-match t
+   helm-imenu-fuzzy-match t
+   helm-apropos-fuzzy-match t
+   helm-lisp-fuzzy-completion t
+   helm-session-fuzzy-match t
+   helm-etags-fuzzy-match t
+
+   ;; Occur keep colors
    helm-moccur-show-buffer-fontification t
 
    ;; Find files opens with '.' selected
