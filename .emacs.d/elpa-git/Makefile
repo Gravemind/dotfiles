@@ -92,6 +92,7 @@ DEFCOMPILE	+= zoom
 DEFMAKE		+= yaml-mode
 NODEF		+= dumb-jump
 DEFMAKE		+= emacs-async
+DEFCOMPILE	+= helm-flx
 
 all:	${LOAD_PATHS_EL} ${DEFCOMPILE} ${DEFMAKE} ${AUTOLOADS_EL} ${NODEF}
 .PHONY: all
@@ -136,6 +137,8 @@ dumb-jump: helm
 #	dumb-jump + helm doesn't work when compiled:
 #	get: "invalid function helm-build-sync-source"
 	rm -f dumb-jump/dumb-jump.elc
+
+helm-flx: helm flx
 
 ${DEFMAKE}:
 	@echo -e "\n-------- $@ (make) --------\n"

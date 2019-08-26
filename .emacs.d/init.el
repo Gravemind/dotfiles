@@ -2513,6 +2513,21 @@ many times might take a long time."
   ;;:disabled t
   :defer t)
 
+(req-package flx
+  :load-path (elpagit "flx")
+  ;;:disabled t
+  :defer t)
+
+(req-package helm-flx
+  :load-path (elpagit "helm-flx")
+  ;;:disabled t
+  ;; :require flx
+  :after helm
+  ;;:after (helm flx)
+  :config
+  (helm-flx-mode +1)
+  )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; dumb-jump
@@ -2536,10 +2551,10 @@ many times might take a long time."
 ;;
 
 ;; for ivy--regex-fuzzy sorting
-(req-package flx
-  :load-path (elpagit "flx")
-  :if (not jo/helm-or-ivy)
-  :defer t)
+;; (req-package flx
+;;   :load-path (elpagit "flx")
+;;   :if (not jo/helm-or-ivy)
+;;   :defer t)
 
 (req-package ivy
   :load-path (elpagit "swiper")

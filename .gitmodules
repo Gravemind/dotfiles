@@ -225,3 +225,6 @@
 [submodule ".emacs.d/elpa-git/dumb-jump"]
 	path = .emacs.d/elpa-git/dumb-jump
 	url = https://github.com/jacktasia/dumb-jump.git
+[submodule ".emacs.d/elpa-git/helm-flx"]
+	path = .emacs.d/elpa-git/helm-flx
+	url = https://github.com/PythonNut/helm-flx.git
