@@ -2106,7 +2106,7 @@ With argument, do this that many times."
           ("Branch"   10 magit-repolist-column-branch                 ())
           ("↓"         3 magit-repolist-column-unpulled-from-upstream ())
           ("↑"         3 magit-repolist-column-unpushed-to-upstream   ())
-          ("s"         2 magit-repolist-column-dirty                  ())
+          ("s"         2 magit-repolist-column-flag                   ())
           ("Version"  18 my-magit-repolist-column-version             ())
           ("New"      25 my-magit-repolist-column-new                 ())
           ))
