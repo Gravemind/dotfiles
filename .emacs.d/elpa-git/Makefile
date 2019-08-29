@@ -140,6 +140,8 @@ dumb-jump: helm
 
 helm-flx: helm flx
 
+magit: transient dash with-editor
+
 ${DEFMAKE}:
 	@echo -e "\n-------- $@ (make) --------\n"
 	make -C $@ clean || make -C $@ clean-elc || { echo -e "\nNO MAKE CLEAN for $@, manual clean\n" ; find $@ -name '*.elc' -delete; }
