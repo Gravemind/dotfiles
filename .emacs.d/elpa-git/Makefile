@@ -93,6 +93,7 @@ DEFMAKE		+= yaml-mode
 NODEF		+= dumb-jump
 DEFMAKE		+= emacs-async
 DEFCOMPILE	+= helm-flx
+DEFCOMPILE	+= undo-tree
 
 all:	${LOAD_PATHS_EL} ${DEFCOMPILE} ${DEFMAKE} ${AUTOLOADS_EL} ${NODEF}
 .PHONY: all
@@ -163,3 +164,8 @@ ${DEFCOMPILE}:
 # (setq backup-inhibited t) (update-directory-autoloads \".\"))"; \
 # 		popd; \
 # 	done
+
+fetch:
+	( cd cmake-mode ; ./fetch.sh )
+	( cd undo-tree ; ./fetch.sh )
+.PHONY: fetch
