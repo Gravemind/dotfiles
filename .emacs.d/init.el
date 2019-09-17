@@ -2675,7 +2675,7 @@ many times might take a long time."
   :config
   (setq-default
    grep-command "grep --color --exclude-dir=\".[^.]*\" -IHnr -e "
-   grep-find-command '("find . -type f -name \"**\" -exec grep --color -IHnZ -e  \\{\\} +" . 54)
+   grep-find-command '("find . -type f -name \"**\" -exec grep --color -IHn -e  \\{\\} +" . 54)
    )
   )
 
