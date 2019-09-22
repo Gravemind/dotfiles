@@ -212,7 +212,7 @@
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/history"]
 	path = .emacs.d/elpa-git/history
-	url = https://github.com/boyw165/history.git
+	url = https://github.com/Gravemind/history.git
 [submodule ".emacs.d/elpa-git/dash-docs"]
 	path = .emacs.d/elpa-git/dash-docs
 	url = https://github.com/dash-docs-el/dash-docs.git
