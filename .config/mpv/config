@@ -36,12 +36,12 @@ audio-swresample-o=lfe_mix_level=1
 ytdl-raw-options=ignore-config=,prefer-free-formats=
 ytdl-format=(bestvideo[vcodec^=av01]+bestaudio/bestvideo[vcodec^=vp9]+bestaudio/bestvideo+bestaudio/best)[height<=?1440][protocol=https]
 
-cache-default=100000 # 100MiB
+#cache-default=100000 # 100MiB
 #cache-secs=300
 # When out of data, wait before re-playing
-cache-pause-wait=10
+#cache-pause-wait=10
 # When out of data, wait more data before re-playing
-cache-pause-initial=yes
+#cache-pause-initial=yes
 # Create a cache file on the filesystem
 #cache-file=TMP
 # In kb, (default 1048576=1G)
