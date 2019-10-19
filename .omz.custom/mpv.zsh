@@ -22,8 +22,15 @@ _mpn_grep_valid_files() {
 	[[ "${1:-}" != "-1" ]] || first=1
 	while read -r file
 	do
+		file="$(basename "$file")"
+		#file="./$file"
 		#echo "FILE $file" >&2
 		# file=$(echo "$file")
+		# if [[ "${file[0]}" = "/" ]]
+		# then
+		# 	continue
+		# fi
+
 		if [[ ! -e "$file" ]]
 		then
 			file="${(Q)file}"
