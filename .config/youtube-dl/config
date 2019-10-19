@@ -10,6 +10,6 @@
 --embed-subs
 --write-sub
 --write-auto-sub
-# --sub-lang=en
+--sub-lang=en
 #--sub-format=ass
 #--convert-subs=ass

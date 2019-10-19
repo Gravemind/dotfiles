@@ -33,7 +33,7 @@ audio-swresample-o=lfe_mix_level=1
 #af=pan="stereo| FL = FL + LFE + 0.7071*FC + 0.8660*BL + 0.5*BR | FR = FR + LFE + 0.7071*FC + 0.8660*BR + 0.5*BL"
 
 # Default youtube-dl config ignored
-ytdl-raw-options=ignore-config=,prefer-free-formats=
+ytdl-raw-options=ignore-config=,prefer-free-formats=,write-sub=,write-auto-sub=,sub-lang=en
 ytdl-format=(bestvideo[vcodec^=av01]+bestaudio/bestvideo[vcodec^=vp9]+bestaudio/bestvideo+bestaudio/best)[height<=?1440][protocol=https]
 
 #cache-default=100000 # 100MiB
