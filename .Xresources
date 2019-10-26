@@ -81,6 +81,10 @@ Xft.rgba:           none
 ! ("110x110" is an invalid format)
 Xft.dpi:            110
 
+! Mouse cursor
+Xcursor.theme:    Adwaita
+Xcursor.size:     32
+
 ! Nice flicker-free emacs startup !
 ! (evaluated much sooner than init.el)
 emacs.menuBar:              off
