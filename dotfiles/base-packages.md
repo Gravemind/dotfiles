@@ -144,6 +144,7 @@ sed -rn '/## AUR ##/,/## OTHER ##/ bk;d;:k;s/^- ([[:alnum:]_-]+).*/\1/gp' base-p
 
 - numlockx
 - xautolock
+- xss-lock
 - xclip
 - xdotool
 - redshift

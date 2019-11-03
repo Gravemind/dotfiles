@@ -476,11 +476,12 @@ bar {
 exec_always --no-startup-id systemctl --user restart daemon_devmon.service
 #exec_always --no-startup-id systemctl --user restart daemon_battery.service
 
-#exec --no-startup-id $locker
 #exec conky -c ~/.conky/balloon/conkyrc
 
-set $hook_idle_time_min 10
-exec --no-startup-id xautolock -detectsleep -time $hook_idle_time_min -locker "~/bin/hooks/onidle" -noclose
+#exec --no-startup-id $locker
+#exec --no-startup-id xss-lock --transfer-sleep-lock -- $locker
+#set $hook_idle_time_min 10
+#exec --no-startup-id xautolock -detectsleep -time $hook_idle_time_min -locker "~/bin/hooks/onidle" -noclose
 
 #
 # Spawn layouts and programs
