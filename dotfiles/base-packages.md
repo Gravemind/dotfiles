@@ -149,6 +149,8 @@ sed -rn '/## AUR ##/,/## OTHER ##/ bk;d;:k;s/^- ([[:alnum:]_-]+).*/\1/gp' base-p
 - redshift
 - playerctl
 
+- xss-lock
+
 - xorg-xprop
 - xorg-xev
 - xorg-xkill
