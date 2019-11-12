@@ -640,6 +640,7 @@
 ;;
 
 (req-package undo-tree
+  :disabled t
   :load-path (elpagit "undo-tree")
   :demand t
   :config
@@ -995,6 +996,7 @@
    (asm-mode        8 t   8)
    (conf-unix-mode  8 t   8)
    (cmake-mode      2 nil 8)
+   (rust-mode       4 nil 8)
 
    (gud-mode                8 t 8)
    (gdb-inferior-io-mode    8 t 8)
@@ -3047,6 +3049,10 @@ many times might take a long time."
    org-src-preserve-indentation nil
    org-src-tab-acts-natively t
    org-startup-with-inline-images t
+
+   ;org-indent-boundary-char 32
+   ;org-indent-indentation-per-level 2
+   org-indent-mode-turns-on-hiding-stars nil
 
    mm-html-inhibit-images t
    mm-inline-large-images 'resize
