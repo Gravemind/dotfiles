@@ -91,7 +91,6 @@ DEFCOMPILE	+= yasnippet
 DEFCOMPILE	+= zoom
 DEFMAKE		+= yaml-mode
 NODEF		+= dumb-jump
-DEFMAKE		+= emacs-async
 DEFCOMPILE	+= helm-flx
 DEFCOMPILE	+= undo-tree
 
@@ -128,7 +127,7 @@ info:
 	@echo EMACSLOADPATH=\"${EMACSLOADPATH}\"
 .PHONY: info
 
-helm: emacs-async popup
+helm: async popup
 	@echo -e "\n-------- $@ (custom) --------\n"
 	make -C $@ clean
 	make -C $@
