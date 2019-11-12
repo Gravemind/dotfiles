@@ -160,7 +160,7 @@ pacfind() {
 		echo "$0: pacman files db is $(durationtostr $age old) (updating at $(durationtostr $maxage old))"
 	fi
 
-	pac -Fs "$@"
+	pac -F "$@"
 }
 
 # pkgfile wrap
