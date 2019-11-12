@@ -45,27 +45,33 @@ do
 
     OLD=${NEW%.*}
 
-    echo
-    echo ">> merge: " $OLD
-    sudo meld "$NEW" "$OLD" &> /dev/null || echo "!! ERROR merge: $NEW"
+    remerge=true
+    while $remerge
+    do
+        remerge=false
 
-    echo "??"
-    echo "?? delete \"$NEW\" [y/n/q] ?"
-    echo -ne "?? ?:"
+        echo
+        echo ">> merge: " $OLD
+        sudo meld "$NEW" "$OLD" &> /dev/null || echo "!! ERROR merge: $NEW"
 
-    read RESP
+        read -p "?? delete \"$NEW\" ? [e/r/y/n/q]: " -r RESP
 
-    if [ "$RESP" = "q" ]
-    then
-        echo ">> quit"
-        exit
-    fi
-
-    if [ "$RESP" = "y" ]
-    then
-        echo ">> delete: $NEW"
-        sudo rm "$NEW" || echo "!! ERROR delete: $NEW"
-    fi
+        case "$RESP"
+        in
+            q)
+                echo ">> quit"
+                exit
+                ;;
+            y)
+                echo ">> delete: $NEW"
+                sudo rm "$NEW" || echo "!! ERROR delete: $NEW"
+                ;;
+            e|r)
+                echo ">> re-merge"
+                remerge=true
+                ;;
+        esac
+    done
 
 done
 
