@@ -225,3 +225,6 @@
 [submodule ".emacs.d/elpa-git/helm-flx"]
 	path = .emacs.d/elpa-git/helm-flx
 	url = https://github.com/PythonNut/helm-flx.git
+[submodule ".emacs.d/elpa-git/org-bullets"]
+	path = .emacs.d/elpa-git/org-bullets
+	url = https://github.com/sabof/org-bullets.git

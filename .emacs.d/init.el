@@ -3068,6 +3068,10 @@ many times might take a long time."
   :load-path (elpagit "htmlize")
   :defer t)
 
+(req-package org-bullets
+  :load-path (elpagit "org-bullets")
+  :defer t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; gnuplot

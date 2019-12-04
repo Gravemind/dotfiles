@@ -93,6 +93,7 @@ DEFMAKE		+= yaml-mode
 NODEF		+= dumb-jump
 DEFCOMPILE	+= helm-flx
 DEFCOMPILE	+= undo-tree
+DEFCOMPILE	+= org-bullets
 
 all:	${LOAD_PATHS_EL} ${DEFCOMPILE} ${DEFMAKE} ${AUTOLOADS_EL} ${NODEF}
 .PHONY: all
