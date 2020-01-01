@@ -2492,8 +2492,21 @@ many times might take a long time."
                   (original-zoom--update))
                 ))
 
+  ;; Make helm grep ignore binary files (replaced "-a" by "--binary-files=without-match")
+  (setq-default
+   helm-grep-default-command         "grep --color=always --binary-files=without-match -d skip %e -n%cH -e %p %f"
+   helm-grep-default-recurse-command "grep --color=always --binary-files=without-match -d recurse %e -n%cH -e %p %f"
+   helm-default-zgrep-command       "zgrep --color=always --binary-files=without-match -n%cH -e %p %f"
+
+   ;; We ignored binary files, we don't need much --exclude= anymore
+   helm-grep-ignored-files '(".#*" "*~" "*.pyc" "*.pyo" "#*")
+
+   ;; Reduce delay ; FIXME: find variable to tweak delay after a no-match
+   helm-grep-input-idle-delay 0.1
+   )
+
   ;;
-  ;; use ripgrep
+  ;; use ripgrep instead of ag
   ;;    https://github.com/BurntSushi/ripgrep
   ;;
   (setq-default
