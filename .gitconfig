@@ -100,7 +100,7 @@
 	lat = log --pretty=my --graph --full-history --simplify-merges --topo-order --all
 
 	# Log left-right with boundaries
-	lb = log --pretty=my --graph --full-history --simplify-merges --date-order --left-right --boundary
+	lr = log --pretty=my --graph --full-history --simplify-merges --date-order --left-right --boundary
 
 	# Log commits between HEAD and its upstream
 	lu = "!f() { set -eu; git l --left-right --boundary @...@{u} \"${@}\"; }; f"
