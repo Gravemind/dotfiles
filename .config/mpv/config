@@ -172,7 +172,11 @@ opengl-swapinterval=0 # no sync
 [protocol.http]
 force-window=immediate
 volume=80
-cache-secs=300
+
+# Larger cache
+cache-secs=600
+demuxer-max-bytes=512MiB
+
 
 [protocol.https]
 profile=protocol.http
