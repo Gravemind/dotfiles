@@ -22,3 +22,8 @@ tab_width = 8
 indent_style = space
 indent_size = 4
 #tab_width = 8
+
+[{CMake*.txt,*.cmake}]
+indent_style = space
+indent_size = 2
+tab_width = 8
