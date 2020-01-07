@@ -1,18 +1,33 @@
-#!/bin/zsh
+#!/bin/bash
 
 W="$1"
 
-if [ -z "$W" ]
+if [[ -z "$W" ]]
 then
 	echo 'please specify argument'
 	exit 2
 fi
 
-shift
-if [ "$1" = "-0" ]
+dirs=()
+findword=""
+for arg in "$@"
+do
+	if [[ -d "$arg" ]]
+	then
+		dirs+=("$arg")
+	else
+		[[ -z "$findword" ]] || findword+="*"
+		findword+="$arg"
+	fi
+done
+
+if [[ "${#dirs}" = 0 ]]
 then
-    shift
-    find . -iname "*$W*" "$@" -print0
-else
-    find . -iname "*$W*" "$@" | grep --color=auto -i "$W"
+	dirs=(.)
 fi
+
+for dir in "${dirs[@]}"
+do
+	echo "( find "$dir" -iname '*$findword*' )" >&2
+	find "$dir" -iname "*${findword}*"
+done #  | grep --color=auto -i "$findword"
