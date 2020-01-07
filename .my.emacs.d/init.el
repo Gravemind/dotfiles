@@ -1632,7 +1632,7 @@ With argument, do this that many times."
       1 font-lock-format-specifier-face t)
      ;;
      ("\\<\\(FIXME\\|TODO\\\)\\>" 1 font-lock-warning-face prepend)
-     ("\\<\\(null\\)\\>" 1 font-lock-keyword-face)
+     ;;("\\<\\(null\\)\\>" 1 font-lock-keyword-face)
      ("\\<\\(co_await\\|co_yield\\|co_return\\)\\>" 1 font-lock-keyword-face)
      ))
 
