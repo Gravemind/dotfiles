@@ -5,6 +5,7 @@
 
 export PATH="$HOME/bin:$PATH"
 export PS1='\s-\v\$ ' # bash default prompt
+[[ -f ~/.bashrc.local ]] && . ~/.bashrc.local
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
