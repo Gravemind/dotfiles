@@ -73,5 +73,6 @@ alias -g  COLOR='--color=always'
 alias -g  XCLIP='| tee >(xclip -r)'
 alias -g   YANK='| yank'
 alias -g     BG='& ; disown'
+alias -g  ERROR="2> >(sed -u 's/^/'\"$fg_bold[red]\"'stderr:'\"$reset_color\"' /g' >&2)"
 
 alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test100.zip'
