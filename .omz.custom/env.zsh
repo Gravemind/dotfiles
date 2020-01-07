@@ -1,5 +1,11 @@
 #!/bin/zsh
 
+if [[ -z "$ORIG_PATH" ]]
+then
+    export ORIG_PATH="$PATH"
+    export ORIG_LD_LIBRARY_PATH="$LD_LIBRARY_PATH"
+fi
+
 export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/config
 
 # deprecated:
@@ -23,8 +29,6 @@ export OS=`uname -s`
 
 export HISTSIZE=100000
 export SAVEHIST=100000
-
-export ORIG_PATH="$PATH"
 
 # add bell (urgent alert) to sudo password prompt
 export SUDO_PROMPT=$'\a'"[sudo] [%u@%h] password for %p: "
