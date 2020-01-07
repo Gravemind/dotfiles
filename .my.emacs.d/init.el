@@ -347,9 +347,12 @@
 
 ;; dired-k.el:197
 (defsubst my/project-directory (file)
-  (or (locate-dominating-file file ".git")
-      (locate-dominating-file file ".svn")
-      ))
+  nil
+  ;; FIXME very slow over tramp
+  ;; (or (locate-dominating-file file ".git")
+  ;;     (locate-dominating-file file ".svn")
+  ;;     )
+)
 
 (defvar my/mode-line-buffer-long
   '(:eval
