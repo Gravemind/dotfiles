@@ -15,8 +15,9 @@ function rmstar() {
 		fi
 		dir="$(readlink -f "$dir")"
 		echo "$dir:"
+		echo ""
 		#echo "${fg_bold[red]}$dir:$reset_color"
-		ls -A "$dir"
+		ls -A1F "$dir"
 		dirs+=("$dir")
 	done
 	echo
