@@ -1380,7 +1380,7 @@ With argument, do this that many times."
 
 (req-package visual-fill-column
   :load-path (elpagit "visual-fill-column")
-  ;;:disabled t
+  :disabled t
   :if window-system
   :demand t
   :config
@@ -1903,7 +1903,8 @@ With argument, do this that many times."
 
 (defun jo/prepare-gdb ()
   (interactive)
-  (zoom-mode 0)
+  ;;(global-visual-fill-column-mode 0)
+  ;;(zoom-mode 1)
   (add-hook 'prog-mode-hook (lambda () (linum-mode t)))
   )
 
