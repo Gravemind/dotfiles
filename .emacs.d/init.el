@@ -204,6 +204,9 @@
  ;; Always select *Help* buffers
  help-window-select t
 
+ ;; browse-url with firefox
+ browse-url-browser-function 'browse-url-firefox
+
  )
 
 ;;
