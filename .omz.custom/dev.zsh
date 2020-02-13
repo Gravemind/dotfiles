@@ -1,6 +1,10 @@
 
 function gge() {
-	\emacs --eval "(progn (jo/prepare-gdb) (gdb \"gdb -i=mi $* \"))" &
+	\emacs --eval "(progn (jo/prepare-gdb) (gdb \"gdb -i=mi --args $* \"))" &
+}
+
+function gge-rust() {
+	\emacs --eval "(progn (jo/prepare-gdb) (gdb \"rust-gdb -i=mi --args $* \"))" &
 }
 
 function ggv() {
