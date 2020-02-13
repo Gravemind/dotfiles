@@ -171,6 +171,9 @@ mode --pango_markup $mode_system {
 }
 bindsym $ModK+Escape mode $mode_system
 
+# The middle button over a titlebar kills the window
+bindsym --release button2 kill
+
 # Toggle border decoration
 bindsym $ModK+e border toggle
 
