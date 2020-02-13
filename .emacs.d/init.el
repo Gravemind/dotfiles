@@ -2019,7 +2019,7 @@ With argument, do this that many times."
 
   ;; log
   (transient-append-suffix 'magit-log "=p"
-    '("-i" "Regexp ignore case" "--regexp-ignore-case"))
+    '("-i" "Regexp ignore case" "-i"))
   (transient-append-suffix 'magit-log "a"
     '("R" "left-right" my-magit-log-left-right))
 
