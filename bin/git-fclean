@@ -3,7 +3,7 @@
 set -euo pipefail
 
 usage() {
-    echo -n 'usage: '"$0"' [-h|--help] [-n] [--] [PATH]
+    echo -n 'usage: '"$0"' [-h|--help] [-nf] [-dxX] [--] [PATH]
 
 Hard cleans PATH working tree (defaults to "."):
 - Recurses sub-modules/gits
@@ -15,7 +15,8 @@ Hard cleans PATH working tree (defaults to "."):
 
 fclean() {
     local clean_fn="$1"
-    local path="$2"
+    local clean_args="$2"
+    local path="$3"
 
     #echo
     pushd "$path" > /dev/null
@@ -26,22 +27,31 @@ fclean() {
     if [[ $clean_fn = "-f" ]]; then
         git checkout -- "."
     fi
-    git clean -xd $clean_fn -- "."
+    git clean $clean_fn $clean_args -- "."
 
     popd > /dev/null
 }
 
 clean_fn="-f"
+clean_args=""
 
-for arg in "$@" ; do
-    case "$arg" in
+options=$(getopt -o "+hnfdxX" -l "help" -n "$0" -- "$@")
+[[ $? -eq 0 ]] || exit 1
+eval set -- "$options"
+while true; do
+    case "$1" in
         -h|--help) usage; exit 0; ;;
-        -n) clean_fn="-n"; shift; ;;
+        -n) clean_fn="-n"; ;;
+        -f) clean_fn="-f"; ;;
+        -d) clean_args+=" -d"; ;;
+        -x) clean_args+=" -x"; ;;
+        -X) clean_args+=" -X"; ;;
         --) shift; break; ;;
-        -*) echo "$0: error: invalid argument $arg" >&2; exit 1; ;;
         *) break; ;;
     esac
+    shift
 done
+clean_args="${clean_args:--xd}" # default
 
 paths=( "${@:-.}" )
 for path in "${paths[@]}" ; do
@@ -51,17 +61,17 @@ for path in "${paths[@]}" ; do
     fi
 done
 
-echo -n "Recursively reset and clean $clean_fn ${paths[@]} ? [y/N] "
+echo -n "Recursively reset and clean $clean_fn $clean_args ${paths[@]} ? [y/N] "
 read -n 1 r
 echo
 [[ "$r" == "y" ]] || exit 1
 echo
 
 for path in "${paths[@]}" ; do
-    fclean $clean_fn "$path"
+    fclean "$clean_fn" "$clean_args" "$path"
     while read -u3 -d $'\0' -r sub; do
         sub="$(dirname "$sub")"
-        fclean $clean_fn "$sub"
+        fclean "$clean_fn" "$clean_args" "$sub"
     done 3< <(find "$path" -mindepth 2 -name '.git' -print0)
 done
 
