@@ -1340,9 +1340,17 @@ With argument, do this that many times."
 ;; cmake
 ;;
 
+(defun jo/tweak-cmake-mode-syntax-table ()
+  "See 'jo/tweak-sh-mode-syntax-table'."
+
+  ;; In 'compile_definitions(FOO=bar)': 'FOO' is a symbol (not 'FOO=')
+  (modify-syntax-entry ?= "." cmake-mode-syntax-table)
+)
+
 (req-package cmake-mode
   :load-path (elpagit "cmake-mode")
   :defer t
+  :hook (cmake-mode . (lambda () (jo/tweak-cmake-mode-syntax-table)))
   :config
   )
 
