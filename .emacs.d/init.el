@@ -1985,13 +1985,16 @@ With argument, do this that many times."
                                    (magit-get-current-branch)))
         (user-error "Nothing selected")))
 
-  (defun my-magit-log-upstream (upstream &optional args files)
-    "Logs diverging commits between head(<) and an UPSTREAM(>)."
-    (interactive (cons
-                  (magit-read-custom-or-branch-or-commit "Upstream" '("@{upstream}"))
-                  ;;(magit-read-custom-or-branch-or-commit "Upstream" `( ,(magit-get-upstream-branch) ))
+  (defun my-magit-log-left-right (left right &optional args files)
+    "Logs diverging commits between left (<) and right (>), with boundaries (o)."
+    (interactive (append
+                  (list (magit-read-custom-or-branch-or-commit "Left" '("@")))
+                  (list (magit-read-custom-or-branch-or-commit "Right" '("@{upstream}")))
                   (magit-log-arguments)))
-    (magit-log-setup-buffer (list (concat "@..." upstream)) (append args (list "--graph" "--boundary" "--left-right")) files)
+    (magit-log-setup-buffer
+     (list (concat left "..." right))
+     (append args (list "--left-right" "--boundary"))
+     files)
     )
 
   (defun my-magit-pullff (&optional args)
@@ -2018,7 +2021,7 @@ With argument, do this that many times."
   (transient-append-suffix 'magit-log "=p"
     '("-i" "Regexp ignore case" "--regexp-ignore-case"))
   (transient-append-suffix 'magit-log "a"
-    '("u" "upstream" my-magit-log-upstream))
+    '("R" "left-right" my-magit-log-left-right))
 
   ;; pull
   (transient-append-suffix 'magit-pull "e"
