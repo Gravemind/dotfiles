@@ -30,6 +30,12 @@
 ;; silent startup message
 (setq inhibit-startup-echo-area-message "jo")
 
+;; GC only after every `gc-cons-threshold` new bytes has been allocated
+(setq gc-cons-threshold (* 1024 1024 100))
+;; AND only after `gc-cons-percentage` fraction of the head size (current total
+;; bytes already allocated) has been allocated.
+(setq gc-cons-percentage 0.4)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Theme
