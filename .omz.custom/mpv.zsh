@@ -160,3 +160,13 @@ mpf() {
 	"${cmd[@]}" && \
 		print -sf "%s " "${(q-)cmd[@]}"
 }
+
+mploop() {
+	next=y
+	while [[ "$next" = y ]]
+	do
+		mpn "$@" || return 1
+		read -r -k 1 'next? next ? [y] '
+		echo $next
+	done
+}
