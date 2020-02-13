@@ -2028,7 +2028,7 @@ With argument, do this that many times."
 
   ;; diff
   (transient-append-suffix 'magit-diff "-s"
-    '("-R" "Reverse" "--reverse"))
+    '("-R" "Reverse" "-R"))
   ;; (magit-define-popup-switch
   ;;   'magit-diff-popup
   ;;   ?W "Ignore changes in whitespace at EOL" "--ignore-space-at-eol")
