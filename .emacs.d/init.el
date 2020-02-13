@@ -3056,6 +3056,7 @@ many times might take a long time."
   :defer t
   :hook (org-mode . (lambda ()
                       (unbind-key "C-<return>" org-mode-map)
+                      (org-bullets-mode 1)
                       ))
   :init
   (setq-default
@@ -3071,6 +3072,9 @@ many times might take a long time."
    org-src-preserve-indentation nil
    org-src-tab-acts-natively t
    org-startup-with-inline-images t
+
+   ;; Auto org-indent-mode
+   org-startup-indented t
 
    ;org-indent-boundary-char 32
    ;org-indent-indentation-per-level 2
