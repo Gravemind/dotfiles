@@ -7,6 +7,7 @@ set print array-indexes on
 set print vtbl on
 set print demangle on
 set print asm-demangle on
+set list 25
 set demangle-style gnu-v3
 
 set print inferior-events on
