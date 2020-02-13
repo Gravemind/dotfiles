@@ -2043,12 +2043,6 @@ With argument, do this that many times."
   (transient-append-suffix 'magit-branch "b"
     '("M" "with merge (-m)" my-magit-checkout-merge))
 
-  (setq-default
-   magit-log-arguments '("--graph" "--color" "--decorate" "--date-order" "--follow" "-n256")
-   magit-pull-arguments '("--autostash")
-   magit-rebase-arguments '("--autostash")
-   )
-
   ;(setq-default git-commit-turn-on-auto-fill nil)
   ;(add-hook 'git-commit-mode-hook 'turn-off-auto-fill)
 
