@@ -1974,6 +1974,9 @@ With argument, do this that many times."
    magit-reflog-margin magit-default-margin
    magit-log-margin magit-default-margin
 
+   ;; Never remove --graph flag
+   magit-log-remove-graph-args nil
+
    ;; Detect key binding conflicts
    transient-detect-key-conflicts t
    ;; Show all switches
