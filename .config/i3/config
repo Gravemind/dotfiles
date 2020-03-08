@@ -138,6 +138,9 @@ assign [class="(?i)^.*steam.*$"] → 1
 
 for_window [class="(?i)^keepassxc$"] floating enable
 
+# Emacs helm "frame" mode: https://github.com/emacs-helm/helm/wiki/frame#enable-globally-frame-for-all-helm-sessions
+for_window [class="^Emacs$" title="^Helm$"] floating enable, border pixel 2
+
 #
 # Bindings
 #

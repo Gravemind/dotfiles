@@ -2438,7 +2438,7 @@ many times might take a long time."
    ;; Increase helm-buffers buffer name column width
    helm-buffer-max-length 30
 
-   ;; ;; Hide first header "C-j: describe this command ... "
+   ;; Default header line only says "TAB: describe this command ..."
    helm-display-header-line nil
 
    ;; helm-ff-search-library-in-sexp t ; search for library in `require' and `declare-function' sexp.
@@ -2456,22 +2456,41 @@ many times might take a long time."
 
    ;; ;; helm-move-to-line-cycle-in-source t ; move to end or beginning of source
    ;; ;;                                     ; when reaching top or bottom of source.
+
+   ;;helm-display-buffer-width
+   ;;helm-display-buffer-height
+
    )
 
-  ;; Fixed height
+  ;; Repeat minibuffer input above helm buffer in header line
   (setq-default
-   helm-display-buffer-default-height 60
-   helm-display-buffer-height 60
+   helm-echo-input-in-header-line t
+   )
+
+  (when window-system
+    ;; Helm/minibuffer in own frame
+    (setq-default
+     helm-display-function #'helm-display-buffer-in-own-frame
+     ;; helm-show-completion-display-function #'helm-display-buffer-in-own-frame
+     ;;helm-frame-alpha 0.9
+     ;;helm-frame-background-color "#000000"
+     ))
+
+  ;; Helm buffer/frame size
+  (setq-default
+   ;; Initial buffer size
+   helm-display-buffer-default-height 20
    helm-display-buffer-default-width 140
-   helm-display-buffer-width 140
+   ;; Frame size
+   helm-display-buffer-height 30
+   helm-display-buffer-width 138
+   ;; Size min/max with helm-autoresize-mode
+   helm-autoresize-min-height 20
+   helm-autoresize-max-height 50
    )
 
-  ;; Auto resize height
+  ;; Auto resize
   (helm-autoresize-mode t)
-  (setq-default
-   helm-autoresize-min-height 20
-   helm-autoresize-max-height 60
-   )
 
 ;;   ;; Split window kind-of like ivy at the bottom (but not in minibuffer)
 ;;   ;;   https://github.com/casouri/lunarymacs-stars/blob/master/completion/helm/config.el
