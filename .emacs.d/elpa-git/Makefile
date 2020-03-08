@@ -111,6 +111,7 @@ ${LOAD_PATHS_EL}:
 	@echo -e "\n-------- generate $@ --------\n"
 	@echo ';; Generated' > ${LOAD_PATHS_EL}
 	@echo '(setq load-path (nconc load-path (list' >> ${LOAD_PATHS_EL}
+	@echo "\"${ELPAGIT}\"" >> ${LOAD_PATHS_EL}
 	@for p in ${LISP_DIRS} ; do \
 		echo "\"${ELPAGIT}/$$p\""; \
 	done >> ${LOAD_PATHS_EL}
