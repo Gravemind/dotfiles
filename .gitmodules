@@ -228,3 +228,6 @@
 [submodule ".emacs.d/elpa-git/org-bullets"]
 	path = .emacs.d/elpa-git/org-bullets
 	url = https://github.com/sabof/org-bullets.git
+[submodule ".emacs.d/elpa-git/flycheck-grammalecte"]
+	path = .emacs.d/elpa-git/flycheck-grammalecte
+	url = https://github.com/milouse/flycheck-grammalecte.git
