@@ -19,12 +19,13 @@ set $launcher    ~/.config/i3/layouts/launch.sh -q
 
 set $Alt         Mod1
 
-# N * [2560, 1440] / 8
-set $move_step_x   320
+# N * [2560, 1440] / 10/8
+set $move_step_x   256
 set $move_step_y   180
-set $resize_step_x 320
+set $resize_step_x 256
 set $resize_step_y 180
-set $float_w       640
+set $float_w       1024
+set $float_w_wide  1024
 set $float_h       720
 
 ipc-socket $here/ipc.sock
@@ -235,7 +236,7 @@ bindsym $ModK+f fullscreen
 
 # Toggle tiling / floating
 #bindsym $ModK+Shift+space floating toggle, resize set 40 ppt 60 ppt, move absolute position center
-bindsym $ModK+Shift+space floating toggle, resize set $float_w $float_h, move absolute position center
+bindsym $ModK+Shift+space floating toggle, resize set $float_w_wide $float_h, move absolute position center
 
 # Change focus between tiling / floating windows
 bindsym $ModK+space focus mode_toggle

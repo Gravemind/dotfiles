@@ -21,7 +21,7 @@ export LESSBINFMT='*u<%02X>'
 # -S  : --chop-long-lines : truncate lines (vs wrap lines)
 # -M  : --LONG-PROMPT : longest prompt
 # (-m : --long-prompt)
-# (-J : --status-column)
+# (-J : --status-column) : left-margin to highlight search/find
 # -jn : --jump-target=n : linenum position of "jumped to" target
 # -zn : --window=n : PAGE-up/down scrolled lines, negative for win_height-n
 export LESS='-qRiSM -j3 -z-4'
