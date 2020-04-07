@@ -87,6 +87,9 @@
 	# the same"; --full-history shows everything, and --simplify-merges re-hides
 	# only needless merges.
 
+	# Log pretty
+	lp  = log --pretty=my
+
 	# Log current branch
 	l  = log --pretty=my --graph --full-history --simplify-merges --date-order
 
@@ -108,6 +111,9 @@
 	# Log commits between HEAD and another branch
 	lo = "!f() { set -eu; git l --left-right --boundary @...$1 \"${@:1}\"; }; f"
 
+	# Pretty reflog
+	rl  = log --pretty=myreflog --walk-reflogs
+
 	# Fuller show
 	showf = show --format=fuller
 
@@ -121,7 +127,8 @@
 
 # Pretty log format
 [pretty]
-	my = "tformat:%C(magenta)%h%C(reset)%C(auto)% D %C(reset)%s%C(blue)%>|(90) %an %C(bold black)%ad%C(reset)"
+	my = "tformat:%C(magenta)%h%C(auto)% D %C(auto)%<(72,trunc)%s%C(blue)%>>|(100)%an %C(bold black)%ad%C(auto)"
+	myreflog = "tformat:%C(magenta)%>|(20)%gd %C(auto)%gs %C(blue)%>>|(100)%gn%n%C(bold black)%<|(19)% %h %<(72,trunc)%s %>>|(99)%an %ad%C(auto)"
 [log]
 	date = auto:relative # git v2.21 (also: "auto:human")
 [blame]
