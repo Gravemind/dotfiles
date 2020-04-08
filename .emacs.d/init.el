@@ -811,7 +811,7 @@
          ("C-c l" . history-next-history)
          )
   :config
-  ;(require 'history)
+  ;;(require 'history)
 
   (defun add-to-history-advised (funclist)
     (dolist (f funclist)
@@ -1233,9 +1233,6 @@ spaces are treated."
 
  ("C-g"         . jo/keyboard-quit)
 
- ("C-<backspace>" . backward-delete-word)   ;; do not save it to kill-ring/clipboard.
- ("M-<backspace>" . backward-kill-word)     ;; save it.
-
  ("C-<delete>" . delete-word)               ;; save it.
  ("M-<delete>" . kill-word)                 ;; do not save it to kill-ring/clipboard.
 
@@ -1266,6 +1263,11 @@ spaces are treated."
  ("C-<return>" . dabbrev-expand)
 
 )
+
+(bind-keys*
+ ("C-<backspace>" . backward-delete-word)   ;; do not save it to kill-ring/clipboard.
+ ("M-<backspace>" . backward-kill-word)     ;; save it.
+ )
 
 (defun jo/keyboard-quit()
   "Escape the minibuffer or cancel region consistently using 'Control-g'.
@@ -1494,7 +1496,7 @@ With argument, do this that many times."
 
 (req-package expand-region
   :load-path (elpagit "expand-region")
-  :bind ("C-=" . er/expand-region)
+  :bind* ("C-=" . er/expand-region)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2204,10 +2206,9 @@ many times might take a long time."
 (req-package smerge-mode
   :pin manual
   :defer t
-  :bind
-  (:map smerge-basic-map
-        ("m" . smerge-refine)
-        )
+  :bind (:map smerge-basic-map
+              ("m" . smerge-refine)
+              )
   :init
   (setq-default
    smerge-command-prefix "\C-cm"
@@ -2247,11 +2248,10 @@ many times might take a long time."
 
 (req-package iy-go-to-char
   :load-path (elpagit "iy-go-to-char")
-  :bind (
-         ("C-f C-f" . iy-go-up-to-char)
+  :bind (("C-f C-f" . iy-go-up-to-char)
          ("C-f C-d" . iy-go-to-char-backward)
-         ;("C-f C-f" . iy-go-up-to-char-continue)
-         ;("C-f C-d" . iy-go-to-char-continue-backward)
+         ;;("C-f C-f" . iy-go-up-to-char-continue)
+         ;;("C-f C-d" . iy-go-to-char-continue-backward)
          )
   :config
   ;; (setq-default
@@ -2269,12 +2269,11 @@ many times might take a long time."
 
 (req-package ace-jump-mode
   :load-path (elpagit "ace-jump-mode")
-  :bind (
-         ;("C-f <SPC>" . ace-jump-two-chars-word-mode)
-         ;("C-f <RET>" . ace-jump-line-mode)
+  :bind (;;("C-f <SPC>" . ace-jump-two-chars-word-mode)
+         ;;("C-f <RET>" . ace-jump-line-mode)
          ("C-f <SPC>" . ace-jump-word-mode)
          ("C-f <RET>" . ace-jump-line-mode)
-         ;("C-u C-u C-f <SPC>" . ace-jump-line-mode)
+         ;;("C-u C-u C-f <SPC>" . ace-jump-line-mode)
          )
   :config
 
@@ -2349,20 +2348,15 @@ many times might take a long time."
   ;;:disabled
   :demand t
   ;;:defer t
-  :bind (
-         ("M-x" . helm-M-x)
-         ("C-x b"   . helm-mini) ;; helm-buffers-list
-         ("C-f <C-return>" . helm-occur)
+  :bind* (("M-x" . helm-M-x)
+          ("C-M-x" . helm-resume)
+          ("C-x b" . helm-mini) ;; helm-buffers-list
+          ("C-x C-f". helm-find-files)
+          ("C-f C-x" . helm-recentf)
+          )
+  :bind (("C-f <C-return>" . helm-occur)
          ("C-f C-r" . helm-do-grep-rg-ripgrep)
          ;;("C-f C-r" . helm-do-grep-ag-dir)
-         ("C-x C-f". helm-find-files)
-         ("C-f C-x" . helm-recentf)
-
-         :map global-map
-         ("C-M-x" . helm-resume)
-         ;; :map python-mode-map
-         ;; ("C-M-x" . helm-resume)
-
          :map helm-map
          ("<tab>" . helm-execute-persistent-action)
          ("C-i" . helm-execute-persistent-action)
@@ -2375,15 +2369,8 @@ many times might take a long time."
          ("C-f C-r" . helm-ff-run-grep-ag)
          ;;("C-<backspace>" . helm-find-files-up-one-level)
 
-         ;; Restore keys
-         :map helm-find-files-map
-         ("C-<backspace>" . backward-delete-word)
-         :map helm-read-file-map
-         ("C-<backspace>" . backward-delete-word)
-
          ;;:map helm-grep-map
          ;;("C-l" . helm-do-grep-ag-up-one-level)
-
          )
 
   :config
@@ -2627,8 +2614,9 @@ many times might take a long time."
   :load-path (elpagit "swiper")
   :if (not jo/helm-or-ivy)
   :demand
+  :bind* (("C-M-x" . ivy-resume)
+          )
   :bind (
-         ("C-c C-x" . ivy-resume)
          ;; ido style folder navigation
          ;;   https://github.com/abo-abo/swiper/wiki/ido-style-folder-navigation
          :map ivy-minibuffer-map
@@ -2641,7 +2629,6 @@ many times might take a long time."
          ("C-x C-s" . ivy-occur)
          )
   :config
-  (unbind-key "C-c C-x") ;; default is bind to a keymap ??
   (setq-default
    ivy-use-virtual-buffers t
    ivy-count-format "(%d/%d) "
@@ -3242,8 +3229,9 @@ many times might take a long time."
   ;;:disabled t
   :defer t
   :hook (rust-mode . racer-mode)
-  :bind (("C-c i" . racer-find-definition)
-         )
+  :bind (:map racer-mode-map
+              ("C-c i" . racer-find-definition)
+              )
   )
 
 ;; https://github.com/flycheck/flycheck-inline
