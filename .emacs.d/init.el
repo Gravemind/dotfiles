@@ -1942,11 +1942,12 @@ With argument, do this that many times."
 (req-package magit
   :load-path (elpagit "magit")
   :commands (magit-repolist-here)
-  :bind (("C-x g" . magit-status-here)
-         ("C-x C-g" . magit-status)
-         :map magit-repolist-mode-map
-         ("x" . magit-repolist-popup)
-         )
+  :bind* (("C-x g" . magit-status-here)
+          ("C-x C-g" . magit-status)
+          )
+  :bind (:map magit-repolist-mode-map
+              ("x" . magit-repolist-popup)
+              )
   :config
 
   (if jo/helm-or-ivy
