@@ -41,7 +41,7 @@
 ;; Theme
 ;;
 
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/emacs-theme-autumn/")
+(add-to-list 'custom-theme-load-path (concat user-emacs-directory "themes/emacs-theme-autumn/"))
 (load-theme 'autumn t)
 
 ;;(custom-set-faces
@@ -112,7 +112,7 @@
 ;; Custom file path
 ;;
 
-(setq-default custom-file "~/.emacs.d/custom.el")
+(setq-default custom-file (concat user-emacs-directory "custom.el"))
 (load custom-file nil t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -861,7 +861,7 @@
   :load-path (elpagit "auto-mark")
   :disabled t
   :pin manual
-  :load-path "~/.emacs.d/lisp"
+  :load-path (concat user-emacs-directory "lisp")
 ;;:ensure t ; ! forces query melpa !?
   :init
   (require 'auto-mark)
@@ -3030,7 +3030,7 @@ many times might take a long time."
   :load-path (elpagit "yasnippet")
   :hook (c-mode-common . yas-minor-mode) ;; NOTE: cc-mode-hook does not work, c-mode-common-hook do.
   :config
-  (setq-default yas-snippet-dirs '("~/.emacs.d/snippets"))
+  (setq-default yas-snippet-dirs '((concat user-emacs-directory "snippets")))
   (yas-reload-all)
   )
 
