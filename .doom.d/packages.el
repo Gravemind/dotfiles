@@ -45,3 +45,19 @@
 ;; This is required for some packages whose default branch isn't 'master' (which
 ;; our package manager can't deal with; see raxod502/straight.el#279)
 ;(package! builtin-package :recipe (:branch "develop"))
+
+(package! zoom :recipe
+  (:host github
+   :repo "cyrus-and/zoom"
+   :branch "master"
+   :files ("zoom.el")))
+
+(package! auto-highlight-symbol :recipe
+  (:host github
+         :repo "gennad/auto-highlight-symbol"
+         :branch "master"
+         :files ("auto-highlight-symbol.el")))
+
+(package! helm-flx :pin "6640fac5cb")
+
+(package! d-mode)
