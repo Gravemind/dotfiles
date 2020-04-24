@@ -30,6 +30,9 @@ HISTCONTROL=ignoreboth
 HISTSIZE=10000
 HISTFILESIZE=10000
 
+# `bash -x` "prompt" https://wiki.bash-hackers.org/scripting/debuggingtips
+export PS4='+$$+${BASH_SOURCE}:${LINENO}+${FUNCNAME[0]:-}+ '
+
 alias grep='grep --color=auto'
 alias less='less --quiet'
 alias cat='cat -v'
