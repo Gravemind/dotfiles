@@ -1771,15 +1771,18 @@ With argument, do this that many times."
    ; don't report non-breakable spaces error
    flycheck-grammalecte-report-nbsp nil
    )
+  ;;(add-to-list 'flycheck-grammalecte-enabled-modes 'markdown-mode)
 
   (defun jo/flycheck-grammalecte ()
     (interactive)
     (require 'flycheck-grammalecte)
     (flyspell-mode 1)
     (ispell-change-dictionary "francais")
-    (flyspell-buffer)
+    ;;(flycheck-select-checker 'francais-grammalecte)
+    (flycheck-mode 0)
+    (flycheck-grammalecte-setup)
     (flycheck-mode 1)
-    (flycheck-select-checker 'francais-grammalecte)
+    ;(flycheck-grammalecte-setup)
     )
 
   )
