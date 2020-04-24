@@ -48,9 +48,15 @@ URxvt.letterSpace:      -1
 URxvt*scrollBar_right:  false
 URxvt*scrollBar:        false
 
+! Fake transparency (using wallpaper)
 URxvt*transparent:      true
 URxvt*shading:          18
 URxvt*blurRadius:       17
+!URxvt*tintColor:       #101010
+!URxvt*backgroundPixmap: ~/.config/i3/wallpaper.blured.png
+! True transparency (using composite manager):
+! URxvt*depth: 32
+! URxvt*background:  [90]#202020
 
 URxvt*scrollTtyOutput:      false
 URxvt*scrollWithBuffer:     true
