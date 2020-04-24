@@ -111,8 +111,12 @@
 	# Log commits between HEAD and another branch
 	lo = "!f() { set -eu; git l --left-right --boundary @...$1 \"${@:1}\"; }; f"
 
-	# Pretty reflog
-	rl  = log --pretty=myreflog --walk-reflogs
+	# Long log
+	ll  = log --pretty=myl --graph --full-history --simplify-merges --date-order
+
+	# pretty reflog
+	# (--date here will make it print reflog@{date} instead of reflog@{num})
+	rl  = log --pretty=myreflog --walk-reflogs --date=auto:relative
 
 	# Fuller show
 	showf = show --format=fuller
@@ -127,12 +131,15 @@
 
 # Pretty log format
 [pretty]
-	my = "tformat:%C(magenta)%h%C(auto)% D %C(auto)%<(72,trunc)%s%C(blue)%>>|(100)%an %C(bold black)%ad%C(auto)"
-	myreflog = "tformat:%C(magenta)%>|(20)%gd %C(auto)%gs %C(blue)%>>|(100)%gn%n%C(bold black)%<|(19)% %h %<(72,trunc)%s %>>|(99)%an %ad%C(auto)"
+	my  = "tformat:%C(magenta)%h%C(auto)% D %C(auto)%<(72,trunc)%s%C(blue)%>>|(100)%aN %C(bold black)%ad%C(auto)"
+	myl = "tformat:%C(magenta)%h %C(bold black)%><(60)%ad%C(reset)%C(blue)%>>|(100)%an%C(auto)%+D%n%C(auto)%n%w(80,4,4)%B"
+	# myreflog = "tformat:%C(bold black)$> %gs (%gn)%n   %C(green)%gd: %C(magenta)%h%C(auto)% D %C(auto)%<(72,trunc)%s%C(blue)%>>|(110)%an %C(bold black)%ad%C(auto)%n"
+	myreflog = "tformat:%C(green)%gd: %C(magenta)%h%C(auto)% D %C(auto)%<(72,trunc)%s%C(blue)%>>|(110)%an %C(bold black)%ad%C(auto)%n%C(bold black)%gs (%gn)"
 [log]
-	date = auto:relative # git v2.21 (also: "auto:human")
+	# date "auto:foo" means foo date format "foo" is only used when using a pager, else it will use the default format
+	date = auto:relative
 [blame]
-	date = auto:relative # git v2.21 (also: "auto:human")
+	date = auto:relative
 
 [color "branch"]
 	current = bold white
