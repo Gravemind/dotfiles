@@ -56,12 +56,6 @@ hr-seek-framedrop=no
 # also avoids A/V desync with filters ?!
 #framedrop=vo
 
-#
-# Profiles
-#
-profile=mydefault
-[mydefault]
-
 # HQ
 #profile=gpu-hq
 profile=gpu-hqer
@@ -70,22 +64,23 @@ profile=gpu-hqer
 #profile=opengl
 profile=vulkan
 
-# 60fps interopation
-#profile=interp
-#profile=mvtools
-profile=svp
+#
+# Profiles
+#
 
-#
-# much better audio at speed > x1
-# (bound in input.conf)
-#
-[speedxn]
-vf=""
-af-add=@myscaletempo:scaletempo=stride=10:search=16:overlap=1
-# remove vapoursynth filter. (profile mydefault will restore it.)
-[speedx1]
-af=""
-profile=mydefault
+[disable-svp]
+vf-add=@svpf:!format=yuv420p
+vf-add=@svpv:!vapoursynth=~/.config/mpv/filters/svp.py
+[enable-svp]
+profile=disable-svp
+vf-toggle=@svpf
+vf-toggle=@svpv
+
+[disable-scaletempo]
+af-add=@scaletempo:!scaletempo=stride=10:search=16:overlap=1
+[enable-scaletempo]
+profile=disable-scaletempo
+af-toggle=@scaletempo
 
  # transients                     Choices: crisp mixed smooth (default: mixed)
  # detector                       Choices: compound percussive soft (default: compound)
@@ -119,18 +114,6 @@ tscale=oversample
 #tscale=linear
 #tscale=bicubic
 #hwdec=no
-
-#
-# 60fps motion interpolation profiles
-#
-[mvtools]
-profile=_vapoursynth-common
-vf=vapoursynth=~/.config/mpv/filters/mvtools.py
-
-[svp]
-profile=_vapoursynth-common
-#vf=vapoursynth=~/.config/mpv/filters/svp.py
-vf=format=yuv420p,vapoursynth=~/.config/mpv/filters/svp.py
 
 [_vapoursynth-common]
 # https://www.svp-team.com/wiki/SVP:mpv
