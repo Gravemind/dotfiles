@@ -30,6 +30,7 @@
 !/.zshrc
 !/.ccache
 !/.emacs.d
+!/.my.emacs.d
 !/.i3
 !/.mpv
 !/.ncmpcpp
