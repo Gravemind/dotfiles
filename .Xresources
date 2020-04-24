@@ -62,7 +62,15 @@ URxvt*scrollTtyOutput:      false
 URxvt*scrollWithBuffer:     true
 URxvt*scrollTtyKeypress:    true
 
-URxvt*cutchars:             ":\\`\"'&()*,;<=>?@[]^{|}/! "
+! Default cut char with /!: added
+URxvt.cutchars: \ `\"\'&()*,;<=>?@[]^{|}/\!:
+! More clicks select: inside quotes
+URxvt.selection.pattern-0: "([^\"]+)"
+URxvt.selection.pattern-1: '([^\']+)'
+! More clicks select: Colon-seperated list (inside quotes)
+URxvt.selection.pattern-2: ([^:\"\']+)
+! More clicks select: Semicolon-seperated list (inside quotes)
+URxvt.selection.pattern-3: ([^;\"\']+)
 
 ! Extensions (urxvt-perls):
 !   - matcher: Clickable URL
