@@ -8,10 +8,10 @@ set $ModK        Mod4
 set $screenL     DP-4
 set $screenR     DP-2
 
-set $keyLeft     j
+set $keyLeft     h
 set $keyRight    l
-set $keyUp       i
-set $keyDown     k
+set $keyUp       k
+set $keyDown     j
 
 set $here        ~/.config/i3
 set $layouts     ~/.config/i3/layouts
