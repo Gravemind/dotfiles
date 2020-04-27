@@ -16,6 +16,10 @@
 
 ;;(setq debug-on-error t)
 
+;; Allow `emacs -q -l ~/.my.emacs.d/init.el`
+(setq user-init-file (or load-file-name (buffer-file-name)))
+(setq user-emacs-directory (file-name-directory user-init-file))
+
 ;; Benchmark init https://github.com/dholm/benchmark-init-el
 ;; - Install:
 ;;   $> cd ~/.emacs.d && git clone https://github.com/dholm/benchmark-init-el && make -C benchmark-init-el

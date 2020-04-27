@@ -1,6 +1,7 @@
 
+ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
-ELPAGIT = ${HOME}/.emacs.d/elpa-git
+ELPAGIT=${ROOT_DIR}
 
 CASK=
 export CASK
