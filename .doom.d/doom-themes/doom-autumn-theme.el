@@ -34,7 +34,7 @@ determine the exact padding."
 
   ;; name        default   256       16
   ((bg         '("#202020" nil       nil            ))
-   (bg-alt     '("#1C1C1C" nil       nil            ))
+   (bg-alt     '("#181818" nil       nil            ))
    (base0      '("#1B2229" "black"   "black"        ))
    (base1      '("#1c1f24" "#1e1e1e" "brightblack"  ))
    (base2      '("#202328" "#2e2e2e" "brightblack"  ))
@@ -82,15 +82,16 @@ determine the exact padding."
    (teal       '("#4db5bd" "#44b9b1" "brightgreen"  ))
    (yellow     '("#ECBE7B" "#ECBE7B" "yellow"       ))
    (blue       '("#51afef" "#51afef" "brightblue"   ))
-   (dark-blue  '("#2257A0" "#2257A0" "blue"         ))
    (magenta    '("#c678dd" "#c678dd" "brightmagenta"))
    (violet     '("#a9a1e1" "#a9a1e1" "magenta"      ))
    (cyan       '("#46D9FF" "#46D9FF" "brightcyan"   ))
-   (dark-cyan  '("#5699AF" "#5699AF" "cyan"         ))
+
+   (dark-blue  '("#213964" "#213964" "blue"         ))
+   (dark-cyan  '("#39606d" "#39606d" "cyan"         ))
 
    ;; face categories -- required for all themes
    (highlight      blue)
-   (vertical-bar   (doom-darken base1 0.1))
+   (vertical-bar   bg-alt)
    (selection      dark-blue)
    (builtin        -autumn-builtin)
    (comments       -autumn-comment)
@@ -109,13 +110,9 @@ determine the exact padding."
    (warning        yellow)
    (success        green)
 
-   ;; (vc-modified    orange)
-   ;; (vc-added       green)
-   ;; (vc-deleted     red)
-
-   (vc-modified    orange)
-   (vc-added       -autumn-add)
-   (vc-deleted     -autumn-del)
+   (vc-modified    "#45517C")
+   (vc-added       "#3B7C3B")
+   (vc-deleted     "#853434")
 
    ;; custom categories
    (hidden     `(,(car bg) "black" "black"))
@@ -141,21 +138,32 @@ determine the exact padding."
 
   ;; --- extra faces ------------------------
   (
+   (fringe :background bg-alt :foreground base4)
+   (solaire-fringe-face :background bg-alt)
 
-   (magit-diff-none nil)
-   ;;(magit-diff-removed-highlight :background ,background :foreground ,colorrem)
-   ;;(magit-diff-added-highlight :background ,background :foreground ,coloradd)
-   (magit-diff-removed-highlight ;; :background ,bg-hl 
-                                 :foreground -autumn-del)
-   (magit-diff-added-highlight ;; :background ,bg-hl 
-                               :foreground -autumn-add)
-   (magit-diff-removed :foreground -autumn-del)
-   (magit-diff-added :foreground -autumn-add)
+   ;; "Disable" hl-line
+   (hl-line :background nil)
 
-   (diff-removed :background nil :foreground -autumn-del)
-   (diff-added :background nil :foreground -autumn-add)
-   (diff-refine-removed :background -autumn-del-bg)
-   (diff-refine-added :background -autumn-add-bg)
+   ((diff-removed &override) :inherit nil :foreground -autumn-del :background nil)
+   ((diff-added &override) :inherit nil :foreground -autumn-add :background nil)
+   ((diff-refine-removed &override) :foreground nil :inverse-video nil :background -autumn-del-bg)
+   ((diff-refine-added &override) :foreground nil :inverse-video nil :background -autumn-add-bg)
+
+   (magit-diff-context           :foreground fg :background bg-alt :extend t)
+   (magit-diff-context-highlight :foreground fg :background bg :extend t)
+
+   ((magit-diff-added &override) :inherit 'diff-added :background nil :foreground nil :weight 'normal)
+   ((magit-diff-removed &override) :inherit 'diff-removed :background nil :foreground nil :weight 'normal)
+   ((magit-diff-added-highlight &override) :inherit 'diff-added :background bg :foreground nil :weight 'normal)
+   ((magit-diff-removed-highlight &override) :inherit 'diff-removed :background bg :foreground nil :weight 'normal)
+
+   (git-gutter:modified :foreground vc-modified)
+   (git-gutter+-modified :foreground vc-modified)
+
+   ;; auto-highlight-symbol
+   (ahs-plugin-defalt-face :foreground nil :background nil :underline highlight)
+   (ahs-face :foreground nil :background nil :underline "Orange1")
+   (ahs-definition-face :foreground nil :background nil :underline t)
 
    ;; (elscreen-tab-other-screen-face :background "#353a42" :foreground "#1e2022")
 

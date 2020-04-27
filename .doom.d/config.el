@@ -66,20 +66,131 @@
 ;; they are implemented.
 
 (setq
+ ;; Make =o=/=O= NOT do "electric" comments
+ +evil-want-o/O-to-continue-comments nil
+
+ +cc-default-header-file-mode 'c++-mode
+
+ )
+
+(setq
  scroll-step 20
- scroll-margin 4)
+ scroll-margin 5
+
+ ;; Always split windows vertically
+ split-height-threshold nil
+ split-width-threshold 0
+
+ )
 
 (setq
  c-backslash-max-column 1000
 
  ;; No line number by default
  display-line-numbers-type nil
+
+ ;;solaire-mode-remap-fringe nil
  )
+
+;;(advice-add 'doom-modeline--active :override (lambda () t))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; zoom
+;;
+
+(use-package! zoom
+  :demand t
+  :config
+  (setq
+   ;;zoom-size '(0.618 . 0.618) ;; golden-ratio
+   zoom-size '(140 . 0.75) ;; 120 columns width, 75% height
+
+   window-min-width 10
+   window-min-height 4
+
+   window-resize-pixelwise t
+
+   ;; Fix? "Why when there are several horizontal splits the completions buffer is very small"
+   ;;temp-buffer-resize-mode t
+
+   ;;zoom-ignored-buffer-names '("*Diff*")
+   ;;zoom-ignored-buffer-name-regexps '("^*helm")
+   zoom-ignored-buffer-name-regexps '("^*Ediff")
+
+   ;;zoom-ignore-predicates (quote ((lambda nil (window-minibuffer-p))))
+   ;;zoom-ignored-major-modes '(helm-mode)
+   zoom-ignored-major-modes '(ediff-mode undo-tree-mode-major-mode)
+
+   )
+
+  ;; infinite recurse ?
+  ;;(add-hook 'window-configuration-change-hook 'zoom--handler)
+
+  (zoom-mode t)
+  )
+
+;; (after! (undo-tree zoom)
+;;   (defun my/fix-undo-tree-size ()
+;;     (with-selected-window (get-buffer-window undo-tree-diff-buffer-name)
+;;       (setq window-size-fixed t)
+;;       )
+;;     (with-selected-window (get-buffer-window undo-tree-visualizer-buffer-name)
+;;       (setq window-size-fixed t)
+;;       ))
+;;   (add-hook 'undo-tree-visualizer-mode-hook 'my/fix-undo-tree-size)
+;;   (add-hook 'undo-tree-visualizer-selection-mode-hook 'my/fix-undo-tree-size)
+;; )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; undo-tree
+;;
+
+(after! undo-tree
+  (setq
+   ;; Don't save history
+   undo-tree-auto-save-history nil
+   ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; recentf
+;;
+
+(setq
+ ;; fix slow recentf-mode startup (0.60s to 0.06s):
+ ;; initializing `file-name-history` is slow only when there are tramp files
+ ;; (eg "/sudo:") (seems to come from abbreviate-file-name !?).
+ recentf-initialize-file-name-history nil
+ )
+
+(after! recentf
+  (setq
+   ;; max recent files entries
+   recentf-max-saved-items 1000
+
+   ;; stat all files to remove deleted ones (recentf-cleanup)
+   ;;recentf-auto-cleanup 60 ;; after n seconds
+   recentf-auto-cleanup 'never
+
+   ;; fix slow recentf-mode startup (0.60s to 0.06s):
+   ;; initializing `file-name-history` is slow only when there are tramp files
+   ;; (eg "/sudo:") (seems to come from abbreviate-file-name !?).
+   recentf-initialize-file-name-history nil
+   )
+  )
+
+;; make recentf work properly with multiple emacs instances open at the same time
+(use-package! sync-recentf
+  :after recentf
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; magit
 ;;
+
 (use-package! magit
   :config
 
@@ -334,36 +445,10 @@ many times might take a long time."
                                )
     ))
 
-(use-package! zoom
-  :demand t
-  :config
-  (setq
-   ;;zoom-size '(0.618 . 0.618) ;; golden-ratio
-   zoom-size '(140 . 0.75) ;; 120 columns width, 75% height
-
-   window-min-width 10
-   window-min-height 4
-
-   window-resize-pixelwise t
-
-   ;; Fix? "Why when there are several horizontal splits the completions buffer is very small"
-   ;;temp-buffer-resize-mode t
-
-   ;;zoom-ignored-buffer-names '("*Diff*")
-   ;;zoom-ignored-buffer-name-regexps '("^*helm")
-   zoom-ignored-buffer-name-regexps '("^*Ediff")
-
-   ;;zoom-ignore-predicates (quote ((lambda nil (window-minibuffer-p))))
-   ;;zoom-ignored-major-modes '(helm-mode)
-   zoom-ignored-major-modes '(ediff-mode)
-
-   )
-
-  ;; infinite recurse ?
-  ;;(add-hook 'window-configuration-change-hook 'zoom--handler)
-
-  (zoom-mode t)
-  )
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; auto-highlight-symbol
+;;
 
 (use-package! auto-highlight-symbol
   :hook (prog-mode . auto-highlight-symbol-mode)
@@ -417,14 +502,16 @@ many times might take a long time."
 
   )
 
-(custom-set-faces!
-  '(ahs-plugin-defalt-face :foreground nil :background nil :underline "cyan")
-  '(ahs-face :foreground nil :background nil :underline "Orange1")
-  '(ahs-definition-face :foreground nil :background nil :underline t)
-  )
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; helm
+;;
 
 ;; (use-package! helm-flx
-;;   :when t)
+;;   ;; :when (featurep! +fuzzy)
+;;   :when t
+;;   :hook (helm-mode . helm-flx-mode)
+;;   :config (helm-flx-mode +1))
 
 (use-package! helm
   ;; :bind (:map helm-find-files-map
@@ -437,8 +524,13 @@ many times might take a long time."
 
    ;; completion-styles '(helm-flex)
    ;; helm-completion-styles '(helm-flex)
-   helm-flx-for-helm-find-files t ;; t by default
-   helm-flx-for-helm-locate t ;; nil by default
+
+   ;;completion-style 'helm-flex
+   ;;completion-styles '(helm-flex)
+   ;;helm-completion-styles '(helm-flex)
+
+   ;; helm-flx-for-helm-find-files t ;; t by default
+   ;; helm-flx-for-helm-locate t ;; nil by default
 
    ;; Occur keep colors
    helm-moccur-show-buffer-fontification t
@@ -481,6 +573,35 @@ many times might take a long time."
 
   )
 
+(after! rtags
+  (map!
+   :map c-mode-base-map
+  (:leader
+    (:prefix-map ("r" . "rtags")
+      "d" #'rtags-find-symbol-at-point
+      "D" #'rtags-find-references-at-point
+      "v" #'rtags-find-virtuals-at-point
+      )
+   )
+  ))
+
 (after! helm
   (map! :map helm-find-files-map
         "C-<backspace>" #'helm-find-files-up-one-level))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; rtags
+;; 
+
+(use-package! rtags-xref
+  :disabled t
+  :hook (c-mode-common . rtags-xref-enable)
+  :config
+  (set-lookup-handlers! '(c-mode c++-mode)
+    :xref-backend #'rtags-xref-backend)
+)
+;; (use-package! rtags
+;;   :init
+;;   (setq rtags-install-path nil)
+;;   )

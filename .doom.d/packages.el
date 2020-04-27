@@ -58,6 +58,14 @@
          :branch "master"
          :files ("auto-highlight-symbol.el")))
 
-(package! helm-flx :pin "6640fac5cb")
+;;(package! helm-flx :pin "6640fac5cb")
 
 (package! d-mode)
+
+(package! sync-recentf)
+
+(setq my-rtags-path (concat (getenv "HOME") "/bin/rtags"))
+(package! rtags      :recipe `(:local-repo ,my-rtags-path :files ("src/rtags.el")))
+(package! rtags-xref :recipe `(:local-repo ,my-rtags-path :files ("src/rtags-xref.el")))
+(package! helm-rtags :recipe `(:local-repo ,my-rtags-path :files ("src/helm-rtags.el")))
+(package! ivy-rtags  :recipe `(:local-repo ,my-rtags-path :files ("src/ivy-rtags.el")))
