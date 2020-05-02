@@ -109,7 +109,8 @@
 ;;   ;; Pin use-package to unstable melpa
 ;;   ;;(add-to-list 'package-pinned-packages '(use-package . "melpa") t)
 ;;   (package-install 'req-package))
-(require 'req-package)
+;; (require 'req-package)
+(require 'use-package)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -473,7 +474,7 @@
 ;; Tramp
 ;;
 
-(req-package tramp
+(use-package tramp
   :pin manual
   :defer t
   :bind (("C-x C-r" . sudo-edit-current-file)
@@ -587,7 +588,7 @@
 ;; help mode
 ;;
 
-(req-package help-mode
+(use-package help-mode
   :pin manual
   :defer t
 
@@ -607,7 +608,7 @@
 ;; recentf
 ;;
 
-(req-package recentf
+(use-package recentf
   :pin manual
   :demand t
   :hook (dired-mode . recentf-add-dired-directory)
@@ -642,7 +643,7 @@
 
 )
 
-(req-package sync-recentf
+(use-package sync-recentf
   :load-path (elpagit "sync-recentf")
   :demand t
   )
@@ -652,7 +653,7 @@
 ;; undo-tree
 ;;
 
-(req-package undo-tree
+(use-package undo-tree
   :disabled t
   :load-path (elpagit "undo-tree")
   :demand t
@@ -667,27 +668,27 @@
 
 ;; (setq-default which-key-allow-evil-operators t)
 
-;; (req-package evil
+;; (use-package evil
 ;;   :ensure t
 ;;   :init
 ;;   (setq evil-want-integration nil)
 ;;   :config
 ;;   (evil-mode 1))
 
-;; (req-package evil-collection
+;; (use-package evil-collection
 ;;   :after evil
 ;;   :ensure t
 ;;   :config
 ;;   (evil-collection-init))
 
-;; (req-package discover
+;; (use-package discover
 ;;   :ensure t
 ;;   :init
 ;;   (global-discover-mode 1)
 ;;   )
 
 ;; ;; https://github.com/wcsmith/evil-args
-;; (req-package evil-args
+;; (use-package evil-args
 ;;   :after evil
 ;;   :ensure t
 ;;   :config
@@ -697,7 +698,7 @@
 ;; )
 
 ;; ;; https://github.com/redguardtoo/evil-matchit
-;; (req-package evil-matchit
+;; (use-package evil-matchit
 ;;   :after evil
 ;;   :ensure t
 ;;   :config
@@ -705,7 +706,7 @@
 ;;   )
 
 ;; ;; https://github.com/hlissner/evil-snipe
-;; (req-package evil-snipe
+;; (use-package evil-snipe
 ;;   :after evil
 ;;   :ensure t
 ;;   :config
@@ -718,7 +719,7 @@
 ;;   )
 
 ;; ;; https://github.com/emacs-evil/evil-magit#key-bindings
-;; (req-package evil-magit
+;; (use-package evil-magit
 ;;   :after (evil magit)
 ;;   :ensure t
 ;;   )
@@ -731,7 +732,7 @@
 ;; (golden-ratio replacement)
 ;;
 
-(req-package zoom
+(use-package zoom
   :load-path (elpagit "zoom")
   ;;:disabled t
   :demand t
@@ -793,7 +794,7 @@
 ;;   C-c left, C-c right
 ;;
 
-(req-package winner
+(use-package winner
   :load-path (elpagit "winner")
   :demand t
   :config (winner-mode 1))
@@ -807,7 +808,7 @@
 ;; @TODO: duplicate history's window-parameters on split-window etc...
 ;;
 
-(req-package history
+(use-package history
   :load-path (elpagit "history")
   :demand t
   :bind (("C-c j" . history-prev-history)
@@ -850,7 +851,7 @@
 ;;   https://www.emacswiki.org/emacs/MarkCommands
 ;;
 
-(req-package visible-mark
+(use-package visible-mark
   :load-path (elpagit "visible-mark")
   :disabled t
   :hook (prog-mode . visible-mark-mode)
@@ -861,7 +862,7 @@
    )
   )
 
-(req-package auto-mark
+(use-package auto-mark
   :load-path (elpagit "auto-mark")
   :disabled t
   :pin manual
@@ -891,7 +892,7 @@
  )
 
 ;; FIXME:
-;;(req-package isearch
+;;(use-package isearch
 ;;  :bind-keymap
 ;;  (:map isearch-mode-map
 ;;        ("C-<backspace>" . isearch-del-char))
@@ -903,7 +904,7 @@
 ;;   save minibuffer history
 ;;
 
-(req-package savehist
+(use-package savehist
   :pin manual
   :demand t
   :config
@@ -917,7 +918,7 @@
 ;; ido
 ;;
 
-(req-package ido
+(use-package ido
   :pin manual
   :disabled
   ;;:demand t
@@ -953,7 +954,7 @@
 ;;
 ;; EditorConfig is awesome: http://EditorConfig.org
 ;;
-(req-package editorconfig
+(use-package editorconfig
   :load-path (elpagit "editorconfig")
   ;;:ensure t
   ;;:defer t
@@ -979,7 +980,7 @@
 ;; dtrt-indent guess indent
 ;;   https://github.com/jscheid/dtrt-indent
 ;;
-(req-package dtrt-indent
+(use-package dtrt-indent
   :load-path (elpagit "dtrt-indent")
   ;;:ensure t
   ;;:defer t
@@ -1337,7 +1338,7 @@ With argument, do this that many times."
 ;; sh
 ;;
 
-(req-package sh-script
+(use-package sh-script
   :pin manual
   :mode (("PKGBUILD" . sh-mode)))
 
@@ -1353,7 +1354,7 @@ With argument, do this that many times."
   (modify-syntax-entry ?= "." cmake-mode-syntax-table)
 )
 
-(req-package cmake-mode
+(use-package cmake-mode
   :load-path (elpagit "cmake-mode")
   :defer t
   :hook (cmake-mode . (lambda () (jo/tweak-cmake-mode-syntax-table)))
@@ -1365,7 +1366,7 @@ With argument, do this that many times."
 ;; markdown + gfm (github flavored markdown)
 ;;
 
-(req-package markdown-mode
+(use-package markdown-mode
   :load-path (elpagit "markdown-mode")
   :defer t
   :commands (markdown-mode gfm-mode)
@@ -1386,7 +1387,7 @@ With argument, do this that many times."
   ;;(setq-default markdown-command "multimarkdown --smart --notes")
   )
 
-;; (req-package flymd
+;; (use-package flymd
 ;;   :commands (flymd-flyit))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1395,7 +1396,7 @@ With argument, do this that many times."
 ;;   https://github.com/joostkremers/visual-fill-column
 ;;
 
-(req-package visual-fill-column
+(use-package visual-fill-column
   :load-path (elpagit "visual-fill-column")
   :disabled t
   :if window-system
@@ -1455,7 +1456,7 @@ With argument, do this that many times."
 ;; popwin
 ;;
 
-(req-package popwin
+(use-package popwin
   :load-path (elpagit "popwin")
   :disabled t
   :demand t
@@ -1498,7 +1499,7 @@ With argument, do this that many times."
 ;; expand region
 ;;
 
-(req-package expand-region
+(use-package expand-region
   :load-path (elpagit "expand-region")
   :bind* ("C-=" . er/expand-region)
   )
@@ -1545,7 +1546,7 @@ With argument, do this that many times."
 
 (add-hook 'sh-mode-hook 'jo/tweak-sh-mode-syntax-table)
 
-(req-package auto-highlight-symbol
+(use-package auto-highlight-symbol
   :load-path (elpagit "auto-highlight-symbol")
   :hook (prog-mode . auto-highlight-symbol-mode)
   :bind (:map auto-highlight-symbol-mode-map
@@ -1656,7 +1657,7 @@ With argument, do this that many times."
      ;; (member-init-intro 0) ;; indentation of ctor's initialisation li. st
      )))
 
-(req-package cc-mode
+(use-package cc-mode
   :pin manual
   :mode (("\\.cpp\\'" . c++-mode)
          ("\\.hpp\\'" . c++-mode)
@@ -1678,7 +1679,7 @@ With argument, do this that many times."
 ;; conf
 ;;
 
-(req-package conf-mode
+(use-package conf-mode
   :pin manual
   :defer t
   :mode (("\\.conf\\'" . conf-mode)
@@ -1693,7 +1694,7 @@ With argument, do this that many times."
          )
 )
 
-(req-package m4-mode
+(use-package m4-mode
   :pin manual
   :defer t
   :mode (("\\.if\\'" . m4-mode) ;; selinux
@@ -1706,7 +1707,7 @@ With argument, do this that many times."
 ;; lua
 ;;
 
-(req-package lua-mode
+(use-package lua-mode
   :load-path (elpagit "lua-mode")
   :defer t
   )
@@ -1716,7 +1717,7 @@ With argument, do this that many times."
 ;; ruby
 ;;
 
-(req-package ruby-mode
+(use-package ruby-mode
   :pin manual
   :defer t
   :config
@@ -1729,13 +1730,13 @@ With argument, do this that many times."
 ;; D
 ;;
 
-(req-package d-mode
+(use-package d-mode
   :load-path (elpagit "d-mode")
   :defer t ;; Fix :hook should have imply :defer, but didn't !?
   :hook (d-mode . (lambda () (jo/cc-mode) (flycheck-dmd-dub-set-variables)))
   )
 
-(req-package flycheck-dmd-dub
+(use-package flycheck-dmd-dub
   :load-path (elpagit "flycheck-dmd-dub")
   :defer t
   )
@@ -1746,7 +1747,7 @@ With argument, do this that many times."
 ;;
 
 ;; lisp-mode not a package anymore ?
-;; (req-package lisp-mode
+;; (use-package lisp-mode
 ;;   :pin manual
 ;; )
 
@@ -1755,7 +1756,7 @@ With argument, do this that many times."
 ;; flycheck
 ;;
 
-(req-package flycheck
+(use-package flycheck
   :load-path (elpagit "flycheck")
   :commands (flycheck-mode))
 
@@ -1765,7 +1766,7 @@ With argument, do this that many times."
 ;;   https://git.deparis.io/flycheck-grammalecte/about/
 ;;
 
-(req-package flycheck-grammalecte
+(use-package flycheck-grammalecte
   :load-path (elpagit "flycheck-grammalecte")
   :commands (jo/flycheck-grammalecte)
   :config
@@ -1884,7 +1885,7 @@ With argument, do this that many times."
 (add-to-list 'display-buffer-alist
              '("." nil (reusable-frames . t)))
 
-(req-package compile
+(use-package compile
   :pin manual
   :bind (("<f3>" . jo/compile)
          ("S-<f3>" . jo/compile-here)
@@ -1936,7 +1937,7 @@ With argument, do this that many times."
 ;; flyspell
 ;;
 
-(req-package flyspell
+(use-package flyspell
   :pin manual
   :defer t
   :hook ((prog-mode . (lambda () (flyspell-mode -1) (flyspell-prog-mode)))
@@ -1948,7 +1949,7 @@ With argument, do this that many times."
 ;; magit
 ;;
 
-(req-package magit
+(use-package magit
   :load-path (elpagit "magit")
   :commands (magit-repolist-here)
   :bind* (("C-x g" . magit-status-here)
@@ -2210,7 +2211,7 @@ many times might take a long time."
 ;; smerge
 ;;
 
-(req-package smerge-mode
+(use-package smerge-mode
   :pin manual
   :defer t
   :bind (:map smerge-basic-map
@@ -2228,7 +2229,7 @@ many times might take a long time."
 ;; diff
 ;;
 
-(req-package diff-mode
+(use-package diff-mode
   :pin manual
   :defer t
   :config
@@ -2253,7 +2254,7 @@ many times might take a long time."
 ;;
 ;; (works well with multiple-cursors)
 
-(req-package iy-go-to-char
+(use-package iy-go-to-char
   :load-path (elpagit "iy-go-to-char")
   :bind (("C-f C-f" . iy-go-up-to-char)
          ("C-f C-d" . iy-go-to-char-backward)
@@ -2274,7 +2275,7 @@ many times might take a long time."
 ;;   https://github.com/winterTTr/ace-jump-mode/
 ;;
 
-(req-package ace-jump-mode
+(use-package ace-jump-mode
   :load-path (elpagit "ace-jump-mode")
   :bind (;;("C-f <SPC>" . ace-jump-two-chars-word-mode)
          ;;("C-f <RET>" . ace-jump-line-mode)
@@ -2332,7 +2333,7 @@ many times might take a long time."
 ;;   https://github.com/magnars/multiple-cursors.el
 ;;
 
-(req-package multiple-cursors
+(use-package multiple-cursors
   :load-path (elpagit "multiple-cursors")
   :bind (("C-S-c C-S-c" . mc/edit-lines)
          ("C->" . mc/mark-next-like-this)
@@ -2349,7 +2350,7 @@ many times might take a long time."
 ;;   http://tuhdo.github.io/helm-intro.html
 ;;
 
-(req-package helm
+(use-package helm
   :load-path (elpagit "helm")
   :if jo/helm-or-ivy
   ;;:disabled
@@ -2556,7 +2557,7 @@ many times might take a long time."
   )
 
 ;; also see flyspell-correct-ivy
-(req-package flyspell-correct-helm
+(use-package flyspell-correct-helm
   :load-path (elpagit "flyspell-correct")
   :if jo/helm-or-ivy
   :bind (:map flyspell-mode-map
@@ -2568,18 +2569,18 @@ many times might take a long time."
   )
 
 ;; helm dash (dash documentation sets)
-(req-package helm-dash
+(use-package helm-dash
   :load-path (elpagit "helm-dash")
   ;;:disabled
   ;;:disabled t
   :defer t)
 
-(req-package flx
+(use-package flx
   :load-path (elpagit "flx")
   ;;:disabled t
   :defer t)
 
-(req-package helm-flx
+(use-package helm-flx
   :load-path (elpagit "helm-flx")
   ;;:disabled t
   ;; :require flx
@@ -2595,7 +2596,7 @@ many times might take a long time."
 ;;    https://github.com/jacktasia/dumb-jump
 ;;
 
-(req-package dumb-jump
+(use-package dumb-jump
   :load-path (elpagit "dumb-jump")
   :defer t
   :after helm
@@ -2612,12 +2613,12 @@ many times might take a long time."
 ;;
 
 ;; for ivy--regex-fuzzy sorting
-;; (req-package flx
+;; (use-package flx
 ;;   :load-path (elpagit "flx")
 ;;   :if (not jo/helm-or-ivy)
 ;;   :defer t)
 
-(req-package ivy
+(use-package ivy
   :load-path (elpagit "swiper")
   :if (not jo/helm-or-ivy)
   :demand
@@ -2669,7 +2670,7 @@ many times might take a long time."
   (ivy-mode 1)
   )
 
-(req-package counsel
+(use-package counsel
   :load-path (elpagit "swiper")
   :if (not jo/helm-or-ivy)
   :demand
@@ -2684,7 +2685,7 @@ many times might take a long time."
   (counsel-mode 1)
   )
 
-(req-package swiper
+(use-package swiper
   :load-path (elpagit "swiper")
   :if (not jo/helm-or-ivy)
   :defer
@@ -2693,7 +2694,7 @@ many times might take a long time."
 )
 
 ;; also see flyspell-correct-helm
-(req-package flyspell-correct-ivy
+(use-package flyspell-correct-ivy
   :load-path (elpagit "flyspell-correct")
   :if (not jo/helm-or-ivy)
   :bind (:map flyspell-mode-map
@@ -2704,11 +2705,11 @@ many times might take a long time."
   (setq-default flyspell-correct-interface #'flyspell-correct-ivy))
 
 ;; https://github.com/Yevgnen/ivy-rich
-(req-package ivy-rich
+(use-package ivy-rich
   :load-path (elpagit "ivy-rich")
   :if (not jo/helm-or-ivy)
   ;;:demand
-  :require ivy
+  :after ivy
   :config
   (ivy-rich-mode 1)
   )
@@ -2719,7 +2720,7 @@ many times might take a long time."
 ;;   write in grep buffers C-c C-p
 ;;
 
-(req-package grep
+(use-package grep
   :pin manual
   :config
   (setq-default
@@ -2730,12 +2731,12 @@ many times might take a long time."
 
 ;; @FIXME why wgrep gets loaded when helm is loaded (eg on M-x)
 
-(req-package wgrep
+(use-package wgrep
   :load-path (elpagit "wgrep")
   :commands (wgrep-change-to-wgrep-mode)
   )
 
-(req-package wgrep-helm
+(use-package wgrep-helm
   :load-path (elpagit "wgrep")
   :if jo/helm-or-ivy
   :commands (wgrep-change-to-wgrep-mode)
@@ -2778,7 +2779,7 @@ many times might take a long time."
   (interactive)
   (dired-sort-other (concat dired-listing-switches "")))
 
-(req-package dired-k
+(use-package dired-k
   :load-path (elpagit "dired-k")
   :disabled
   :hook ((dired-initial-position . dired-k)
@@ -2800,7 +2801,7 @@ many times might take a long time."
 ;;   same with dired mode
 ;;
 
-(req-package diff-hl
+(use-package diff-hl
   :load-path (elpagit "diff-hl")
   ;:disabled
   :if window-system
@@ -2828,7 +2829,7 @@ many times might take a long time."
   (diff-hl-flydiff-mode t)
 )
 
-(req-package git-gutter-fringe
+(use-package git-gutter-fringe
   :pin manual
   :disabled
   :if window-system
@@ -2893,7 +2894,7 @@ many times might take a long time."
   (global-git-gutter-mode)
 )
 
-;; (req-package git-gutter-fringe+
+;; (use-package git-gutter-fringe+
 ;;   :disabled
 ;;   :if window-system
 ;;   :demand
@@ -2970,7 +2971,7 @@ many times might take a long time."
 
 (add-to-list 'load-path my-rtags-path)
 
-(req-package rtags
+(use-package rtags
   :if (file-exists-p (concat my-rtags-path "/rtags.el"))
   :load-path my-rtags-path
   :commands (rtags-diagnostics)
@@ -3024,7 +3025,7 @@ many times might take a long time."
 ;; discover-my-major
 ;;
 
-(req-package discover-my-major
+(use-package discover-my-major
   :load-path (elpagit "discover-my-major")
   :commands (discover-my-major))
 
@@ -3033,7 +3034,7 @@ many times might take a long time."
 ;; yasnippet
 ;;
 
-(req-package yasnippet
+(use-package yasnippet
   :load-path (elpagit "yasnippet")
   :hook (c-mode-common . yas-minor-mode) ;; NOTE: cc-mode-hook does not work, c-mode-common-hook do.
   :config
@@ -3046,7 +3047,7 @@ many times might take a long time."
 ;; rainbow-mode
 ;;
 
-(req-package rainbow-mode
+(use-package rainbow-mode
   :load-path (elpagit "rainbow-mode")
   :commands (rainbow-mode)
   :config
@@ -3067,7 +3068,7 @@ many times might take a long time."
 ;; up: C-M--
 ;; down :C-M-=
 
-(req-package centered-cursor-mode
+(use-package centered-cursor-mode
   :load-path (elpagit "centered-cursor-mode")
   :commands (centered-cursor-mode global-centered-cursor-mode))
 
@@ -3076,7 +3077,7 @@ many times might take a long time."
 ;; org-mode
 ;;
 
-(req-package org
+(use-package org
   :pin manual
   :defer t
   :hook (org-mode . (lambda ()
@@ -3115,11 +3116,11 @@ many times might take a long time."
 
   )
 
-(req-package htmlize
+(use-package htmlize
   :load-path (elpagit "htmlize")
   :defer t)
 
-(req-package org-bullets
+(use-package org-bullets
   :load-path (elpagit "org-bullets")
   :defer t)
 
@@ -3130,7 +3131,7 @@ many times might take a long time."
 ;; - plot org-mode tables
 ;;
 
-(req-package gnuplot
+(use-package gnuplot
   :load-path (elpagit "gnuplot")
   :defer t
   )
@@ -3140,7 +3141,7 @@ many times might take a long time."
 ;; disaster
 ;;
 
-(req-package disaster
+(use-package disaster
   :load-path (elpagit "disaster")
   :commands (disaster)
 )
@@ -3150,7 +3151,7 @@ many times might take a long time."
 ;; demangle mode
 ;;
 
-(req-package demangle-mode
+(use-package demangle-mode
   :load-path (elpagit "demangle-mode")
   :commands (demangle-mode))
 
@@ -3159,7 +3160,7 @@ many times might take a long time."
 ;; html
 ;;
 
-(req-package sgml-mode
+(use-package sgml-mode
   :pin manual
   :defer t
   )
@@ -3184,7 +3185,7 @@ many times might take a long time."
         )
 )
 
-(req-package asm-mode
+(use-package asm-mode
   :pin manual
   :defer t
   :commands (asm-mode)
@@ -3196,7 +3197,7 @@ many times might take a long time."
 ;; Dockerfile
 ;;
 
-(req-package dockerfile-mode
+(use-package dockerfile-mode
   :load-path (elpagit "dockerfile-mode")
   :defer t
   )
@@ -3208,7 +3209,7 @@ many times might take a long time."
 ;;
 
 ;; https://github.com/rust-lang/rust-mode
-(req-package rust-mode
+(use-package rust-mode
   :load-path (elpagit "rust-mode")
   :defer t
   :bind (:map rust-mode-map
@@ -3218,20 +3219,20 @@ many times might take a long time."
   )
 
 ;; https://github.com/kwrooijen/cargo.el
-(req-package cargo
+(use-package cargo
   :load-path (elpagit "cargo")
   :defer t
   )
 
 ;; https://github.com/flycheck/flycheck-rust
-(req-package flycheck-rust
+(use-package flycheck-rust
   :load-path (elpagit "flycheck-rust")
   :defer t
   :hook (flycheck-mode . (lambda () (if (eq major-mode 'rust-mode) (flycheck-rust-setup))))
   )
 
 ;; https://github.com/racer-rust/emacs-racer
-(req-package racer
+(use-package racer
   :load-path (elpagit "racer")
   ;;:disabled t
   :defer t
@@ -3242,7 +3243,7 @@ many times might take a long time."
   )
 
 ;; https://github.com/flycheck/flycheck-inline
-(req-package flycheck-inline
+(use-package flycheck-inline
   :load-path (elpagit "flycheck-inline")
   :defer t
   )
@@ -3252,7 +3253,7 @@ many times might take a long time."
 ;; Golang
 ;;
 
-(req-package go-mode
+(use-package go-mode
   :load-path (elpagit "go-mode")
   :defer t
   :bind (:map go-mode-map
@@ -3265,7 +3266,7 @@ many times might take a long time."
 ;; php
 ;;
 
-(req-package php-mode
+(use-package php-mode
   :load-path (elpagit "php-mode")
   :defer t
   )
@@ -3275,7 +3276,7 @@ many times might take a long time."
 ;; yaml
 ;;
 
-(req-package yaml-mode
+(use-package yaml-mode
   :load-path (elpagit "yaml-mode")
   :defer t
   )
@@ -3285,7 +3286,7 @@ many times might take a long time."
 ;; pdf-tools
 ;;
 
-(req-package pdf-tools
+(use-package pdf-tools
   :load-path (elpagit "pdf-tools")
   :disabled t
   :if (file-exists-p "~/documents/clones/pdf-tools/server/epdfinfo")
@@ -3335,4 +3336,3 @@ many times might take a long time."
 ;;
 ;;
 
-(req-package-finish)
