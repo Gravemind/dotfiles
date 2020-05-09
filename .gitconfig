@@ -211,6 +211,10 @@
 	algorithm = patience
 	#algorithm = histogram
 
+[user]
+	# Do not guess user/email, always use config, fail if there is none.
+	useconfigonly = true
+
 [core]
 	# default:
 	#whitespace = blank-at-eol,blank-at-eof,space-before-tab
