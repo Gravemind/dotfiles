@@ -27,11 +27,13 @@ DEFCOMPILE	+= cargo
 DEFCOMPILE	+= centered-cursor-mode
 DEFCOMPILE	+= cmake-mode
 DEFCOMPILE	+= dash
+DEFCOMPILE_dash = dash.el
 DEFCOMPILE	+= demangle-mode
 DEFCOMPILE	+= diff-hl
 DEFCOMPILE	+= diminish
 # DEFMAKE	+= dired-k			# no compile
 DEFCOMPILE	+= dired-k
+DEFCOMPILE_dired-k = dired-k.el
 DEFMAKE		+= disaster
 # DEFMAKE	+= discover-my-major	# no compile
 DEFCOMPILE	+= discover-my-major
@@ -40,6 +42,7 @@ DEFCOMPILE	+= dockerfile-mode
 DEFCOMPILE	+= dtrt-indent
 DEFMAKE		+= editorconfig
 DEFCOMPILE	+= el-get
+DEFCOMPILE_el-get = *.el
 DEFMAKE		+= epl
 DEFCOMPILE	+= expand-region
 DEFMAKE		+= f
@@ -51,6 +54,7 @@ DEFCOMPILE	+= flycheck-inline
 # DEFMAKE	+= flycheck-rust		# no compile
 DEFCOMPILE	+= flycheck-rust
 DEFCOMPILE	+= flyspell-correct
+DEFCOMPILE_flyspell-correct = flyspell-correct.el flyspell-correct-helm.el
 DEFCOMPILE	+= gnuplot
 DEFCOMPILE	+= gnuplot-mode
 DEFCOMPILE	+= go-mode
@@ -70,6 +74,7 @@ DEFMAKE		+= magit
 DEFCOMPILE	+= makey
 DEFMAKE		+= markdown-mode
 DEFCOMPILE	+= multiple-cursors
+DEFCOMPILE_multiple-cursors	= *.el
 DEFMAKE		+= php-mode
 # DEFMAKE	+= pkg-info			# FIXME: CASK not overidable
 DEFCOMPILE	+= pkg-info
@@ -97,6 +102,21 @@ DEFCOMPILE	+= helm-flx
 DEFCOMPILE	+= undo-tree
 DEFCOMPILE	+= org-bullets
 DEFCOMPILE	+= flycheck-grammalecte
+DEFCOMPILE  += emacs-which-key
+DEFCOMPILE  += key-chord
+DEFCOMPILE  += better-jumper
+
+DEFCOMPILE  += evil
+DEFCOMPILE  += annalist
+DEFCOMPILE_annalist = annalist.el
+DEFCOMPILE  += evil-collection
+DEFCOMPILE_evil-collection = *.el modes/*/*.el
+DEFCOMPILE  += goto-chg
+DEFCOMPILE  += evil-magit
+DEFCOMPILE_evil-magit = evil-magit.el
+DEFCOMPILE  += evil-nerd-commenter
+DEFCOMPILE  += evil-surround
+DEFCOMPILE  += evil-lion
 
 all:	${DEFCOMPILE} ${DEFMAKE} ${NODEF}
 .PHONY: all
@@ -160,7 +180,21 @@ dumb-jump: helm
 
 helm-flx: helm flx
 
+flyspell-correct: helm
+
 magit: transient dash with-editor
+
+evil-collection: evil f annalist
+
+goto-chg: undo-tree
+
+evil-magit: evil magit
+
+evil-nerd-commenter: evil
+
+evil-surround: evil
+
+evil-lion: evil
 
 #
 # Default rules
