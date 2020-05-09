@@ -231,3 +231,36 @@
 [submodule ".emacs.d/elpa-git/flycheck-grammalecte"]
 	path = .my.emacs.d/elpa-git/flycheck-grammalecte
 	url = https://github.com/milouse/flycheck-grammalecte.git
+[submodule ".my.emacs.d/elpa-git/evil"]
+	path = .my.emacs.d/elpa-git/evil
+	url = https://github.com/emacs-evil/evil.git
+[submodule ".my.emacs.d/elpa-git/evil-collection"]
+	path = .my.emacs.d/elpa-git/evil-collection
+	url = https://github.com/emacs-evil/evil-collection.git
+[submodule ".my.emacs.d/elpa-git/emacs-which-key"]
+	path = .my.emacs.d/elpa-git/emacs-which-key
+	url = https://github.com/justbur/emacs-which-key.git
+[submodule ".my.emacs.d/elpa-git/goto-chg"]
+	path = .my.emacs.d/elpa-git/goto-chg
+	url = https://github.com/emacs-evil/goto-chg.git
+[submodule ".my.emacs.d/elpa-git/evil-magit"]
+	path = .my.emacs.d/elpa-git/evil-magit
+	url = https://github.com/emacs-evil/evil-magit.git
+[submodule ".my.emacs.d/elpa-git/key-chord"]
+	path = .my.emacs.d/elpa-git/key-chord
+	url = https://github.com/emacsorphanage/key-chord.git
+[submodule ".my.emacs.d/elpa-git/evil-nerd-commenter"]
+	path = .my.emacs.d/elpa-git/evil-nerd-commenter
+	url = https://github.com/redguardtoo/evil-nerd-commenter.git
+[submodule ".my.emacs.d/elpa-git/evil-surround"]
+	path = .my.emacs.d/elpa-git/evil-surround
+	url = https://github.com/emacs-evil/evil-surround.git
+[submodule ".my.emacs.d/elpa-git/annalist"]
+	path = .my.emacs.d/elpa-git/annalist
+	url = https://github.com/noctuid/annalist.el.git
+[submodule ".my.emacs.d/elpa-git/better-jumper"]
+	path = .my.emacs.d/elpa-git/better-jumper
+	url = https://github.com/gilbertw1/better-jumper.git
+[submodule ".my.emacs.d/elpa-git/evil-lion"]
+	path = .my.emacs.d/elpa-git/evil-lion
+	url = https://github.com/edkolev/evil-lion.git
