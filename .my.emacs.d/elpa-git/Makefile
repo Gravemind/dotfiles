@@ -17,6 +17,7 @@ export BUILD_MAGIT_LIBGIT
 LOAD_PATHS_EL=load-paths.el
 AUTOLOADS_EL=autoloads.el
 
+.ONESHELL: # Make each rules executed within one shell instance
 SHELL=bash
 
 DEFCOMPILE	+= ace-jump-mode
@@ -97,13 +98,15 @@ DEFCOMPILE	+= undo-tree
 DEFCOMPILE	+= org-bullets
 DEFCOMPILE	+= flycheck-grammalecte
 
-all:	${LOAD_PATHS_EL} ${DEFCOMPILE} ${DEFMAKE} ${AUTOLOADS_EL} ${NODEF}
+all:	${DEFCOMPILE} ${DEFMAKE} ${NODEF}
 .PHONY: all
 
 gen:	${LOAD_PATHS_EL} ${AUTOLOADS_EL}
+.PHONY: gen
 
 fclean:
 	@echo -e "\n-------- fclean --------\n"
+	set -x
 	find . -name "*.elc" -print -delete
 	rm -f ${LOAD_PATHS_EL}
 	rm -f ${AUTOLOADS_EL}
@@ -111,28 +114,41 @@ fclean:
 
 ${LOAD_PATHS_EL}:
 	@echo -e "\n-------- generate $@ --------\n"
-	@echo ';; Generated' > ${LOAD_PATHS_EL}
-	@echo '(setq load-path (nconc load-path (list' >> ${LOAD_PATHS_EL}
-	@echo "\"${ELPAGIT}\"" >> ${LOAD_PATHS_EL}
-	@for p in ${LISP_DIRS} ; do \
-		echo "\"${ELPAGIT}/$$p\""; \
+	echo ';; Generated' > ${LOAD_PATHS_EL}
+	echo '(setq load-path (nconc load-path (list' >> ${LOAD_PATHS_EL}
+	echo "\"${ELPAGIT}\"" >> ${LOAD_PATHS_EL}
+	for p in ${LISP_DIRS}
+	do
+		echo "\"${ELPAGIT}/$$p\""
 	done >> ${LOAD_PATHS_EL}
-	@echo ')))' >> ${LOAD_PATHS_EL}
-	@echo "Generated ${LOAD_PATHS_EL}"
+	echo ')))' >> ${LOAD_PATHS_EL}
+	echo "Generated ${LOAD_PATHS_EL}"
 .PHONY: ${LOAD_PATHS_EL}
 
 ${AUTOLOADS_EL}:
 	@echo -e "\n-------- generate $@ --------\n"
+	set -x
 	emacs -Q -batch --eval "(progn (setq generated-autoload-file (expand-file-name \"$@\" \".\")) \
 	 (setq backup-inhibited t) (apply 'update-directory-autoloads (split-string \"${EMACSLOADPATH}\" \":\")))"
 .PHONY: ${AUTOLOADS_EL}
 
 info:
-	@echo EMACSLOADPATH=\"${EMACSLOADPATH}\"
+	@echo
+	echo EMACSLOADPATH=\"${EMACSLOADPATH}\"
+	echo DEFCOMPILE: ${DEFCOMPILE}
+	echo DEFMAKE: ${DEFMAKE}
+	echo NODEF: ${NODEF}
+	echo
+
 .PHONY: info
+
+#
+# Custom rules
+#
 
 helm: async popup
 	@echo -e "\n-------- $@ (custom) --------\n"
+	set -x
 	make -C $@ clean
 	make -C $@
 .PHONY: helm
@@ -146,27 +162,30 @@ helm-flx: helm flx
 
 magit: transient dash with-editor
 
+#
+# Default rules
+#
+
 ${DEFMAKE}:
-	@echo -e "\n-------- $@ (make) --------\n"
+	echo -e "\n-------- $@ (make) --------\n"
 	make -C $@ clean || make -C $@ clean-elc || { echo -e "\nNO MAKE CLEAN for $@, manual clean\n" ; find $@ -name '*.elc' -delete; }
 	make -C $@ lisp || make -C $@ batch-compile || make -C $@ compile || make -C $@
 .PHONY: ${DEFMAKE}
 
+#.SHELLFLAGS = -x -c
 ${DEFCOMPILE}:
-	@echo -e "\n-------- $@ (batch compile) --------\n"
-	find $@ -type f -name "$@*.elc" -delete
-	find $@ -type f -name "$@*.el" -and -not -ipath '*/*test*/*' -print | \
-		xargs emacs -Q -batch -L $@ -f batch-byte-compile \
-		|| { echo -e "\nerror: Batch compile $@ FAILED\n"; }
+	echo -e "\n-------- $@ (batch compile) --------\n"
+	set -eo pipefail
+	cd $@
+	find . -type f -name "$@*.elc" -delete
+	files=( $(DEFCOMPILE_$@) )
+	[[ $${#files[@]} -gt 0 ]] || files=( $$( find . -type f -name '*.el' -not -name '.*' -not -ipath '*test*' ) )
+	[[ $${#files[@]} -gt 0 ]] || { echo -e '\nerror: $@: no files found to batch compile\n' >&2 ; exit 1; }
+	( IFS=$$'\n' ; echo "$${files[*]}" ) | xargs -t emacs -Q -batch -L $@ -f batch-byte-compile || \
+		{ echo -e '\nerror: $@: batch compile failed\n' >&2 ; exit 1; }
 .PHONY: ${DEFCOMPILE}
 
-# 	@for p in ${LISP_DIRS} ; do \
-# 		pushd "$$p"; \
-# 		echo -e "\n-------- AUTOLOADS $$p --------\n"; \
-# 		emacs -Q -batch --eval "(progn (setq generated-autoload-file (expand-file-name \"helm-autoloads.el\" \".\")) \
-# (setq backup-inhibited t) (update-directory-autoloads \".\"))"; \
-# 		popd; \
-# 	done
+.PHONY: ${NODEF}
 
 fetch:
 	( cd cmake-mode ; ./fetch.sh )
