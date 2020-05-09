@@ -33,7 +33,8 @@ function rmstar() {
 	echo
 	for dir in "${dirs[@]}"; do
 		echo -n "$dir/* ... "
-		find "$dir" -mindepth 1 -maxdepth 1 -print0 | xargs -0 rm -rf && echo -n "deleted." || echo -n "FAILED!"
+		# `find -delete` is supposedly faster than `rm -rf` for networked fs
+		find "$dir" -mindepth 1 -delete && echo -n "deleted." || echo -n "FAILED!"
 		echo
 	done
 }
