@@ -12,17 +12,18 @@ main() {
         nv_update_pties
         echo -en "\0active\x1f4\n"
         true &&
-            entry_mode "$i" " Game:   VSync + VRR + Indicators" 1 1 1 &&
-            entry_mode "$i" " VRR:    VSync + VRR" 1 1 0 &&
-            entry_mode "$i" " VSync:  VSync" 1 0 0 &&
-            entry_mode "$i" " Unsync: -" 0 0 0 &&
+            entry_mode "$i" " Sync:        VSync" 1 0 0 &&
+            entry_mode "$i" " Game VRR:    VSync + VRR + Indicators" 1 1 1 &&
+            entry_mode "$i" " Game Sync:   VSync + Indicators" 0 1 0 &&
+            entry_mode "$i" " Game Unsync: Indicators" 0 0 1 &&
             #entry_comm "$i" "--" &&
-            entry_gsync "$i" &&
-            entry_prop "$i" AllowVRR &&
             entry_prop "$i" AllowFlipping &&
             entry_prop "$i" SyncToVBlank &&
+            entry_prop "$i" AllowVRR &&
+            entry_gsync "$i" &&
             entry_prop "$i" ShowGraphicsVisualIndicator &&
-            entry_prop "$i" ShowVRRVisualIndicator
+            entry_prop "$i" ShowVRRVisualIndicator &&
+            true
         i=""
     done
 }
@@ -30,9 +31,13 @@ main() {
 entry_mode() {
     local input="$1"
     local entry="$2"
+
     local vsync="$3"
     local vrr="$4"
     local ind="$5"
+
+    local flip="1" # always allow flipping !?
+
     if [[ -z "$input" ]]; then
        echo "$entry"
     elif [[ "$input" = "$entry" ]]; then
@@ -43,7 +48,7 @@ entry_mode() {
         fi
         nv_set AllowVRR $vrr
 
-        nv_set AllowFlipping $vsync
+        nv_set AllowFlipping $flip
         nv_set SyncToVBlank $vsync
 
         nv_set ShowGraphicsVisualIndicator $ind
