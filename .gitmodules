@@ -264,3 +264,6 @@
 [submodule ".my.emacs.d/elpa-git/evil-lion"]
 	path = .my.emacs.d/elpa-git/evil-lion
 	url = https://github.com/edkolev/evil-lion.git
+[submodule ".my.emacs.d/elpa-git/projectile"]
+	path = .my.emacs.d/elpa-git/projectile
+	url = https://github.com/bbatsov/projectile.git
