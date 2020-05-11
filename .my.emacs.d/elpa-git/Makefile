@@ -61,6 +61,8 @@ DEFCOMPILE	+= go-mode
 NODEF		+= helm
 #DEFMAKE	+= helm
 DEFCOMPILE	+= helm-dash
+DEFCOMPILE	+= helm-flx
+NODEF       += helm-rg
 DEFMAKE		+= history
 DEFMAKE		+= ht
 DEFCOMPILE	+= htmlize
@@ -98,13 +100,13 @@ DEFCOMPILE	+= yasnippet
 DEFCOMPILE	+= zoom
 DEFMAKE		+= yaml-mode
 NODEF		+= dumb-jump
-DEFCOMPILE	+= helm-flx
 DEFCOMPILE	+= undo-tree
 DEFCOMPILE	+= org-bullets
 DEFCOMPILE	+= flycheck-grammalecte
 DEFCOMPILE  += emacs-which-key
 DEFCOMPILE  += key-chord
 DEFCOMPILE  += better-jumper
+DEFCOMPILE  += projectile
 
 DEFCOMPILE  += evil
 DEFCOMPILE  += annalist
@@ -123,6 +125,7 @@ all:	${DEFCOMPILE} ${DEFMAKE} ${NODEF}
 
 gen:	${LOAD_PATHS_EL} ${AUTOLOADS_EL}
 .PHONY: gen
+
 
 fclean:
 	@echo -e "\n-------- fclean --------\n"
@@ -180,6 +183,12 @@ dumb-jump: helm
 
 helm-flx: helm flx
 
+helm-rg: helm
+	@echo -e "\n-------- $@ (custom) --------\n"
+	set -x
+	make -C $@ clean
+	make -C $@ compile-all
+
 flyspell-correct: helm
 
 magit: transient dash with-editor
@@ -215,7 +224,7 @@ ${DEFCOMPILE}:
 	files=( $(DEFCOMPILE_$@) )
 	[[ $${#files[@]} -gt 0 ]] || files=( $$( find . -type f -name '*.el' -not -name '.*' -not -ipath '*test*' ) )
 	[[ $${#files[@]} -gt 0 ]] || { echo -e '\nerror: $@: no files found to batch compile\n' >&2 ; exit 1; }
-	( IFS=$$'\n' ; echo "$${files[*]}" ) | xargs -t emacs -Q -batch -L $@ -f batch-byte-compile || \
+	( IFS=$$'\n' ; echo "$${files[*]}" ) | xargs -t emacs -Q -batch -f batch-byte-compile || \
 		{ echo -e '\nerror: $@: batch compile failed\n' >&2 ; exit 1; }
 .PHONY: ${DEFCOMPILE}
 
