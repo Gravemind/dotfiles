@@ -270,3 +270,6 @@
 [submodule ".my.emacs.d/elpa-git/helm-rg"]
 	path = .my.emacs.d/elpa-git/helm-rg
 	url = https://github.com/cosmicexplorer/helm-rg.git
+[submodule ".my.emacs.d/elpa-git/evil-indent-plus"]
+	path = .my.emacs.d/elpa-git/evil-indent-plus
+	url = https://github.com/TheBB/evil-indent-plus.git

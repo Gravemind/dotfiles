@@ -119,6 +119,7 @@ DEFCOMPILE_evil-magit = evil-magit.el
 DEFCOMPILE  += evil-nerd-commenter
 DEFCOMPILE  += evil-surround
 DEFCOMPILE  += evil-lion
+DEFCOMPILE  += evil-indent-plus
 
 all:	${DEFCOMPILE} ${DEFMAKE} ${NODEF}
 .PHONY: all
@@ -193,31 +194,29 @@ flyspell-correct: helm
 
 magit: transient dash with-editor
 
-evil-collection: evil f annalist
+evil: goto-chg undo-tree
+
+evil-*: evil
+
+evil-collection: f annalist
+
+evil-magit: magit
 
 goto-chg: undo-tree
-
-evil-magit: evil magit
-
-evil-nerd-commenter: evil
-
-evil-surround: evil
-
-evil-lion: evil
 
 #
 # Default rules
 #
 
 ${DEFMAKE}:
-	echo -e "\n-------- $@ (make) --------\n"
+	@echo -e "\n-------- $@ (make) --------\n"
 	make -C $@ clean || make -C $@ clean-elc || { echo -e "\nNO MAKE CLEAN for $@, manual clean\n" ; find $@ -name '*.elc' -delete; }
 	make -C $@ lisp || make -C $@ batch-compile || make -C $@ compile || make -C $@
 .PHONY: ${DEFMAKE}
 
 #.SHELLFLAGS = -x -c
 ${DEFCOMPILE}:
-	echo -e "\n-------- $@ (batch compile) --------\n"
+	@echo -e "\n-------- $@ (batch compile) --------\n"
 	set -eo pipefail
 	cd $@
 	find . -type f -name "$@*.elc" -delete
