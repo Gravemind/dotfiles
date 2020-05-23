@@ -138,11 +138,11 @@ determine the exact padding."
 
   ;; --- extra faces ------------------------
   (
-   (fringe :background bg-alt :foreground base4)
-   (solaire-fringe-face :background bg-alt)
+   ;;(fringe :background bg-alt :foreground base4)
+   ;;(solaire-fringe-face :background bg-alt)
 
    ;; "Disable" hl-line
-   (hl-line :background nil)
+   ;;(hl-line :background nil)
 
    ((diff-removed &override) :inherit nil :foreground -autumn-del :background nil)
    ((diff-added &override) :inherit nil :foreground -autumn-add :background nil)

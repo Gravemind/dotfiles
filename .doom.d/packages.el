@@ -69,3 +69,9 @@
 (package! rtags-xref :recipe `(:local-repo ,my-rtags-path :files ("src/rtags-xref.el")))
 (package! helm-rtags :recipe `(:local-repo ,my-rtags-path :files ("src/helm-rtags.el")))
 (package! ivy-rtags  :recipe `(:local-repo ,my-rtags-path :files ("src/ivy-rtags.el")))
+
+;;(package! solaire :disabled t)
+;;(package! solaire :disabled t)
+;;(disable-packages! hl-line solaire)
+
+(disable-packages! irony)

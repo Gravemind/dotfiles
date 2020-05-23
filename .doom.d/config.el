@@ -1,5 +1,13 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+;;
+;; TODO:
+;;
+;; - disable +cc-fontify-constants-h
+;; - disable rainbow-delimiter
+;; - fringe width
+;;
+
 ;; (setq debug-on-error t)
 
 ;; GC only after every `gc-cons-threshold` new bytes has been allocated
@@ -34,6 +42,7 @@
 ;; `load-theme' function. This is the default:
 (setq
  ;; doom-theme 'doom-one
+ ;; doom-theme 'doom-one-light
  ;; doom-theme 'doom-tomorrow-night
  doom-theme 'doom-autumn
  custom-theme-directory "/home/jo/.doom.d/doom-themes/" ;; (concat doom-private-dir "themes/")
@@ -71,7 +80,8 @@
 
  +cc-default-header-file-mode 'c++-mode
 
- )
+ confirm-kill-emacs nil
+)
 
 (setq
  scroll-step 20
@@ -224,6 +234,10 @@
    transient-default-level 7
    ;; Highlight switches mismatching their true CLI switch
    transient-highlight-mismatched-keys t
+
+   ;; Magit-status jumps directly to current hunk
+   magit-status-goto-file-position t
+
    )
 
   ;;(add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell)
@@ -514,6 +528,10 @@ many times might take a long time."
 ;;   :config (helm-flx-mode +1))
 
 (use-package! helm
+  :bind (
+         :map helm-map
+              ("M-j" . helm-yank-text-at-point) ;; same as in ivy
+              )
   ;; :bind (:map helm-find-files-map
   ;;         ("C-<backspace>" . helm-find-files-up-one-level))
   ;;:require helm-flx
@@ -573,6 +591,22 @@ many times might take a long time."
 
   )
 
+(after! helm
+  (map! :map helm-find-files-map
+        "C-<backspace>" #'helm-find-files-up-one-level))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; rtags
+;; 
+
+(defun +cc-init-rtags-maybe-h ()
+    "Start an rtags server in c-mode and c++-mode buffers.
+If rtags or rdm aren't available, fail silently instead of throwing a breaking error."
+    (and (require 'rtags nil t)
+         (rtags-executable-find rtags-rdm-binary-name)
+         (rtags-start-process-unless-running)))
+
 (after! rtags
   (map!
    :map c-mode-base-map
@@ -583,16 +617,15 @@ many times might take a long time."
       "v" #'rtags-find-virtuals-at-point
       )
    )
-  ))
+  )
 
-(after! helm
-  (map! :map helm-find-files-map
-        "C-<backspace>" #'helm-find-files-up-one-level))
+  ;; Don't auto start rtags
+  (advice-add '+cc-init-rtags-maybe-h :override
+              (lambda () (and (require 'rtags nil t) (rtags-executable-find rtags-rdm-binary-name)))
+              )
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;; rtags
-;; 
+
+  )
 
 (use-package! rtags-xref
   :disabled t

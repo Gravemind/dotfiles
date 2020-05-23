@@ -96,6 +96,7 @@ Note: =C-h= prefix is also bound to =SPC h=
 | =B= or ={= or =}= | "{}" block (as in =[{= block)                                             |
 | =<= or =>=        | "<>" block                                                                |
 | =[= or =]=        | "[]" block                                                                |
+| =f=               | "function" block                                                          |
 |                   |                                                                           |
 
 | surround                      |                                                   |
