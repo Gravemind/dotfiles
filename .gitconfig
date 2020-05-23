@@ -117,6 +117,8 @@
 	# pretty reflog
 	# (--date here will make it print reflog@{date} instead of reflog@{num})
 	rl  = log --pretty=myreflog --walk-reflogs --date=auto:relative
+	# pretty reflog, show "ref@{Nth}" instead of "ref@{date}"
+	rli  = log --pretty=myreflog --walk-reflogs
 
 	# Fuller show
 	showf = show --format=fuller
