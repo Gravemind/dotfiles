@@ -1,0 +1,207 @@
+
+* My Evil Emacs
+
+Personal emacs config.
+
+Links, acknowledgments, and inspirations (from more recent to oldest):
+
+- Doom Emacs: https://github.com/hlissner/doom-emacs: the configuration that made switch to evil bindings! it's that
+  good! But due to the IKEA effect, I couldn't drop my old config.
+- use-package: https://github.com/jwiegley/use-package: a must-have for any clean and fast package management.
+- req-packages's conf: https://github.com/edvorg/emacs-configs
+- pretty org-mode conf: https://github.com/seth/my-emacs-dot-d/blob/master/emacs-init.org
+- req-package org-mode conf: https://github.com/ljos/.emacs.d/blob/master/configuration.org
+
+* TODO
+
+- cc-mode c-style
+- modern c++ mode
+- better jumper
+
+- https://github.com/Alexander-Miller/treemacs
+  + https://github.com/yyoncho/helm-treemacs-icons
+
+* evil binding cheat sheet
+
+| undo redo     |                                        |
+|---------------+----------------------------------------|
+| =u=           | undo previous action                   |
+| =C-r=         | redo previous undo                     |
+| =.=           | redo previous action                   |
+|               |                                        |
+| =g ;= / =g ,= | go to previous/next change location    |
+| =C-o= / =C-i= | move the previous/next cursor position |
+|               |                                        |
+| =g i=         | resume insert                          |
+| =g v=         | resume visual                          |
+|               |                                        |
+| =C-h k=       | describe key                           |
+| =C-h v=       | describe variable                      |
+| =C-h f=       | describe function                      |
+| =C-h F=       | describe face                          |
+| =C-h '=       | describe char                          |
+|               |                                        |
+| =C-h b b=     | describe bindings                      |
+| =C-h b t=     | show top level bindings (which-key)    |
+|               |                                        |
+
+Note: =C-h= prefix is also bound to =SPC h=
+
+| motion                                |                                                                                    |
+|---------------------------------------+------------------------------------------------------------------------------------|
+| =w= / =b=                             | move to the start of the next/previous word                                        |
+| =e= / =g e=                           | move to the end of the next/previous word                                          |
+| =W=, =B=, =E=, =g E=                  | variants using space-separated words                                               |
+|                                       |                                                                                    |
+| =_= / =g _=                           | move to first/last non-blank char of the line                                      |
+| =0= / =$=                             | move to first/last char of the line                                                |
+|                                       |                                                                                    |
+| =)= / =(=                             | move to the start of the next/previous sentence                                    |
+| =}= / ={=                             | move to the start of the next/previous paragraph                                   |
+|                                       |                                                                                    |
+| =] ]= / =[ [=                         | move to beginning of the next/previous top-level block                             |
+| =] [= / =[ ]=                         | move to end of the next/previous top-level block                                   |
+|                                       |                                                                                    |
+| =] <par>= / =[ <par>==                | move to the next/previous unclosed <par>, with <par>:                              |
+|                                       | ={=, =}=, =(=, =)=, =c= for comment, =#= for preproc (~#if~)                       |
+|                                       |                                                                                    |
+| =f <char>= / =F <char>=               | snipe next/previous char <char> in the current line                                |
+| =t <char>= / =T <char>=               | snipe just before the next/previous char <char> in the current line                |
+| =s <char> <char>= / =S <char> <char>= | snipe next/previous 2 chars in the current line                                    |
+| =;= / =,=                             | repeat/reversed-repeat the last snipe (but not limited to the current line)        |
+|                                       |                                                                                    |
+| =g s <motion>=                        | (easymotion) highlights several iterations of the motion and prompts to choose one |
+|                                       |                                                                                    |
+
+| insert     |                                         |
+|------------+-----------------------------------------|
+| =i= / =a=  | insert before/after point               |
+| =I= / =A=  | insert at the beginning/end of the line |
+| =o= / =O=  | insert in a new line below/above        |
+|            |                                         |
+| =x= / =X=  | forward / backward delete char          |
+| =r <char>= | replace char at point by <char>         |
+|            |                                         |
+| =p= / =P=  | paste after/before point                |
+|            |                                         |
+|            |                                         |
+
+| op: operator                      |                                                  |
+| operate on a motion               |                                                  |
+|-----------------------------------+--------------------------------------------------|
+| =d <motion>=                      | delete                                           |
+| =c <motion>=                      | change                                           |
+| =y <motion>=                      | yank (copy)                                      |
+| == <motion>=                      | indent                                           |
+| =g c <motion>=                    | comment                                          |
+| =<op> <op>=                       | op on the current line                           |
+|                                   |                                                  |
+| =v <motion>...=                   | visual (select)                                  |
+|                                   |                                                  |
+| =g x <motion1> ... g x <motion2>= | exchange text defined by <motion1> and <motion2> |
+
+| op on a block     | (not avail in normal mode)                                                |
+|-------------------+---------------------------------------------------------------------------|
+| =<op> i <block>=  | op on the inner of the current block                                      |
+| =<op> a <block>=  | op on "a" block: the current block with its boundaries/separator (if any) |
+|-------------------+---------------------------------------------------------------------------|
+| <block>           | op on the inner =i= or outer =a=:                                         |
+| =g=               | whole buffer                                                              |
+| =w= / =W=         | word / space-seperated word                                               |
+| =o=               | symbol                                                                    |
+| =p=               | paragraph                                                                 |
+| =c=               | comment                                                                   |
+| =t=               | htlm tag                                                                  |
+| ='= / ="= / =`=   | quoted string                                                             |
+| =b= or =(= or =)= | "()" block (as in =[(= block)                                             |
+| =B= or ={= or =}= | "{}" block (as in =[{= block)                                             |
+| =<= or =>=        | "<>" block                                                                |
+| =[= or =]=        | "[]" block                                                                |
+| =f=               | "function" block                                                          |
+|                   |                                                                           |
+
+| surround                      |                                                   |
+|-------------------------------+---------------------------------------------------|
+| =c s <par> <new-par>=         | change the surrounding <par> by <new-par>         |
+| =d s <par>=                   | delete the surrounding <par>                      |
+| =y s <motion> <new-par>=      | surround <motion> with <new-par>                  |
+| =y S <motion> <new-par>=      | surround <motion> with <new-par> and new lines    |
+| =v <motion>... g S <new-par>= | surround <motion>... with <new-par> and new lines |
+|                               |                                                   |
+
+Note: An opening =<new-par>= (eg "{") will add with spaces ("{ foobar }"), a
+closing one doesn't ("{foobar}").
+
+| mark       |                    |
+|------------+--------------------|
+| =m <char>= | record mark <char> |
+| =` <char>= | go to mark <char>  |
+|            |                    |
+
+| !TODO! multiple cursors (mc) |                                        |
+|------------------------------+----------------------------------------|
+| =g z j= / =g z k=            | spawn an active cursor below/above     |
+|                              |                                        |
+| =g z z=                      | spawn a deactivated cursor here        |
+| =g z t=                      | toggle active state of spawned cursors |
+|                              |                                        |
+
+| window            |                               |
+| =C-w= or =SPC w=  | prefix                        |
+|-------------------+-------------------------------|
+| =C-w w=           | next window                   |
+| =C-w q=           | kill window                   |
+| =C-w s= / =C-w v= | split horizontally/vertically |
+| =C-w <hjkl>=      | windmove hjkl                 |
+| =C-w C-w=         | ace window                    |
+|                   |                               |
+| =C-~=             | toggle popup                  |
+|                   |                               |
+
+| visual          |                                           |
+|-----------------+-------------------------------------------|
+| =v=             | enable visual mode                        |
+| =V=             | enable line-wise visual mode              |
+| =C-v=           | enable visual block mode (rect selection) |
+|-----------------+-------------------------------------------|
+| In visual mode: |                                           |
+|-----------------+-------------------------------------------|
+| =I= / =A=       | insert / append                           |
+| =c=             | change                                    |
+
+| files     |                                  |
+|-----------+----------------------------------|
+| =SPC SPC= | find any file in current project |
+| =SPC .=   | find file                        |
+| =SPC f r= | find recent file                 |
+
+| !TODO! search (grep) |                        |
+|----------------------+------------------------|
+| =SPC s p=            | grep current project   |
+| =SPC s d=            | grep current dir (rec) |
+| =SPC s b=            | grep current buffer    |
+|                      |                        |
+
+| macros           |                                        |
+|------------------+----------------------------------------|
+| =q <char> ... q= | records "..." in the macro name <char> |
+| =@ <char>=       | call macro named <char>                |
+| =@ @=            | re-call last called macro              |
+|                  |                                        |
+
+|             |   |
+|-------------+---|
+| =s/foo/bar= |   |
+|             |   |
+
+| align (lion)          |   |
+|-----------------------+---|
+| =g l <motion> <char>= |   |
+|                       |   |
+
+| folding               |                                |
+|-----------------------+--------------------------------|
+| =z c= / =z o= / =z a= | close/open/toogle current fold |
+| =z M= / =z R=         | close/open all                 |
+| visual =z f=          | fold region                    |
+| =z f <motion>=        | fold <motion>                  |

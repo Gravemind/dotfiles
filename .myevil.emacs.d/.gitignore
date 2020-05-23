@@ -1,0 +1,12 @@
+# for bare git dotiles
+/auto-save-list
+/bookmarks
+/custom.el
+/history
+/recentf
+/tramp
+/transient
+/url
+
+\#*
+*~
