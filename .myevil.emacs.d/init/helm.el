@@ -35,11 +35,15 @@
    ;;("C-z" . helm-select-action)
    ;;("RET" . helm-maybe-exit-minibuffer)
    ;; helm-confirm-and-exit-minibuffer
-   ("C-j" . helm-maybe-exit-minibuffer)
+   ;;("C-j" . helm-maybe-exit-minibuffer)
+
+   ("C-j" . helm-next-line)
+   ("C-k" . helm-previous-line)
 
    :map helm-find-files-map
    ;;("C-f C-r" . helm-ff-run-grep-ag)
-   ("C-<backspace>" . helm-find-files-up-one-level)
+   ;;("C-<backspace>" . helm-find-files-up-one-level)
+   ;;("C-<backspace>" . helm-find-files-up-one-level)
    ;;:map helm-grep-map
    ;;("C-l" . helm-do-grep-ag-up-one-level)
    )
