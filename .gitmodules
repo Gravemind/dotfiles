@@ -279,3 +279,7 @@
 	path = .my.emacs.d/elpa-git/evil-indent-plus
 	url = https://github.com/TheBB/evil-indent-plus.git
 	ignore = untracked
+[submodule ".my.emacs.d/elpa-git/evil-args"]
+	path = .my.emacs.d/elpa-git/evil-args
+	url = https://github.com/wcsmith/evil-args.git
+	ignore = untracked

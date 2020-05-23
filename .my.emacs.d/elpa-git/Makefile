@@ -120,6 +120,7 @@ DEFCOMPILE  += evil-nerd-commenter
 DEFCOMPILE  += evil-surround
 DEFCOMPILE  += evil-lion
 DEFCOMPILE  += evil-indent-plus
+DEFCOMPILE  += evil-args
 
 all:	${DEFCOMPILE} ${DEFMAKE} ${NODEF}
 .PHONY: all

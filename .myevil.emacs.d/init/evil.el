@@ -169,6 +169,26 @@
          )
 )
 
+;; Arg text motions and inner/outer
+(use-package evil-args
+  :load-path (my-packages-directory "evil-args")
+  :after evil
+  :bind (
+         :map evil-inner-text-objects-map
+         ("a" . evil-inner-arg)
+         :map evil-outer-text-objects-map
+         ("a" . evil-outer-arg)
+         :map evil-normal-state-map
+         ("]a" . evil-forward-arg)
+         ("[a" . evil-backward-arg)
+         ("[A" . evil-jump-out-args)
+         :map evil-motion-state-map
+         ("]a" . evil-forward-arg)
+         ("[a" . evil-backward-arg)
+         ("[A" . evil-jump-out-args)
+         )
+  )
+
 ;; text objects for inner and outer indentation levels
 (use-package evil-indent-plus
   :load-path (my-packages-directory "evil-surround")
