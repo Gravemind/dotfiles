@@ -127,6 +127,9 @@
 	hideuntrack = config --local status.showUntrackedFiles no
 	showuntrack = config --local status.showUntrackedFiles normal
 
+	# It's good practice to make the very frist commit of a repo empty
+	first = commit -m 'first commit' --allow-empty
+
 [format]
 	# default pretty format for log/show/whatchanged
 	#pretty = my
