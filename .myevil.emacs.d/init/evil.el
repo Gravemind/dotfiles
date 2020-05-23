@@ -124,7 +124,9 @@
   :demand t
   :bind (:map magit-mode-map
          ("SPC" . evil-send-leader) ;; force leader
-         )
+         :map magit-diff-mode-map
+         ("SPC" . evil-send-leader) ;; force leader
+        )
   )
 
 ;; Align stuff with 'g l <char>'
