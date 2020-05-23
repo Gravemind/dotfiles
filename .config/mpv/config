@@ -157,9 +157,8 @@ force-window=immediate
 volume=80
 
 # Larger cache
-cache-secs=600
+#cache-secs=600
 demuxer-max-bytes=512MiB
-
 
 [protocol.https]
 profile=protocol.http

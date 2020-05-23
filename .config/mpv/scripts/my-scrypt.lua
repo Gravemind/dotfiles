@@ -17,7 +17,6 @@ local function enable_profile(name, enable)
     else
         profile = "disable-"..name
     end
-    --mp.osd_message(profile)
     print(profile)
     mp.commandv("apply-profile", profile)
 end
@@ -35,10 +34,12 @@ local function on_speed_changed(name, value)
         svp_was_enabled = profiles_enabled.svp
         enable_profile("svp", false)
     end
+    -- mp.osd_message("speed "..tostring(value).." svp "..tostring(profiles_enabled.svp))
 end
 
 local function toggle_svp()
     enable_profile("svp", not profiles_enabled.svp)
+    mp.osd_message("svp " .. tostring(profiles_enabled.svp))
 end
 
 for k, v in pairs(profiles_enabled) do

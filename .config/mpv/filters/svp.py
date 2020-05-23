@@ -128,7 +128,9 @@ max_fps = display_fps
 if clip.width > 1920:
     max_fps = min(max_fps, 60)  # > 1080p
 elif clip.width >= 1920:
-    max_fps = min(max_fps, 150) # <= 1080p
+    max_fps = min(max_fps, 144) # <= 1080p
+
+max_fps = min(max_fps, 60)  # > 1080p
 
 #max_fps = 60
 
