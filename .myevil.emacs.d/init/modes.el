@@ -425,7 +425,7 @@
   :load-path (my-packages-directory "yasnippet")
   :hook (c-mode-common . yas-minor-mode) ;; NOTE: cc-mode-hook does not work, c-mode-common-hook do.
   :config
-  (setq-default yas-snippet-dirs '((concat user-emacs-directory "snippets")))
+  (setq-default yas-snippet-dirs `(,(concat user-emacs-directory "snippets")))
   (yas-reload-all)
   )
 
