@@ -193,19 +193,19 @@
   ;; Save current position to mark ring when jumping to a different place
   (add-hook 'helm-goto-line-before-hook #'helm-save-current-pos-to-mark-ring)
 
-  ;; Disable zoom-mode when helm is alive
-  (fset 'original-zoom--update (symbol-function 'zoom--update))
-  (advice-add 'zoom--update :override
-              (lambda ()
-                ;;(message "zoom-update")
-                ;; (if helm-alive-p
-                ;;     (with-helm-window
-                ;;       (original-zoom--update)
-                ;;     )
-                ;; (original-zoom--update))
-                (unless helm-alive-p
-                  (original-zoom--update))
-                ))
+  ;; ;; Disable zoom-mode when helm is alive
+  ;; (fset 'original-zoom--update (symbol-function 'zoom--update))
+  ;; (advice-add 'zoom--update :override
+  ;;             (lambda ()
+  ;;               ;;(message "zoom-update")
+  ;;               ;; (if helm-alive-p
+  ;;               ;;     (with-helm-window
+  ;;               ;;       (original-zoom--update)
+  ;;               ;;     )
+  ;;               ;; (original-zoom--update))
+  ;;               (unless helm-alive-p
+  ;;                 (original-zoom--update))
+  ;;               ))
 
   ;; Make helm grep ignore binary files (replaced "-a" by "--binary-files=without-match")
   (setq-default
