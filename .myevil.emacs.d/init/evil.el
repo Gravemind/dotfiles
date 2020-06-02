@@ -19,6 +19,7 @@
  :prefix "<leader>b"
  ("b" . helm-mini)
  ("k" . kill-buffer)
+ ("r" . revert-buffer)
 )
 
 ;; (bind-keys
@@ -43,12 +44,18 @@
   :bind (
          ;;("C-b" . my-buffer-map)
 
+         :map evil-normal-state-map
+         ("<leader>w" . evil-window-map)
+
          :map evil-window-map
          ;; Lazy fingers: add `C-w C-h` same as `C-w h`
          ("C-h" . evil-window-left)
          ("C-j" . evil-window-down)
          ("C-k" . evil-window-up)
          ("C-l" . evil-window-right)
+         ("C-q" . evil-quit)
+
+         ("=" . force-balance-windows) ;; see zoom config
 
          ("u" . winner-undo)
          ("C-r" . winner-redo)
@@ -87,10 +94,6 @@
    )
 
   :config
-
-  ;; Used as "<leader>" in key bindings
-  (evil-set-leader '(normal visual) (kbd "SPC"))
-
   ;; TODO: cursor color
 
   (evil-mode 1)
@@ -128,6 +131,9 @@
    ("v"   . evil-window-vsplit-left)
    ("C-v" . evil-window-vsplit-left)
   )
+
+  ;; Used as "<leader>" in key bindings
+  (evil-set-leader '(normal visual) (kbd "SPC"))
 
   (define-key evil-motion-state-map "gd" 'rtags-find-symbol-at-point)
 
