@@ -95,6 +95,40 @@
 
   (evil-mode 1)
 
+  ;; (setq
+  ;;  ;; Split left. i.e. split right and switch to it
+  ;;  evil-split-window-below t
+  ;;  ;; Split above. i.e. split below and switch to it
+  ;;  evil-vsplit-window-right t
+  ;;  )
+  ;; ;; Does not work as expected, because after (split-window 'left) we already
+  ;; ;; are focused on the new window
+  ;; (advice-add 'split-window :after (lambda (&rest r) (message "split") (zoom--update)))
+
+  (defun evil-window-vsplit-left ()
+    "Better window balancing than evil-vsplit-window-right"
+    (interactive)
+    (evil-window-vsplit)
+    (when zoom-mode (zoom--update))
+    (other-window 1)
+    )
+  (defun evil-window-split-above ()
+    "Better window balancing than evil-split-window-below"
+    (interactive)
+    (evil-window-split)
+    (when zoom-mode (zoom--update))
+    (other-window 1)
+    )
+  ;; (define-key evil-window-map [remap evil-window-vsplit] 'evil-window-vsplit-left)
+  ;; (define-key evil-window-map [remap evil-window-split] 'evil-window-split-above)
+  (bind-keys
+   :map evil-window-map
+   ("s"   . evil-window-split-above)
+   ("C-s" . evil-window-split-above)
+   ("v"   . evil-window-vsplit-left)
+   ("C-v" . evil-window-vsplit-left)
+  )
+
   (define-key evil-motion-state-map "gd" 'rtags-find-symbol-at-point)
 
   )
