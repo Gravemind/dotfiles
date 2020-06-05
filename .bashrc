@@ -47,6 +47,8 @@ alias c='clear'
 alias e='exit'
 alias t='urxvt & ; disown'
 
+alias topu='top -u "$(id -nu)"'
+
 take() {
     mkdir -p "$1" && cd "$1"
 }
