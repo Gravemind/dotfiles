@@ -40,9 +40,8 @@
   ;;:defer t
   :commands (dtrt-indent-try-set-offset)
   :config
-  (add-to-list 'dtrt-indent-hook-mapping-list
-               '(cmake-mode default cmake-tab-width)
-               )
+  (setcdr (last dtrt-indent-hook-mapping-list)
+          my-additional-dtrt-indent-hook-mapping-list)
 )
 
 ;;
@@ -55,8 +54,17 @@
  tab-width 8
  tab-stop-list (number-sequence 4 180 4)
 
+ my-additional-dtrt-indent-hook-mapping-list
+ '(
+   ;; Additional mode indent variable
+   ;; (mode dtrt-syntax variable)
+   (cmake-mode default cmake-tab-width)
+   (yaml-mode  default yaml-indent-offset)
+   )
+
  my-default-indentations-by-mode
  '(
+   ;; Default indent config for modes
    ;; (mode indent-width with-tabs tab-width)
    (sh-mode         4 nil 8)
    (lisp-mode       4 nil 8)
@@ -64,16 +72,17 @@
    (asm-mode        8 t   8)
    (conf-unix-mode  8 t   8)
    (cmake-mode      2 nil 8)
+   (yaml-mode       2 nil 8)
+   (markdown-mode   4 nil 8)
 
-   (gud-mode                8 t 8)
-   (gdb-inferior-io-mode    8 t 8)
-
-   (markdown-mode   4 nil 8) ;; TODO markdown-list-indent-width
+   (gud-mode             8 t 8)
+   (gdb-inferior-io-mode 8 t 8)
    )
 
  my-default-indentations-by-dtrt-lang
  '(
-   ;; (dtrt-lang indent-width with-tabs tab-width) ;; see dtrt-indent-hook-mapping-list
+   ;; Default indent config for dtrt "syntax"
+   ;; (dtrt-syntax indent-width with-tabs tab-width) ;; see dtrt-indent-hook-mapping-list
    (default     4 nil 8)
    (c/c++/java  4 nil 8)
    (javascript  2 nil 8)
@@ -83,6 +92,7 @@
    (sgml        2 nil 8)
    (css         4 t   4)
    )
+
  )
 
 (setq-default whitespace-style '(face trailing indentation space-before-tab))
