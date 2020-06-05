@@ -47,4 +47,8 @@ alias c='clear'
 alias e='exit'
 alias t='urxvt & ; disown'
 
+take() {
+    mkdir -p "$1" && cd "$1"
+}
+
 PS1='[\u@\h \W]\$ '
