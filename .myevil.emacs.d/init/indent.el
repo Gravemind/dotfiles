@@ -97,6 +97,8 @@ for the current major mode (uses dtrt)"
 (defun jo--on-indentation-changed ()
   "Finish setuping indentation"
   (let ((indent_size (symbol-value (jo--indent-offset-var))))
+    (when (not (eq evil-shift-width indent_size))
+      (setq evil-shift-width indent_size))
     (when (not (eq (car tab-stop-list) indent_size))
       ;;(message "set tab-stop-list")
       (setq tab-stop-list (number-sequence indent_size 200 indent_size))
