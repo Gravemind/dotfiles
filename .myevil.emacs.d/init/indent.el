@@ -2,49 +2,6 @@
 ;;
 
 ;;
-;; Indent default 4 spaces
-;;
-
-;;
-;; EditorConfig is awesome: http://EditorConfig.org
-;;
-(use-package editorconfig
-  :load-path (my-packages-directory "editorconfig")
-  ;;:ensure t
-  ;;:defer t
-  :commands (editorconfig-mode-apply)
-  :config
-  ;;(editorconfig-mode 1)
-  (setq-default editorconfig-mode-lighter " EdConf")
-  ;; (add-hook 'editorconfig-after-apply-functions
-  ;;           (lambda (props)
-  ;;             ;; set tab-stop-list
-  ;;             (when-let ((indent_size (gethash 'indent_size props)))
-  ;;               (when-let (((editorconfig-string-integer-p indent_size))
-  ;;                          (indent_size (string-to-number indent_size)))
-  ;;                 (setq tab-stop-list (number-sequence indent_size 200 indent_size))
-  ;;                 ))
-  ;;             ;;(message "editorconfig %s" props)
-  ;;             (whitespace-mode 0)
-  ;;             (whitespace-mode +1)
-  ;;             ))
-)
-
-;;
-;; dtrt-indent guess indent
-;;   https://github.com/jscheid/dtrt-indent
-;;
-(use-package dtrt-indent
-  :load-path (my-packages-directory "dtrt-indent")
-  ;;:ensure t
-  ;;:defer t
-  :commands (dtrt-indent-try-set-offset)
-  :config
-  (setcdr (last dtrt-indent-hook-mapping-list)
-          my-additional-dtrt-indent-hook-mapping-list)
-)
-
-;;
 ;; Default indentations
 ;;
 
@@ -237,3 +194,41 @@ spaces are treated."
     (untabify (point-min) (point-max)))
   )
 
+;;
+;; EditorConfig is awesome: http://EditorConfig.org
+;;
+(use-package editorconfig
+  :load-path (my-packages-directory "editorconfig")
+  ;;:ensure t
+  ;;:defer t
+  :commands (editorconfig-mode-apply)
+  :config
+  ;;(editorconfig-mode 1)
+  (setq-default editorconfig-mode-lighter " EdConf")
+  ;; (add-hook 'editorconfig-after-apply-functions
+  ;;           (lambda (props)
+  ;;             ;; set tab-stop-list
+  ;;             (when-let ((indent_size (gethash 'indent_size props)))
+  ;;               (when-let (((editorconfig-string-integer-p indent_size))
+  ;;                          (indent_size (string-to-number indent_size)))
+  ;;                 (setq tab-stop-list (number-sequence indent_size 200 indent_size))
+  ;;                 ))
+  ;;             ;;(message "editorconfig %s" props)
+  ;;             (whitespace-mode 0)
+  ;;             (whitespace-mode +1)
+  ;;             ))
+)
+
+;;
+;; dtrt-indent guess indent
+;;   https://github.com/jscheid/dtrt-indent
+;;
+(use-package dtrt-indent
+  :load-path (my-packages-directory "dtrt-indent")
+  ;;:ensure t
+  ;;:defer t
+  :commands (dtrt-indent-try-set-offset)
+  :config
+  (setcdr (last dtrt-indent-hook-mapping-list)
+          my-additional-dtrt-indent-hook-mapping-list)
+)
