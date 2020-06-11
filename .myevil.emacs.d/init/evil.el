@@ -157,6 +157,16 @@
   (evil-collection-init)
   )
 
+;; Evil text-objects visual hints
+(use-package evil-goggles
+  :load-path (my-packages-directory "evil-goggles")
+  :after evil
+  :demand t
+  :config
+  (setq evil-goggles-pulse nil)
+  (evil-goggles-mode)
+  )
+
 ;; evil-compatible magit bindings
 (use-package evil-magit
   :load-path (my-packages-directory "evil-magit")
