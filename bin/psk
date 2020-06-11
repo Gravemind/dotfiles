@@ -1,7 +1,7 @@
 #!/bin/bash
 
 usage() {
-    echo 'usage: '"$0"' PATTERN...
+    echo 'usage: '"$0"' [-h] [-f] [-i] [--] PATTERN...
 
   Shows `pgrep "PATTERN"` with `ps`, then asks what to do (eg kill), then retries.
 '
@@ -50,20 +50,26 @@ COL_DISA=$'\e[1;30m'
 main() {
     local delay_after_kill=0.1
 
-    if [[ "$1" = "-h" || "$1" = "--help" ]]
-    then
-        usage
-        exit 0
-    fi
-
-    local pattern="$*"
-
     local pgrepf=""
     local pgrepi=""
     local kill9=""
     local selfpid=$$
     local sudo=
     local quitifnomore=false
+
+    while [[ $# -gt 0 ]]
+    do
+        case "$1"
+        in
+            -h|--help) usage; exit 0; ;;
+            -f) pgrepf="-f"; ;;
+            -i) pgrepi="-i"; ;;
+            --) shift; break; ;;
+            *) break; ;;
+        esac
+        shift
+    done
+    local pattern="$*"
 
     while true
     do
