@@ -18,12 +18,15 @@
 ;; - Install:
 ;;   $> cd ~/.emacs.d && git clone https://github.com/dholm/benchmark-init-el && make -C benchmark-init-el
 ;; - Uncomment:
-;; (add-to-list 'load-path "~/.emacs.d/benchmark-init-el/") (require 'benchmark-init-loaddefs) (benchmark-init/activate)
-;; (global-set-key (kbd "<f12>") (lambda () (interactive) (benchmark-init/deactivate) (benchmark-init/show-durations-tabulated)))
+;;(add-to-list 'load-path "~/.emacs.d/benchmark-init-el/") (require 'benchmark-init-loaddefs) (benchmark-init/activate)
+;;(global-set-key (kbd "<f12>") (lambda () (interactive) (benchmark-init/deactivate) (benchmark-init/show-durations-tabulated)))
 
 ;; Use-package report: [f12] (see which is package Decl/Init/Config + benchmark)
-(setq-default use-package-compute-statistics t)
-(global-set-key (kbd "<f12>") (lambda () (interactive) (use-package-report)))
+;;(setq-default use-package-compute-statistics t)
+;;(global-set-key (kbd "<f12>") (lambda () (interactive) (use-package-report)))
+
+(global-set-key (kbd "<f11>") (lambda () (interactive) (profiler-start 'cpu)))
+(global-set-key (kbd "<f12>") (lambda () (interactive) (profiler-report)))
 
 ;; Custom file path
 (setq-default custom-file (concat user-emacs-directory "custom.el"))
