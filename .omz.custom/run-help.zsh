@@ -4,6 +4,41 @@ autoload -U run-help
 
 autoload run-help-git
 
+_run-help-sub-command() {
+	local msg="$*"
+	local cmd="$1"
+	shift
+	local mansubcmd=
+	local mancmd_fallback="$cmd"
+	while [[ $# -gt 0 ]]
+	do
+		case "$1"
+		in
+			-*) ;;
+			*)
+			mancmd_fallback=
+			if man -w "$cmd-$1"
+			then
+				mansubcmd="$cmd-$1"
+				break
+			fi
+			;;
+		esac
+		shift
+	done
+	if [[ -n "$mansubcmd" ]]
+	then
+		echo "running 'man $mansubcmd' found in $msg"
+		man "$mansubcmd"
+	elif [[ -n "$mancmd_fallback" ]]
+	then
+		echo "running 'man $cmd'. no apparent subcommand in $msg"
+		man "$cmd"
+	else
+		echo "error: could not find a valid 'man $cmd-<subcommand>' in $msg"
+	fi
+}
+
 # default run-help-sudo does not recurse run-help (sudo git add)
 # autoload run-help-sudo
 run-help-sudo() {
@@ -30,10 +65,11 @@ run-help-docker() {
 }
 
 run-help-flatpak() {
+	echo "run-help $@" >&2
 	if [ $# -eq 0 ]; then
 		man flatpak
 	else
-		man flatpak-$1
+		_run-help-sub-command flatpak "$@"
 	fi
 }
 
