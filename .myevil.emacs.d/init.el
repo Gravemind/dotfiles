@@ -8,7 +8,7 @@
 (setq gc-cons-threshold (* 1024 1024 100))
 ;; AND only after `gc-cons-percentage` fraction of the head size (current total
 ;; bytes already allocated) has been allocated.
-(setq gc-cons-percentage 0.4)
+(setq gc-cons-percentage 0.6)
 
 ;; Allow `emacs -q -l ~/.myevil.emacs.d/init.el`
 (setq user-init-file (or load-file-name (buffer-file-name)))
