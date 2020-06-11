@@ -11,9 +11,10 @@
          )
   :config
   (setq-default
-   tramp-verbose 2 ; warnings
-   ;;tramp-verbose 3 ; + connections (default)
+   ;;tramp-verbose 2 ; warnings
+   tramp-verbose 3 ; + connections (default)
    ;;tramp-verbose 6 ; verbose
+   ;;tramp-verbose 10
    ;;tramp-connection-timeout 10
    tramp-connection-timeout 14400 ; 4h
    password-cache-expiry nil
@@ -27,7 +28,7 @@
    ;;
    ;; zsh: see ~/.zshrc
    ;;
-   tramp-shell-prompt "\\$ "
+   tramp-shell-prompt "$ "
 
    tramp-use-ssh-controlmaster-options nil
    ;;tramp-use-ssh-controlmaster-options t
