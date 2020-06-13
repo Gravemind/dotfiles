@@ -36,7 +36,7 @@
  truncate-lines t
  word-wrap nil
 
- ;;vc-handled-backends nil
+ vc-handled-backends nil
 
  dabbrev-case-fold-search nil
  dabbrev-case-replace nil
