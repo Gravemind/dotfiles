@@ -92,10 +92,17 @@
 (setq-default
 
  ;; Window margin padd here so it works for helm too (because helm use this first in its modeline)
- mode-line-buffer-identification '("" my/mode-line-left-margin-padd " " my/mode-line-ro-indicator my/mode-line-buffer)
+ mode-line-buffer-identification '("" my/mode-line-ro-indicator my/mode-line-buffer)
+
+ ;; Dummy variable where evil will insert its state tag
+ my--evil-mode-line-placeholder ""
 
  mode-line-format
  '(""
+   my/mode-line-left-margin-padd
+
+   my--evil-mode-line-placeholder   ;; evil state. TODO needs to be at top-level, how do face it ?
+
    mode-line-buffer-identification  ;; buffer name
            ;; ro symbol
    ":%l:%c"                         ;; line column

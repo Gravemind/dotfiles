@@ -88,6 +88,8 @@
    ;; If "cursor at eol" makes cursor stick to eol
    track-eol nil
 
+   ;; Insert evil state tag before in mode-line
+   evil-mode-line-format '(before . my--evil-mode-line-placeholder)
 
    evil-auto-balance-windows nil ;; leave that to zoom
 
