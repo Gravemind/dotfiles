@@ -54,6 +54,9 @@
  ;; Make apropos omnipotent. It's more useful this way.
  apropos-do-all t
 
+ ;; Confusing! this controls "yank to clipboard", and NOT "selection to
+ ;; clipboard" !?
+ select-enable-clipboard t ;; alias of x-select-enable-clipboard
  )
 
 ;; Mouse

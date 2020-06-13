@@ -139,6 +139,10 @@
 
   (define-key evil-motion-state-map "gd" 'rtags-find-symbol-at-point)
 
+  ;; This controls evil's "selection to clipboard", but keeps "deletion and yank
+  ;; to clipboard"
+  (fset 'evil-visual-update-x-selection 'ignore)
+
   )
 
 ;; Required by evil for `g;`
