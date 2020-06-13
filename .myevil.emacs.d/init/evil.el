@@ -67,6 +67,12 @@
   :hook (git-commit-setup . evil-insert-state)
 
   :init ;; init because some evil variables must be set before load
+
+  (defun my-fat-hbar-cursor ()
+    "see evil-half-cursor"
+    (let ((height (/ (* (window-pixel-height) 1) (* (window-height) 3))))
+      (setq cursor-type (cons 'hbar height))))
+
   (setq
    evil-want-integration t
    evil-want-keybinding nil ;; for evil-collection
@@ -92,6 +98,16 @@
    evil-mode-line-format '(before . my--evil-mode-line-placeholder)
 
    evil-auto-balance-windows nil ;; leave that to zoom
+
+   ;; Cursors
+   evil-default-cursor        '(box "cyan")
+   evil-normal-state-cursor   '(box "cyan")
+   evil-insert-state-cursor   '(bar "cyan")
+   evil-visual-state-cursor   '(my-fat-hbar-cursor "cyan")
+   evil-replace-state-cursor  '(my-fat-hbar-cursor "red")
+   evil-operator-state-cursor '(my-fat-hbar-cursor "yellow")
+   evil-motion-state-cursor   '(box "green")
+   evil-emacs-state-cursor    '(box "magenta")
 
    )
 
