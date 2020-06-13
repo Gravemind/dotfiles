@@ -6,12 +6,12 @@ set -euo pipefail
 base0="$(basename "$0")"
 
 usage() {
-    echo -n "usage: $base0 [-h] [-isS] [-f=FILE] [--] WORDS...
+    echo -n "usage: $base0 [-h] [-isS] [-f=PAT] [--] WORDS...
 
 Looks for man pages containing all WORDS using rg (ripgrep).
 
     -h --help   : this
-    -f FILE     : filter pages by file name matching FILE
+    -f PAT      : filter pages by file name matching PAT
     -i -s -S    : be case insensitive, sensitive, or smart (smart by default)
 
 "
@@ -41,7 +41,7 @@ main() {
         exit 0
     fi
 
-    local grep_i=-S
+    local rg_i=-S
     local files=()
     local words=()
 
@@ -50,9 +50,9 @@ main() {
         case "$1"
         in
             -h|--help) usage; exit 0; ;;
-            -[Ssi]) grep_i="$1"; ;;
+            -[Ssi]) rg_i="$1"; ;;
             -f) files+=("$2"); shift; ;;
-            -f=*) files+=("${1:3}"); ;;
+            -f=*) files+=("${1#*=}"); ;;
             #\\*) words+=("${1:1}"); ;;
             --) shift; break; ;;
             -*) echo "$base0: note: '$1' is not a flag, it will be treated as WORD '$1'." >&2; words+=("$1"); ;;
@@ -68,12 +68,12 @@ main() {
 
     for file in "${files[@]}"
     do
-        cmd+=( "|" $MANGREP_GREPFILE_CMD $grep_i "$(escape_arg "$file")" )
+        cmd+=( "|" $MANGREP_GREPFILE_CMD $rg_i "$(escape_arg "$file")" )
     done
 
     for word in "${words[@]}"
     do
-        cmd+=( "|" $MANGREP_GREP_CMD --null $grep_i "$(escape_arg "$word")" )
+        cmd+=( "|" $MANGREP_GREP_CMD --null $rg_i "$(escape_arg "$word")" )
     done
     cmd+=( "|" tr '\\0' '\\n' )
     cmd+=( "|" sort )
@@ -82,7 +82,7 @@ main() {
     # do
     #     local n=
     #     [[ $((i + 1)) = ${#words[@]} ]] || n=--null
-    #     cmd+=( "|" $MANGREP_GREP_CMD $n $grep_i "$(escape_arg "${words[i]}")" )
+    #     cmd+=( "|" $MANGREP_GREP_CMD $n $rg_i "$(escape_arg "${words[i]}")" )
     # done
 
     echo "$base0: running...: ${cmd[@]}" >&2
