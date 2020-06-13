@@ -193,7 +193,7 @@ function gravemind_preexec() {
 	GRAVEMIND_CMD_START=$SECONDS
 }
 
-GRAVEMIND_NO_URGENT_CMD+=( mpv )
+GRAVEMIND_NO_URGENT_CMD+=( mpv steam )
 
 # Called once before each new prompt
 function gravemind_precmd() {
