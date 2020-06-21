@@ -111,6 +111,10 @@
 	# Log commits between HEAD and another branch
 	lo = "!f() { set -eu; git l --left-right --boundary @...$1 \"${@:1}\"; }; f"
 
+	# usage: git lcont [COMMIT]
+	# Log commits that contains COMMIT (HEAD)
+	lcont  = "!f() { set -eu; c=\"${1:-@}\"; git l --boundary $(git for-each-ref --format='%(refname)' --contains \"$c\") --not \"$c\"; }; f"
+
 	# Long log
 	ll  = log --pretty=myl --graph --full-history --simplify-merges --date-order
 
