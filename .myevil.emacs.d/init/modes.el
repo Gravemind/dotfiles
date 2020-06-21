@@ -276,6 +276,21 @@
   )
 
 ;;
+;; dumb-jump
+;;    https://github.com/jacktasia/dumb-jump
+;;
+
+(use-package dumb-jump
+  :load-path (my-packages-directory "dumb-jump")
+  :defer t
+  :after helm
+  :config
+  (setq-default
+   dumb-jump-selector 'helm
+   )
+)
+
+;;
 ;; dired and dired-k
 ;;   https://github.com/hlissner/doom-emacs/blob/master/modules/tools/dired/config.el
 ;;
