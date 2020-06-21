@@ -73,6 +73,16 @@
   )
 
 ;;
+;; ediff
+;;
+
+(use-package ediff
+  :pin manual
+  :config
+  (setq ediff-split-window-function 'split-window-horizontally)
+)
+
+;;
 ;; undo-tree
 ;;
 
