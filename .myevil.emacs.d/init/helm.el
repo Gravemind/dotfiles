@@ -257,6 +257,12 @@
          )
   )
 
+;; helm-org
+(use-package helm-org
+  :load-path (my-packages-directory "helm-org")
+  :after helm
+  )
+
 ;; Use Helm for correcting spelling
 (use-package flyspell-correct
   :load-path (my-packages-directory "flyspell-correct")

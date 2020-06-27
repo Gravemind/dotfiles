@@ -63,6 +63,7 @@ NODEF		+= helm
 DEFCOMPILE	+= helm-dash
 DEFCOMPILE	+= helm-flx
 DEFCOMPILE	+= helm-ls-git
+DEFCOMPILE	+= helm-org
 NODEF       += helm-rg
 DEFMAKE		+= history
 DEFMAKE		+= ht

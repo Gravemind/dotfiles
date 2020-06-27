@@ -289,3 +289,6 @@
 [submodule ".my.emacs.d/elpa-git/helm-ls-git"]
 	path = .my.emacs.d/elpa-git/helm-ls-git
 	url = https://github.com/emacs-helm/helm-ls-git.git
+[submodule ".my.emacs.d/elpa-git/helm-org"]
+	path = .my.emacs.d/elpa-git/helm-org
+	url = https://github.com/emacs-helm/helm-org.git
