@@ -292,3 +292,6 @@
 [submodule ".my.emacs.d/elpa-git/helm-org"]
 	path = .my.emacs.d/elpa-git/helm-org
 	url = https://github.com/emacs-helm/helm-org.git
+[submodule ".my.emacs.d/elpa-git/helm-descbinds"]
+	path = .my.emacs.d/elpa-git/helm-descbinds
+	url = https://github.com/emacs-helm/helm-descbinds.git

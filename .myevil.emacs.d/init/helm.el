@@ -263,6 +263,15 @@
   :after helm
   )
 
+;; helm dash (dash documentation sets)
+(use-package helm-descbinds
+  :load-path (my-packages-directory "helm-descbinds")
+  :init
+  ;; Copied from helm-descbinds.el helm-descbinds-mode
+  (advice-add 'describe-bindings :override #'helm-descbinds)
+  (global-unset-key (kbd "<help> C-h"))
+  )
+
 ;; Use Helm for correcting spelling
 (use-package flyspell-correct
   :load-path (my-packages-directory "flyspell-correct")
