@@ -62,6 +62,7 @@ NODEF		+= helm
 #DEFMAKE	+= helm
 DEFCOMPILE	+= helm-dash
 DEFCOMPILE	+= helm-flx
+DEFCOMPILE	+= helm-ls-git
 NODEF       += helm-rg
 DEFMAKE		+= history
 DEFMAKE		+= ht
@@ -184,7 +185,9 @@ dumb-jump: helm
 #	get: "invalid function helm-build-sync-source"
 	rm -f dumb-jump/dumb-jump.elc
 
-helm-flx: helm flx
+helm-*: helm
+
+helm-flx: flx
 
 helm-rg: helm
 	@echo -e "\n-------- $@ (custom) --------\n"

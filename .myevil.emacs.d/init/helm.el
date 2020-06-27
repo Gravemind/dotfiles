@@ -235,6 +235,18 @@
   (helm-mode 1)
   )
 
+;; helm-ls-git
+;; Git status + project buffers + project files (git ls-files)
+(use-package helm-ls-git
+  :load-path (my-packages-directory "helm-ls-git")
+  :after helm
+  :bind (
+         ("<leader> SPC" . helm-browse-project)
+         :map my-file-map
+         ("p" . helm-browse-project)
+         )
+  )
+
 ;; Use Helm for correcting spelling
 (use-package flyspell-correct
   :load-path (my-packages-directory "flyspell-correct")

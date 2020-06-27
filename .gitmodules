@@ -286,3 +286,6 @@
 [submodule ".my.emacs.d/elpa-git/evil-goggles"]
 	path = .my.emacs.d/elpa-git/evil-goggles
 	url = https://github.com/edkolev/evil-goggles.git
+[submodule ".my.emacs.d/elpa-git/helm-ls-git"]
+	path = .my.emacs.d/elpa-git/helm-ls-git
+	url = https://github.com/emacs-helm/helm-ls-git.git
