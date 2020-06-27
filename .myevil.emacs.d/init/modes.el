@@ -184,7 +184,47 @@
    better-jumper-context 'window
    better-jumper-new-window-behavior 'copy
    )
+
   (better-jumper-mode 1)
+
+  ;; Taken from doom-emacs
+
+  (defun doom-set-jump-a (orig-fn &rest args)
+    "Set a jump point and ensure ORIG-FN doesn't set any new jump points."
+    (better-jumper-set-jump (if (markerp (car args)) (car args)))
+    (let ((evil--jumps-jumping t)
+          (better-jumper--jumping t))
+      (apply orig-fn args)))
+
+  (defun doom-set-jump-maybe-a (orig-fn &rest args)
+    "Set a jump point if ORIG-FN returns non-nil."
+    (let ((origin (point-marker))
+          (result
+           (let* ((evil--jumps-jumping t)
+                  (better-jumper--jumping t))
+             (apply orig-fn args))))
+      (unless result
+        (with-current-buffer (marker-buffer origin)
+          (better-jumper-set-jump
+           (if (markerp (car args))
+               (car args)
+             origin))))
+      result))
+
+  (defun doom-set-jump-h ()
+    "Run `better-jumper-set-jump' but return nil, for short-circuiting hooks."
+    (better-jumper-set-jump)
+    nil)
+
+  ;; Creates a jump point before killing a buffer. This allows you to undo
+  ;; killing a buffer easily (only works with file buffers though; it's not
+  ;; possible to resurrect special buffers).
+  (advice-add #'kill-current-buffer :around #'doom-set-jump-a)
+
+  ;; Create a jump point before jumping with imenu.
+  (advice-add #'imenu :around #'doom-set-jump-a)
+
+  (advice-add #'helm-grep-mode-jump :around #'doom-set-jump-a)
 )
 
 ;;
