@@ -182,7 +182,7 @@
   :demand t
   :init
   (setq
-   evil-collection-key-blacklist '("SPC")
+   evil-collection-key-blacklist '("SPC") ;; Don't override leader key!
    )
   :config
   (evil-collection-init)
@@ -207,6 +207,10 @@
          ("SPC" . evil-send-leader) ;; force leader
          :map magit-diff-mode-map
          ("SPC" . evil-send-leader) ;; force leader
+        )
+  :init
+  (setq
+   ;; evil-magit-want-horizontal-movement t
         )
   )
 
