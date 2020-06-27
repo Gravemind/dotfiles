@@ -27,6 +27,7 @@
    :map my-search-map
    ("b" . helm-occur)
    ("d" . helm-do-grep-rg-ripgrep)
+   ("p" . helm-do-grep-ag-project)
 
    :map helm-map
    ("<tab>" . helm-execute-persistent-action)
@@ -230,6 +231,15 @@
    helm-grep-file-path-style 'relative
    )
   (defalias 'helm-do-grep-rg-ripgrep 'helm-do-grep-ag)
+
+  (defun helm-do-grep-ag-project (arg)
+    "Like helm-do-grep-ag but from the current project root"
+    (interactive "P")
+    (require 'helm-files)
+    (when-let ((helm-ff-default-directory
+                (or (my/project-directory default-directory) default-directory)))
+      (helm-grep-ag (expand-file-name helm-ff-default-directory) arg)
+      ))
 
   ;; helm everywhere
   (helm-mode 1)
