@@ -74,15 +74,15 @@
   ;; Disabling balance-windows entierly fix this, but makes non-active windows
   ;; unevenly balanced
   ;; https://github.com/cyrus-and/zoom/pull/7#issuecomment-336923374
-  (setq -force-balance-windows nil)
-  (advice-add 'balance-windows :around (lambda (oldfun &rest args) (if -force-balance-windows (apply oldfun args))))
-  (defun force-balance-windows ()
-    "Force balance windows (was disabled by default for zoom)"
-    (interactive)
-    (setq -force-balance-windows t)
-    (balance-windows)
-    (setq -force-balance-windows nil)
-    )
+  ;; (setq -force-balance-windows nil)
+  ;; (advice-add 'balance-windows :around (lambda (oldfun &rest args) (if -force-balance-windows (apply oldfun args))))
+  ;; (defun force-balance-windows ()
+  ;;   "Force balance windows (was disabled by default for zoom)"
+  ;;   (interactive)
+  ;;   (setq -force-balance-windows t)
+  ;;   (balance-windows)
+  ;;   (setq -force-balance-windows nil)
+  ;;   )
 
   ;;(defun my-display-buffer-pop-up-frame (buffer alist)
   ;; infinite recurse ?
