@@ -333,11 +333,17 @@
 (use-package dumb-jump
   :load-path (my-packages-directory "dumb-jump")
   :defer t
-  :after helm
+  :after (helm evil)
+  :bind (:map evil-motion-state-map
+              ("gd" . dumb-jump-go)
+              )
   :config
   (setq-default
    dumb-jump-selector 'helm
    )
+
+  (add-hook 'dumb-jump-after-jump-hook #'better-jumper-set-jump)
+
 )
 
 ;;
