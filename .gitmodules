@@ -293,3 +293,7 @@
 [submodule ".my.emacs.d/elpa-git/helm-descbinds"]
 	path = .my.emacs.d/elpa-git/helm-descbinds
 	url = https://github.com/emacs-helm/helm-descbinds.git
+[submodule "bin/git-archive-recursive-git"]
+	path = bin/git-archive-recursive-git
+	url = https://github.com/Gravemind/git-archive-recursive.git
+	branch = master
