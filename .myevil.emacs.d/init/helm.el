@@ -305,11 +305,6 @@
   (helm-flx-mode +1)
   )
 
-(use-package helm-rg
-  :load-path (my-packages-directory "helm-rg")
-
-  :bind
-  (
-   )
-
-)
+;; (use-package helm-rg
+;;   :load-path (my-packages-directory "helm-rg")
+;; )
