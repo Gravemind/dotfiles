@@ -297,3 +297,7 @@
 	path = bin/git-archive-recursive-git
 	url = https://github.com/Gravemind/git-archive-recursive.git
 	branch = master
+[submodule "bin/git-rebase-all-git"]
+	path = bin/git-rebase-all-git
+	url = https://github.com/Gravemind/git-rebase-all.git
+	branch = master
