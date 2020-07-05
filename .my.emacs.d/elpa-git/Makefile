@@ -109,6 +109,9 @@ DEFCOMPILE  += key-chord
 DEFCOMPILE  += better-jumper
 DEFCOMPILE  += projectile
 
+DEFCOMPILE  += base16-emacs
+DEFCOMPILE_base16-emacs = base16-theme.el
+
 DEFCOMPILE  += evil
 DEFCOMPILE  += annalist
 DEFCOMPILE_annalist = annalist.el

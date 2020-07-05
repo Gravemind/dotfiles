@@ -9,6 +9,9 @@
 (load-theme 'autumn t)
 ;;(add-hook 'window-setup-hook '(lambda () (load-theme 'autumn t)))
 
+;; (add-to-list 'custom-theme-load-path (concat my-packages-directory "base16-emacs/build"))
+;; (load-theme 'base16-default-dark t)
+
 ;; Prefer dark theme
 (setq-default frame-background-mode 'dark)
 (set-terminal-parameter nil 'background-mode 'dark)

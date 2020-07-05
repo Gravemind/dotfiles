@@ -301,3 +301,7 @@
 	path = bin/git-rebase-all-git
 	url = https://github.com/Gravemind/git-rebase-all.git
 	branch = master
+[submodule ".my.emacs.d/elpa-git/base16-emacs"]
+	path = .my.emacs.d/elpa-git/base16-emacs
+	url = https://github.com/belak/base16-emacs.git
+	branch = master
