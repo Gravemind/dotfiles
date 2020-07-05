@@ -40,8 +40,8 @@
 (add-to-list 'load-path (concat user-emacs-directory "lisp"))
 
 (setq
- my-configs-directory (concat user-emacs-directory "init")
- my-packages-directory (concat user-emacs-directory "packages")
+ my-configs-directory (concat user-emacs-directory "init/")
+ my-packages-directory (concat user-emacs-directory "packages/")
  my-configs-filenames
  (list
 
@@ -66,6 +66,6 @@
   ))
 (loop for filename in my-configs-filenames
       ;; (load FILE &optional NOERROR NOMESSAGE NOSUFFIX MUST-SUFFIX)
-      do (load (concat my-configs-directory "/" filename) nil my--message-loads-p))
+      do (load (concat my-configs-directory filename) nil my--message-loads-p))
 
 (add-hook 'window-setup-hook (lambda () (message "Ready")) 'append)
