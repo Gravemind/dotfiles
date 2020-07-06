@@ -170,6 +170,13 @@
 	localBranch = bold green
 	remoteBranch = bold cyan
 
+[color "diff"]
+	# 256color git diff --color-moved=zebra
+	newMoved = 65
+	newMovedAlternative = 66
+	oldMoved = 96
+	oldMovedAlternative = 97
+
 [color]
 	branch = auto
 	diff = auto
