@@ -1,13 +1,13 @@
 #!/bin/zsh
 
-export LESS_TERMCAP_mb="${fg_bold[red]}"	# begin blinking (?)
-export LESS_TERMCAP_md="${fg_bold[blue]}"   # begin bold (titles)
-export LESS_TERMCAP_me=$'\E[0m'				# end mode
-export LESS_TERMCAP_so="${fg_bold[white]}"  # begin standout-mode (search)
-#export LESS_TERMCAP_so=$'\E[7m'  # begin standout-mode (search)
-export LESS_TERMCAP_se=$'\E[0m'				# end standout-mode
-export LESS_TERMCAP_us="${fg_bold[cyan]}"   # begin underline (words)
-export LESS_TERMCAP_ue=$'\E[0m'				# end underline
+export LESS_TERMCAP_mb=$'\e[01;31m' # begin blinking (?)
+export LESS_TERMCAP_md=$'\e[01;34m' # begin bold (titles)
+export LESS_TERMCAP_me=$'\e[0m'     # end mode
+export LESS_TERMCAP_so=$'\e[01;37m' # begin standout-mode (search)
+#export LESS_TERMCAP_so=$'\E[7m'    # begin standout-mode (search)
+export LESS_TERMCAP_se=$'\e[0m'     # end standout-mode
+export LESS_TERMCAP_us=$'\e[01;36m' # begin underline (words)
+export LESS_TERMCAP_ue=$'\e[0m'     # end underline
 
 export LESSBINFMT='*u<%02X>'
 

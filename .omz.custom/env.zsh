@@ -6,7 +6,7 @@ export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/config
 #export GREP_OPTIONS="--binary-files=without-match"
 export GREP_OPTIONS=
 
-## enable sysstat (sar) colors
+# enable sysstat (sar) colors
 export S_COLORS=true
 
 export EDITOR='emacs'
