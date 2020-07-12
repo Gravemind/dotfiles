@@ -1,8 +1,8 @@
 #!/bin/bash
 
-nofork=
+nofork="--nofork"
 if [[ "${1:-}" = "--fork" ]]; then
-   nofork="--nofork"
+   nofork=""
    shift;
 fi
 
