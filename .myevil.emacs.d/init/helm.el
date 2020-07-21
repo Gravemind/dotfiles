@@ -114,6 +114,11 @@
    ;; Don't pre-fill find-files with whats at point
    helm-find-files-ignore-thing-at-point t
 
+   ;; ff cache
+   helm-ff-cache-mode t
+   ;; ff cache indicator
+   helm-ff-cache-mode-lighter "*"
+
    ;; Increase helm-buffers buffer name column width
    helm-buffer-max-length 30
 
