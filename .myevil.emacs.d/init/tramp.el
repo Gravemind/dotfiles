@@ -20,16 +20,6 @@
    password-cache-expiry nil
    ;;tramp-chunksize 4050
 
-   ;; Simpler prompt when `TERM=dump ssh ...`
-   ;;   https://www.emacswiki.org/emacs/TrampMode#toc9
-   ;;
-   ;; bash: [[ "$TERM" == "dumb" ]] && { export PS1='$ '; return; }
-   ;;   can be added to: ~/.bashrc, /etc/bash.bashrc, /etc/profile ...
-   ;;
-   ;; zsh: see ~/.zshrc
-   ;;
-   tramp-shell-prompt "$ "
-
    tramp-use-ssh-controlmaster-options nil
    ;;tramp-use-ssh-controlmaster-options t
    ;;tramp-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath=~/.ssh/tramp.%%C -o ControlPersist=no"
@@ -41,6 +31,17 @@
                        "/usr/contrib/bin" "/opt/bin" "/opt/sbin" "/opt/local/bin")
 
    )
+
+  ;; Simpler prompt when `TERM=dump ssh ...`
+  ;;   https://www.emacswiki.org/emacs/TrampMode#toc9
+  ;;
+  ;; bash: [[ "$TERM" == "dumb" ]] && { export PS1='$ '; return; }
+  ;;   can be added to: ~/.bashrc, /etc/bash.bashrc, /etc/profile ...
+  ;;
+  ;; zsh: see ~/.zshrc
+  ;;
+  (setq-default tramp-shell-prompt "$ ")
+  (add-to-list 'tramp-remote-process-environment "TERM=dumb")
 
   ;;
   ;; Custom 'ssha' hop: '/ssha:user@addr:/home/user'
