@@ -1,7 +1,8 @@
 ;;; init.el --- description -*- lexical-binding: t; -*-
 ;;
 
-(setq debug-on-error nil)
+;; (setq debug-on-error t)
+;; (setq debug-on-quit t)
 (setq my--message-loads-p 'nomessage)
 
 ;; GC only after every `gc-cons-threshold` new bytes has been allocated
@@ -69,3 +70,6 @@
       do (load (concat my-configs-directory filename) nil my--message-loads-p))
 
 (add-hook 'window-setup-hook (lambda () (message "Ready")) 'append)
+
+;; (require 'tramp)
+;; (setq debug-on-signal t)
