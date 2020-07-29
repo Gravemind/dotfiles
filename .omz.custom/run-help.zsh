@@ -1,8 +1,18 @@
 
-unalias run-help
-autoload -U run-help
+# Who TF aliases run-help to man?
+if [[ "$(which run-help 2>/dev/null)" =~ ^'run-help: aliased'* ]]
+then
+   unalias run-help
+fi
 
+autoload run-help
 autoload run-help-git
+autoload run-help-ip
+autoload run-help-openssl
+autoload run-help-p4
+autoload run-help-sudo
+autoload run-help-svk
+autoload run-help-svn
 
 _run-help-sub-command() {
 	local msg="$*"
