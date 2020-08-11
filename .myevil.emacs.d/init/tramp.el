@@ -92,6 +92,9 @@
   ;;   https://www.emacswiki.org/emacs/TrampMode#toc30
   ;; CHANGELOG:
   ;;   - modified to work in dired too
+  ;;   - fix new tramp-make-tramp-file-name parameters ?? (fix "wrong-number-of-arguments" error)
+  ;;   - works from non-existing files (file-remote-p replaced by tramp-tramp-file-p)
+  ;;   - use tramp-make-tramp-file-name instead of format
   ;;
   (defun sudo-edit-current-file ()
     (interactive)
@@ -100,14 +103,28 @@
           (fname (or buffer-file-name
                      dired-directory)))
       (find-alternate-file
-       (if (file-remote-p fname)
-           (let ((vec (tramp-dissect-file-name fname)))
-             (tramp-make-tramp-file-name
-              "sudo"
-              (tramp-file-name-user vec)
-              (tramp-file-name-host vec)
-              (tramp-file-name-localname vec)))
-         (concat "/sudo:root@localhost:" fname)))
+       (if (tramp-tramp-file-p fname)
+           (let* ((vec (tramp-dissect-file-name fname))
+                  ;; "/ssh:you@host:" --> "ssh:you@host|"
+                  (hop (concat (substring
+                                (tramp-make-tramp-file-name
+                                 (tramp-file-name-method vec)
+                                 (tramp-file-name-user vec)
+                                 (tramp-file-name-domain vec)
+                                 (tramp-file-name-host vec)
+                                 (tramp-file-name-port vec)
+                                 nil)
+                                1 -1) "|"))
+                  (sudoed (tramp-make-tramp-file-name
+                           "sudo" nil nil (tramp-file-name-host vec) nil
+                           (tramp-file-name-localname vec)
+                           hop))
+                  )
+             ;; (message "hop: %s" hop)
+             ;; (message "sudoed: %s" sudoed)
+             sudoed)
+         (tramp-make-tramp-file-name "sudo" nil nil nil nil fname)
+         ))
       (goto-char position)))
 
 )
