@@ -33,7 +33,7 @@
 (setq-default custom-file (concat user-emacs-directory "custom.el"))
 (load custom-file nil 'nomessage)
 
-(require 'cl)
+(require 'cl-lib)
 (require 'subr-x)
 
 (setq my--helm-or-ivy t)
@@ -65,7 +65,7 @@
   "keybinds.el"
 
   ))
-(loop for filename in my-configs-filenames
+(cl-loop for filename in my-configs-filenames
       ;; (load FILE &optional NOERROR NOMESSAGE NOSUFFIX MUST-SUFFIX)
       do (load (concat my-configs-directory filename) nil my--message-loads-p))
 
