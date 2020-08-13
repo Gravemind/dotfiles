@@ -77,6 +77,14 @@
     candidates)
   ;;(advice-add 'helm-ff-sort-candidates-1 :override #'my-helm-no-sort)
 
+  (if (>= emacs-major-version 27)
+      (setq-default
+       completion-styles '(flex)
+       helm-completion-styles '(flex))
+    (setq-default
+     completion-styles '(helm-flex)
+     helm-completion-styles '(helm-flex)))
+
   (setq-default
    enable-recursive-minibuffers t
 
@@ -84,9 +92,6 @@
    ;;helm-scroll-amount 8 ; scroll 4 lines other window using M-<next>/M-<prior>
    ;;helm-idle-delay 0.01 ; be idle for this many seconds, before updating in delayed sources.
    ;;helm-input-idle-delay 0.01 ; be idle for this many seconds, before updating candidate buffer
-
-   completion-styles '(helm-flex)
-   helm-completion-styles '(helm-flex)
 
    ;; ;; fuzzy matching everywhere
    ;; helm-mode-fuzzy-match t
