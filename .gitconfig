@@ -212,8 +212,6 @@
 [push]
 	# push to @{upstream}
 	default = upstream
-	# before push, check submodules have been pushed
-	recurseSubmodules = check
 [rebase]
 	autoStash = true
 	#autoSquash = true
@@ -244,6 +242,18 @@
 	#autocrlf = input
 	# checkout as is, commit as is
 	autocrlf = false
+
+# Better Submodules config:
+[fetch]
+	# git-fetch also fetches (only) updated submodules
+	recurseSubmodules = on-demand
+[push]
+	# git-push checks that submodules have been pushed
+	recurseSubmodules = check
+[diff]
+	# git-diff shows the list of new commits in submodules (instead of just
+	# hash) (supported by magit!)
+	submodule = log
 
 [merge]
 	tool = meld
