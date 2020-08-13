@@ -10,12 +10,15 @@ set print asm-demangle on
 set list 25
 set demangle-style gnu-v3
 
+set step-mode on # `step` stops on functions with no debug info
+set debug skip on # log `skip`d locations
+
 set print inferior-events on
 
 set confirm off
-#set pagination off
+set pagination off
 
-set non-stop off
+set non-stop off # stop all threads
 set disassembly-flavor intel
 
 set history save on
