@@ -7,7 +7,7 @@
 	s   = status -sb
 
 	# git status current dir, and force showuntrack
-	ss  = !git -c status.showUntrackedFiles=normal status -sb .
+	ss  = -c status.showUntrackedFiles=normal status -sb .
 
 	d   = diff -M
 	dc  = diff -M --cached
