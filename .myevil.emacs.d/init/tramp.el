@@ -20,6 +20,11 @@
    password-cache-expiry nil
    ;;tramp-chunksize 4050
 
+   ;; Size before running out-of-band copy
+   tramp-copy-size-limit (* 1 1024 1024)
+   ;; Quick fix "gzip: stdin: unexpected end of file" !?
+   tramp-inline-compress-start-size nil
+
    tramp-use-ssh-controlmaster-options nil
    ;;tramp-use-ssh-controlmaster-options t
    ;;tramp-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath=~/.ssh/tramp.%%C -o ControlPersist=no"
