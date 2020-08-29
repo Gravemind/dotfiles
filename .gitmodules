@@ -322,3 +322,8 @@
 	path = .my.emacs.d/elpa-git/helpful
 	url = https://github.com/Wilfred/helpful.git
 	branch = master
+[submodule ".my.emacs.d/elpa-git/ws-butler"]
+	path = .my.emacs.d/elpa-git/ws-butler
+	url = https://github.com/lewang/ws-butler.git
+	branch = master
+	ignore = untracked

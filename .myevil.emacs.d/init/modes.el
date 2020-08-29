@@ -605,6 +605,15 @@
   )
 
 ;;
+;; ws-butler: clean whitespaces only for edited lines
+;;
+
+(use-package ws-butler
+  :load-path (my-packages-directory "helpful")
+  :hook (prog-mode . ws-butler-mode)
+  )
+
+;;
 ;; other
 ;;
 
