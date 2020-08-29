@@ -113,6 +113,10 @@
    evil-motion-state-cursor   '(box "green")
    evil-emacs-state-cursor    '(box "magenta")
 
+   ;; It's infuriating that innocuous "beginning of line" or "end of line"
+   ;; errors will abort macros, so suppress them:
+   evil-kbd-macro-suppress-motion-error t
+
    )
 
   ;; Set insert-state style cursor in minibuffer
