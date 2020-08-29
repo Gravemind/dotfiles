@@ -314,3 +314,11 @@
 	url = https://github.com/rgrinberg/evil-quick-diff.git
 	branch = master
 	ignore = untracked
+[submodule ".my.emacs.d/elpa-git/elisp-refs"]
+	path = .my.emacs.d/elpa-git/elisp-refs
+	url = https://github.com/Wilfred/elisp-refs.git
+	branch = master
+[submodule ".my.emacs.d/elpa-git/helpful"]
+	path = .my.emacs.d/elpa-git/helpful
+	url = https://github.com/Wilfred/helpful.git
+	branch = master

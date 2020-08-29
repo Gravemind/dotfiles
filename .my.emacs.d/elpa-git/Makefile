@@ -108,6 +108,8 @@ DEFCOMPILE  += emacs-which-key
 DEFCOMPILE  += key-chord
 DEFCOMPILE  += better-jumper
 DEFCOMPILE  += projectile
+DEFCOMPILE  += elisp-refs
+DEFCOMPILE  += helpful
 
 DEFCOMPILE  += base16-emacs
 DEFCOMPILE_base16-emacs = base16-theme.el
@@ -213,6 +215,8 @@ evil-collection: f annalist
 evil-magit: magit
 
 goto-chg: undo-tree
+
+helpful: elisp-refs
 
 #
 # Default rules
