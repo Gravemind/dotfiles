@@ -1,0 +1,49 @@
+
+# Don't print a new line at the start of the prompt
+add_newline = false
+
+scan_timeout = 200
+
+prompt_order = [
+    # "custom.foo",
+    "cmd_duration",
+    "line_break",
+    "custom.charprefix",
+    "username",
+    "hostname",
+    "character",
+]
+
+[custom.foo]
+command = "echo"
+when = "true"
+
+[custom.charprefix]
+command = "echo tot"
+when = "true"
+style = "bold white"
+prefix = ""
+suffix = ""
+
+[character]
+symbol = "❱"
+style_success = "bold white"
+style_error = "bold red"
+
+[cmd_duration]
+min_time = 500
+prefix = "↳"
+suffix = "↲"
+
+[username]
+show_always = true
+style_user = "bold blue"
+style_root = "bold red"
+suffix = ""
+prefix = ""
+
+[hostname]
+ssh_only = false
+style = "bold green"
+prefix = "@"
+suffix = ""

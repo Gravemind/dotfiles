@@ -53,6 +53,7 @@
 !/.config/feh
 !/.config/i3
 !/.config/mpv
+!/.config/starship*
 
 !/bin
 !/dotfiles
