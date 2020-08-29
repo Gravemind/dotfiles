@@ -120,7 +120,7 @@
    helm-find-files-ignore-thing-at-point t
 
    ;; ff cache
-   helm-ff-cache-mode t
+   helm-ff-keep-cached-candidates nil ;; 'local 'remote 'all
    ;; ff cache indicator
    helm-ff-cache-mode-lighter "*"
 
