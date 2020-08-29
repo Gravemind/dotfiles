@@ -305,3 +305,7 @@
 	path = .my.emacs.d/elpa-git/base16-emacs
 	url = https://github.com/belak/base16-emacs.git
 	branch = master
+[submodule ".my.emacs.d/elpa-git/evil-traces"]
+	path = .my.emacs.d/elpa-git/evil-traces
+	url = https://github.com/mamapanda/evil-traces.git
+	branch = master

@@ -202,6 +202,15 @@
   (evil-goggles-mode)
   )
 
+;; Visual preview of commands like `:s` `:.,+2j` etc...
+(use-package evil-traces
+  :load-path (my-packages-directory "evil-traces")
+  :after evil
+  :demand t
+  :config
+  (evil-traces-mode)
+  )
+
 ;; evil-compatible magit bindings
 (use-package evil-magit
   :load-path (my-packages-directory "evil-magit")

@@ -126,6 +126,7 @@ DEFCOMPILE  += evil-lion
 DEFCOMPILE  += evil-indent-plus
 DEFCOMPILE  += evil-args
 DEFCOMPILE  += evil-goggles
+DEFCOMPILE  += evil-traces
 
 all:	${DEFCOMPILE} ${DEFMAKE} ${NODEF}
 .PHONY: all
