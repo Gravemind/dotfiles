@@ -171,12 +171,17 @@
   ;; :disabled t
   :after evil
   :demand t
-  :bind (
-         :map evil-normal-state-map
-         ("C-o" . better-jumper-jump-backward)
-         ("C-i" . better-jumper-jump-forward)
-         )
+  ;; :bind (
+  ;;        :map evil-normal-state-map
+  ;;        ("C-o" . better-jumper-jump-backward)
+  ;;        ("C-i" . better-jumper-jump-forward)
+  ;;        )
   :config
+
+  (global-set-key [remap evil-jump-forward]  #'better-jumper-jump-forward)
+  (global-set-key [remap evil-jump-backward] #'better-jumper-jump-backward)
+  (global-set-key [remap xref-pop-marker-stack] #'better-jumper-jump-backward)
+
   (setq
    better-jumper-use-evil-jump-advice t
 
@@ -225,6 +230,8 @@
   (advice-add #'imenu :around #'doom-set-jump-a)
 
   (advice-add #'helm-grep-mode-jump :around #'doom-set-jump-a)
+
+  (advice-add #'xref-push-marker-stack :around #'doom-set-jump-a)
 )
 
 ;;
@@ -341,8 +348,6 @@
   (setq-default
    dumb-jump-selector 'helm
    )
-
-  (add-hook 'dumb-jump-after-jump-hook #'better-jumper-set-jump)
 
 )
 
