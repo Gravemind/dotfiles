@@ -5,7 +5,13 @@
 # visual-quality-wise: av01 (av1) >= vp9 > avc1 (h264) > vp8
 # (youtube-dl's default bestvideo prefers avc1 over vp9)
 --format (bestvideo[vcodec^=av01]+bestaudio/bestvideo[vcodec^=vp9]+bestaudio/bestvideo+bestaudio/best)[height<=?1440][protocol=https]
---prefer-free-formats
+#--format bestvideo+bestaudio/best#[height<=?1440][protocol=https]
+#--format best#[height<=?1440][protocol=https]
+#--format (bestvideo[fps>=50]+bestaudio/bestvideo+bestaudio/best)[height<=?1440][protocol=https]
+#--format (bestvideo[fps>=50]+bestaudio/bestvideo+bestaudio/best)[height<=?1440][protocol=https]
+#--prefer-free-formats
+
+--no-playlist
 
 --embed-subs
 --write-sub
