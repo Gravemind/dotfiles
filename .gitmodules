@@ -309,3 +309,8 @@
 	path = .my.emacs.d/elpa-git/evil-traces
 	url = https://github.com/mamapanda/evil-traces.git
 	branch = master
+[submodule ".my.emacs.d/elpa-git/evil-quick-diff"]
+	path = .my.emacs.d/elpa-git/evil-quick-diff
+	url = https://github.com/rgrinberg/evil-quick-diff.git
+	branch = master
+	ignore = untracked

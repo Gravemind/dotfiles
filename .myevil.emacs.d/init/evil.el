@@ -305,5 +305,19 @@
          )
   )
 
+;; quick diffs
+(use-package evil-quick-diff
+  :load-path (my-packages-directory "evil-quick-diff")
+  :after evil
+  :bind (
+         :map evil-normal-state-map
+         ("god" . evil-quick-diff)
+         ("goD" . evil-quick-diff-cancel)
+         :map evil-visual-state-map
+         ("god" . evil-quick-diff)
+         ("goD" . evil-quick-diff-cancel)
+         )
+  )
+
 ;; TODO see if evil-embrace is worth it ?
 ;; https://github.com/cute-jumper/evil-embrace.el/blob/master/evil-embrace.el
