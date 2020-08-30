@@ -176,6 +176,23 @@
   ;; to clipboard"
   (fset 'evil-visual-update-x-selection 'ignore)
 
+  ;;
+  ;; Stolen from doom-emacs
+  ;;
+  (evil-define-text-object +evil:whole-buffer-txtobj (count &optional _beg _end type)
+    "Text object to select the whole buffer."
+    (evil-range (point-min) (point-max) type))
+  (evil-define-text-object +evil:defun-txtobj (count &optional _beg _end type)
+    "Text object to select the top-level Lisp form or function definition at
+point."
+    (cl-destructuring-bind (beg . end)
+        (bounds-of-thing-at-point 'defun)
+      (evil-range beg end type)))
+  (define-key evil-inner-text-objects-map "g" '+evil:whole-buffer-txtobj)
+  (define-key evil-outer-text-objects-map "g" '+evil:whole-buffer-txtobj)
+  (define-key evil-inner-text-objects-map "f" '+evil:defun-txtobj)
+  (define-key evil-outer-text-objects-map "f" '+evil:defun-txtobj)
+
   )
 
 ;; Required by evil for `g;`
