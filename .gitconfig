@@ -262,11 +262,10 @@
 	# hash) (supported by magit!)
 	submodule = log
 
-[merge]
-	tool = meld
-
-[mergetool "emerge"]
-	path = /home/jo/bin/emerge-for-git
+# [merge]
+# 	tool = meld
+# [mergetool "emerge"]
+# 	path = /home/jo/bin/emerge-for-git
 
 ### WINDOWS ###
 #[core]
