@@ -23,16 +23,21 @@
 	b = branch --sort=version:refname
 	ba = branch --sort=version:refname --all
 
-	# usage: git cont REV
-	# Show branch containing REV
-	cont = branch --sort=version:refname --all --contains
-	# Ditto tag
-	contt = tag --contains
-
 	su = !git --no-pager diff --name-only --diff-filter=U
 	sa = !git --no-pager diff --name-only --diff-filter=A
 	sm = !git --no-pager diff --name-only --diff-filter=M
 	sd = !git --no-pager diff --name-only --diff-filter=D
+
+	# usage: refs FOR-EACH-REF-ARGS
+	# List branch and tags in a short form
+	# FIXME: where is the color ?! git 2.24 had colors !?
+	refs = for-each-ref --format='%(refname:lstrip=2)' --sort=version:refname
+
+	# usage: git cont REV
+	# Show branch and tags containing REV
+	#cont = branch --sort=version:refname --all --contains
+	#contt = tag --contains
+	cont = refs --contains
 
 	a = add
 	# "un-add"
