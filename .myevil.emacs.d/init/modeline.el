@@ -24,9 +24,11 @@
 
 ;; dired-k.el:197
 (defsubst my/project-directory (file)
-  (or (locate-dominating-file file ".git")
-      (locate-dominating-file file ".svn")
-      ))
+  ;; (or (locate-dominating-file file ".git")
+  ;;     (locate-dominating-file file ".svn"))
+  ;; FIXME: too slow! cache? use helm's?
+  nil
+)
 
 (defvar my/mode-line-buffer-long
   '(:eval
