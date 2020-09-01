@@ -208,8 +208,10 @@
 	branch = "less -FRX"
 
 [tag]
-	#sort = version:refname
-	sort = creatordate
+	sort = version:refname
+	# sort = creatordate
+[branch]
+	sort = version:refname
 [fetch]
 	prune = true
 [pull]
