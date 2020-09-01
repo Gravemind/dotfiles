@@ -38,6 +38,7 @@ HISTFILESIZE=10000
 
 export EDITOR='emacs'
 export PAGER='less'
+export BROWSER='firefox'
 
 # `bash -x` "prompt" https://wiki.bash-hackers.org/scripting/debuggingtips
 export PS4='+$$+${BASH_SOURCE}:${LINENO}+${FUNCNAME[0]:-}+ '
@@ -78,6 +79,10 @@ alias c='clear'
 alias e='exit'
 alias t='urxvt & ; disown'
 
+alias cdr='cd "$(git rev-parse --show-toplevel)"'
+alias gdiff='pipes2files git d --no-index'
+alias gdiffw='pipes2files git dw --no-index'
+
 alias lesss='less -+S'
 
 alias topu='top -u "$(id -nu)"'
@@ -85,9 +90,10 @@ alias topu='top -u "$(id -nu)"'
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias a='echo -ne "\a"'
 
 take() {
     mkdir -p "$1" && cd "$1"
 }
 
-export PS1='\[\033[1;30;40m\]\[\033[1;30m\]$([[ $SHLVL -eq 1 ]] || echo "$SHLVL ")\[\033[1;34m\]\u${SSH_CONNECTION:+\[\033[1;32m\]@\H} \[\033[1;34m\]\W\[\033[1;31m\]$(r=$?; [[ $r -eq 0 ]] || echo " $r") \[\033[1;37m\]\$\[\033[0;0;0m\] '
+export PS1='\[\033[1;30;40m\]\[\033[1;30m\]$SHLVL \[\033[1;34m\]\u${SSH_CONNECTION:+\[\033[1;32m\]@\H} \[\033[1;34m\]\W\[\033[1;31m\]$(r=$?; [[ $r -eq 0 ]] || echo " $r") \[\033[1;37m\]\$\[\033[0;0;0m\] '
