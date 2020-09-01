@@ -174,7 +174,9 @@ fetchrepo() {
     # current desc
     printf "${C_RESET}%s${C_RESET}" "$current_desc"
     # new tag
+    set +u
     [[ -z "${new_tags[*]}" ]] || printf " ${C_TAG}%s${C_RESET}" "${new_tags[*]}"
+    set -u
 
     #echo
     #printf "$branches_ident"
