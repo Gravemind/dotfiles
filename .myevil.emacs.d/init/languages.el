@@ -161,11 +161,11 @@
                            (toggle-truncate-lines 0)
                            (toggle-word-wrap 1)
                            ))
-  :init
+  :config
   (setq-default
    markdown-gfm-use-electric-backquote nil
+   markdown-asymmetric-header t
    )
-  :config
   ;; bin launched to generate html (C-c C-c l), needs to be installed
   (setq-default markdown-command "cmark-gfm -e footnotes -e table -e strikethrough -e autolink")
   ;;(setq-default markdown-command "multimarkdown --smart --notes")
