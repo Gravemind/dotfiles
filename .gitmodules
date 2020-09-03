@@ -327,3 +327,10 @@
 	url = https://github.com/lewang/ws-butler.git
 	branch = master
 	ignore = untracked
+[submodule ".my.emacs.d/elpa-git/evil-markdown"]
+	path = .my.emacs.d/elpa-git/evil-markdown
+	url = https://github.com/Somelauw/evil-markdown
+[submodule ".my.emacs.d/elpa-git/evil-org-mode"]
+	path = .my.emacs.d/elpa-git/evil-org-mode
+	url = https://github.com/Somelauw/evil-org-mode
+	ignore = untracked

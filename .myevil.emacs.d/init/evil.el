@@ -342,3 +342,25 @@ point."
 
 ;; TODO see if evil-embrace is worth it ?
 ;; https://github.com/cute-jumper/evil-embrace.el/blob/master/evil-embrace.el
+
+;; org
+(use-package evil-org
+  :load-path (my-packages-directory "evil-org-mode")
+  :after evil
+  :after org
+  :config
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (add-hook 'evil-org-mode-hook
+            (lambda ()
+              (evil-org-set-key-theme)))
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+
+;; markdown
+(use-package evil-markdown
+  :load-path (my-packages-directory "evil-markdown")
+  :after evil
+  :after markdown-mode
+  :init
+  (require 'evil-markdown)
+  )

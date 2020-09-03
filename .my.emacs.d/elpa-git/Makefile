@@ -131,6 +131,10 @@ DEFCOMPILE  += evil-args
 DEFCOMPILE  += evil-goggles
 DEFCOMPILE  += evil-traces
 DEFCOMPILE  += evil-quick-diff
+DEFCOMPILE  += evil-org-mode
+DEFCOMPILE_evil-org-mode  = evil-org-*.el
+DEFCOMPILE  += evil-markdown
+DEFCOMPILE_evil-markdown  = evil-markdown.el
 
 all:	${DEFCOMPILE} ${DEFMAKE} ${NODEF}
 .PHONY: all
