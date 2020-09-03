@@ -47,10 +47,6 @@
          :map evil-normal-state-map
          ("<leader>w" . evil-window-map)
 
-         :map evil-motion-state-map
-         ("C-k" . evil-backward-paragraph)
-         ("C-j" . evil-forward-paragraph)
-
          :map evil-window-map
          ;; Lazy fingers: add `C-w C-h` same as `C-w h`
          ("C-h" . evil-window-left)
@@ -67,6 +63,13 @@
          ("b" . helm-mini)
 
          )
+
+  :bind* (
+          ;; Override org-mode (FIXME: prefer rebind it in org-mode-map)
+          :map evil-motion-state-map
+          ("C-k" . evil-backward-paragraph)
+          ("C-j" . evil-forward-paragraph)
+          )
 
   :hook (git-commit-setup . evil-insert-state)
 
