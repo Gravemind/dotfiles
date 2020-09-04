@@ -89,6 +89,9 @@
    evil-want-C-w-delete nil
    evil-want-Y-yank-to-eol t
 
+   ;; Enable emacs-like undo even inside inserts ("partial undo", "sub-insert undo")
+   evil-want-fine-undo t
+
    ;; If the cursor can go 1 beyond the last char (like emacs)
    evil-move-beyond-eol t
 
