@@ -5,6 +5,8 @@
  :prefix "<leader>f"
  ;; ("f" . helm-find-files)
  ;; ("r" . helm-recentf)
+ ("y" . my-copy-buffer-filename-to-clipboard)
+ ("Y" . my-copy-buffer-filename-location-to-clipboard)
  )
 
 (bind-keys

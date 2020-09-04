@@ -623,7 +623,7 @@
 ;; other
 ;;
 
-(defun my-file-to-clipboard-plus ()
+(defun my-copy-buffer-filename-location-to-clipboard ()
   "Copy current file path and linenum, or dired file at point, to clipboard"
   (interactive)
   (save-restriction
@@ -640,7 +640,7 @@
         (message location)
         (gui-set-selection nil location)))))
 
-(defun my-file-to-clipboard ()
+(defun my-copy-buffer-filename-to-clipboard ()
   "Copy current file path to clipboard"
   (interactive)
   (save-restriction
