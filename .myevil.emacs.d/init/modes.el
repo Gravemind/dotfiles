@@ -519,27 +519,29 @@
 
 (use-package flycheck-grammalecte
   :load-path (my-packages-directory "flycheck-grammalecte")
-  :after flycheck
-  :commands (my--flycheck-grammalecte)
+  :commands (my-flycheck-grammalecte)
   :config
-  (setq-default
-   ; don't report typographical apostrophes error
-   flycheck-grammalecte-report-apos nil
-   ; don't report non-breakable spaces error
-   flycheck-grammalecte-report-nbsp nil
-   )
-  ;;(add-to-list 'flycheck-grammalecte-enabled-modes 'markdown-mode)
 
-  (defun my--flycheck-grammalecte ()
+  (add-to-list 'flycheck-grammalecte-enabled-modes 'gfm-mode)
+
+  (setq-default
+   ;; Don't report typographical apostrophes error
+   flycheck-grammalecte-report-apos nil
+   ;; Don't report non-breakable spaces error
+   flycheck-grammalecte-report-nbsp nil
+   ;; Don't report useless spaces/tab
+   flycheck-grammalecte-report-esp nil
+   )
+
+  (defun my-flycheck-grammalecte ()
     (interactive)
-    (require 'flycheck-grammalecte)
     (flyspell-mode 1)
-    (ispell-change-dictionary "francais")
-    ;;(flycheck-select-checker 'francais-grammalecte)
     (flycheck-mode 0)
+    (ispell-change-dictionary "francais")
     (flycheck-grammalecte-setup)
+    ;; (flycheck-select-checker 'francais-grammalecte)
+    (flyspell-mode 1)
     (flycheck-mode 1)
-    ;(flycheck-grammalecte-setup)
     )
 
   )
