@@ -167,7 +167,11 @@
      ;;helm-frame-background-color "#000000"
      ;; helm-display-buffer-reuse-frame t ;; BUG ?
      ;; x-wait-for-event-timeout nil ;; For emacs < 27 but never for windows
-     ))
+     )
+    ;; Always put the prompt (minibuffer) at the bottom of the helm "own-frame"
+    (add-hook 'helm-window-configuration-hook
+              (lambda () (with-helm-buffer (setq-local helm-echo-input-in-header-line nil))))
+    )
 
   ;; Helm buffer/frame size
   (setq-default
