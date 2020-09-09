@@ -59,7 +59,7 @@ sanitize_filename() {
 LOGPID=$$
 
 log() {
-    echo "$base0 $LOGPID: $*"
+    echo "$base0 $LOGPID: $*" 1>&2
 }
 err() {
     echo "$base0 $LOGPID: error: $*" 1>&2
@@ -78,8 +78,49 @@ notify() {
     checked notify-send -a "$base0" -h "string:synchronous:$base0-$LOGPID" -u "$@"
 }
 
-main() {
+list_video_format_from_json() {
+    python <(cat <<"EOPYTHON"
+import fileinput
+import json
 
+j = json.loads("\n".join(fileinput.input()))
+
+def vformat_sort_key(f):
+    if f['vcodec'] == 'none':
+        return (-1,)
+    def get_score_from_order(needle, best_first):
+        if needle in best_first:
+            return len(best_first) - best_first.index(needle)
+        else:
+            return -1
+    h = int(f['height'])
+    return (
+        1,
+        ## First choose best resolution
+        h if h <= 1440 else -1,
+        ## Then best FPS (frame rate)
+        int(f['fps']),
+        ## Then best codec
+        get_score_from_order(
+            f['vcodec'].split('.', maxsplit=1)[0],
+            ['av01', 'vp9', 'avc1']),
+        ## If there is still a draw...
+        float(f['tbr']), # higher bit rate is better
+    )
+
+#print("\n".join(map(str, sorted(map(vformat_sort_key, j['formats'])))))
+
+for f in sorted(j['formats'], key=vformat_sort_key, reverse=True):
+    if f['vcodec'] == 'none':
+        continue
+    # If we don't have audio in this format, let youtube-dl merge the best audio
+    addaudio = '+bestaudio' if f['acodec'] == 'none' else ''
+    print('{format_id}{addaudio}: {format} {vcodec}'.format(addaudio=addaudio, **f))
+EOPYTHON
+            )
+}
+
+main() {
     CLIPMENU="${CLIPMENU:-clipmenu}"
 
     local dl_dir="$default_dl_dir"
@@ -125,9 +166,34 @@ main() {
         echo "mpv: play with mpv";
         echo "youtube-dl: download with youtube-dl";
         echo "wget: download with wget";
+        echo "mpv-FORMAT: play with mpv";
+        echo "youtube-dl-FORMAT: download with youtube-dl";
     } | \
         rofi -dmenu "${rofi_args[@]}" -mesg "$msg" | \
         read -r -d: do dummy
+
+    log "choose: $do"
+
+    local format=""
+    if [[ $do =~ .*-FORMAT ]]; then
+        log "choosing format"
+        msg="Loading youtube-dl format selection..."
+        youtube-dl --dump-json "$url" | \
+            list_video_format_from_json | \
+            tee /dev/fd/2 | \
+            rofi -dmenu "${rofi_args[@]}" -mesg "$msg" -async-pre-read 0 | \
+            read -r -d: format dummy
+        log "choose: $format"
+        do="${do%-FORMAT}"
+    elif [[ $do = youtube-dl || $do = mpv ]]; then
+        log "auto choose best format..."
+        youtube-dl --dump-json "$url" | \
+            list_video_format_from_json | \
+            tee /dev/fd/2 | \
+            head -n1 | \
+            read -r -d: format dummy
+        log "auto choose best format: $format"
+    fi
 
     if [[ $do = youtube-dl || $do = wget ]]; then
         dlwith=$do
@@ -145,7 +211,11 @@ main() {
                 log "youtube-dl $filename"
                 notify low "Launching $dlwith..." "$markupfilename"
 
-                youtube-dl -q -o "${filename//%/%%}" --no-mtime -- "$url" && ok=1 || err "youtube-dl failed"
+                local cmd=( youtube-dl -q -o "${filename//%/%%}" --no-mtime )
+                [[ -z "$format" ]] || cmd+=( --format "$format" )
+                cmd+=( -- "$url")
+
+                "${cmd[@]}" && ok=1 || err "youtube-dl failed"
 
                 if [[ $ok = 1 && ! -f "$filename" ]]; then
                     ok=0
@@ -195,7 +265,9 @@ main() {
     fi
 
     if [[ $do = mpv ]]; then
-        local cmd=( mpv "${mpvargs[@]}" "--" "$url" )
+        local cmd=( mpv "${mpvargs[@]}" )
+        [[ -z "$format" ]] || cmd+=( --ytdl-format="$format" )
+        cmd+=( "--" "$url" )
         log "launching ${cmd[@]}"
         exec "${cmd[@]}"
     fi
