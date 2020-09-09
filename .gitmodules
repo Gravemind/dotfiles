@@ -334,3 +334,6 @@
 	path = .my.emacs.d/elpa-git/evil-org-mode
 	url = https://github.com/Somelauw/evil-org-mode
 	ignore = untracked
+[submodule ".my.emacs.d/elpa-git/explain-pause-mode"]
+	path = .my.emacs.d/elpa-git/explain-pause-mode
+	url = https://github.com/lastquestion/explain-pause-mode.git
