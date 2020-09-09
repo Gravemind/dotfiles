@@ -42,15 +42,19 @@ local function toggle_svp()
     mp.osd_message("svp " .. tostring(profiles_enabled.svp))
 end
 
-for k, v in pairs(profiles_enabled) do
-    if os.getenv(string.upper(k)) == "0" then
-        enable_profile(k, false)
-    else
-        enable_profile(k, profiles_enabled[k])
+local function init()
+    print('my-script init')
+    for k, v in pairs(profiles_enabled) do
+        if os.getenv(string.upper(k)) == "0" then
+            enable_profile(k, false)
+        else
+            enable_profile(k, profiles_enabled[k])
+        end
     end
+    local svp_was_enabled = profiles_enabled.svp
+
+    mp.observe_property("speed", "number", on_speed_changed)
+    mp.add_key_binding("n", "toggle-svp", toggle_svp, {repeatable=true})
 end
-local svp_was_enabled = profiles_enabled.svp
 
-mp.observe_property("speed", "number", on_speed_changed)
-
-mp.add_key_binding("n", "toggle-svp", toggle_svp, {repeatable=true})
+init()

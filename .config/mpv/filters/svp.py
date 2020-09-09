@@ -32,7 +32,6 @@ main: {
 },
 refine:[{thsad:200}]}
 """
-
 analyse_params=""
 
 '''
@@ -123,6 +122,8 @@ pprefix="svp.py: "
 print()
 print(pprefix+"Clip", clip.width, "x", clip.height, clip.format.name, "at", container_fps, "fps")
 
+# display_fps = 143.995
+
 max_fps = display_fps
 
 if clip.width > 1920:
@@ -131,8 +132,6 @@ elif clip.width >= 1920:
     max_fps = min(max_fps, 144) # <= 1080p
 
 max_fps = min(max_fps, 60)  # > 1080p
-
-#max_fps = 60
 
 # Interpolate to a multiple of the original source fps
 i = 1
@@ -167,17 +166,19 @@ else:
                 clip = orig_clip.resize.Bicubic(format=vs.YUV420P8) # convert to YV12
             else:
                 raise err
+    if True:
+        vectors = core.svp1.Analyse(sup["clip"], sup["data"], clip, "{"+analyse_params+"}")
 
-    vectors = core.svp1.Analyse(sup["clip"], sup["data"], clip, "{"+analyse_params+"}")
+        #pprint(vars(vectors))
 
-    #pprint(vars(vectors))
+        full_smooth_params = "{ rate: {num:"+str(dst_fps_num)+", den:"+str(dst_fps_den)+", abs:true} "+smooth_params+" }"
+        #full_smooth_params = "{ rate: {num:2,den:1}, "+smooth_params+" }"
 
-    full_smooth_params = "{ rate: {num:"+str(dst_fps_num)+", den:"+str(dst_fps_den)+", abs:true} "+smooth_params+" }"
-    #full_smooth_params = "{ rate: {num:2,den:1}, "+smooth_params+" }"
+        clip = core.svp2.SmoothFps(clip, sup["clip"], sup["data"], vectors["clip"], vectors["data"], full_smooth_params)
 
-    clip = core.svp2.SmoothFps(clip, sup["clip"], sup["data"], vectors["clip"], vectors["data"], full_smooth_params)
-
-    #pprint(vars(clip))
+        #pprint(vars(clip))
+    else:
+        clip = core.svp2.SmoothFps_NVOF(sup["clip"], sup["data"], "")
 
     clip = core.std.AssumeFPS(clip, fpsnum=clip.fps_num, fpsden=clip.fps_den)
 

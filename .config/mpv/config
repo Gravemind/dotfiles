@@ -61,8 +61,8 @@ hr-seek-framedrop=no
 profile=gpu-hqer
 
 # GPU api
-#profile=opengl
-profile=vulkan
+profile=opengl
+# profile=vulkan
 
 #
 # Profiles
@@ -71,10 +71,12 @@ profile=vulkan
 [disable-svp]
 vf-add=@svpf:!format=yuv420p
 vf-add=@svpv:!vapoursynth=~/.config/mpv/filters/svp.py
+hwdec=auto-safe
 [enable-svp]
 profile=disable-svp
 vf-toggle=@svpf
 vf-toggle=@svpv
+hwdec=auto-copy-safe
 
 [disable-scaletempo]
 af-add=@scaletempo:!scaletempo=stride=10:search=16:overlap=1
@@ -131,22 +133,34 @@ tscale=oversample
 #
 [vulkan]
 gpu-api=vulkan
-vulkan-swap-mode=auto
+gpu-context=x11vk
+#video-sync=display-resample
+# vo=drm
+# gpu-context=drm
+#vulkan-swap-mode=auto
 #vulkan-swap-mode=fifo # vsync
-#vulkan-swap-mode=fifo-relaxed # vsync unless too slow
+vulkan-swap-mode=fifo-relaxed # vsync unless too slow
 #vulkan-swap-mode=mailbox # triple buffer sync
 #vulkan-swap-mode=immediate # no sync
 #vulkan-async-compute=yes
 #vulkan-async-transfer=yes
 #vulkan-queue-count=1
 
+# Reduce stutter
+video-sync=display-resample
+interpolation=yes
+tscale=oversample
+
 [opengl]
+opengl-pbo=yes
+opengl-glfinish=yes
+opengl-waitvsync=yes
 gpu-api=opengl
-opengl-swapinterval=0 # no sync
-#opengl-swapinterval=1 # vsync
+#opengl-swapinterval=0 # no sync
+opengl-swapinterval=1 # vsync
 # https://www.svp-team.com/wiki/SVP:mpv
 # Can fix stuttering in some cases, in other cases probably causes it. Try it if you experience stuttering on macOS.
-# opengl-early-flush=no
+opengl-early-flush=no
 #opengl-pbo=yes
 
 #
