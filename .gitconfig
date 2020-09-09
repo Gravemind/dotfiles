@@ -20,6 +20,9 @@
 
 	dule = submodule
 
+	# Parallel fetch all submodules
+	dulefp = "!f() { j=5; git dule foreach -q 'echo $displaypath' | xargs -t -r -d\\\\n -n1 -P$j -I\\{\\} git -C \\{\\} fetch --all --tags --prune; }; f"
+
 	b = branch --sort=version:refname
 	ba = branch --sort=version:refname --all
 
