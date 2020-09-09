@@ -14,8 +14,8 @@ main() {
         true &&
             entry_mode "$i" " Sync:        VSync" 1 0 0 &&
             entry_mode "$i" " Game VRR:    VSync + VRR + Indicators" 1 1 1 &&
-            entry_mode "$i" " Game Sync:   VSync + Indicators" 0 1 0 &&
-            entry_mode "$i" " Game Unsync: Indicators" 0 0 1 &&
+            entry_mode "$i" " Game Sync:   VSync + Indicators" 1 0 1 &&
+            entry_mode "$i" " Game Unsync: Unsync + Indicators" 0 0 1 &&
             #entry_comm "$i" "--" &&
             entry_prop "$i" AllowFlipping &&
             entry_prop "$i" SyncToVBlank &&
