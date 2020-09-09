@@ -464,21 +464,6 @@
 )
 
 ;;
-;; visual-fill-column
-;; https://github.com/joostkremers/visual-fill-column
-;;
-;; Make lines wrap before the end of the window
-;;
-
-(use-package visual-fill-column
-  :load-path (my-packages-directory "visual-fill-column")
-  ;; :disabled t
-  ;; :if window-system
-  :demand t
-  :config
-  )
-
-;;
 ;; centered-cursor-mode
 ;; https://github.com/andre-r/centered-cursor-mode.el
 ;;

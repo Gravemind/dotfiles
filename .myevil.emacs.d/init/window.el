@@ -157,3 +157,63 @@
 ;; | C-u  | popwin:universal-display        |
 ;; | 1    | popwin:one-window           |
 ;;
+
+;;
+;; visual-fill-column
+;;   https://github.com/joostkremers/visual-fill-column
+;;
+
+(use-package visual-fill-column
+  :load-path (my-packages-directory "visual-fill-column")
+  ;; :disabled t
+  :if window-system
+  ;; :demand t
+  :config
+
+  ;; Set a max width and center buffer inside window
+  (setq-default
+   visual-fill-column-width 140
+   visual-fill-column-center-text t
+   visual-fill-column-fringes-outside-margins nil
+   )
+
+  ;; Fix split wont split when wide margins
+  ;; https://github.com/joostkremers/visual-fill-column#splitting-a-window
+  (setq-default split-window-preferred-function 'visual-fill-column-split-window-sensibly)
+
+  ;;
+  ;; Enable visual-fill-column-mode for more buffers !
+  ;; (Default enables only for "files" AND visual-line-mode on)
+  ;;
+  (defvar visual-fill-column-ignored-buffer-name-regexps nil "List of ignored buffer name regexps")
+  (defun my-turn-on-visual-fill-column-mode ()
+    "Turn visual-fill-column on, except for visual-fill-column-ignored-buffer-name-regexps"
+    ;; see zoom--window-ignored-p
+    (when (not (or (catch 'ignored
+                     (dolist (regex visual-fill-column-ignored-buffer-name-regexps)
+                       (when (string-match regex (buffer-name))
+                         (throw 'ignored t))))
+                   ;; (catch 'ignored
+                   ;;   (dolist (predicate visual-fill-column-ignore-predicates)
+                   ;;     (when (funcall predicate)
+                   ;;       (throw 'ignored t))))
+                   ))
+      (visual-fill-column-mode 1)))
+  (advice-add 'turn-on-visual-fill-column-mode :override #'my-turn-on-visual-fill-column-mode)
+
+  ;; (defun my-visual-fill-column--adjust-frame (frame)
+  ;;   "Adjust the windows of FRAME."
+  ;;   (mapc (lambda (w)
+  ;;           (with-selected-window w
+  ;;             (visual-fill-column--adjust-window)))
+  ;;         (window-list frame t)))
+  ;; (advice-add 'visual-fill-column--adjust-frame :override #'my-visual-fill-column--adjust-frame)
+
+  (setq-default
+   visual-fill-column-ignored-buffer-name-regexps
+   '("^magit" ;; Magit uses the margin too, so it conflicts with visual-fill-column
+     ))
+
+  ;; (global-visual-fill-column-mode 1)
+
+  )
