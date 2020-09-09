@@ -329,10 +329,10 @@
 	ignore = untracked
 [submodule ".my.emacs.d/elpa-git/evil-markdown"]
 	path = .my.emacs.d/elpa-git/evil-markdown
-	url = https://github.com/Somelauw/evil-markdown
+	url = https://github.com/Somelauw/evil-markdown.git
 [submodule ".my.emacs.d/elpa-git/evil-org-mode"]
 	path = .my.emacs.d/elpa-git/evil-org-mode
-	url = https://github.com/Somelauw/evil-org-mode
+	url = https://github.com/Somelauw/evil-org-mode.git
 	ignore = untracked
 [submodule ".my.emacs.d/elpa-git/explain-pause-mode"]
 	path = .my.emacs.d/elpa-git/explain-pause-mode
