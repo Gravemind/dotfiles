@@ -160,10 +160,13 @@
     ;; Helm/minibuffer in own frame
     (setq-default
      helm-display-function #'helm-display-buffer-in-own-frame
+     helm-show-completion-display-function #'helm-display-buffer-in-own-frame
      ;;helm-display-function #'helm-display-buffer-popup-frame
-     ;; helm-show-completion-display-function #'helm-display-buffer-in-own-frame
+     helm-actions-inherit-frame-settings t
      ;;helm-frame-alpha 0.9
      ;;helm-frame-background-color "#000000"
+     ;; helm-display-buffer-reuse-frame t ;; BUG ?
+     ;; x-wait-for-event-timeout nil ;; For emacs < 27 but never for windows
      ))
 
   ;; Helm buffer/frame size
