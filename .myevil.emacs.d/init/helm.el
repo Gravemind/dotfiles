@@ -293,7 +293,7 @@
 (use-package flyspell-correct
   :load-path (my-packages-directory "flyspell-correct")
   :after flyspell
-  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-at-point)))
 (use-package flyspell-correct-helm
   :load-path (my-packages-directory "flyspell-correct")
   :after flyspell-correct
