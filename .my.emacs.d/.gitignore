@@ -1,20 +1,21 @@
 # for bare git dotiles
-custom.el
-elpa
-bookmarks
-\#*
-auto-save-list/
-eshell/
-/history
-ido.last
-image-dired/
-recentf
-tramp
-url/
-/transient/
-/thumbs/
-/*~
+*~
 *.elc
+\#*
 
 /.*
+/custom.el
+/elpa
+/bookmarks
+/auto-save-list/
+/eshell
+/history
+/ido.last
+/image-dired
+/recentf
+/tramp
+/url
+/transient/
+/thumbs/
+
 !.gitignore
