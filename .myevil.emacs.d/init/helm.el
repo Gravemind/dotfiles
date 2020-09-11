@@ -254,7 +254,7 @@
     (interactive "P")
     (require 'helm-files)
     (when-let ((helm-ff-default-directory
-                (or (my/project-directory default-directory) default-directory)))
+                (or (my/project-root-directory-slow default-directory) default-directory)))
       (helm-grep-ag (expand-file-name helm-ff-default-directory) arg)
       ))
 

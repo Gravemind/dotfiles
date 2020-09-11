@@ -23,10 +23,15 @@
 (put 'my/mode-line-buffer 'risky-local-variable t)
 
 ;; dired-k.el:197
-(defsubst my/project-directory (file)
-  ;; (or (locate-dominating-file file ".git")
-  ;;     (locate-dominating-file file ".svn"))
+(defsubst my/project-root-directory-slow (file)
+  "Returns project root directory path, but it is slow, especially over tramp"
+  (or (locate-dominating-file file ".git")
+      (locate-dominating-file file ".svn"))
+)
+
+(defsubst my/project-root-directory (file)
   ;; FIXME: too slow! cache? use helm's?
+  ;; (my/project-root-directory-slow)
   nil
 )
 
@@ -35,7 +40,7 @@
     (let* ((bfname (or buffer-file-truename buffer-file-name dired-directory))
            (fname (when bfname (file-truename bfname))))
       (if fname
-          (if-let ((_proj (my/project-directory fname)))
+          (if-let ((_proj (my/project-root-directory fname)))
               (let* ((proj (directory-file-name (file-truename _proj)))
                      (proj-parent (directory-file-name (file-name-directory proj)))
                      (proj-name (file-name-nondirectory proj))
