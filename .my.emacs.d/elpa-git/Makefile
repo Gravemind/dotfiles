@@ -86,6 +86,7 @@ DEFCOMPILE	+= popup
 DEFMAKE		+= popwin
 DEFCOMPILE	+= pos-tip
 DEFMAKE		+= racer
+DEFCOMPILE	+= xterm-color
 DEFCOMPILE	+= rainbow-mode
 DEFCOMPILE	+= req-package
 DEFCOMPILE	+= rust-mode
@@ -112,6 +113,7 @@ DEFCOMPILE  += elisp-refs
 DEFCOMPILE  += helpful
 DEFCOMPILE  += ws-butler
 DEFCOMPILE  += explain-pause-mode
+DEFCOMPILE  += magit-delta
 
 DEFCOMPILE  += base16-emacs
 DEFCOMPILE_base16-emacs = base16-theme.el
@@ -223,6 +225,8 @@ evil-magit: magit
 goto-chg: undo-tree
 
 helpful: elisp-refs
+
+magit-delta: xterm-color
 
 #
 # Default rules

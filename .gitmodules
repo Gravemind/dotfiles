@@ -340,3 +340,12 @@
 	path = .my.emacs.d/elpa-git/explain-pause-mode
 	url = https://github.com/lastquestion/explain-pause-mode.git
 	branch = master
+[submodule ".my.emacs.d/elpa-git/xterm-color"]
+	path = .my.emacs.d/elpa-git/xterm-color
+	url = https://github.com/atomontage/xterm-color.git
+	branch = master
+[submodule ".my.emacs.d/elpa-git/magit-delta"]
+	path = .my.emacs.d/elpa-git/magit-delta
+	url = https://github.com/dandavison/magit-delta.git
+	ignore = untracked
+	branch = master
