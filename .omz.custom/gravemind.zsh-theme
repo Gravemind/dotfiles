@@ -95,11 +95,13 @@ function gravemind_git_prompt_current_branch() {
 }
 
 function gravemind_prompt_info_short() {
-	local toplevel="$(command git rev-parse --show-toplevel 2>/dev/null)"
-	if [[ -z "$toplevel" ]]; then
+	local toplevel
+	toplevel="$(command git rev-parse --show-cdup 2>/dev/null)"
+	if [[ "$?" -ne 0 ]]; then
 		echo -n "%F{blue}%30>…>%1~%<<"
 		return
 	fi
+	toplevel="$(cd "./$toplevel" ; pwd)"
 	if [[ "$(command git config --get oh-my-zsh.hide-status 2>/dev/null)" = "1" ]]; then
 		echo -n "%F{blue}%30>…>%1~%<<"
 		return
@@ -122,11 +124,13 @@ function gravemind_prompt_info_short() {
 }
 
 function gravemind_prompt_info_long() {
-	local toplevel="$(command git rev-parse --show-toplevel 2>/dev/null)"
-	if [[ -z "$toplevel" ]]; then
+	local toplevel
+	toplevel="$(command git rev-parse --show-cdup 2>/dev/null)"
+	if [[ "$?" -ne 0 ]]; then
 		echo -n "%F{black}%~"
 		return
 	fi
+	toplevel="$(cd "./$toplevel" ; pwd)"
 	if [[ "$(command git config --get oh-my-zsh.hide-status 2>/dev/null)" = "1" ]]; then
 		echo -n "%F{black}%~ $GMPSSEP %F{black}(oh-my-zsh.hide-status)"
 		return
