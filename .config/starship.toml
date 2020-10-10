@@ -2,17 +2,48 @@
 # Don't print a new line at the start of the prompt
 add_newline = false
 
-scan_timeout = 200
+scan_timeout = 10
 
-prompt_order = [
-    # "custom.foo",
-    "cmd_duration",
-    "line_break",
-    "custom.charprefix",
-    "username",
-    "hostname",
-    "character",
-]
+# "custom.foo",
+format = """\
+$cmd_duration[❰ $username$hostname$directory$jobs$git_state ❱](bold white bg:black)[ ](none)
+"""
+    # $cmd_duration\
+    # $line_break\
+    # $custom.charprefix\
+    # $username\
+    # $hostname\
+    # $character\
+
+[directory]
+truncation_length = 1
+truncate_to_repo = true
+# truncation_symbol = "(…/)[bold black bg:black]"
+format = "[$path](bold blue bg:black)([ $read_only](bold red bg:black))"
+read_only = ""
+
+[username]
+style_root = "bold red bg:black"
+style_user = "bold blue bg:black"
+show_always = false
+format = "[$user]($style) "
+
+[hostname]
+ssh_only = true
+format = "[@$hostname](bold green bg:black) "
+
+[cmd_duration]
+min_time = 500
+format = """\
+[↳$duration↲](bold red bg:black)
+"""
+
+[jobs]
+threshold = 1
+format = "( [$number](bold green bg:black))"
+
+[git_state]
+format = "( [$state($progress_current/$progress_total)](bold red bg:black))"
 
 [custom.foo]
 command = "echo"
@@ -30,20 +61,9 @@ symbol = "❱"
 style_success = "bold white"
 style_error = "bold red"
 
-[cmd_duration]
-min_time = 500
-prefix = "↳"
-suffix = "↲"
-
-[username]
-show_always = true
-style_user = "bold blue"
-style_root = "bold red"
-suffix = ""
-prefix = ""
-
-[hostname]
-ssh_only = false
-style = "bold green"
-prefix = "@"
-suffix = ""
+# [username]
+# show_always = true
+# style_user = "bold blue"
+# style_root = "bold red"
+# suffix = ""
+# prefix = ""
