@@ -116,7 +116,7 @@
 
   ;; branch
   (transient-remove-suffix 'magit-branch "o") ;; was checkout --orphan
-  (transient-append-suffix 'magit-branch "k"
+  (transient-append-suffix 'magit-branch "H"
     '("o" "Update other" my-magit-branch-update-other))
   (transient-append-suffix 'magit-branch "b"
     '("M" "with merge (-m)" my-magit-checkout-merge))
