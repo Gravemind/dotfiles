@@ -154,7 +154,7 @@
 # Pretty log format
 [pretty]
 	my  = "tformat:%C(magenta)%h%C(auto)% D %C(auto)%<(72,trunc)%s%C(blue)%>>|(100)%aN %C(bold black)%ad%C(auto)"
-	myl = "tformat:%C(magenta)%h %C(bold black)%><(60)%ad%C(reset)%C(blue)%>>|(100)%an%C(auto)%+D%n%C(auto)%n%w(80,4,4)%B"
+	myl = "tformat:%C(magenta)----------%n%C(magenta)%h %C(bold black)%><(60)%ad%C(reset)%C(blue)%>>|(100)%an%C(auto)%+D%n%C(auto)%n%w(80,4,4)%B"
 	# myreflog = "tformat:%C(bold black)$> %gs (%gn)%n   %C(green)%gd: %C(magenta)%h%C(auto)% D %C(auto)%<(72,trunc)%s%C(blue)%>>|(110)%an %C(bold black)%ad%C(auto)%n"
 	myreflog = "tformat:%C(green)%gd: %C(magenta)%h%C(auto)% D %C(auto)%<(72,trunc)%s%C(blue)%>>|(110)%an %C(bold black)%ad%C(auto)%n%C(bold black)%gs (%gn)"
 [log]
