@@ -240,6 +240,10 @@
 	algorithm = patience
 	#algorithm = histogram
 
+	# Change "a/" or "b/" to "w/" (wortree) or "c/" (commit) or "i/" (index)
+	# or "o/" (object, "HEAD:file").
+	mnemonicPrefix = true
+
 [user]
 	# Do not guess user/email, always use config, fail if there is none.
 	useconfigonly = true
