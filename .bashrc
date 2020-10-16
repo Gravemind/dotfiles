@@ -94,6 +94,10 @@ alias lesss='less -+S'
 
 alias topu='top -u "$(id -nu)"'
 
+if ! command -v fd >& /dev/null && command -v fdfind >& /dev/null; then
+    alias fd='fdfind'
+fi
+
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'

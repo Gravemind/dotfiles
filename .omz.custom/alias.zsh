@@ -22,6 +22,10 @@ _rgg() {
 alias rgg='noglob _rgg'
 compdef _rg rgg=rg
 
+if ! command -v fd >& /dev/null && command -v fdfind >& /dev/null; then
+	alias fd='fdfind'
+fi
+
 alias gdiff='pipes2files git d --no-index'
 alias gdiffw='pipes2files git dw --no-index'
 
