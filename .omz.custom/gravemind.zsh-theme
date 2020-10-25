@@ -199,6 +199,8 @@ function gravemind_preexec() {
 
 GRAVEMIND_NO_URGENT_CMD+=( mpv steam )
 
+GRAVEMIND_NO_URGENT=0
+
 # Called once before each new prompt
 function gravemind_precmd() {
 	local now=$SECONDS
@@ -214,7 +216,7 @@ function gravemind_precmd() {
 			break
 		fi
 	done
-	[[ $urgent -eq 0 ]] || echo -n $'\a'
+	[[ $urgent -eq 0 || $GRAVEMIND_NO_URGENT -eq 1 ]] || echo -n $'\a'
 
 	if [[ $GRAVEMIND_CMD_START -ge 0 && $GRAVEMIND_CMD_TIME -eq -1 ]]; then
 		GRAVEMIND_CMD_TIME=$(($now - $GRAVEMIND_CMD_START))
