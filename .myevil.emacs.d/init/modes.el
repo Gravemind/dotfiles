@@ -88,6 +88,7 @@
 
 (use-package undo-tree
   :load-path (my-packages-directory "undo-tree")
+  ;; :disabled t
   :demand t
   :config
   (global-undo-tree-mode)
