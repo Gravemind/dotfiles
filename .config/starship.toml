@@ -6,7 +6,7 @@ scan_timeout = 10
 
 # "custom.foo",
 format = """\
-$cmd_duration[❰ $username$hostname$directory$jobs$git_state ❱](bold white bg:black)[ ](none)
+[$env_var❰$username$hostname$directory$jobs$git_state$cmd_duration$status ❱](bold white bg:black)[ ](none)
 """
     # $cmd_duration\
     # $line_break\
@@ -15,51 +15,52 @@ $cmd_duration[❰ $username$hostname$directory$jobs$git_state ❱](bold white bg
     # $hostname\
     # $character\
 
+[env_var]
+variable = "_STARSHIP_ENV_VAR"
+style = "bg:black bold black"
+format = "[$env_value]($style)"
+
 [directory]
 truncation_length = 1
 truncate_to_repo = true
-# truncation_symbol = "(…/)[bold black bg:black]"
-format = "[$path](bold blue bg:black)([ $read_only](bold red bg:black))"
+truncation_symbol = "…/"
+fish_style_pwd_dir_length = 2
+format = "[ $path](bold blue bg:black)([ $read_only](bold yellow bg:black))"
 read_only = ""
+
+# [directory.substitutions]
+# "/dev/shm" = "SHM"
 
 [username]
 style_root = "bold red bg:black"
 style_user = "bold blue bg:black"
 show_always = false
-format = "[$user]($style) "
+format = "[ $user]($style)"
 
 [hostname]
 ssh_only = true
-format = "[@$hostname](bold green bg:black) "
+format = "[ @$hostname](bold green bg:black) "
 
 [cmd_duration]
 min_time = 500
-format = """\
-[↳$duration↲](bold red bg:black)
-"""
+format = "[ ↳$duration↲](bold red bg:black)"
 
 [jobs]
-threshold = 1
-format = "( [$number](bold green bg:black))"
+threshold = 0
+format = "[ $number](bold green bg:black)"
 
 [git_state]
-format = "( [$state($progress_current/$progress_total)](bold red bg:black))"
-
-[custom.foo]
-command = "echo"
-when = "true"
-
-[custom.charprefix]
-command = "echo tot"
-when = "true"
-style = "bold white"
-prefix = ""
-suffix = ""
+format = "[ $state($progress_current/$progress_total)](bold red bg:black)"
 
 [character]
 symbol = "❱"
 style_success = "bold white"
 style_error = "bold red"
+
+[status]
+style = "bg:black bold red"
+format = '[ $status]($style)'
+disabled = false
 
 # [username]
 # show_always = true

@@ -107,4 +107,13 @@ take() {
     mkdir -p "$1" && cd "$1"
 }
 
-export PS1='\[\033[1;30;40m\]\[\033[1;30m\]$SHLVL \[\033[1;34m\]\u${SSH_CONNECTION:+\[\033[1;32m\]@\H} \[\033[1;34m\]\W\[\033[1;31m\]$(r=$?; [[ $r -eq 0 ]] || echo " $r") \[\033[1;37m\]\$\[\033[0;0;0m\] '
+export _shell_depth="$((${_shell_depth:-0} + 1))"
+
+export PS1='\[\033[1;30;40m\]\[\033[1;30m\]$_shell_depth \[\033[1;34m\]\u${SSH_CONNECTION:+\[\033[1;32m\]@\H} \[\033[1;34m\]\W\[\033[1;31m\]$(r=$?; [[ $r -eq 0 ]] || echo " $r") \[\033[1;37m\]\$\[\033[0;0;0m\] '
+
+_STARSHIP_ENV_VAR=""
+[[ $_shell_depth -lt 2 ]] || _STARSHIP_ENV_VAR+="$_shell_depth "
+_STARSHIP_ENV_VAR+="bash "
+export _STARSHIP_ENV_VAR
+
+# eval "$(starship init bash)"
