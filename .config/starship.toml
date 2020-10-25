@@ -43,7 +43,8 @@ format = "[ @$hostname](bold green bg:black) "
 
 [cmd_duration]
 min_time = 500
-format = "[ ↳$duration↲](bold red bg:black)"
+# format = "[ ↳$duration↲](bold red bg:black)"
+format = "[ $duration](bold black bg:black)"
 
 [jobs]
 threshold = 0
