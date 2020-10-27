@@ -10,6 +10,8 @@ alias la='ls -la'
 alias lt='l -rt'
 
 alias rcp='cp -r'
+alias md='mkdir -p'
+alias rd='rmdir'
 alias c='clear'
 alias e='exit'
 alias t='urxvt & ; disown'
