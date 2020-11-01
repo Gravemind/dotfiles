@@ -267,6 +267,21 @@ gravemind_prompt_group() {
 	echo -n " %F{magenta}$group"
 }
 
+gravemind_prompt_venv() {
+	local venv
+	: "${venv:="$VIRTUAL_ENV"}"
+	: "${venv:="$CONDA_DEFAULT_ENV"}"
+	[[ -n "$venv" ]] || return 0
+	echo -n " %F{cyan}%20<$GMPSTRUNC1<$venv%<<"
+}
+
+gravemind_prompt_spack() {
+	local spack
+	: "${spack:="$SPACK_ENV"}"
+	[[ -n "$spack" ]] || return 0
+	echo -n " %F{cyan}%20<$GMPSTRUNC1<$spack%<<"
+}
+
 gravemind_build_prompt() {
 	echo -n "%K{black}%B"
 	if [[ "$_shell_depth" -gt 1 ]]; then
@@ -291,6 +306,8 @@ gravemind_build_rprompt() {
 	gravemind_prompt_cmd_duration
 	gravemind_prompt_umask
 	gravemind_prompt_group
+	gravemind_prompt_spack
+	gravemind_prompt_venv
 	gravemind_prompt_git
 	gravemind_prompt_dir
 	gravemind_prompt_cc
