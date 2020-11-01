@@ -60,7 +60,7 @@ gravemind_prompt_user() {
 }
 
 _gravemind_prompt_short_dir_default() {
-	echo -n " %F{blue}%30>…>%1~%<<"
+	echo -n " %F{blue}%30>$GMPSTRUNC1>%1~%<<"
 }
 
 _gravemind_prompt_short_dir_project() {
@@ -75,11 +75,11 @@ _gravemind_prompt_short_dir_project() {
 	local trunc="${c##*/}"
 	if [[ -n "$trunc" ]]; then
 		if [[ "$trunc" != "$c" ]]; then
-			trunc="%{…%G%}/$trunc"
+			trunc="$GMPSTRUNC/$trunc"
 		fi
 		trunc="/$trunc"
 	fi
-	echo -n " %F{blue}$GMPSGIT %20>…>${b}%<<%F{black}%20>…>$trunc%<<"
+	echo -n " %F{blue}$GMPSGIT %20>$GMPSTRUNC1>${b}%<<%F{black}%20>$GMPSTRUNC1>$trunc%<<"
 }
 
 gravemind_prompt_short_dir() {
@@ -153,25 +153,18 @@ gravemind_prompt_git() {
 }
 
 gravemind_prompt_cc() {
-	local cc
+	local o
 	if [[ -n "$CC" ]]; then
 		local ccname="$(basename "$CC")"
-		cc="%F{blue}$ccname"
-	else
-		cc="%F{black}CC"
+		o+=" %F{blue}$ccname"
 	fi
-	local progs=""
 	if [[ "$ENABLE_RTAGS" == "1" ]]; then
-		progs+="%F{blue}R"
-	else
-		progs+="%F{black}R"
+		o+=" %F{blue}R"
 	fi
 	if [[ "$ENABLE_CCACHE" == "1" ]]; then
-		progs+="%F{blue}C"
-	else
-		progs+="%F{black}C"
+		o+=" %F{blue}C"
 	fi
-	echo -n " $cc $progs"
+	echo -n "$o"
 }
 
 gravemind_prompt_agent() {
@@ -188,8 +181,6 @@ gravemind_prompt_agent() {
 		else
 			o="%F{red}A"
 		fi
-	else
-		o="%F{black}A"
 	fi
 	[[ -z "$o" ]] || echo -n " $o"
 }
@@ -251,20 +242,20 @@ gravemind_prompt_cmd_duration() {
 	[[ $sec -lt 60 ]] || { r+="$(($sec / 60))m"; sec=$(($sec % 60)); }
 	[[ $sec -lt 1 ]] || { r+="$(($sec))s"; }
 	local c="%F{black}"
-	[[ $sec -le 3 ]] || c="%F{yellow}"
+	[[ $sec -le 3 ]] || c="%F{blue}"
 	echo -n " $c↳$r↲"
 }
 
 gravemind_prompt_umask() {
 	local umask="$(umask)"
 	[[ "$umask" -ne "$GRAVEMIND_DEFAULT_UMASK" ]] || return 0
-	echo -n " %F{magenta}$umask"
+	echo -n " %F{yellow}$umask"
 }
 
 gravemind_prompt_group() {
 	local group="$(id -gn)"
 	[[ "$group" != "$GRAVEMIND_DEFAULT_GROUP" ]] || return 0
-	echo -n " %F{magenta}$group"
+	echo -n " %F{yellow}$group"
 }
 
 gravemind_prompt_venv() {
@@ -304,8 +295,8 @@ gravemind_build_rprompt() {
 	echo -n "%K{black}%B"
 	echo -n "%F{white}$GMPSBEG" # prefix
 	gravemind_prompt_cmd_duration
-	gravemind_prompt_umask
 	gravemind_prompt_group
+	gravemind_prompt_umask
 	gravemind_prompt_spack
 	gravemind_prompt_venv
 	gravemind_prompt_git
