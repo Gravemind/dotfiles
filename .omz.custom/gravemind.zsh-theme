@@ -28,6 +28,8 @@ GMPSEND="%{❱%G%}"
 GMPSGIT="%{⌥%G%}"
 #GMPSGIT="%{%G%}"
 #GMPSGIT="%{%G%}"
+GMPSTRUNC="%{…%G%}"
+GMPSTRUNC1="…"
 
 gravemind_init_prompt_vars() {
 	_GRAVEMIND_GIT=0
@@ -134,13 +136,20 @@ gravemind_prompt_git_doing() {
 }
 
 gravemind_prompt_git() {
-	local g
-	if $GRAVEMIND_PROMPT_USE_GITFAST; then
-		g="$(__git_ps1 "%s")"
-	else
-		g="$(git_current_branch)"
-	fi
-	[[ -z "$g" ]] || echo -n " %F{blue}$g"
+	[[ $_GRAVEMIND_GIT -eq 1 ]] || return 1
+	local ref n
+	ref="$(git describe --all --exact-match HEAD 2> /dev/null)"
+	case "$ref" in
+		"")
+			# ref="$(git describe --all --long HEAD 2> /dev/null)"
+			ref="$(git rev-parse --short HEAD 2> /dev/null)"
+			n="%F{magenta}$ref"
+			;;
+		heads/*) n="%F{green}${ref#heads/}"; ;;
+		tags/*) n="%F{yellow}${ref#tags/}"; ;;
+		*) n="%F{blue}$ref"; ;;
+	esac
+	echo -n " %20>$GMPSTRUNC1>$n%<<"
 }
 
 gravemind_prompt_cc() {
@@ -289,15 +298,6 @@ gravemind_build_rprompt() {
 	echo -n " %F{black}%D{%H:%M}" # time
 	echo -n " %B%F{white}$GMPSEND" # suffix
 }
-
-GRAVEMIND_PROMPT_USE_GITFAST=true
-if $GRAVEMIND_PROMPT_USE_GITFAST; then
-	#GIT_PS1_SHOWDIRTYSTATE=true ## a bit slow
-	#GIT_PS1_SHOWCOLORHINTS=true
-	#GIT_PS1_SHOWUNTRACKEDFILES=true ## quite slow
-	#GIT_PS1_SHOWUPSTREAM="verbose"
-	source $ZSH/plugins/gitfast/git-prompt.sh
-fi
 
 PROMPT='%f%b%K{black}$(gravemind_build_prompt)%f%b%K{black}'
 
