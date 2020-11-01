@@ -6,8 +6,15 @@ scan_timeout = 10
 
 # "custom.foo",
 format = """\
-[$env_var❰$username$hostname$directory$jobs$git_state$cmd_duration$status ❱](bold white bg:black)[ ](none)
+[┃](white bg:black)[$status$cmd_duration$env_var$jobs$username$hostname$directory$python$git_state$git_branch$git_commit$time](bold white bg:black)[](black)
+[┣╸](white bg:black)[\\$ ](bold white bg:black)
 """
+# ┃┣╸│├╴╳┇┋║╠═
+# ⌈⌊⎛⎝⎞⎠⎡⎧⎩⎣⎬⎮
+# ∙
+# ↑↳
+#[ ](bg:black)[](black)
+#[ ](none)
     # $cmd_duration\
     # $line_break\
     # $custom.charprefix\
@@ -15,18 +22,22 @@ format = """\
     # $hostname\
     # $character\
 
+# ❬❮❰❭❯❱
+# 
+# ∙ ⋅⋄∴∵∶∷∺−∗∘∙
+# ¯¯¨‾
+# •‣‧‹›
+
+ 
+# [env_var]
+# variable = "_STARSHIP_ENV_VAR"
+# style = "bg:black bold black"
+# format = "[$env_value]($style)"
+
 [env_var]
 variable = "_STARSHIP_ENV_VAR"
-style = "bg:black bold black"
+style = "bold black bg:black"
 format = "[$env_value]($style)"
-
-[directory]
-truncation_length = 1
-truncate_to_repo = true
-truncation_symbol = "…/"
-fish_style_pwd_dir_length = 2
-format = "[ $path](bold blue bg:black)([ $read_only](bold yellow bg:black))"
-read_only = ""
 
 # [directory.substitutions]
 # "/dev/shm" = "SHM"
@@ -35,33 +46,81 @@ read_only = ""
 style_root = "bold red bg:black"
 style_user = "bold blue bg:black"
 show_always = false
-format = "[ $user]($style)"
+format = "[ $user ]($style)"
 
 [hostname]
 ssh_only = true
-format = "[ @$hostname](bold green bg:black) "
+format = "[ @$hostname ](bold green bg:black) "
 
 [cmd_duration]
-min_time = 500
+min_time = 1000
+style = "bold black bg:black"
 # format = "[ ↳$duration↲](bold red bg:black)"
-format = "[ $duration](bold black bg:black)"
+# format = "[ $duration]($style)"
+# format = "[](black bg:yellow)[ $duration ](bold black bg:yellow)[](yellow bg:black)"
+# format = "[](yellow bg:black)[ $duration ](bold black bg:yellow)[](black bg:yellow)"
+format = "[ $duration ](bold black bg:black)"
+
+[status]
+style = "bg:black bold red"
+# format = "[](black bg:red)[ $status ](bold black bg:red)[](red bg:black)"
+# format = "[](red bg:black)[ $status ](bold black bg:red)[](black bg:red)"
+format = "[ $status ](bold red bg:black)"
+# format = "[ $status]($style)"
+disabled = false
 
 [jobs]
 threshold = 0
-format = "[ $number](bold green bg:black)"
+# format = "[](black bg:green)[ $number ](bold black bg:green)[](green bg:black)"
+# format = "[](green bg:black)[ $number ](bold black bg:green)[](black bg:green)"
+format = "[ $number ](bold yellow bg:black)"
+
+[directory]
+truncation_length = 10
+truncate_to_repo = false
+truncation_symbol = "…/"
+# fish_style_pwd_dir_length = 2
+# format = "[](black bg:blue)[ $path ](bold black bg:blue)[](blue bg:black)"
+format = "[ $path ](bold blue bg:black)([$read_only ](bold yellow bg:black))"
+read_only = ""
+
+[python]
+symbol = ""
+pyenv_version_name = false
+scan_for_pyfiles = false
+format = '([ $virtualenv ](bold yellow bg:black))'
+
+[git_branch]
+style="bold purple bg:black"
+symbol=""
+# format = "[](black bg:cyan)[ $branch ](bold black bg:cyan)[](cyan bg:black)"
+# format="[ $branch ](bg:black bold green)"
+format="[ $branch ](bold green bg:black)"
+
+[git_commit]
+commit_hash_length = 7
+symbol = ""
+only_detached = true
+tag_disabled = false
+tag_symbol = ""
+# format="[$hash](bg:black bold purple)([ $tag](bg:black bold yellow))"
+format="( [$hash](bold purple bg:black)([$tag](bold yellow bg:black)) )"
 
 [git_state]
-format = "[ $state($progress_current/$progress_total)](bold red bg:black)"
+# format = "[ $state($progress_current/$progress_total)](bold red bg:black)"
+# format = "[ $state($progress_current/$progress_total)](bold red bg:black)"
+# format = "[](black bg:red)[ $state($progress_current/$progress_total) ](bold black bg:red)[](bold red bg:black)"
+format = "[ $state($progress_current/$progress_total) ](bold red bg:black)"
+
+[time]
+time_format = "%H:%M"
+format = "[ $time ](bold black bg:black)"
+disabled = false
 
 [character]
 symbol = "❱"
 style_success = "bold white"
 style_error = "bold red"
-
-[status]
-style = "bg:black bold red"
-format = '[ $status]($style)'
-disabled = false
 
 # [username]
 # show_always = true

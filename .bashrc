@@ -125,11 +125,14 @@ fi
 export PS1='\[\033[1;30;40m\]\[\033[1;30m\]$_shell_depth \[\033[1;34m\]\u${SSH_CONNECTION:+\[\033[1;32m\]@\H} \[\033[1;34m\]\W\[\033[1;31m\]$([[ $_PROMPT_STATUS -eq 0 ]] || echo " $_PROMPT_STATUS") \[\033[1;37m\]\$\[\033[0;0;0m\] '
 export ORIG_PS1="$PS1"
 
-_STARSHIP_ENV_VAR=""
-[[ $_shell_depth -lt 2 ]] || _STARSHIP_ENV_VAR+="$_shell_depth "
-_STARSHIP_ENV_VAR+="bash "
-export _STARSHIP_ENV_VAR
-
-# eval "$(starship init bash)"
+if false # true
+then
+    function _my_starship_precmd(){
+        printf "\a" # alert
+    }
+    starship_precmd_user_func="_my_starship_precmd"
+    export _STARSHIP_ENV_VAR=$(if ((_shell_depth > 1)); then echo $_shell_depth ; fi)
+    eval "$(starship init bash)"
+fi
 
 my_sourcing_again=true
