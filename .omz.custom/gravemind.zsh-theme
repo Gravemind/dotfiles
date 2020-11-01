@@ -13,6 +13,8 @@ $my_sourcing_again || export _shell_depth="$((${_shell_depth:-0} + 1))"
 GRAVEMIND_NO_URGENT_CMD+=( mpv steam )
 GRAVEMIND_NO_URGENT=0
 
+GRAVEMIND_DEFAULT_UMASK=0027
+GRAVEMIND_DEFAULT_GROUP="$(id -gn $(id -un))"
 
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=white,bold'
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
@@ -232,14 +234,28 @@ gravemind_precmd() {
 }
 
 gravemind_prompt_cmd_duration() {
-	[[ $_GRAVEMIND_CMD_DURATION -gt 0 ]] || return 0
 	local sec=$_GRAVEMIND_CMD_DURATION
+	[[ $sec -gt 0 ]] || return 0
 	[[ $sec -ge 1 ]] || return 0
 	local r=
 	[[ $sec -lt 3600 ]] || { r+="$(($sec / 3600))h"; sec=$(($sec % 3600)); }
 	[[ $sec -lt 60 ]] || { r+="$(($sec / 60))m"; sec=$(($sec % 60)); }
 	[[ $sec -lt 1 ]] || { r+="$(($sec))s"; }
-	echo -n " %F{blue}↳$r↲ $GMPSSEP"
+	local c="%F{black}"
+	[[ $sec -le 3 ]] || c="%F{yellow}"
+	echo -n " $c↳$r↲"
+}
+
+gravemind_prompt_umask() {
+	local umask="$(umask)"
+	[[ "$umask" -ne "$GRAVEMIND_DEFAULT_UMASK" ]] || return 0
+	echo -n " %F{magenta}$umask"
+}
+
+gravemind_prompt_group() {
+	local group="$(id -gn)"
+	[[ "$group" != "$GRAVEMIND_DEFAULT_GROUP" ]] || return 0
+	echo -n " %F{magenta}$group"
 }
 
 gravemind_build_prompt() {
@@ -264,6 +280,8 @@ gravemind_build_rprompt() {
 	echo -n "%K{black}%B"
 	echo -n "%F{white}$GMPSBEG" # prefix
 	gravemind_prompt_cmd_duration
+	gravemind_prompt_umask
+	gravemind_prompt_group
 	gravemind_prompt_git
 	gravemind_prompt_dir
 	gravemind_prompt_cc
