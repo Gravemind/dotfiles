@@ -13,8 +13,9 @@ $my_sourcing_again || export _shell_depth="$((${_shell_depth:-0} + 1))"
 GRAVEMIND_NO_URGENT_CMD+=( mpv steam )
 GRAVEMIND_NO_URGENT=0
 
+GRAVEMIND_DEFAULT_USER_ID=1000
+GRAVEMIND_DEFAULT_GROUP="$(id -gn $(id -un))" # name
 GRAVEMIND_DEFAULT_UMASK=0027
-GRAVEMIND_DEFAULT_GROUP="$(id -gn $(id -un))"
 
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=white,bold'
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
@@ -50,7 +51,7 @@ gravemind_init_prompt_vars() {
 
 gravemind_prompt_user() {
 	# user
-	if [[ $EUID -ne 1000 || -n "$SSH_CONNECTION" ]]; then
+	if [[ $EUID -ne $GRAVEMIND_DEFAULT_USER_ID || -n "$SSH_CONNECTION" ]]; then
 		echo -n " %(!.%F{red}.%F{blue})%n"
 	fi
 	# @host
