@@ -536,7 +536,7 @@
 
   (defun my-flycheck-grammalecte ()
     (interactive)
-    (flyspell-mode 1)
+    (flyspell-mode 0)
     (flycheck-mode 0)
     (ispell-change-dictionary "francais")
     (flycheck-grammalecte-setup)
