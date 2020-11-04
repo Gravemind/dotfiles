@@ -10,6 +10,13 @@
   :defer t
   :hook (org-mode . (lambda ()
                       (unbind-key "C-<return>" org-mode-map)
+
+                      ;; FIXME not working:
+                      (unbind-key "C-k" org-mode-map)
+                      (unbind-key "C-j" org-mode-map)
+                      (evil-define-key 'normal org-mode-map "C-k" nil)
+                      (evil-define-key 'normal org-mode-map "C-j" nil)
+
                       ;;(org-bullets-mode 1)
                       ))
   :init
@@ -21,7 +28,7 @@
    ;; https://www.emacswiki.org/emacs/OrgMode
    org-replace-disputed-keys t
 
-   org-babel-load-languages '((emacs-lisp . t) (python . t) (gnuplot . t))
+   org-babel-load-languages '((emacs-lisp . t) (python . t) (gnuplot . t) (shell . t))
    org-confirm-babel-evaluate nil
    org-src-preserve-indentation nil
    org-src-tab-acts-natively t
