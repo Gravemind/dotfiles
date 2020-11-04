@@ -7,6 +7,7 @@ set print array-indexes on
 set print vtbl on
 set print demangle on
 set print asm-demangle on
+set print frame-arguments none
 set list 25
 set demangle-style gnu-v3
 
