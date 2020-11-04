@@ -58,6 +58,9 @@
  ;; clipboard" !?
  select-enable-clipboard t ;; alias of x-select-enable-clipboard
  select-enable-primary t
+
+ ;; Always save bookmark after 1 modification
+ bookmark-save-flag 1
  )
 
 ;; Mouse
