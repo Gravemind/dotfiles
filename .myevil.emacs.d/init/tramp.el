@@ -26,8 +26,8 @@
    tramp-inline-compress-start-size nil
 
    tramp-use-ssh-controlmaster-options nil
-   ;;tramp-use-ssh-controlmaster-options t
-   ;;tramp-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath=~/.ssh/tramp.%%C -o ControlPersist=no"
+   ;; tramp-use-ssh-controlmaster-options t
+   ;; tramp-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath=~/.ssh/tramp.%%C -o ControlPersist=1800"
 
    tramp-remote-path '(tramp-own-remote-path
                        "/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin"
@@ -45,8 +45,35 @@
   ;;
   ;; zsh: see ~/.zshrc
   ;;
-  (setq-default tramp-shell-prompt "$ ")
+  ;; (setq-default tramp-shell-prompt "$ ")
+  ;; (setq
+  ;;  ;; shell-prompt-pattern "$ "
+  ;;  tramp-shell-prompt-pattern
+  ;;  (concat ;; "\\(?:^\\|\r\\)"
+  ;;          ;; "[^]#$%>\n]*#?[]#$%>] *\\(\e\\[[0-9;]*[a-zA-Z] *\\)*"
+  ;;          "^[#$]+ "
+  ;;          ))
   (add-to-list 'tramp-remote-process-environment "TERM=dumb")
+
+  (add-to-list
+   'tramp-methods
+   '("sshs"
+    (tramp-login-program "ssh")
+    (tramp-login-args
+     (("-l" "%u")
+      ("-p" "%p")
+      ("%c")
+      ("-e" "none")
+      ("%h")
+      ;; ("/bin/bash" "--noediting" "-i")
+      ))
+    (tramp-async-args
+     (("-q")))
+    (tramp-remote-shell "/bin/sh")
+    (tramp-remote-shell-login
+     ("-l"))
+    (tramp-remote-shell-args
+     ("-c"))))
 
   ;;
   ;; Custom 'ssha' hop: '/ssha:user@addr:/home/user'
