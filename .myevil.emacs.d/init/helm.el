@@ -149,6 +149,7 @@
    ;;helm-display-buffer-width
    ;;helm-display-buffer-height
 
+   helm-bookmark-show-location t
    )
 
   ;; Repeat minibuffer input above helm buffer in header line
