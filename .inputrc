@@ -3,6 +3,11 @@
 # applies to readline (gdb, python, profanity, ...), bash, ...
 # but not zsh, see ~/.omz.custom/key-bindings.zsh
 
+# For emacs tramp
+$if term=dumb
+# no configs: can break emacs tramp !
+$else
+
 "\eOc": forward-word       # [Ctrl-Right]
 "\eOd": backward-word      # [Ctrl-Left]
 "\C-h": backward-kill-word # [Ctrl-Backspace]
@@ -25,3 +30,5 @@ set colored-stats on
 # Bash: TAB completes immediately
 set show-all-if-ambiguous on	# always displays candidates if ambigious
 #set show-all-if-unmodified on  # ... but not if prefix was found and added
+
+$endif
