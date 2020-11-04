@@ -121,8 +121,6 @@ DEFCOMPILE_base16-emacs = base16-theme.el
 DEFCOMPILE  += evil
 DEFCOMPILE  += annalist
 DEFCOMPILE_annalist = annalist.el
-DEFCOMPILE  += evil-collection
-DEFCOMPILE_evil-collection = *.el modes/*/*.el
 DEFCOMPILE  += goto-chg
 DEFCOMPILE  += evil-magit
 DEFCOMPILE_evil-magit = evil-magit.el
@@ -138,6 +136,9 @@ DEFCOMPILE  += evil-org-mode
 DEFCOMPILE_evil-org-mode  = evil-org-*.el
 DEFCOMPILE  += evil-markdown
 DEFCOMPILE_evil-markdown  = evil-markdown.el
+
+DEFCOMPILE  += evil-collection
+DEFCOMPILE_evil-collection = *.el modes/*/*.el
 
 all:	${DEFCOMPILE} ${DEFMAKE} ${NODEF}
 .PHONY: all
@@ -218,7 +219,7 @@ evil: goto-chg undo-tree
 
 evil-*: evil
 
-evil-collection: f annalist
+evil-collection: f annalist magit
 
 evil-magit: magit
 
