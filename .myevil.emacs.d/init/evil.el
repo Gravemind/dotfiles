@@ -22,6 +22,7 @@
  ("b" . helm-mini)
  ("k" . kill-buffer)
  ("r" . revert-buffer)
+ ("m" . helm-bookmarks)
 )
 
 ;; (bind-keys
