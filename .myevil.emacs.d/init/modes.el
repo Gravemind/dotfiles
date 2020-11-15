@@ -340,17 +340,22 @@
 
 (use-package dumb-jump
   :load-path (my-packages-directory "dumb-jump")
-  :defer t
   :after (helm evil)
+  :commands (dumb-jump-xref-activate)
   :bind (:map evil-motion-state-map
-              ("gd" . dumb-jump-go)
+              ;; ("gd" . dumb-jump-go)
+              ("gd" . xref-find-definitions)
+              ("gD" . xref-find-references)
               )
+  :init
+  (eval-after-load "xref"
+    '(progn
+       (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+       ))
   :config
   (setq-default
    dumb-jump-selector 'helm
    )
-
-  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
 )
 
 ;;

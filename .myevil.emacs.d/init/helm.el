@@ -326,3 +326,17 @@
 ;; (use-package helm-rg
 ;;   :load-path (my-packages-directory "helm-rg")
 ;; )
+
+(use-package helm-xref
+  :load-path (my-packages-directory "helm-xref")
+  ;;:disabled t
+  :after helm
+  :commands (helm-xref-show-xrefs helm-xref-show-xrefs-27 helm-xref-show-defs-27)
+  :init
+  ;; FIXME: could do better: this is copy-pasted from helm-xref.el !?
+  (if (< emacs-major-version 27)
+      (setq xref-show-xrefs-function #'helm-xref-show-xrefs)
+    (progn
+      (setq xref-show-xrefs-function #'helm-xref-show-xrefs-27)
+      (setq xref-show-definitions-function #'helm-xref-show-defs-27)))
+  )

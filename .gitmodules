@@ -349,3 +349,8 @@
 	url = https://github.com/dandavison/magit-delta.git
 	ignore = untracked
 	branch = master
+[submodule ".my.emacs.d/elpa-git/helm-xref"]
+	path = .my.emacs.d/elpa-git/helm-xref
+	url = https://github.com/brotzeit/helm-xref.git
+	ignore = untracked
+	branch = master
