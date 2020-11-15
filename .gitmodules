@@ -354,3 +354,8 @@
 	url = https://github.com/brotzeit/helm-xref.git
 	ignore = untracked
 	branch = master
+[submodule ".my.emacs.d/elpa-git/evil-mc"]
+	path = .my.emacs.d/elpa-git/evil-mc
+	url = https://github.com/gabesoft/evil-mc.git
+	ignore = untracked
+	branch = master

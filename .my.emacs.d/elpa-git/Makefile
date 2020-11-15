@@ -134,9 +134,11 @@ DEFCOMPILE  += evil-goggles
 DEFCOMPILE  += evil-traces
 DEFCOMPILE  += evil-quick-diff
 DEFCOMPILE  += evil-org-mode
-DEFCOMPILE_evil-org-mode  = evil-org-*.el
+DEFCOMPILE_evil-org-mode  = evil-org*.el
 DEFCOMPILE  += evil-markdown
 DEFCOMPILE_evil-markdown  = evil-markdown.el
+DEFCOMPILE  += evil-mc
+DEFCOMPILE_evil-mc = evil-mc*.el
 
 DEFCOMPILE  += evil-collection
 DEFCOMPILE_evil-collection = *.el modes/*/*.el

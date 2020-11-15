@@ -381,3 +381,83 @@ point."
   :init
   (require 'evil-markdown)
   )
+
+;; evil-mc: multiple cursors
+(use-package evil-mc
+  :load-path (my-packages-directory "evil-mc")
+  :after evil
+
+  :bind-keymap (
+                ;; :map evil-normal-state-map ;; FIXME: doesn't work with bind-keymap !?
+                ("<leader>c" . evil-mc-cursors-map)
+                )
+  :bind* (:map evil-mc-cursors-map
+               ("m" . evil-mc-make-all-cursors)
+               ("u" . evil-mc-undo-last-added-cursor)
+               ("q" . evil-mc-undo-all-cursors)
+               ("s" . evil-mc-pause-cursors)
+               ("r" . evil-mc-resume-cursors)
+               ;; ("f" . evil-mc-make-and-goto-first-cursor)
+               ;; ("l" . evil-mc-make-and-goto-last-cursor)
+               ("h" . evil-mc-make-cursor-here)
+               ;; ("j" . evil-mc-make-cursor-move-next-line)
+               ;; ("k" . evil-mc-make-cursor-move-prev-line)
+               ;; ("N" . evil-mc-skip-and-goto-next-cursor)
+               ;; ("P" . evil-mc-skip-and-goto-prev-cursor)
+               ;; ("n" . evil-mc-skip-and-goto-next-match)
+               ;; ("p" . evil-mc-skip-and-goto-prev-match)
+               ("I" . evil-mc-make-cursor-in-visual-selection-beg)
+               ("A" . evil-mc-make-cursor-in-visual-selection-end)
+
+               ("j"     . evil-mc-make-cursor-move-next-line)
+               ("M-j"   . evil-mc-skip-cursor-move-next-line)
+               ("k"     . evil-mc-make-cursor-move-prev-line)
+               ("M-k"   . evil-mc-skip-cursor-move-prev-line)
+               ("n"     . evil-mc-make-and-goto-next-match)
+               ("M-n"   . evil-mc-skip-and-goto-next-match)
+               ("S-n"   . evil-mc-make-and-goto-prev-match)
+               ("M-S-n" . evil-mc-skip-and-goto-prev-match)
+               ("p"     . evil-mc-make-and-goto-prev-match)
+               ("M-p"   . evil-mc-skip-and-goto-prev-match)
+               )
+
+  :init
+  ;; The included keybindings are too imposing and are likely to cause
+  ;; conflicts, so we'll set them ourselves.
+  (defvar evil-mc-key-map (make-sparse-keymap))
+
+  :config
+  (global-evil-mc-mode +1)
+
+  (setq-default
+   ;; Make C-g quit multi cursor mode
+   evil-mc-undo-cursors-on-keyboard-quit t
+   )
+
+  ;; (doom emacs)
+  ;; Whitelist more commands
+  (dolist (fn '((delete-char)
+                (backward-kill-word)
+                (company-complete-common . evil-mc-execute-default-complete)
+                (doom/backward-to-bol-or-indent . evil-mc-execute-default-call)
+                (doom/forward-to-last-non-comment-or-eol . evil-mc-execute-default-call)
+                ;; :emacs undo
+                (undo-fu-only-undo . evil-mc-execute-default-undo)
+                (undo-fu-only-redo . evil-mc-execute-default-redo)
+                ;; :editor evil
+                (evil-delete-back-to-indentation . evil-mc-execute-default-call)
+                (evil-escape . evil-mc-execute-default-evil-normal-state)  ; C-g
+                (evil-numbers/inc-at-pt-incremental)
+                (evil-numbers/dec-at-pt-incremental)
+                ;; :tools eval
+                (+eval:replace-region . +multiple-cursors-execute-default-operator-fn)
+                ;; :lang ess
+                (ess-smart-comma . evil-mc-execute-call)
+                ;; :lang org
+                (evil-org-delete . evil-mc-execute-default-evil-delete)))
+    (setf (alist-get (car fn) evil-mc-custom-known-commands)
+          (list (cons :default
+                      (or (cdr fn)
+                          #'evil-mc-execute-default-call-with-count)))))
+
+)
