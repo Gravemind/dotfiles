@@ -285,6 +285,7 @@
 ;; helm dash (dash documentation sets)
 (use-package helm-descbinds
   :load-path (my-packages-directory "helm-descbinds")
+  :commands (helm-descbinds)
   :init
   ;; Copied from helm-descbinds.el helm-descbinds-mode
   (advice-add 'describe-bindings :override #'helm-descbinds)
