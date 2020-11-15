@@ -28,6 +28,7 @@
    ("b" . helm-occur)
    ("d" . helm-do-grep-rg-ripgrep)
    ("p" . helm-do-grep-ag-project)
+   ("i" . helm-imenu)
 
    :map helm-map
    ("<tab>" . helm-execute-persistent-action)
