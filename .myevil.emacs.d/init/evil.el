@@ -206,6 +206,10 @@ point."
   (define-key evil-outer-text-objects-map "f" '+evil:defun-txtobj)
 
   (evil-define-key 'normal 'compilation-mode-map (kbd "SPC") 'evil-send-leader)
+
+  (evil-set-command-property 'evil-goto-first-line :jump t)
+  (evil-set-command-property 'evil-goto-line :jump t)
+
   )
 
 ;; Required by evil for `g;`
