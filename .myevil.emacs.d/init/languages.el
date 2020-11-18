@@ -137,7 +137,10 @@
 
 (use-package cmake-mode
   :load-path (my-packages-directory "cmake-mode")
-  :defer t
+  :mode (("CMakeLists\\.txt\\'" . cmake-mode)
+         ("\\.cmake\\'" . cmake-mode)
+         ("\\.cmake\\.in\\'" . cmake-mode)
+         )
   :hook (cmake-mode . (lambda () (my--tweak-cmake-mode-syntax-table)))
   :config
   )
@@ -148,13 +151,11 @@
 
 (use-package markdown-mode
   :load-path (my-packages-directory "markdown-mode")
-  :defer t
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
-         ;; ("\\.md\\'" . markdown-mode)
-         ;; ("\\.markdown\\'" . markdown-mode)
          ("\\.md\\'" . gfm-mode)
          ("\\.markdown\\'" . gfm-mode)
+         ("\\.\\(?:md\\|markdown\\|mkd\\|mdown\\|mkdn\\|mdwn\\)\\'" . markdown-mode)
          )
   :hook (markdown-mode . (lambda ()
                            ;; Need both ! (but why?)
@@ -207,7 +208,7 @@
 
 (use-package lua-mode
   :load-path (my-packages-directory "lua-mode")
-  :defer t
+  :mode (("\\.lua\\'" . lua-mode))
   )
 
 
@@ -229,6 +230,7 @@
 
 (use-package d-mode
   :load-path (my-packages-directory "d-mode")
+  :mode (("\\.d[i]?\\'" . d-mode))
   :hook (d-mode . (lambda () (my--cc-mode) (flycheck-dmd-dub-set-variables)))
   )
 
@@ -307,7 +309,7 @@
 
 (use-package dockerfile-mode
   :load-path (my-packages-directory "dockerfile-mode")
-  :defer t
+  :mode ("Dockerfile\\(?:\\..*\\)?\\'" . dockerfile-mode)
   )
 
 ;;
@@ -318,7 +320,7 @@
 ;; https://github.com/rust-lang/rust-mode
 (use-package rust-mode
   :load-path (my-packages-directory "rust-mode")
-  :defer t
+  :mode (("\\.rs\\'" . rust-mode))
   :bind (:map rust-mode-map
               ("<f3>" . cargo-process-build)
               ("<S-f3>" . cargo-process-build)
@@ -363,7 +365,8 @@
 
 (use-package go-mode
   :load-path (my-packages-directory "go-mode")
-  :defer t
+  :mode (("\\.go\\'" . go-mode)
+         ("go\\.mod\\'" . go-dot-mod-mode))
   :bind (:map go-mode-map
               ("C-c i" . godef-jump)
               )
@@ -375,7 +378,9 @@
 
 (use-package php-mode
   :load-path (my-packages-directory "php-mode")
-  :defer t
+  :mode (("/\\.php_cs\\(?:\\.dist\\)?\\'" . php-mode)
+         ("\\.\\(?:php\\.inc\\|stub\\)\\'" . php-mode)
+         ("\\.\\(?:php[s345]?\\|phtml\\)\\'" . php-mode-maybe))
   )
 
 ;;
@@ -384,7 +389,8 @@
 
 (use-package yaml-mode
   :load-path (my-packages-directory "yaml-mode")
-  :defer t
+  :mode (("\\.\\(e?ya?\\|ra\\)ml\\'" . yaml-mode)
+         )
   )
 
 ;;

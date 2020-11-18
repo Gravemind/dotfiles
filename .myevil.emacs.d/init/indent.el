@@ -201,6 +201,7 @@ spaces are treated."
   :load-path (my-packages-directory "editorconfig")
   ;;:ensure t
   ;;:defer t
+  :mode (("\\.editorconfig\\'" . editorconfig-conf-mode))
   :commands (editorconfig-mode-apply)
   :config
   ;;(editorconfig-mode 1)

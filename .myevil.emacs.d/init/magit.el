@@ -7,6 +7,7 @@
 
 (use-package magit
   :load-path (my-packages-directory "magit")
+  :mode (("/git-rebase-todo\\'" . git-rebase-mode))
   :commands (magit-repolist-here)
   :bind* (("C-x g" . magit-status-here)
           ("C-x C-g" . magit-status)
