@@ -244,10 +244,11 @@
 	abbrev = 10
 [diff]
 	indentHeuristic = true
-	#algorithm = myers # default
-	#algorithm = minimal
-	algorithm = patience
-	#algorithm = histogram
+	#algorithm = default # myers
+	#algorithm = myers # The basic greedy diff algorithm. Currently, this is the default.
+	#algorithm = minimal # Spend extra time to make sure the smallest possible diff is produced.
+	#algorithm = patience # Use "patience diff" algorithm when generating patches.
+	#algorithm = histogram # This algorithm extends the patience algorithm to "support low-occurrence common elements".
 
 	# Change "a/" or "b/" to "w/" (wortree) or "c/" (commit) or "i/" (index)
 	# or "o/" (object, "HEAD:file").
