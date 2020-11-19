@@ -34,6 +34,10 @@ shopt -s cmdhist
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+# Don't show '.' and '..' when using '.*' globbing
+# export GLOBIGNORE=".:..:*/.:*/.."
+# shopt -u dotglob # Because non-empty GLOBIGNORE enables dotglob
+
 # add commands to the history file each time you hit enter
 PROMPT_COMMAND="history -a"
 
