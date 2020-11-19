@@ -66,6 +66,10 @@
 	# Push --force-with-lease
 	pushf = push --force-with-lease
 
+	# usage: git pushu [REMOTE]
+	# Push current branch to REMOTE (origin) and set it as its upstream.
+	pushu = "!f() { set -e; git push --set-upstream \"${1:-origin}\" $(git symbolic-ref --short HEAD); }; f"
+
 	# Clean deleted branches
 	cleanbranches = !git branch -vv | grep ': gone]' | awk '{ print $1 }' | xargs -n 1 git branch -d
 
@@ -127,6 +131,9 @@
 
 	# Long log
 	ll  = log --pretty=myl --graph --full-history --simplify-merges --date-order
+
+	# Log local branches and their upstreams
+	lb = "!f() { set -eu; git l \"$@\" $(git for-each-ref --format=\"%(refname) %(upstream)\" refs/heads); }; f"
 
 	# pretty reflog
 	# (--date here will make it print reflog@{date} instead of reflog@{num})
