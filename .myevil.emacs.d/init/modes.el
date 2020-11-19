@@ -503,6 +503,16 @@
   )
 
 ;;
+;; ispell
+;;
+
+(use-package ispell
+  :pin manual
+  :config
+  ;; (setq-default ispell-program-name "/usr/bin/hunspell")
+)
+
+;;
 ;; flyspell
 ;;
 
