@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -euo pipefail
+
+: "${GITLAB:=https://gitlab.com}"
+
+content="$(cat "$@")"
+echo "$content" | cat -n
+
+jq --null-input --raw-output --compact-output  '{content: $content}' --arg content "$content" | \
+    curl --header "Content-Type: application/json" "$GITLAB/api/v4/ci/lint" --data "@-" | \
+    jq
