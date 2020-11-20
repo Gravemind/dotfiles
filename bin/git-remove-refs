@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -euo pipefail
+
+if [[ $# -eq 0 ]]
+then
+    set -- refs/original refs/hidden
+fi
+
+refs="$(git for-each-ref --format="%(refname)" -- "$@")"
+
+if [[ -z "$refs" ]]
+then
+    echo "No ref matches $*"
+    exit 1
+fi
+
+echo "Refs matching $*:"
+printf -- '  %s\n' $refs
+
+read -r -p"Remove them [y] ? " y
+if [[ "$y" != y ]]
+then
+    echo Abort.
+    exit 1
+fi
+
+for ref in $refs
+do
+    git update-ref -d -- "$ref" && echo "$ref removed" || \
+            echo "error: 'git update-ref -d $ref' failed"
+done
+
+echo Done.
