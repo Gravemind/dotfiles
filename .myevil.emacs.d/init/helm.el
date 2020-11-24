@@ -153,14 +153,13 @@
    helm-bookmark-show-location t
    )
 
-  ;; Repeat minibuffer input above helm buffer in header line
-  (setq-default
-   helm-echo-input-in-header-line t
-   )
 
-  (when window-system
+  (when nil ;; window-system
     ;; Helm/minibuffer in own frame
     (setq-default
+     ;; Repeat minibuffer input above helm buffer in header line
+     helm-echo-input-in-header-line t
+
      helm-display-function #'helm-display-buffer-in-own-frame
      helm-show-completion-display-function #'helm-display-buffer-in-own-frame
      ;;helm-display-function #'helm-display-buffer-popup-frame
@@ -191,17 +190,18 @@
   ;; Auto resize
   (helm-autoresize-mode t)
 
-;;   ;; Split window kind-of like ivy at the bottom (but not in minibuffer)
-;;   ;;   https://github.com/casouri/lunarymacs-stars/blob/master/completion/helm/config.el
-;;   (defun helm-split-window-my-fn (window)
-;;     "Replace `helm-split-window-preferred-function'.
-;; WINDOW."
-;;     (display-buffer-in-side-window "*scratch*" '((side . bottom))))
-;;   (setq-default
-;;    helm-split-window-preferred-function 'helm-split-window-my-fn
-;;    helm-window-prefer-horizontal-split t
-;;    helm-split-window-in-side-p t ;; open helm buffer inside current window, not occupy whole other window
-;;    )
+  ;; Split window kind-of like ivy at the bottom (but not in minibuffer)
+  ;;   https://github.com/casouri/lunarymacs-stars/blob/master/completion/helm/config.el
+  (defun helm-split-window-my-fn (window)
+    "Replace `helm-split-window-preferred-function'.
+WINDOW."
+    (display-buffer-in-side-window "*scratch*" '((side . top))))
+  (setq-default
+   helm-echo-input-in-header-line t
+   helm-split-window-preferred-function 'helm-split-window-my-fn
+   helm-window-prefer-horizontal-split t
+   helm-split-window-in-side-p t ;; open helm buffer inside current window, not occupy whole other window
+   )
 
   ;; Split window horizontally
   (setq-default
