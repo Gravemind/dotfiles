@@ -78,21 +78,26 @@ vf-toggle=@svpf
 vf-toggle=@svpv
 hwdec=auto-copy-safe
 
-[disable-scaletempo]
-af-add=@scaletempo:!scaletempo=stride=10:search=16:overlap=1
-[enable-scaletempo]
-profile=disable-scaletempo
-af-toggle=@scaletempo
 
- # transients                     Choices: crisp mixed smooth (default: mixed)
- # detector                       Choices: compound percussive soft (default: compound)
- # phase                          Choices: laminar independent (default: laminar)
- # window                         Choices: standard short long (default: standard)
- # smoothing                      Choices: off on (default: off)
- # formant                        Choices: shifted preserved (default: preserved)
- # pitch                          Choices: quality speed consistency (default: consistency)
- # channels                       Choices: apart together (default: together)
- # pitch-scale                    Double (0.01 to 100) (default: 1.000)
+#
+# Better audio on playback speed > 1 (tweak scaletempo)
+#
+# transients                     Choices: crisp mixed smooth (default: mixed)
+# detector                       Choices: compound percussive soft (default: compound)
+# phase                          Choices: laminar independent (default: laminar)
+# window                         Choices: standard short long (default: standard)
+# smoothing                      Choices: off on (default: off)
+# formant                        Choices: shifted preserved (default: preserved)
+# pitch                          Choices: quality speed consistency (default: consistency)
+# channels                       Choices: apart together (default: together)
+# pitch-scale                    Double (0.01 to 100) (default: 1.000)
+[enable-scaletempo]
+profile-desc="Scaletempo for Playspeed"
+profile-cond=p.speed > 1.01
+af-add=@scaletempo:scaletempo=stride=10:search=16:overlap=1
+[disable-scaletempo]
+profile-cond=not (p.speed > 1.01)
+af-remove=@scaletempo
 
 #
 # gpu-hq with even better scaler

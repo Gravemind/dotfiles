@@ -5,7 +5,6 @@
 local mp = require 'mp'
 
 local profiles_enabled = {
-    scaletempo = false,
     svp = true,
 }
 
@@ -19,22 +18,6 @@ local function enable_profile(name, enable)
     end
     print(profile)
     mp.commandv("apply-profile", profile)
-end
-
-local function on_speed_changed(name, value)
-    if value == 1.0 then
-        enable_profile("scaletempo", false)
-        if svp_was_enabled then
-            enable_profile("svp", true)
-        end
-    elseif value > 0.99 and value < 1.01 then
-        mp.set_property_native("speed", 1.0)
-    else
-        enable_profile("scaletempo", true)
-        svp_was_enabled = profiles_enabled.svp
-        enable_profile("svp", false)
-    end
-    -- mp.osd_message("speed "..tostring(value).." svp "..tostring(profiles_enabled.svp))
 end
 
 local function toggle_svp()
@@ -53,7 +36,6 @@ local function init()
     end
     local svp_was_enabled = profiles_enabled.svp
 
-    mp.observe_property("speed", "number", on_speed_changed)
     mp.add_key_binding("n", "toggle-svp", toggle_svp, {repeatable=true})
 end
 
