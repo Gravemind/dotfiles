@@ -155,7 +155,7 @@
 
 (setq-default
 
- Man-width 100
+ Man-width 120
 
  ;; https://www.emacswiki.org/emacs/FillParagraph
  ;; The original value is "\f\\|[ \t]*$", so we add the bullets (-), (+), and (*).
@@ -168,6 +168,8 @@
  c-backslash-max-column 1000
 
  )
+
+(setenv "MANWIDTH" (int-to-string Man-width))
 
 ;;
 ;; unfill
