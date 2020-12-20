@@ -134,7 +134,8 @@
    )
 
  ;; frame title (X window title)
- frame-title-format '("" "%b")
+ frame-title-format
+ '("" (:eval (cond (buffer-read-only "[%] ") ((buffer-modified-p) "[*] ") (t ""))) "%b")
 
  )
 
