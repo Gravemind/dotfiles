@@ -148,8 +148,9 @@
 	hideuntrack = config --local status.showUntrackedFiles no
 	showuntrack = config --local status.showUntrackedFiles normal
 
-	# It's good practice to make the very frist commit of a repo empty
+	# It's a good practice to make the very frist commit of a repo empty
 	first = commit -m 'first commit' --allow-empty
+	first = commit -m 'First commit' --allow-empty
 
 	ls-ignored-status = status -sb --ignored
 	ls-ignored-untracked = ls-files -o --ignored --exclude-standard
