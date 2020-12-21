@@ -123,8 +123,8 @@ DEFCOMPILE  += evil
 DEFCOMPILE  += annalist
 DEFCOMPILE_annalist = annalist.el
 DEFCOMPILE  += goto-chg
-DEFCOMPILE  += evil-magit
-DEFCOMPILE_evil-magit = evil-magit.el
+# DEFCOMPILE  += evil-magit # Moved in evil-collection
+# DEFCOMPILE_evil-magit = evil-magit.el
 DEFCOMPILE  += evil-nerd-commenter
 DEFCOMPILE  += evil-surround
 DEFCOMPILE  += evil-lion
@@ -224,7 +224,7 @@ evil-*: evil
 
 evil-collection: f annalist magit
 
-evil-magit: magit
+# evil-magit: magit
 
 goto-chg: undo-tree
 

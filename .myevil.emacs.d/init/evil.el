@@ -251,6 +251,7 @@ point."
 
 ;; evil-compatible magit bindings
 (use-package evil-magit
+  :disabled t ;; Moved into evil-collection
   :load-path (my-packages-directory "evil-magit")
   :after (evil magit)
   :demand t
