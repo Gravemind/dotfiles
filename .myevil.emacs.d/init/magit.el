@@ -99,30 +99,36 @@
   ;; https://github.com/magit/magit/wiki/Converting-popup-modifications-to-transient-modifications
 
   ;; log
-  (transient-append-suffix 'magit-log "=p"
-    '("-i" "Regexp ignore case" "-i"))
-  (transient-append-suffix 'magit-log "a"
-    '("R" "left-right" my-magit-log-left-right))
+  (transient-insert-suffix 'magit-log '(-1)
+    ["Custom"
+     ("-i" "Regexp ignore case" "-i")
+     ("R" "left-right" my-magit-log-left-right)
+     ])
 
   ;; pull
-  (transient-append-suffix 'magit-pull "e"
-    '("f" "Pull ff only" my-magit-pullff))
-  (transient-append-suffix 'magit-pull "r"
-    '("-a" "Auto stash" "--autostash"))
+  (transient-insert-suffix 'magit-pull '(-1)
+    ["Custom"
+     ("f" "Pull ff only" my-magit-pullff)
+     ;; ("-a" "Auto stash" "--autostash") ;; "-A"
+     ])
 
   ;; diff
-  (transient-append-suffix 'magit-diff "-s"
-    '("-R" "Reverse" "-R"))
+  (transient-insert-suffix 'magit-diff '(-1)
+    ["Custom" ("-R" "Reverse" "-R")])
+  (transient-insert-suffix 'magit-diff-refresh '(-1)
+    ["Custom" ("-R" "Reverse" "-R")])
   ;; (magit-define-popup-switch
   ;;   'magit-diff-popup
   ;;   ?W "Ignore changes in whitespace at EOL" "--ignore-space-at-eol")
 
   ;; branch
   (transient-remove-suffix 'magit-branch "o") ;; was checkout --orphan
-  (transient-append-suffix 'magit-branch "H"
-    '("o" "Update other" my-magit-branch-update-other))
-  (transient-append-suffix 'magit-branch "b"
-    '("M" "with merge (-m)" my-magit-checkout-merge))
+  (transient-insert-suffix 'magit-branch '(-1)
+    ["Custom"
+     ("o" "Update other" my-magit-branch-update-other)
+     ("-m" "With merge" "-m")
+     ;; ("M" "with merge (-m)" my-magit-checkout-merge)
+     ])
 
   ;(setq-default git-commit-turn-on-auto-fill nil)
   ;(add-hook 'git-commit-mode-hook 'turn-off-auto-fill)
