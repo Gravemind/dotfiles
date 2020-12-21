@@ -630,6 +630,18 @@
   )
 
 ;;
+;; explain-pause-mode : benchmark and explain slowness/freezes
+;; https://github.com/lastquestion/explain-pause-mode
+;;
+;; - Enable background bench with `M-x explain-pause-mode`
+;; - Show detected slowness with `M-x explain-pause-top`
+;;
+(use-package explain-pause-mode
+  :load-path (my-packages-directory "explain-pause-mode")
+  :commands (explain-pause-mode explain-pause-top)
+  )
+
+;;
 ;; other
 ;;
 
