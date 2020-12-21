@@ -363,3 +363,7 @@
 	path = .my.emacs.d/elpa-git/rustic
 	url = https://github.com/brotzeit/rustic.git
 	branch = master
+[submodule ".my.emacs.d/elpa-git/benchmark-init-el"]
+	path = .my.emacs.d/elpa-git/benchmark-init-el
+	url = https://github.com/dholm/benchmark-init-el.git
+	branch = master

@@ -117,6 +117,7 @@ DEFCOMPILE  += helpful
 DEFCOMPILE  += ws-butler
 DEFCOMPILE  += explain-pause-mode
 DEFCOMPILE  += magit-delta
+DEFMAKE     += benchmark-init-el
 
 DEFCOMPILE  += base16-emacs
 DEFCOMPILE_base16-emacs = base16-theme.el
