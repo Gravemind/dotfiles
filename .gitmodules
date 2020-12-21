@@ -359,3 +359,7 @@
 	url = https://github.com/gabesoft/evil-mc.git
 	ignore = untracked
 	branch = master
+[submodule ".my.emacs.d/elpa-git/rustic"]
+	path = .my.emacs.d/elpa-git/rustic
+	url = https://github.com/brotzeit/rustic.git
+	branch = master

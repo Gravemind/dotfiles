@@ -319,18 +319,26 @@
 
 ;; https://github.com/rust-lang/rust-mode
 (use-package rust-mode
+  :disabled t
   :load-path (my-packages-directory "rust-mode")
   :mode (("\\.rs\\'" . rust-mode))
+  )
+
+;; https://github.com/kwrooijen/cargo.el
+(use-package cargo
+  :disabled t
+  :load-path (my-packages-directory "cargo")
+  :after rust-mode
   :bind (:map rust-mode-map
               ("<f3>" . cargo-process-build)
               ("<S-f3>" . cargo-process-build)
               )
   )
 
-;; https://github.com/kwrooijen/cargo.el
-(use-package cargo
-  :load-path (my-packages-directory "cargo")
-  :defer t
+(use-package rustic
+  ;; :disabled t
+  :load-path (my-packages-directory "rustic")
+  :mode (("\\.rs\\'" . rustic-mode))
   )
 
 ;; https://github.com/flycheck/flycheck-rust
@@ -343,8 +351,8 @@
 
 ;; https://github.com/racer-rust/emacs-racer
 (use-package racer
+  :disabled t
   :load-path (my-packages-directory "racer")
-  ;;:disabled t
   :defer t
   :hook (rust-mode . racer-mode)
   :bind (:map racer-mode-map

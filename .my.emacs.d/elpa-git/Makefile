@@ -91,6 +91,7 @@ DEFCOMPILE	+= xterm-color
 DEFCOMPILE	+= rainbow-mode
 DEFCOMPILE	+= req-package
 DEFCOMPILE	+= rust-mode
+DEFCOMPILE	+= rustic
 DEFCOMPILE	+= s
 DEFMAKE		+= swiper
 DEFCOMPILE	+= sync-recentf
