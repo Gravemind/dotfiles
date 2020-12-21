@@ -108,7 +108,8 @@ DEFCOMPILE	+= org-bullets
 DEFCOMPILE	+= flycheck-grammalecte
 DEFCOMPILE  += emacs-which-key
 DEFCOMPILE  += key-chord
-DEFCOMPILE  += better-jumper
+# DEFCOMPILE  += better-jumper # wont work if compiled: 'variable is void: better-jumper-jump-list-struct'
+NODEF       += better-jumper
 DEFCOMPILE  += projectile
 DEFCOMPILE  += elisp-refs
 DEFCOMPILE  += helpful
@@ -231,6 +232,9 @@ goto-chg: undo-tree
 helpful: elisp-refs
 
 magit-delta: xterm-color
+
+better-jumper:
+	@echo "do nothing"
 
 #
 # Default rules
