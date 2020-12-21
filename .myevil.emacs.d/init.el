@@ -15,19 +15,19 @@
 (setq user-init-file (or load-file-name (buffer-file-name)))
 (setq user-emacs-directory (file-name-directory user-init-file))
 
-;; Benchmark init https://github.com/dholm/benchmark-init-el
-;; - Install:
-;;   $> cd ~/.emacs.d && git clone https://github.com/dholm/benchmark-init-el && make -C benchmark-init-el
-;; - Uncomment:
-;;(add-to-list 'load-path "~/.emacs.d/benchmark-init-el/") (require 'benchmark-init-loaddefs) (benchmark-init/activate)
-;;(global-set-key (kbd "<f12>") (lambda () (interactive) (benchmark-init/deactivate) (benchmark-init/show-durations-tabulated)))
+;; Profile init with https://github.com/dholm/benchmark-init-el
+;; (add-to-list 'load-path "~/.emacs.d/packages/benchmark-init-el")
+;; (require 'benchmark-init-loaddefs)
+;; (benchmark-init/activate)
+;; (global-set-key (kbd "<S-f12>") (lambda () (interactive) (benchmark-init/deactivate) (benchmark-init/show-durations-tabulated)))
 
-;; Use-package report: [f12] (see which is package Decl/Init/Config + benchmark)
-;;(setq-default use-package-compute-statistics t)
-;;(global-set-key (kbd "<f12>") (lambda () (interactive) (use-package-report)))
+;; Use-package report: [f12] (see which is package Decl/Init/Config + profiling)
+(setq-default use-package-compute-statistics t)
+(global-set-key (kbd "<f12>") (lambda () (interactive) (use-package-report)))
 
-(global-set-key (kbd "<f11>") (lambda () (interactive) (profiler-start 'cpu)))
-(global-set-key (kbd "<f12>") (lambda () (interactive) (profiler-report)))
+;; Start/Stop profiler
+(global-set-key (kbd "<f10>") (lambda () (interactive) (profiler-start 'cpu)))
+(global-set-key (kbd "<f11>") (lambda () (interactive) (profiler-report)))
 
 ;; Custom file path
 (setq-default custom-file (concat user-emacs-directory "custom.el"))
