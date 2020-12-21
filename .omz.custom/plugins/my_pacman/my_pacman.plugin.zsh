@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-export PACPEND='-g explicit -s name,vdiff -H linux,emacs,nvidia,firefox'
+export PACPEND='-g explicit -s name,vdiff -H linux,emacs,git,rust,nvidia,firefox -F eslint,xorg'
 
 if ! command which yay > /dev/null
 then

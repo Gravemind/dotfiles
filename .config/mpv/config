@@ -68,15 +68,22 @@ profile=opengl
 # Profiles
 #
 
-[disable-svp]
-vf-add=@svpf:!format=yuv420p
-vf-add=@svpv:!vapoursynth=~/.config/mpv/filters/svp.py
-hwdec=auto-safe
+#
+# SVP
+#
 [enable-svp]
-profile=disable-svp
-vf-toggle=@svpf
-vf-toggle=@svpv
-hwdec=auto-copy-safe
+profile-desc="SVP"
+# profile=disable-svp
+vf-add=@svpf:format=yuv420p
+vf-add=@svpv:vapoursynth=~/.config/mpv/filters/svp.py
+# hwdec=auto-safe
+# hwdec=auto-copy-safe
+hwdec=auto-copy
+[disable-svp]
+vf-remove=@svpf
+vf-remove=@svpv
+# hwdec=auto-safe
+hwdec=auto
 
 
 #

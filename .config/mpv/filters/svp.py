@@ -11,6 +11,9 @@ clip = video_in
 
 core.std.LoadPlugin("/opt/svp/plugins/libsvpflow1_vs64.so")
 core.std.LoadPlugin("/opt/svp/plugins/libsvpflow2_vs64.so")
+# core.std.LoadPlugin("/usr/lib/vapoursynth/libsvpflow2.so")
+# core.std.LoadPlugin("/home/jo/Downloads/svpflow-4.3.0.168/lib-linux/libsvpflow1_vs64.so")
+# core.std.LoadPlugin("/home/jo/Downloads/svpflow-4.3.0.168/lib-linux/libsvpflow2_vs64.so")
 
 enable = True
 
@@ -124,7 +127,7 @@ print(pprefix+"Clip", clip.width, "x", clip.height, clip.format.name, "at", cont
 
 # display_fps = 143.995
 
-max_fps = display_fps
+max_fps = display_fps * 1.0001
 
 if clip.width > 1920:
     max_fps = min(max_fps, 60)  # > 1080p
@@ -171,14 +174,18 @@ else:
 
         #pprint(vars(vectors))
 
-        full_smooth_params = "{ rate: {num:"+str(dst_fps_num)+", den:"+str(dst_fps_den)+", abs:true} "+smooth_params+" }"
+        full_smooth_params = "{ gpuid:11, rate:{num:"+str(dst_fps_num)+", den:"+str(dst_fps_den)+", abs:true} "+smooth_params+" }"
         #full_smooth_params = "{ rate: {num:2,den:1}, "+smooth_params+" }"
 
         clip = core.svp2.SmoothFps(clip, sup["clip"], sup["data"], vectors["clip"], vectors["data"], full_smooth_params)
+        # help(clip)
 
         #pprint(vars(clip))
     else:
-        clip = core.svp2.SmoothFps_NVOF(sup["clip"], sup["data"], "")
+        # help(core.svp2.SmoothFps_NVOF)
+        # smooth  = core.svp2.SmoothFps_NVOF(input_m,smoothfps_params,nvof_src=input_m8,src=input_um,fps=src_fps)
+        clip  = core.svp2.SmoothFps_NVOF(clip,smooth_params,nvof_src=clip,src=clip)#,fps=src_fps)
+        # clip = core.svp2.SmoothFps_NVOF(clip, smooth_params, sup["clip"], sup["data"], "")
 
     clip = core.std.AssumeFPS(clip, fpsnum=clip.fps_num, fpsden=clip.fps_den)
 

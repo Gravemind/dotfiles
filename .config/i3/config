@@ -452,7 +452,8 @@ bar {
     # i3bar_command i3bar --bar_id=bar-1 --socket=$here/ipc.sock
 
     status_command ~/documents/clones/i3status/build/i3status -c $here/i3status_progress.conf
-    i3bar_command ~/documents/clones/i3/build/i3bar/i3bar --bar_id=bar-1 --socket=$here/ipc.sock
+    # i3bar_command ~/documents/clones/i3/build/i3bar/i3bar --bar_id=bar-1 --socket=$here/ipc.sock
+    i3bar_command ~/documents/clones/i3/build/i3bar --bar_id=bar-1 --socket=$here/ipc.sock
     progress bottom_bar 0 1
 
     separator_symbol "   "

@@ -37,7 +37,7 @@ URxvt*buffered:         true
 !                         xft:Font Awesome 5 Free Solid:size=8,\
 !                         xft:Font Awesome 5 Free Solid:size=7,\
 !                         xft:Font Awesome 5 Free Solid:size=6
-URxvt*font:             xft:Hack:size=9,\
+URxvt*font:             xft:Hack:size=8,\
                         xft:Font Awesome 5 Free Solid:size=9,\
                         xft:Font Awesome 5 Free Solid:size=8,\
                         xft:Font Awesome 5 Free Solid:size=7,\
@@ -105,6 +105,6 @@ emacs.menuBar:              off
 emacs.toolBar:              off
 emacs.verticalScrollBars:   off
 !emacs.font:                 DejaVu Sans Mono-9
-emacs.font:                 Hack-9
+emacs.font:                 Hack-8
 emacs.background:           #202020
 emacs.cursorBlink:          off

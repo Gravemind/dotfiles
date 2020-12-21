@@ -102,6 +102,6 @@ ccacheon() {
 ENABLE_RTAGS=0
 ENABLE_CCACHE=0
 
-useclang > /dev/null
+# useclang > /dev/null
 
 #export CFLAGS="-Wno-undefined-var-template"

@@ -15,4 +15,4 @@ disown
 urxvt -name qsynth -e zsh -is eval "sleep 1; qsynth &" &
 disown
 
-i3-msg "workspace 3"
+#i3-msg "workspace 3"
