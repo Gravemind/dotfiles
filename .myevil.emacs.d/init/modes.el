@@ -531,6 +531,8 @@
 (use-package flycheck
   :load-path (my-packages-directory "flycheck")
   :commands (flycheck-mode)
+  :config
+  (require 'pkg-info) ;; flycheck-verify-setup requires pkg-info-version-info
 )
 
 ;;
