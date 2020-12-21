@@ -36,7 +36,8 @@
  truncate-lines t
  word-wrap nil
 
- vc-handled-backends nil
+ ;; Needed for diff-hl to work
+ vc-handled-backends '(Git) ;; '(RCS CVS SVN SCCS SRC Bzr Git Hg Mtn)
 
  dabbrev-case-fold-search nil
  dabbrev-case-replace nil
