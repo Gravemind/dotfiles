@@ -55,6 +55,7 @@
 !/.config/mpv
 !/.config/starship*
 !/.config/gtk-3*
+!/.config/clipcat
 
 !/bin
 !/dotfiles
