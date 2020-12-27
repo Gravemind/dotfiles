@@ -13,6 +13,7 @@ sed -rn '/## AUR ##/,/## OTHER ##/ bk;d;:k;s/^- ([[:alnum:]_-]+).*/\1/gp' base-p
 # ## PACMAN ## Packages
 
 - base-devel
+- linux-tools
 
 ## System Adm
 
@@ -82,6 +83,8 @@ sed -rn '/## AUR ##/,/## OTHER ##/ bk;d;:k;s/^- ([[:alnum:]_-]+).*/\1/gp' base-p
 - expac
 
 - #at         : one-time cron
+
+- vulkan-devel
 
 ## Dev Tools, Languages
 
