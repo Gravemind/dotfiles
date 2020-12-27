@@ -319,14 +319,14 @@
 
 ;; https://github.com/rust-lang/rust-mode
 (use-package rust-mode
-  :disabled t
+  ;; :disabled t
   :load-path (my-packages-directory "rust-mode")
   :mode (("\\.rs\\'" . rust-mode))
   )
 
 ;; https://github.com/kwrooijen/cargo.el
 (use-package cargo
-  :disabled t
+  ;; :disabled t
   :load-path (my-packages-directory "cargo")
   :after rust-mode
   :bind (:map rust-mode-map
@@ -336,7 +336,7 @@
   )
 
 (use-package rustic
-  ;; :disabled t
+  :disabled t
   :load-path (my-packages-directory "rustic")
   :mode (("\\.rs\\'" . rustic-mode))
   )

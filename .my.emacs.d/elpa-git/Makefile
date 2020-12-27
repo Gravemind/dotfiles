@@ -91,7 +91,7 @@ DEFCOMPILE	+= xterm-color
 DEFCOMPILE	+= rainbow-mode
 DEFCOMPILE	+= req-package
 DEFCOMPILE	+= rust-mode
-DEFCOMPILE	+= rustic
+#DEFCOMPILE	+= rustic
 DEFCOMPILE      += spinner
 DEFCOMPILE	+= s
 DEFMAKE		+= swiper
@@ -239,7 +239,7 @@ magit-delta: xterm-color
 better-jumper:
 	@echo "do nothing"
 
-rustic: spinner
+# rustic: spinner
 
 #
 # Default rules
