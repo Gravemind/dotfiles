@@ -344,7 +344,7 @@
 ;; https://github.com/flycheck/flycheck-rust
 (use-package flycheck-rust
   :load-path (my-packages-directory "flycheck-rust")
-  :defer t
+  :commands (flycheck-rust-setup)
   :after flycheck
   :hook (flycheck-mode . (lambda () (if (eq major-mode 'rust-mode) (flycheck-rust-setup))))
   )
@@ -363,8 +363,7 @@
 ;; https://github.com/flycheck/flycheck-inline
 (use-package flycheck-inline
   :load-path (my-packages-directory "flycheck-inline")
-  :after flycheck
-  :defer t
+  :commands (flycheck-inline-mode)
   )
 
 ;;
