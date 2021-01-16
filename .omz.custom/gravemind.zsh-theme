@@ -10,6 +10,8 @@
 my_sourcing_again="${my_sourcing_again:-false}"
 $my_sourcing_again || export _shell_depth="$((${_shell_depth:-0} + 1))"
 
+GRAVEMIND_NO_GIT=0
+
 GRAVEMIND_NO_URGENT_CMD+=( mpv steam )
 GRAVEMIND_NO_URGENT=0
 
@@ -29,24 +31,31 @@ GMPSEND="%{❱%G%}"
 GMPSGIT="%{⌥%G%}"
 #GMPSGIT="%{%G%}"
 #GMPSGIT="%{%G%}"
+GMPSGITDIRTY="M"
 GMPSTRUNC="%{…%G%}"
 GMPSTRUNC1="…"
 
 gravemind_init_prompt_vars() {
 	_GRAVEMIND_GIT=0
-	if [[ "$(git config --get oh-my-zsh.hide-status 2>/dev/null)" != "1" ]]; then
-		local repo_info
-		repo_info="$(git rev-parse --show-cdup --git-dir 2>/dev/null)"
-		if [[ $? -eq 0 ]]; then
-			_GRAVEMIND_GIT=1
-			local gitdir="${repo_info##*$'\n'}"
-			repo_info="${repo_info%$'\n'*}"
-			local cdup="${repo_info##*$'\n'}"
-			repo_info="${repo_info%$'\n'*}"
-			_GRAVEMIND_GIT_TOPLEVEL="$(cd "$cdup" && pwd)"
-			_GRAVEMIND_GIT_GITDIR="$gitdir"
-		fi
+	[[ "$GRAVEMIND_NO_GIT" != "1" ]] || return 0
+	# [[ "$(git config --bool --get oh-my-zsh.hide-status 2>/dev/null)" != "true" ]] || return 0
+	local info
+	IFS=$'\n' info=(
+		$(git rev-parse --git-dir HEAD --symbolic-full-name HEAD --show-cdup 2>/dev/null)
+	)
+	unset IFS
+	# echol "<<<" "${info[@]}" ">>>>"
+	[[ -n "${info[1]}" ]] || return 0
+	_GRAVEMIND_GIT=1
+	_GRAVEMIND_GIT_GITDIR="${info[1]}" # 1-indexed !?
+	_GRAVEMIND_GIT_HEAD_SHA="${info[2]}"
+	_GRAVEMIND_GIT_HEAD_REF="${info[3]}"
+	if [[ "$PWD" == "$_GRAVEMIND_GIT_GITDIR" || "$PWD" == "$_GRAVEMIND_GIT_GITDIR"/* ]]; then
+		_GRAVEMIND_GIT_TOPLEVEL="$_GRAVEMIND_GIT_GITDIR"
+	else
+		_GRAVEMIND_GIT_TOPLEVEL="$(cd "${info[4]:-}" && pwd)"
 	fi
+	_GRAVEMIND_GIT_HEAD_REF="${info[3]}"
 }
 
 gravemind_prompt_user() {
@@ -138,19 +147,45 @@ gravemind_prompt_git_doing() {
 
 gravemind_prompt_git() {
 	[[ $_GRAVEMIND_GIT -eq 1 ]] || return 1
-	local ref n
-	ref="$(git describe --all --exact-match HEAD 2> /dev/null)"
-	case "$ref" in
-		"")
-			# ref="$(git describe --all --long HEAD 2> /dev/null)"
-			ref="$(git rev-parse --short HEAD 2> /dev/null)"
-			n="%F{magenta}$ref"
-			;;
-		heads/*) n="%F{green}${ref#heads/}"; ;;
-		tags/*) n="%F{yellow}${ref#tags/}"; ;;
-		*) n="%F{blue}$ref"; ;;
+	local gitdir="$_GRAVEMIND_GIT_GITDIR"
+	local toplevel="$_GRAVEMIND_GIT_TOPLEVEL"
+	local headref="$_GRAVEMIND_GIT_HEAD_REF"
+	local headsha="$_GRAVEMIND_GIT_HEAD_SHA"
+
+	local b t d
+
+	case "$headref" in
+		HEAD) b="%F{magenta}${headsha:0:10}"; ;;
+		refs/heads/*) b="%F{green}${headref#refs/heads/}"; ;;
+		*) b="%F{red}${headref}?"; ;;
 	esac
-	echo -n " %20>$GMPSTRUNC1>$n%<<"
+	[[ -z "$b" ]] || b=" %25<$GMPSTRUNC1<$b%<<"
+
+	# local tag
+	# tag="$(git -C "$toplevel" describe --tags $headsha 2> /dev/null)"
+	# if [[ $? -eq 0 ]]; then
+	# 	t="%F{yellow}$tag"
+	# fi
+
+	local tag
+	# tag="$(git -C "$toplevel" describe --tags --long --dirty 2> /dev/null)"
+	tag="$(git -C "$toplevel" describe --tags --long $headsha 2> /dev/null)"
+	if [[ $? -eq 0 ]]; then
+		case "$tag" in
+			*-dirty) d=" %F{red}$GMPSGITDIRTY"; tag="${tag%-dirty}"; ;;
+		esac
+		case "$tag" in
+			# Not exact, but should do
+			*-0-g*) t="%F{yellow}${tag%-0-g*}"; ;;
+			# *) t="%b%F{yellow}${tag%-*-g*}%B"; ;;
+			*) t="%F{black}${tag%-*-g*}"; ;;
+		esac
+		t="$t"
+	fi
+	[[ -z "$t" ]] || t=" %25<$GMPSTRUNC1<$t%<<"
+
+	echo -n "$t$b$d"
+	return 0
 }
 
 gravemind_prompt_cc() {
