@@ -72,7 +72,7 @@ fi
 tmplayout="$(mktemp -t "i3layoutlaunch_layout.XXXXXXXX")"
 tmpexec="$(mktemp -t "i3layoutlaunch_exec.XXXXXXXX")"
 
-layout_win_name="${name} ..."
+layout_win_name="launching layout ${name}"
 
 layout_rect=""
 if [[ -n "$geometry" ]]
@@ -115,6 +115,7 @@ node='"name": "'"$layout_win_name"'",
 
 if [[ "$floating" = 1 ]]
 then
+	focusme="focus floating;focus next" # Or sticky window gets focus
 	echo '{
 	"type": "floating_con", '"$layout_rect"'
 	"nodes": [ {
@@ -123,6 +124,7 @@ then
 	} ]
 }' > $tmplayout
 else
+	focusme="focus tiling" # Or sticky window gets focus
 	echo '{
 	'"$node"'
 }' > $tmplayout
@@ -154,16 +156,18 @@ msg=()
 msg+=(
 	"workspace launching"
 	"append_layout $tmplayout"
-	"focus child"
+	# "focus child" # Broken with sticky window
+	# "[title=\"$layout_win_name\"] focus" # doesn't work: "ERROR: No window matches given criteria"
+	"$focusme"
 	"move window to workspace back_and_forth"
 	"workspace back_and_forth"
 )
-msg+=( "exec bash $tmpexec" )
+msg+=( "exec --no-startup-id bash $tmpexec" )
 
-msgstr=$( ( IFS=$'\n'; echo "${msg[*]}" ) )
+msgstr="$(IFS=';'; echo "${msg[*]}")"
 
 log "launching \"$prog\" class \"$class\" instance \"$instance\""
-#echo "$msgstr"
+# echo ">>>$msgstr<<<"
 
 res="$(i3-msg "$msgstr")"
 exi=$?
