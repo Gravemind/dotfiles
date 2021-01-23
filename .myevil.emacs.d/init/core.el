@@ -62,6 +62,10 @@
 
  ;; Always save bookmark after 1 modification
  bookmark-save-flag 1
+
+ ;; Delete duplicates in M-x history (helm)
+ history-delete-duplicates t
+ history-length 100
  )
 
 ;; Mouse
