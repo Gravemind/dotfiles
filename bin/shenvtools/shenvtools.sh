@@ -8,14 +8,21 @@ envappend() {
     local sep="$2"
     local value="$3"
 
-    envremove "$var" "$sep" "$value"
-    local v="$(_shenvtools_get "$var")"
+    _shenvtools_silent envremove "$var" "$sep" "$value"
+
+    local oldv="$(_shenvtools_get "$var")"
+    local v="$oldv"
     if [[ -z "$v" ]]; then
         v="$value"
     else
         v="$v$sep$value"
     fi
-    _shenvtools_export "$var" "$v"
+    if [[ "$v" != "$oldv" ]]; then
+        _shenvtools_export "$var" "$v"
+        _shenvtools_log "$var += $value"
+    else
+        _shenvtools_log "($var already have $value)"
+    fi
 }
 
 # envprepend <name> <sep> <value>
@@ -25,14 +32,21 @@ envprepend() {
     local sep="$2"
     local value="$3"
 
-    envremove "$var" "$sep" "$value"
-    local v="$(_shenvtools_get "$var")"
+    _shenvtools_silent envremove "$var" "$sep" "$value"
+
+    local oldv="$(_shenvtools_get "$var")"
+    local v="$oldv"
     if [[ -z "$v" ]]; then
         v="$value"
     else
         v="$value$sep$v"
     fi
-    _shenvtools_export "$var" "$v"
+    if [[ "$v" != "$oldv" ]]; then
+        _shenvtools_export "$var" "$v"
+        _shenvtools_log "$var += $value"
+    else
+        _shenvtools_log "($var already += $value)"
+    fi
 }
 
 # envremove <name> <sep> <value>
@@ -42,7 +56,8 @@ envremove() {
     local sep="$2"
     local value="$3"
 
-    local v="$(_shenvtools_get "$var")"
+    local oldv="$(_shenvtools_get "$var")"
+    local v="$oldv"
     v="$sep$v$sep"
     v="${v//$sep$value$sep/$sep}"
     while [[ "$v" == "$sep"* ]] ; do
@@ -51,14 +66,19 @@ envremove() {
     while [[ "$v" == *"$sep" ]] ; do
         v="${v%$sep}"
     done
-    _shenvtools_export "$var" "$v"
+    if [[ "$v" != "$oldv" ]]; then
+        _shenvtools_export "$var" "$v"
+        _shenvtools_log "$var -= $value"
+    else
+        _shenvtools_log "($var already -= $value)"
+    fi
 }
 
 # addpath <path>
 #   Add <path> to PATH
 addpath() {
     local p="$1"
-    _shenvtools_test "invalid path" -d "$p"
+    _shenvtools_test "invalid path" -d "$p" || true
     _shenvtools_makeabs p
     envprepend "PATH" : "$p"
 }
@@ -81,7 +101,7 @@ rmbin() { rmpath "$@"; }
 #   Add <path> to LD_LIBRARY_PATH
 addlib() {
     local p="$1"
-    _shenvtools_test "invalid path" -d "$p"
+    _shenvtools_test "invalid path" -d "$p" || true
     _shenvtools_makeabs p
     envprepend "LD_LIBRARY_PATH" : "$p"
 }
@@ -105,7 +125,7 @@ addtool() {
     local didlib=0
     [[ ! -d "$p/lib" ]] || { addlib "$p/lib"; didlib=1; }
     [[ ! -d "$p/lib64" ]] || { addlib "$p/lib64"; didlib=1; }
-    _shenvtools_test "no lib/lib64 dir" "$didlib" -eq 1
+    _shenvtools_test "no lib/lib64 dir" "$didlib" -eq 1 || true
 
     local man="$p/share/man"
     [[ ! -d "$man" ]] || envappend "MANPATH" : "$man"
@@ -136,7 +156,9 @@ _shenvtools_test() {
     shift
     if ! test "$@" ; then
         echo "shenvtools: test failed: $msg ($*)" >&2
+        return 1
     fi
+    return 0
 }
 
 # Indirect get variable
@@ -156,7 +178,7 @@ _shenvtools_set() {
     local value="$2"
     read -r "$var" <<<"$value"
 
-    # _shenvtools_test "$(_shenvtools_get)" "==" "value" >&2
+    # _shenvtools_test "$(_shenvtools_get)" "==" "value" >&2 || true
 }
 
 # Indirect export variable
@@ -165,3 +187,17 @@ _shenvtools_export() {
     local value="$2"
     export "$var=$value"
 }
+
+_shenvtools_log() {
+    [[ "${SHENVTOOLS_VERBOSE:-0}" = 1 ]] || return 0
+    echo "shenvtools: $*" >&2
+}
+
+_shenvtools_silent() {
+    local verb="${SHENVTOOLS_VERBOSE:-}"
+    SHENVTOOLS_VERBOSE=0
+    "$@"
+    SHENVTOOLS_VERBOSE="$verb"
+}
+
+SHENVTOOLS_VERBOSE=1
