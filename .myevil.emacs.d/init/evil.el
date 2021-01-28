@@ -249,23 +249,6 @@ point."
   (evil-traces-mode)
   )
 
-;; evil-compatible magit bindings
-(use-package evil-magit
-  :disabled t ;; Moved into evil-collection
-  :load-path (my-packages-directory "evil-magit")
-  :after (evil magit)
-  :demand t
-  :bind (:map magit-mode-map
-         ("SPC" . evil-send-leader) ;; force leader
-         :map magit-diff-mode-map
-         ("SPC" . evil-send-leader) ;; force leader
-        )
-  :init
-  (setq
-   ;; evil-magit-want-horizontal-movement t
-        )
-  )
-
 ;; Align stuff with 'g l <char>'
 (use-package evil-lion
   :load-path (my-packages-directory "evil-lion")

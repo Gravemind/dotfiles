@@ -245,9 +245,6 @@
 	path = .my.emacs.d/elpa-git/goto-chg
 	url = https://github.com/emacs-evil/goto-chg.git
 	ignore = untracked
-[submodule ".my.emacs.d/elpa-git/evil-magit"]
-	path = .my.emacs.d/elpa-git/evil-magit
-	url = https://github.com/emacs-evil/evil-magit.git
 [submodule ".my.emacs.d/elpa-git/key-chord"]
 	path = .my.emacs.d/elpa-git/key-chord
 	url = https://github.com/emacsorphanage/key-chord.git
