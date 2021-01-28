@@ -34,7 +34,9 @@
    ;;which-key-idle-secondary-delay 0.05
 
    ;; which-key-side-window-location 'left ;; moves arround windows too much
-   which-key-side-window-location 'bottom
+   ;; which-key-side-window-location 'bottom
+   which-key-popup-type 'minibuffer
+   which-key-max-description-length '35
    )
   :config
   (which-key-mode)
