@@ -206,6 +206,7 @@ spaces are treated."
   :config
   ;;(editorconfig-mode 1)
   (setq-default editorconfig-mode-lighter " EdConf")
+  (setq editorconfig-trim-whitespaces-mode 'ws-butler-mode)
   ;; (add-hook 'editorconfig-after-apply-functions
   ;;           (lambda (props)
   ;;             ;; set tab-stop-list

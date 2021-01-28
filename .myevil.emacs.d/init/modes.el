@@ -627,6 +627,7 @@
 (use-package ws-butler
   :load-path (my-packages-directory "helpful")
   :hook (prog-mode . ws-butler-mode)
+  :commands (ws-butler-mode)
   )
 
 ;;
