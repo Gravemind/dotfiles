@@ -9,14 +9,13 @@ export SAVEHIST=100000
 # Always append history, do not replace it
 setopt append_history
 
-# Enable only ONE of the following:
-# - (default) Command history is read on startup, and saved at exit
-: nop
-# - Command history is read on startup, and saved before all commands
+# Choose only ONE of the following option:
+# - <none-set>: Command history is read on startup, and saved at exit
+# - set inc_append_history: Command history is read on startup, and saved before all commands
+# - set inc_append_history_time: ditto, with command duration
+# - set share_history: Command history is re-read and saved before all commands
 setopt inc_append_history
-# - Command history is read on startup, and saved after all commands (with command duration)
 unsetopt inc_append_history_time
-# - Command history is re-read and saved before all commands
 unsetopt share_history
 
 # Unset option that tries to correct spelling errors
