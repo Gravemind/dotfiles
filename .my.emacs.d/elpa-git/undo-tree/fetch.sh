@@ -3,6 +3,7 @@
 set -euo pipefail
 set -x
 
-url="https://git.savannah.gnu.org/cgit/emacs/elpa.git/plain/packages/undo-tree/undo-tree.el"
-curl -o undo-tree.el "$url"
+cd "$(dirname "$0")"
 
+url="https://git.savannah.gnu.org/cgit/emacs/elpa.git/plain/undo-tree.el?h=externals/undo-tree"
+curl -o undo-tree.el "$url"
