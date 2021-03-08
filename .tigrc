@@ -11,3 +11,6 @@ color main-local-tag	yellow	default	bold
 color date              black	default bold
 # author in main view
 color "author "			blue	default
+
+set log-view-date = relative
+set main-view-date = relative
