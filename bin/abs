@@ -1,0 +1,6 @@
+#!/bin/bash
+
+for f in "$@"
+do
+	realpath --no-symlinks "$f"
+done
