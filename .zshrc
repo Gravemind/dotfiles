@@ -93,6 +93,19 @@ plugins=(
 	# my_laptop
 )
 
+# Execute command after loading omz, but before shell apears
+# http://www.zsh.org/mla/users/2005/msg00599.html
+#   Usage;
+#     zsh -is eval echo do something
+#
+if [[ $1 == eval ]]
+then
+	shift
+	[[ $1 != '-e' ]] || shift
+	echo "Executing input command \"$@\" ..."
+	eval "${@}"
+fi
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -123,16 +136,3 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
-# Execute command after loading omz, but before shell apears
-# http://www.zsh.org/mla/users/2005/msg00599.html
-#   Usage;
-#     zsh -is eval echo do something
-#
-if [[ $1 == eval ]]
-then
-	shift
-	[[ $1 != '-e' ]] || shift
-	echo "Executing input command \"$@\" ..."
-	eval "${@}"
-fi
