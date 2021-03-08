@@ -15,7 +15,6 @@
  '(
    ;; Additional mode indent variable
    ;; (mode dtrt-syntax variable)
-   (cmake-mode default cmake-tab-width)
    (yaml-mode  default yaml-indent-offset)
    )
 
@@ -28,7 +27,6 @@
    (emacs-lisp-mode 4 nil 8)
    (asm-mode        8 t   8)
    (conf-unix-mode  8 t   8)
-   (cmake-mode      2 nil 8)
    (yaml-mode       2 nil 8)
    (markdown-mode   4 nil 8)
 
@@ -48,6 +46,7 @@
    (perl        4 t   4)
    (sgml        2 nil 8)
    (css         4 t   4)
+   (cmake       2 nil 8)
    )
 
  )
