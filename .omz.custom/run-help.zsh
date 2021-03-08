@@ -74,6 +74,21 @@ run-help-docker() {
 	fi
 }
 
+# /usr/share/zsh/functions/Misc/run-help-git
+run-help-podman() {
+	if [ $# -eq 0 ]; then
+		man podman
+	# elif [[ $# -gt 1 && "$2" == [a-z]* ]]; then
+	# 	man podman-$1-$2
+	else
+		# local al
+		# if al=$(git config --get "alias.$1"); then
+		#	1=${al%% *}
+		# fi
+		man podman-$1
+	fi
+}
+
 run-help-flatpak() {
 	echo "run-help $@" >&2
 	if [ $# -eq 0 ]; then
