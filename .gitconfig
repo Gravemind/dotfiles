@@ -164,7 +164,8 @@
 	first = commit -m 'First commit' --allow-empty
 
 	ls-ignored-status = status -sb --ignored
-	ls-ignored-untracked = ls-files -o --ignored --exclude-standard
+	ls-ignored-untracked = ls-files --ignored --exclude-standard --others
+	ls-ignored-tracked = ls-files --ignored --exclude-standard
 
 [format]
 	# default pretty format for log/show/whatchanged
