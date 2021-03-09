@@ -38,7 +38,7 @@
    git-commit-summary-max-length 50
    git-commit-fill-column 72
 
-   magit-revision-show-gravatars '("^Author:     " . "^Commit:     ")
+   magit-revision-show-gravatars nil ;; '("^Author:     " . "^Commit:     ")
 
    ;; After how many seconds not to expand anymore diffs
    magit-diff-expansion-threshold 10
