@@ -69,6 +69,9 @@
 	# Push --force-with-lease
 	pushf = push --force-with-lease
 
+	# Push current branch and set upstream
+	pushc = -c push.default=current push -u
+
 	# usage: git pushu [REMOTE]
 	# Push current branch to REMOTE (origin) and set it as its upstream.
 	pushu = "!f() { set -e; git push --set-upstream \"${1:-origin}\" $(git symbolic-ref --short HEAD); }; f"
