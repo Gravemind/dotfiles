@@ -9,7 +9,7 @@ usage() {
       -w WORKSPACE    : move placeholder to workspace WORKSPACE (default: current)
       -c WIN_CLASS    : match WM_CLASS'\''s second element, called "class" (usually the program name)
       -i WIN_INSTANCE : match WM_CLASS'\''s first element, called "instance" (eg: emacs -name my_instance_name)
-      -f WxH[+X+Y]    : make it floating, the geomerty is required.
+      -f WxH[+X+Y]    : make it floating, the geometry is required.
                         negative X or Y positions the window from right or bottom
       -q              : be quiet about it
 '
@@ -78,22 +78,22 @@ layout_rect=""
 if [[ -n "$geometry" ]]
 then
 	geometry="${geometry// /}"
-	read screenw screenh < <(i3-msg -t get_workspaces | jq 'map(select(.focused))[0].rect | .width, .height' | tr $'\n' ' ')
+	read offx offy screenw screenh < <(i3-msg -t get_workspaces | jq -r 'map(select(.focused))[0].rect | "\(.x) \(.y) \(.width) \(.height)"')
 	if [[ "$geometry" =~ ^([0-9]+)x([0-9]+)\+([0-9]+)\+([0-9]+)$ ]]
 	then
 		w="${BASH_REMATCH[1]}"
 		h="${BASH_REMATCH[2]}"
 		x="${BASH_REMATCH[3]}"
 		y="${BASH_REMATCH[4]}"
-		[[ $x -ge 0 ]] || x=$(( screenw + x ))
-		[[ $y -ge 0 ]] || y=$(( screenh + y ))
+		[[ $x -ge 0 ]] || x=$(( offx + screenw + x ))
+		[[ $y -ge 0 ]] || y=$(( offy + screenh + y ))
 	elif [[ "$geometry" =~ ^([0-9]+)x([0-9]+)$ ]]
 	then
 		w="${BASH_REMATCH[1]}"
 		h="${BASH_REMATCH[2]}"
 		# center
-		x=$(( screenw / 2 - w / 2 ))
-		y=$(( screenh / 2 - h / 2 ))
+		x=$(( offx + screenw / 2 - w / 2 ))
+		y=$(( offy + screenh / 2 - h / 2 ))
 	else
 		log "error: invalid geometry"
 		exit 1
