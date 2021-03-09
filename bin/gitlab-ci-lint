@@ -2,11 +2,46 @@
 
 set -euo pipefail
 
-: "${GITLAB:=https://gitlab.com}"
+USAGE="\
+usage: ${0##*/} [FILES...]
+
+Concatenates FILES (or stdin) and sends them to gitlab for linting.
+
+Exits with an error if linting failed.
+
+"
+
+case "${1:-}" in
+    -h|--help)
+        echo -n "$USAGE"
+        exit 0
+esac
+
+if [[ -n "${GITLAB:-}" ]]
+then
+    api_url="$GITLAB/api/v4"
+elif [[ -n "${CI_API_V4_URL:-}" ]]
+then
+    api_url="$CI_API_V4_URL"
+else
+    api_url="https://gitlab.com/api/v4"
+fi
 
 content="$(cat "$@")"
+
+# Print content with line numbers
 echo "$content" | cat -n
 
-jq --null-input --raw-output --compact-output  '{content: $content}' --arg content "$content" | \
-    curl --header "Content-Type: application/json" "$GITLAB/api/v4/ci/lint" --data "@-" | \
-    jq
+# Send to gitlab lint
+res="$(jq --null-input --raw-output --compact-output  '{content: $content}' --arg content "$content" | \
+    curl --silent --header "Content-Type: application/json" "$api_url/ci/lint" --data "@-")"
+
+# Pretty print response
+jq <<<"$res"
+
+# Check status for exit error
+status="$(jq -r '.status' <<<"$res")"
+if [[ "$status" != "valid" ]]
+then
+    exit 1
+fi
