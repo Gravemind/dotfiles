@@ -312,6 +312,7 @@ gravemind_prompt_spack() {
 gravemind_build_prompt() {
 	echo -n "%K{black}%B"
 	if [[ "$_shell_depth" -gt 1 ]]; then
+		local i
 		for i in {2..$_shell_depth}
 		do
 			echo -n "%F{yellow}$GMPSBEG"
