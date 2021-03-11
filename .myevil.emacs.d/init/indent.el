@@ -203,6 +203,7 @@ spaces are treated."
   :mode (("\\.editorconfig\\'" . editorconfig-conf-mode))
   :commands (editorconfig-mode-apply)
   :config
+  (require 'editorconfig-core) ;; quick fix
   ;;(editorconfig-mode 1)
   (setq-default editorconfig-mode-lighter " EdConf")
   (setq editorconfig-trim-whitespaces-mode 'ws-butler-mode)
