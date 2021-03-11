@@ -168,6 +168,7 @@
   ;; :disabled t
   :if window-system
   ;; :demand t
+  :commands (visual-fill-column-mode)
   :config
 
   ;; Set a max width and center buffer inside window
