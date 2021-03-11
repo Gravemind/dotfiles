@@ -106,36 +106,41 @@
 	# Log pretty
 	lp  = log --pretty=my
 
-	# Log current branch
-	l  = log --pretty=my --graph --full-history --simplify-merges --date-order
+	# - git-log --full-history --simplify-merges solves a "common problem users face when looking at simplified
+	#   history is that a commit they know changed a file somehow does not appear in the file’s
+	#   simplified history."
+	# - git-log --show-pulls (Git 2.27) also show merge commits that introduce a change.
 
-	# Log current branch, topologic
-	lt = log --pretty=my --graph --full-history --simplify-merges --topo-order
+	# Log
+	l  = log --pretty=my --graph --full-history --simplify-merges --show-pulls --date-order
+
+	# Log, topologic order
+	lt = log --pretty=my --graph --full-history --simplify-merges --show-pulls --topo-order
 
 	# Log all
-	la = log --pretty=my --graph --full-history --simplify-merges --date-order --all
+	la = log --pretty=my --graph --full-history --simplify-merges --show-pulls --date-order --all
 
 	# Log all, topologic
-	lat = log --pretty=my --graph --full-history --simplify-merges --topo-order --all
+	lat = log --pretty=my --graph --full-history --simplify-merges --show-pulls --topo-order --all
 
 	# Log left-right with boundaries
-	lr = log --pretty=my --graph --full-history --simplify-merges --date-order --left-right --boundary
+	lr = log --pretty=my --graph --full-history --simplify-merges --show-pulls --date-order --left-right --boundary
 
-	# Log commits between HEAD and its upstream
-	lu = "!f() { set -eu; git l --left-right --boundary @...@{u} \"${@}\"; }; f"
+	# Log commits between HEAD (<) and its upstream (>)
+	lu = "!f() { set -eu; git lr @...@{u} \"${@}\"; }; f"
 
-	# Log commits between HEAD and another branch
-	lo = "!f() { set -eu; git l --left-right --boundary @...$1 \"${@:1}\"; }; f"
+	# Log commits between HEAD (<) and another branch (>)
+	lo = "!f() { set -eu; git lr @...$1 \"${@:1}\"; }; f"
+
+	# Log all local branches and their upstreams
+	lb = "!f() { set -eu; git l $(git for-each-ref --format=\"%(refname) %(upstream)\" refs/heads) \"$@\" ; }; f"
 
 	# usage: git lcont [COMMIT]
-	# Log commits that contains COMMIT (HEAD)
-	lcont  = "!f() { set -eu; c=\"${1:-@}\"; git l --boundary $(git for-each-ref --format='%(refname)' --contains \"$c\") --not \"$c\"; }; f"
+	# Log all branches, tags, and remotes that contains COMMIT (HEAD)
+	lcont  = "!f() { set -eu; c=\"${1:-@}\"; git l --boundary $(git for-each-ref --format='%(refname)' --contains \"$c\") --not \"$c\" \"${@:1}\"; }; f"
 
 	# Long log
 	ll  = log --pretty=myl --graph --full-history --simplify-merges --date-order
-
-	# Log local branches and their upstreams
-	lb = "!f() { set -eu; git l \"$@\" $(git for-each-ref --format=\"%(refname) %(upstream)\" refs/heads); }; f"
 
 	# pretty reflog
 	# (--date here will make it print reflog@{date} instead of reflog@{num})
@@ -166,7 +171,7 @@
 	my  = "tformat:%C(magenta)%h%C(auto)% D %C(auto)%<(72,trunc)%s%C(blue)%>>|(100)%aN %C(bold black)%ad%C(auto)"
 	myl = "tformat:%C(magenta)----------%n%C(magenta)%h %C(bold black)%><(60)%ad%C(reset)%C(blue)%>>|(100)%an%C(auto)%+D%n%C(auto)%n%w(80,4,4)%B"
 	# myreflog = "tformat:%C(bold black)$> %gs (%gn)%n   %C(green)%gd: %C(magenta)%h%C(auto)% D %C(auto)%<(72,trunc)%s%C(blue)%>>|(110)%an %C(bold black)%ad%C(auto)%n"
-	myreflog = "tformat:%C(green)%gd: %C(magenta)%h%C(auto)% D %C(auto)%<(72,trunc)%s%C(blue)%>>|(110)%an %C(bold black)%ad%C(auto)%n%C(bold black)%gs (%gn)"
+	myreflog = "tformat:%C(green)%gd: %C(magenta)%h%C(auto)% D %C(auto)%<(72,trunc)%s%C(blue)%>>|(110)%an %C(bold black)%ad%C(auto)%n%C(bold black)↿ %gs (%gn)"
 [log]
 	# date "auto:foo" means foo date format "foo" is only used when using a pager, else it will use the default format
 	date = auto:relative
