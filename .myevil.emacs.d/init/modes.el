@@ -26,6 +26,7 @@
 
 (use-package recentf
   :pin manual
+  ;; :disabled t
   :demand t
   :hook (dired-mode . recentf-add-dired-directory)
   :config
@@ -42,13 +43,15 @@
    ;;recentf-auto-cleanup 60 ;; after N seconds
    recentf-auto-cleanup 'never
 
+   ;; Exclude tramp locations, may help tramp freezes
+   recentf-exclude '("^/sshx?:")
+
    ;; Fix slow recentf-mode startup (0.60s to 0.06s):
    ;; Initializing `file-name-history` is slow only when there are tramp files
    ;; (eg "/sudo:") (seems to come from abbreviate-file-name !?).
    recentf-initialize-file-name-history nil
 
    recentf-save-file (concat user-emacs-directory "recentf")
-
    )
 
   ;; Recentf prints "Loading ... recentf...", which triggers the
@@ -70,6 +73,7 @@
 (use-package sync-recentf
   :load-path (my-packages-directory "sync-recentf")
   :demand t
+  ;; :disabled t
   )
 
 ;;
