@@ -44,7 +44,7 @@
 
 (use-package zoom
   :load-path (my-packages-directory "zoom")
-  ;;:disabled t
+  ;; :disabled t
   :demand t
   :config
   (setq-default
@@ -58,13 +58,14 @@
    frame-resize-pixelwise t
 
    ;; Fix? "Why when there are several horizontal splits the completions buffer is very small"
-   ;;temp-buffer-resize-mode t
+   ;; temp-buffer-resize-mode t
 
-   ;;zoom-ignored-buffer-names '("*Diff*")
-   ;;zoom-ignored-buffer-name-regexps '("^*helm")
+   ;; zoom-ignored-buffer-names '("*Diff*")
+   ;; zoom-ignored-buffer-name-regexps '("^*helm")
+   ;; zoom-ignored-buffer-name-regexps '("^*Ediff")
 
-   ;;zoom-ignore-predicates (quote ((lambda nil (window-minibuffer-p))))
-   ;;zoom-ignored-major-modes '(helm-mode)
+   ;; zoom-ignore-predicates (quote ((lambda nil (window-minibuffer-p))))
+   ;; zoom-ignored-major-modes '(ediff-mode)
 
    )
 
@@ -88,7 +89,9 @@
   ;; infinite recurse ?
   ;;(add-hook 'window-configuration-change-hook 'zoom--handler)
 
-  (zoom-mode t)
+  (if (not (string-equal (getenv "BIN_EDIFF") "1"))
+      (zoom-mode t)
+    )
 )
 
 ;;

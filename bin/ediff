@@ -1,12 +1,44 @@
 #!/bin/bash
 
-if [[ -d "$1" && -d "$2" ]]; then
+usage="\
+usage: $0 [DIR DIR [DIR]]
+usage: $0 [FILE FILE [FILE]]
+"
+
+tmpdir="$(mktemp -d -t "$(basename $0).XXXXXXXX")"
+cleanup() { rm -rf "$tmpdir"; }
+trap cleanup EXIT
+
+pipe2file() {
+    local name="$1"
+    local arg="$2"
+    if [[ -p "$arg" ]] # is named pipe
+    then
+       tmpfile="$tmpdir/pipe2file-$name"
+       \cat "$arg" > "$tmpfile"
+       # chmod a-w "$tmpfile"
+       printf "%s" "$tmpfile"
+    else
+       printf "%s" "$arg"
+    fi
+}
+
+export BIN_EDIFF=1
+
+if [[ $# -eq 3 && -d "$1" && -d "$2" && -d "$3" ]]; then
+   emacs --eval "$(printf '(ediff-directories3 "%q" "%q" "$q" ".*")' "$1" "$2" "$3")"
+   exit $?
+elif [[ $# -eq 3 && (-f "$1" || -p "$1") && (-f "$2" || -p "$2") && (-f "$3" || -p "$3") ]]; then
+   emacs --eval "$(printf '(ediff-files3 "%q" "%q" "%q")' "$(pipe2file A "$1")" "$(pipe2file B "$2")" "$(pipe2file C "$3")")"
+   exit $?
+elif [[ $# -eq 2 && -d "$1" && -d "$2" ]]; then
    emacs --eval "$(printf '(ediff-directories "%q" "%q" ".*")' "$1" "$2")"
    exit $?
-elif [[ -f "$1" && -f "$2" ]]; then
-   emacs --eval "$(printf '(ediff-files "%q" "%q")' "$1" "$2")"
+elif [[ $# -eq 2 && (-f "$1" || -p "$1") && (-f "$2" || -p "$2") ]]; then
+   emacs --eval "$(printf '(ediff-files "%q" "%q")' "$(pipe2file A "$1")" "$(pipe2file B "$2")")"
    exit $?
 else
-   echo "$0: error files must be both files or both directories." >&2
+   echo "$0: argument error" >&2
+   echo "$usage" >&2
    exit 1
 fi
