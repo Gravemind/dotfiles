@@ -1,6 +1,10 @@
 
 input-ipc-server=/tmp/mpvsocket
 
+osd-font='DejaVu Sans'
+osd-font-size=20
+sub-font='DejaVu Sans'
+
 #volume=70
 hr-seek=yes
 sub-pos=84
