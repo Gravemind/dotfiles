@@ -139,6 +139,9 @@
 
  )
 
+;; No header line for Ediff
+(add-hook 'ediff-after-setup-windows-hook (lambda () (setq header-line-format nil)))
+
 ;; Don't let dired change the mode-line !
 (add-hook 'dired-mode-hook (lambda () (setq mode-line-buffer-identification (default-value 'mode-line-buffer-identification))))
 
