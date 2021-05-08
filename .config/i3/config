@@ -428,6 +428,11 @@ bindsym $ModK+u         exec --no-startup-id $here/exec_goto_urgent_and_back.sh
 # bindsym $ModK+g exec xdotool search $search_polybar_win windowmove --relative %@ 0 -21
 # bindsym $ModK+g --release exec xdotool search $search_polybar_win windowmove --relative %@ 0 21
 
+# Dunst notification daemon
+bindsym $ModK+n       exec --no-startup-id dunstctl close
+bindsym $ModK+Shift+n exec --no-startup-id dunstctl history-pop
+bindsym $ModK+Alt+n   exec --no-startup-id dunstctl close-all
+
 #
 # Bar
 #
