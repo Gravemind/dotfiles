@@ -329,9 +329,11 @@
   ;; :disabled t
   :load-path (my-packages-directory "cargo")
   :after rust-mode
+  :commands (cargo-process-build cargo-process-run)
   :bind (:map rust-mode-map
               ("<f3>" . cargo-process-build)
               ("<S-f3>" . cargo-process-build)
+              ("<f5>" . cargo-process-run)
               )
   )
 
