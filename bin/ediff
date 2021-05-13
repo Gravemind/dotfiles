@@ -23,19 +23,43 @@ pipe2file() {
     fi
 }
 
+strip_tramp() {
+    printf '%s' "${1#/sudo::}"
+}
+
+isdir() {
+    local p
+    for p in "$@"
+    do
+        p="$(strip_tramp "$p")"
+        [[ -d "$p" ]] || return 1
+    done
+}
+
+isfile() {
+    local p
+    for p in "$@"
+    do
+        p="$(strip_tramp "$p")"
+        [[ -f "$p" || -p "$p" ]] || return 1
+    done
+}
+
 export BIN_EDIFF=1
 
-if [[ $# -eq 3 && -d "$1" && -d "$2" && -d "$3" ]]; then
-   emacs --eval "$(printf '(ediff-directories3 "%q" "%q" "$q" ".*")' "$1" "$2" "$3")"
+emacs="${EDIFF_EMACS:-emacs}"
+
+if [[ $# -eq 3 ]] && isdir "$1" "$2" "$3"; then
+   $emacs --eval "$(printf '(ediff-directories3 "%q" "%q" "$q" ".*")' "$1" "$2" "$3")"
    exit $?
-elif [[ $# -eq 3 && (-f "$1" || -p "$1") && (-f "$2" || -p "$2") && (-f "$3" || -p "$3") ]]; then
-   emacs --eval "$(printf '(ediff-files3 "%q" "%q" "%q")' "$(pipe2file A "$1")" "$(pipe2file B "$2")" "$(pipe2file C "$3")")"
+elif [[ $# -eq 3 ]] && isfile "$1" "$2" "$3"; then
+   $emacs--eval "$(printf '(ediff-files3 "%q" "%q" "%q")' "$(pipe2file A "$1")" "$(pipe2file B "$2")" "$(pipe2file C "$3")")"
    exit $?
-elif [[ $# -eq 2 && -d "$1" && -d "$2" ]]; then
-   emacs --eval "$(printf '(ediff-directories "%q" "%q" ".*")' "$1" "$2")"
+elif [[ $# -eq 2 ]] && isdir "$1" "$2"; then
+   $emacs --eval "$(printf '(ediff-directories "%q" "%q" ".*")' "$1" "$2")"
    exit $?
-elif [[ $# -eq 2 && (-f "$1" || -p "$1") && (-f "$2" || -p "$2") ]]; then
-   emacs --eval "$(printf '(ediff-files "%q" "%q")' "$(pipe2file A "$1")" "$(pipe2file B "$2")")"
+elif [[ $# -eq 2 ]] && isfile "$1" "$2"; then
+   $emacs --eval "$(printf '(ediff-files "%q" "%q")' "$(pipe2file A "$1")" "$(pipe2file B "$2")")"
    exit $?
 else
    echo "$0: argument error" >&2
