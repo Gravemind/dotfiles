@@ -40,6 +40,9 @@ fi
 
 echo "== ${#pacnews[@]} pacnew found"
 
+# emacs --fg-daemon=pacnew &
+# export EDIFF_EMACS="emacsclient --socket-name=pacnew --create-frame"
+
 for NEW in "${pacnews[@]}"
 do
 
@@ -53,6 +56,7 @@ do
         echo
         echo ">> merge: " $OLD
         sudo meld "$NEW" "$OLD" &> /dev/null || echo "!! ERROR merge: $NEW"
+        # ediff "/sudo::$NEW" "/sudo::$OLD" &> /dev/null || echo "!! ERROR merge: $NEW"
 
         read -p "?? delete \"$NEW\" ? [e/r/y/n/q]: " -r RESP
 
@@ -74,5 +78,7 @@ do
     done
 
 done
+
+# kill %1
 
 echo ">> done"
