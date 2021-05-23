@@ -91,7 +91,10 @@ plugins=(
 	safe-paste
 	my_pacman
 	# my_laptop
+	vi-mode
 )
+
+VI_MODE_SET_CURSOR=true
 
 # Execute command after loading omz, but before shell apears
 # http://www.zsh.org/mla/users/2005/msg00599.html
@@ -107,6 +110,12 @@ then
 fi
 
 source $ZSH/oh-my-zsh.sh
+
+# vi-mode patch
+# bindkey '^P' yank-pop
+# bindkey -M vicmd '^P' yank-pop
+bindkey '^[h' run-help
+bindkey -M vicmd '^[h' run-help
 
 # User configuration
 
