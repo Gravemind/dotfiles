@@ -330,10 +330,10 @@ bindsym $ModK+Shift+Print exec --no-startup-id scrot "screen_%y-%m-%d_%H:%M:%S.p
 # set $volume_inc_shift exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@' +10%
 # set $volume_dec_shift exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@' -10%
 set $volume_mute      exec --no-startup-id ~/bin/pamixer-notify --toggle-mute
-set $volume_inc       exec --no-startup-id ~/bin/pamixer-notify --increase 10
-set $volume_dec       exec --no-startup-id ~/bin/pamixer-notify --decrease 10
-set $volume_inc_shift exec --no-startup-id ~/bin/pamixer-notify --increase 10
-set $volume_dec_shift exec --no-startup-id ~/bin/pamixer-notify --decrease 10
+set $volume_inc       exec --no-startup-id ~/bin/pamixer-notify --increase 5
+set $volume_dec       exec --no-startup-id ~/bin/pamixer-notify --decrease 5
+set $volume_inc_shift exec --no-startup-id ~/bin/pamixer-notify --increase 5
+set $volume_dec_shift exec --no-startup-id ~/bin/pamixer-notify --decrease 5
 # +/-
 bindsym $ModK+equal $volume_inc
 bindsym $ModK+minus $volume_dec
