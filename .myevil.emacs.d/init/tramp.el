@@ -12,12 +12,11 @@
   :config
   (setq-default
    ;;tramp-verbose 2 ; warnings
-   tramp-verbose 3 ; + connections (default)
+   tramp-verbose 1 ; + connections (default)
    ;;tramp-verbose 6 ; verbose
    ;;tramp-verbose 10
-   ;;tramp-connection-timeout 10
-   tramp-connection-timeout 14400 ; 4h
-   password-cache-expiry nil
+   tramp-connection-timeout 20
+   password-cache-expiry 300
    ;;tramp-chunksize 4050
 
    ;; Size before running out-of-band copy
@@ -25,9 +24,10 @@
    ;; Quick fix "gzip: stdin: unexpected end of file" !?
    tramp-inline-compress-start-size nil
 
-   tramp-use-ssh-controlmaster-options nil
-   ;; tramp-use-ssh-controlmaster-options t
+   ;; tramp-use-ssh-controlmaster-options nil
+   tramp-use-ssh-controlmaster-options t
    ;; tramp-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath=~/.ssh/tramp.%%C -o ControlPersist=1800"
+   tramp-ssh-controlmaster-options "-S none"
 
    tramp-remote-path '(tramp-own-remote-path
                        "/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin"
