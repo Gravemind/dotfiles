@@ -98,13 +98,6 @@
   ;; transient replaced magit popup
   ;; https://github.com/magit/magit/wiki/Converting-popup-modifications-to-transient-modifications
 
-  ;; log
-  (transient-insert-suffix 'magit-log '(-1)
-    ["Custom"
-     ("-i" "Regexp ignore case" "-i")
-     ("R" "left-right" my-magit-log-left-right)
-     ])
-
   ;; pull
   (transient-insert-suffix 'magit-pull '(-1)
     ["Custom"
