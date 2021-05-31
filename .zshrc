@@ -111,12 +111,6 @@ fi
 
 source $ZSH/oh-my-zsh.sh
 
-# vi-mode patch
-# bindkey '^P' yank-pop
-# bindkey -M vicmd '^P' yank-pop
-bindkey '^[h' run-help
-bindkey -M vicmd '^[h' run-help
-
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"

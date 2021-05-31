@@ -18,26 +18,36 @@ copy-region-as-kill-xclip-deactivate() {
 }
 zle -N copy-region-as-kill-xclip-deactivate
 
-# Motions
-bindkey "\eOc" emacs-forward-word       # [Ctrl-Right]
-bindkey "\eOd" emacs-backward-word      # [Ctrl-Left]
-bindkey "\e[3^" delete-word             # [Ctrl-Del]
-bindkey "\e[8^" end-of-line             # [Ctrl-End]
-bindkey "\e[7^" beginning-of-line       # [Ctrl-Home]
-# '^I' = TAB, default is expand-or-complete
-# bindkey '^I' complete-word				# [Ctrl-I]
+for b in emacs viins vicmd
+do
+	# Motions
+	bindkey -M $b "\eOc" emacs-forward-word       # [Ctrl-Right]
+	bindkey -M $b "\eOd" emacs-backward-word      # [Ctrl-Left]
+	bindkey -M $b "\e[8^" end-of-line             # [Ctrl-End]
+	bindkey -M $b "\e[7^" beginning-of-line       # [Ctrl-Home]
+	# '^I' = TAB, default is expand-or-complete
+	# bindkey -M $b '^I' complete-word			  # [Ctrl-I]
 
-# Quote region
-bindkey "^[\'" quote-region				# [Meta-']
+	# Quote region
+	bindkey -M $b "^[\'" quote-region			  # [Meta-']
 
-# Copy-Paste
-bindkey '^G' deactivate-region							# [Ctrl-G]
-bindkey '^W' kill-region								# [Ctrl-W]
-bindkey '\e[2^' copy-region-as-kill-xclip-deactivate	# [Ctrl-Insert]
-bindkey '^[w' copy-region-as-kill-deactivate			# [Meta-W]
+	# Copy-Paste
+	bindkey -M $b '^G' deactivate-region					    # [Ctrl-G]
+	bindkey -M $b '^W' kill-region								# [Ctrl-W]
+	bindkey -M $b '\e[2^' copy-region-as-kill-xclip-deactivate	# [Ctrl-Insert]
+	bindkey -M $b '^[w' copy-region-as-kill-deactivate			# [Meta-W]
 
-# Enable Ctrl-Backspace only on supported term
-if [[ "$TERM" = rxvt* ]]
-then
-	bindkey "^H" backward-delete-word   # [Ctrl-Backspace]
-fi
+	bindkey -M $b "\e[3^" delete-word             # [Ctrl-Del]
+	# Enable Ctrl-Backspace only on supported term
+	if [[ "$TERM" = rxvt* ]]
+	then
+		bindkey -M $b "^H" backward-delete-word   # [Ctrl-Backspace]
+	fi
+
+	bindkey -M $b '^_' undo					      # [Ctrl-/]
+	bindkey -M $b '^R' redo						  # [Ctrl-R]
+
+	# vi-mode patch
+	bindkey -M vicmd '^[h' run-help
+
+done
