@@ -10,6 +10,14 @@
  )
 
 (bind-keys
+ :prefix-map my-yank-map
+ :prefix "<leader>y"
+ ("r" . my-copy-buffer-relative-filename-to-clipboard)
+ ("f" . my-copy-buffer-filename-to-clipboard)
+ ("F" . my-copy-buffer-filename-location-to-clipboard)
+ )
+
+(bind-keys
  :prefix-map my-search-map
  :prefix "<leader>s"
  ;; ("f" . helm-find-files)

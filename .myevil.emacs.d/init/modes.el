@@ -683,6 +683,21 @@
         (message location)
         (gui-set-selection nil location)))))
 
+(defun my-copy-buffer-relative-filename-to-clipboard ()
+  "Copy current file path relative to project to clipboard"
+  (interactive)
+  (save-restriction
+    (widen)
+    (save-excursion
+      (beginning-of-line)
+      (let* ((fname (or buffer-file-name
+                        dired-directory))
+             (root (my/project-root-directory-slow fname))
+             (rel (file-relative-name fname root))
+             (location (abbreviate-file-name rel)))
+        (message location)
+        (gui-set-selection nil location)))))
+
 (defun insert-from-primary ()
   "Insert the text from the current x-selection."
   (interactive)
