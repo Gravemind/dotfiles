@@ -16,6 +16,12 @@
           )
   :bind (:map magit-repolist-mode-map
               ("x" . magit-repolist-popup)
+              :map my-git-map
+              ("g" . magit-status-here)
+              ("s" . magit-status)
+              ("l" . magit-log)
+              ("f" . magit-log-buffer-file)
+              ("b" . magit-blame)
               )
   :config
 

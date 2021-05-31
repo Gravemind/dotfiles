@@ -34,11 +34,6 @@
 (bind-keys
  :prefix-map my-git-map
  :prefix "<leader>g"
- ("g" . magit-status-here)
- ("s" . magit-status)
- ("l" . magit-log)
- ("f" . magit-log-buffer-file)
- ("b" . magit-blame)
 )
 
 (use-package evil
