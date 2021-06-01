@@ -32,6 +32,9 @@ copy-region-as-kill-xclip-deactivate() {
 }
 zle -N copy-region-as-kill-xclip-deactivate
 
+function _my-zle-noop {  ; }
+zle -N _my-zle-noop
+
 bindkey -M vicmd 'Y' vi-yank-eol
 
 for b in emacs viins vicmd
@@ -64,6 +67,9 @@ do
 	bindkey -M $b '^R' redo						  # [Ctrl-R]
 
 	# vi-mode patch
-	bindkey -M vicmd '^[h' run-help
+	bindkey -M $b '^[h' run-help
 
+	# vi-mode patch: unbind
+	bindkey -M $b '^[Oa' _my-zle-noop # [Ctrl-Up]
+	bindkey -M $b '^[Ob' _my-zle-noop # [Ctrl-Down]
 done
