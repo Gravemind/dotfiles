@@ -4,10 +4,13 @@ alias grep='grep --binary-files=without-match --color=auto'
 alias cat='cat -v'
 # for less, see ./less.zsh
 
-alias ls='ls -h --color=auto'
-alias l='ls -l'
-alias la='ls -la'
+alias l='ls -h --color=auto -l'
+alias la='l -a'
 alias lt='l -rt'
+
+# alias l='exa -l'
+# alias la='exa -la'
+# alias lt='exa -l --sort=newest'
 
 alias rcp='cp -r'
 alias md='mkdir -p'
