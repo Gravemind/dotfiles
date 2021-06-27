@@ -1,4 +1,18 @@
 
+#
+# Cheat sheet:
+#
+# - show bindings
+#   $ bindkey
+#   $ bindkey -M emacs
+#
+# - show key stroke symbol
+#   $ showkey -a
+#
+# - list commands
+#   $ zle -al
+#
+
 # tested on urxvt
 # also see ~/.inputrc
 
@@ -17,6 +31,8 @@ copy-region-as-kill-xclip-deactivate() {
 	zle deactivate-region
 }
 zle -N copy-region-as-kill-xclip-deactivate
+
+bindkey -M vicmd 'Y' vi-yank-eol
 
 for b in emacs viins vicmd
 do
