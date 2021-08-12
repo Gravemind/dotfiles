@@ -1,191 +1,87 @@
 
-```bash
-sed -rn '/## PACMAN ##/,/## AUR ##/   bk;d;:k;s/^- ([[:alnum:]_-]+).*/\1/gp' base-packages.md | xargs pacman -S --needed
+sudo pacman -S base-devel linux-tools man-pages sudo zsh bc man-db emacs vim git ripgrep time
 
-# AUR, with Yay
+sudo pacman -S ufw
+sudo ufw enable
+
+cd
+git clone --bare https://github.com/Gravemind/dotfiles.git .dotfiles.git
+ln -sfT -r .dotfiles.gitignore .dotfiles.git/info/exclude
+ln -s .dotfiles.git .git
+git config core.bare false
+git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
+git fetch
+git reset HEAD .
+git status
+git checkout .
+
 git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
-
-sed -rn '/## AUR ##/,/## OTHER ##/ bk;d;:k;s/^- ([[:alnum:]_-]+).*/\1/gp' base-packages.md | xargs yay -S --needed
-```
-
-# ## PACMAN ## Packages
-
-- base-devel
-- linux-tools
+cd yay && makepkg -si
+yay -S yay-bin
 
 ## System Adm
 
-- openssh
-- ufw
+yay -S --asexplicit --needed \
+    openssh rsync sysstat ldns bind-tools ntp socat \
+    iftop iotop atop powertop \
+    lm_sensors smartmontools hdparm acpi \
+    dosfstools ntfs-3g nfs-utils parted \
+    nvme-cli hwinfo
 
-- rsync
-- sysstat
-- linux-tools : (group) perf, etc..
-- ldns        : drill
-- bind-tools  : dig
-- #net-tools  : (deprecated ?)
-- ntp
-
-- iftop
-- iotop
-- atop
-- powertop
-
-- lm_sensors
-- smartmontools
-- hdparm
-- acpi
-
-- dosfstools : fat
-- ntfs-3g    : ntfs
-- nfs-utils
-- parted
-
-- socat
+yay -S collectd
 
 ## User
 
-- zsh
-- zsh-completions
-- bash-completion
-- git
-
-- ripgrep     : very fast grep
-- fd          : very fast find
-- moreutils   : pee, sponge, etc...
-- autojump
-- readline
-- bc
-- wget
-- pwgen
-- gnu-netcat
-- neofetch
-- #mlocate    : locate (replaced by fd on ssd: fast enough)
-- tree
-- tldr
-- pv
-
-- imagemagick
-- gnuplot
-
-- p7zip
-- pigz
-- zstd
-
-- pacutils
-- reflector
-- pacman-contrib
-- expac
-- pyalpm
-- pkgfile
-- expac
-
-- #at         : one-time cron
-
-- vulkan-devel
+yay -S --asexplicit --needed \
+    zsh-completions bash-completion \
+    ripgrep fd moreutils autojump readline bc wget pwgen gnu-netcat neofetch tree tldr pv \
+    imagemagick gnuplot \
+    p7zip pigz zstd \
+    pacutils reflector pacman-contrib expac pyalpm pkgfile expac \
+    vulkan-devel
 
 ## Dev Tools, Languages
 
-- emacs
-- ispell
-- aspell-en
-- aspell-fr
+yay -S --asexplicit --needed \
+    ispell aspell aspell-en aspell-fr \
+    cmake gdb valgrind strace ccache boost cloc \
+    jq asciidoc dos2unix astyle \
+    clang clang-tools-extra llvm \
+    ruby python dmd go rustup rust-racer \
+    python-i3-py python-matplotlib python-pyserial python-pyqt5
 
-- clang
-- clang-tools-extra
-- cmake
-- llvm
+yay -S --asexplicit --neded \
+    android-file-transfer android-tools android-udev
 
-- ruby
-- python
-- dlang
-- dlang-ldc
-- go
-- rustup
-- rust-racer
-
-- gdb
-- jq
-- asciidoc
-- dos2unix
-
-- python-i3-py
-- python-matplotlib
-- python-pyserial
-- python-pyqt5
+yay -S avrdude dfu-programmer arduino-cli
 
 ## Desktop Environment (Xorg, WM, Tools)
 
-- xorg
-- i3
-- dmenu
-- dunst
-- xdg-user-dirs
-- tk
-- feh
+yay -S --asexplicit --needed \
+    xorg xterm xlogin-git \
+    xkb-qwerty-fr \
+    i3 dmenu rofi ttf-dejavu ttf-hack ttf-nerd-fonts-symbols-mono ttf-font-awesome \
+    rxvt-unicode urxvt-perls \
+    dunst xdg-user-dirs tk feh \
+    mesa-demos \
+    xdotool xclip clipmenu clipnotify \
+    firefox chromium \
+    numlockx xautolock xss-lock xbindkeys \
+    redshift \
+    playerctl
 
-- pulseaudio
-- pamixer
-- pavucontrol
+yay -S --asexplicit --needed \
+    meld qpdfview qalculate-gtk gnumeric xdiskusage gimp gpick audacity \
+    mpv youtube-dl libva-vdpau-driver \
+    steam steam-fonts
 
-- xterm
-- rxvt-unicode
-- urxvt-perls
+pulseaudio pulseaudio-alsa pamixer pavucontrol
+flatpak
+flameshot : screenshot
 
-- rofi
+## nvidia
 
-- ttf-dejavu
-- ttf-hack
-- otf-font-awesome
+yay -S --needed nvidia opencl-nvidia nvidia-dkms nvidia-settings
 
-- flatpak
-
-- clipmenu
-- clipnotify
-
-- numlockx
-- xautolock
-- xss-lock
-- xclip
-- xdotool
-- redshift
-- playerctl
-
-- xorg-xprop
-- xorg-xev
-- xorg-xkill
-- xorg-xwininfo
-
-## Graphical Softwares
-
-- firefox
-- chromium
-- #spotify
-
-- meld
-- qpdfview
-- qalculate-gtk
-- gnumeric
-- xdiskusage
-- gimp
-- gpick
-
-- mpv
-- youtube-dl
-- libva-vdpau-driver
-
-- flameshot : screenshot
-
-- steam
-
-# ## AUR ## Packages
-
-- xlogin-git
-- xkb-qwerty-fr
-- steam-fonts
-
-# ## OTHER ## Packages
-
-- rtags: `cd ~/bin ; git clone git@github.com:Andersbakken/rtags`
+<!-- (Enable multilib in pacman.conf) -->
+<!-- yay -S lib32-nvidia-utils -->
