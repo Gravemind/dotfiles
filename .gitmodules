@@ -37,7 +37,7 @@
 	url = https://github.com/rust-lang/rust-mode.git
 [submodule ".emacs.d/elpa-git/req-package"]
 	path = .my.emacs.d/elpa-git/req-package
-	url = https://gitlab.com/edvorg/req-package.git
+	url = https://github.com/edvorg/req-package.git
 [submodule ".emacs.d/elpa-git/racer"]
 	path = .my.emacs.d/elpa-git/racer
 	url = https://github.com/racer-rust/emacs-racer.git
@@ -232,6 +232,7 @@
 [submodule ".emacs.d/elpa-git/flycheck-grammalecte"]
 	path = .my.emacs.d/elpa-git/flycheck-grammalecte
 	url = https://github.com/milouse/flycheck-grammalecte.git
+	branch = main
 [submodule ".my.emacs.d/elpa-git/evil"]
 	path = .my.emacs.d/elpa-git/evil
 	url = https://github.com/emacs-evil/evil.git
