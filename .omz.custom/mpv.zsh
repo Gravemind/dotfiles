@@ -52,7 +52,7 @@ _mpn_grep_valid_files() {
 
 		# Allow by extension
 		local ext="${file##*.}"
-		if [[ "$ext" =~ mkv\|mka\|mp4\|webm\|avi ]]
+		if [[ "$ext" =~ mkv\|mka\|mp4\|webm\|avi\|mp3\|flac\|ogg ]]
 		then
 			echo "$file"
 			[[ $first = 0 ]] || return 0

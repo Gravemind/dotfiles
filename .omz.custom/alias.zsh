@@ -41,8 +41,9 @@ alias cleandhcp='sudo rm -rf /var/lib/dhcp3/*.lease'
 alias cleanhg='find . \( -name "*.orig" \) -print -delete'
 
 # trailing whitespace will make it resolve aliases !
-alias sudo='sudo -E '
-alias _='sudo'
+# alias sudo='sudo -E '
+alias sudo='sudo '
+alias _='sudo -E '
 
 #alias disk='df -h --total'
 alias untar='tar xvzf'

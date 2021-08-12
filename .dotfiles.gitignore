@@ -40,6 +40,7 @@
 !/.omz.custom
 !/.ssh
 !/.userscripts
+!/.gtkrc-2.0
 
 !/.config
 /.config/*

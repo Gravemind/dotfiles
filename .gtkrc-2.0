@@ -1,0 +1,4 @@
+gtk-theme-name = "Adwaita-dark"
+# gtk-theme-name = "Arc-Dark"
+# gtk-enable-animations = false # gtk3 only
+gtk-application-prefer-dark-theme = true
