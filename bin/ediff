@@ -53,7 +53,7 @@ if [[ $# -eq 3 ]] && isdir "$1" "$2" "$3"; then
    $emacs --eval "$(printf '(ediff-directories3 "%q" "%q" "$q" ".*")' "$1" "$2" "$3")"
    exit $?
 elif [[ $# -eq 3 ]] && isfile "$1" "$2" "$3"; then
-   $emacs--eval "$(printf '(ediff-files3 "%q" "%q" "%q")' "$(pipe2file A "$1")" "$(pipe2file B "$2")" "$(pipe2file C "$3")")"
+   $emacs --eval "$(printf '(ediff-files3 "%q" "%q" "%q")' "$(pipe2file A "$1")" "$(pipe2file B "$2")" "$(pipe2file C "$3")")"
    exit $?
 elif [[ $# -eq 2 ]] && isdir "$1" "$2"; then
    $emacs --eval "$(printf '(ediff-directories "%q" "%q" ".*")' "$1" "$2")"
