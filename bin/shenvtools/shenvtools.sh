@@ -127,8 +127,9 @@ addtool() {
     [[ ! -d "$p/lib64" ]] || { addlib "$p/lib64"; didlib=1; }
     _shenvtools_test "no lib/lib64 dir" "$didlib" -eq 1 || true
 
-    local man="$p/share/man"
-    [[ ! -d "$man" ]] || envappend "MANPATH" : "$man"
+    for man in "$p/man" "$p/share/man"; do
+        [[ ! -d "$man" ]] || envappend "MANPATH" : "$man"
+    done
 }
 
 # rmtool <prefix_path>
@@ -140,7 +141,9 @@ rmtool() {
     rmpath "$p/bin"
     rmlib "$p/lib"
     rmlib "$p/lib64"
-    envremove "MANPATH" : "$p/share/man"
+    for man in "$p/man" "$p/share/man"; do
+        envremove "MANPATH" : "$man"
+    done
 }
 
 _shenvtools_makeabs() {
