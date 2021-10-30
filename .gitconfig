@@ -23,7 +23,8 @@
 	dule = submodule
 
 	# Parallel fetch all submodules
-	dulefp = "!f() { j=5; git submodule foreach --recursive -q 'echo $displaypath' | xargs -t -r -d\\\\n -P$j -I\\{\\} git -C \\{\\} fetch --all --prune --tags; }; f"
+	# dulefp = "!f() { j=5; git submodule foreach --recursive -q 'echo $displaypath' | xargs -t -r -d\\\\n -P$j -I\\{\\} git -C \\{\\} fetch --all --prune --tags; }; f"
+	dulefp = "!f() { j=5; git fetch -j$j --multiple --prune --prune-tags --tags --recurse-submodules=yes; }; f"
 
 	b = branch --sort=version:refname
 	ba = branch --sort=version:refname --all
