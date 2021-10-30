@@ -6,7 +6,8 @@ import vapoursynth as vs
 from pprint import pprint
 
 #core = vs.get_core(threads=9)
-core = vs.get_core()
+# core = vs.get_core()
+core = vs.core
 clip = video_in
 
 core.std.LoadPlugin("/opt/svp/plugins/libsvpflow1_vs64.so")
