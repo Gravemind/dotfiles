@@ -311,11 +311,13 @@ bindsym $ModK+r mode $mode_resize
 bindsym $ModK+z exec --no-startup-id $here/exec_app_launcher.sh
 
 # Clipboard Manager
-bindsym $ModK+Insert       exec --no-startup-id $here/exec_clipboard.sh
-exec_always --no-startup-id systemctl --user restart clipmenud.service
+# bindsym $ModK+Insert       exec --no-startup-id $here/exec_clipboard.sh
+# exec_always --no-startup-id systemctl --user restart clipmenud.service
 # bindsym $ModK+Insert       exec --no-startup-id ~/bin/installs/bin/clipcat-menu
 # bindsym $ModK+Shift+Insert exec --no-startup-id ~/bin/installs/bin/clipcat-menu remove
 # exec_always --no-startup-id systemctl --user restart clipcat.service
+bindsym $ModK+Insert       exec --no-startup-id $here/exec_greenclip.sh
+exec_always --no-startup-id systemctl --user restart greenclip.service
 
 # Mpv Clipboard
 bindsym $ModK+y exec --no-startup-id ~/bin/rofi-mpv-clipmenu --rofi-args -p ' mpv' -i

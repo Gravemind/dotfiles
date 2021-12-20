@@ -1,10 +1,10 @@
 [Unit]
-Description=Clipcat daemon
+Description=Greenclip daemon
 
 [Service]
-ExecStart=/home/jo/bin/installs/bin/clipcatd --no-daemon
+ExecStart=/usr/bin/greenclip daemon
 Restart=always
-RestartSec=1s
+RestartSec=1000ms
 
 MemoryDenyWriteExecute=yes
 NoNewPrivileges=yes
@@ -12,9 +12,6 @@ ProtectControlGroups=yes
 ProtectKernelTunables=yes
 RestrictAddressFamilies=
 RestrictRealtime=yes
-
-### FIXME ###
-PrivateTmp=yes
 
 # We don't need to do any clean up, so if something hangs (borked xclip, etc),
 # it's going to stay that way. Just forcefully kill and get it over with.

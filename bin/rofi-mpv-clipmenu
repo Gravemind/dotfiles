@@ -121,7 +121,8 @@ EOPYTHON
 }
 
 main() {
-    CLIPMENU="${CLIPMENU:-clipmenu}"
+    # CLIPMENU="${CLIPMENU:-clipmenu}"
+    # CLIPMENU="${CLIPMENU:-clipmenu}"
 
     local dl_dir="$default_dl_dir"
     local rofi_args=()
@@ -151,7 +152,7 @@ main() {
     # rofi-script makes clipmenu list-only entries
     # (we won't get multi-line clips, but don't really care here !?)
     local url=
-    CM_LAUNCHER=rofi-script checked "$CLIPMENU" | \
+    checked greenclip print | \
         filter_urls | \
         checked rofi -dmenu "${rofi_args[@]}" | \
         IFS= read -r url
