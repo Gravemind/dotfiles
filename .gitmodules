@@ -141,7 +141,7 @@
 	url = https://framagit.org/steckerhalter/discover-my-major.git
 [submodule ".emacs.d/elpa-git/visual-fill-column"]
 	path = .my.emacs.d/elpa-git/visual-fill-column
-	url = https://github.com/joostkremers/visual-fill-column.git
+	url = https://codeberg.org/joostkremers/visual-fill-column.git
 [submodule ".emacs.d/elpa-git/s"]
 	path = .my.emacs.d/elpa-git/s
 	url = https://github.com/magnars/s.el.git
