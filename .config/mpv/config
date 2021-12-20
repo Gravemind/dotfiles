@@ -14,6 +14,7 @@ sid=no # no subtitle by default
 sub-color=1.0/0.5
 #exact|fuzzy|all
 sub-auto=fuzzy
+sub-file-paths=sub:Sub:subs:Subs:subtitle:Subtitle:subtitles:Subtitles
 blend-subtitles=yes
 screenshot-format=png
 # allow any size window (with back bars)

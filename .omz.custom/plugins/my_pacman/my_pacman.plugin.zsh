@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-export PACPEND='-g explicit -s name,vdiff -H linux,emacs,git,rust,nvidia,firefox -F eslint,xorg'
+export PACPEND='-g explicit -s name,vdiff -H linux,emacs,git,rust,nvidia,firefox,gcc,clang -F eslint,xorg'
 
 if ! command which yay > /dev/null
 then
@@ -40,6 +40,7 @@ pacupmir() {
 	fi
 }
 
+# Check for updates
 pacu() {
 	echo "${fg_bold[blue]}check only package updates...$reset_color"
 
@@ -57,6 +58,7 @@ pacu() {
 	fi
 }
 
+# Check and download updates
 pacup() {
 	echo "${fg_bold[blue]}check and download only package updates...$reset_color"
 
@@ -73,27 +75,23 @@ pacup() {
 	# same as checkupdate's default
 	export CHECKUPDATES_DB="${TMPDIR:-/tmp}/checkup-db-${USER}/"
 
-	if [[ ! -e "$CHECKUPDATES_DB" ]]
-	then
-		# (uses CHECKUPDATES_DB)
-		checkupdates > /dev/null
-	fi
-
-	## (`pacaur` does not catch pacman errors and continues with AUR packages silently, so run pacman alone)
-	( fakeroot -- pacman -Syuw --noconfirm --dbpath "$CHECKUPDATES_DB" --color=always || { echo "${fg_bold[red]}$0: pacman -Syuw failed !!$reset_color"; return 1; } )
-	# ( pacaur --aur -Suw --noconfirm --noedit--color=always || { echo "${fg_bold[red]}$0: pacaur --aur -Syuw failed !!$reset_color"; return 1; } ) | grep -v '^$'
-
 	# (uses CHECKUPDATES_DB)
+	checkupdates > /dev/null
 	~/bin/pacpend --aur
+
+	# `pacaur` does not catch pacman errors and continues with AUR packages silently, so run pacman alone
+	fakeroot -- pacman -Suw --noconfirm --dbpath "$CHECKUPDATES_DB" --color=always --logfile /dev/null || { echo "${fg_bold[red]}$0: pacman -Suw failed !!$reset_color"; return 1; }
+	# ( pacaur --aur -Suw --noconfirm --noedit--color=always || { echo "${fg_bold[red]}$0: pacaur --aur -Suw failed !!$reset_color"; return 1; } ) | grep -v '^$'
 
 	if [[ $? -eq 0 ]]
 	then
-		#echo "${fg_bold[green]}$0: new pending packages$reset_color"
+		# echo "${fg_bold[green]}$0: new pending packages$reset_color"
 	else
-		echo "${fg_bold[green]}no new packages$reset_color"
+		# echo "${fg_bold[green]}no new packages$reset_color"
 	fi
 }
 
+# Check, download, and upgrade
 pacupg() {
 	echo "${fg_bold[blue]}check, download, and install package updates...$reset_color"
 
@@ -123,6 +121,7 @@ pacupg() {
 	# } | less --quit-if-one-screen --RAW-CONTROL-CHARS --no-init
 }
 
+# Check for .pacnew files
 checkpacnew() {
 	local pacnews=()
 	while read -u3 -r -d $'\n' pacnew
@@ -144,6 +143,7 @@ checkpacnew() {
 	fi
 }
 
+# Find all packages that could install a file
 pacfind() {
 	local cachefile="/var/lib/pacman/sync/core.files"
 	local maxage=$((3600 * 24 * 30)) ## 30 days
@@ -163,8 +163,8 @@ pacfind() {
 	pac -F "$@"
 }
 
-# pkgfile wrap
-# /usr/share/doc/pkgfile/command-not-found.zsh
+# Find all packages that could install a file, using pkgfile
+# (/usr/share/doc/pkgfile/command-not-found.zsh)
 pkgpacfind() {
 	local pkgs
 	local cmd="$1"
@@ -208,7 +208,7 @@ pkgpacfind() {
 	return 127
 }
 
-# lists last installed packages
+# Lists last installed or updated packages
 paclast() {
 	local lastn=40
 	echo "Last $lastn packages installed explicitly:"

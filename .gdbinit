@@ -11,15 +11,19 @@ set print frame-arguments none
 set list 25
 set demangle-style gnu-v3
 
-set step-mode on # `step` stops on functions with no debug info
-set debug skip on # log `skip`d locations
+# `step` stops on functions with no debug info
+set step-mode on
+# log `skip`d locations
+set debug skip on
 
 set print inferior-events on
 
 set confirm off
 set pagination off
 
-set non-stop off # stop all threads
+# stop all threads
+set non-stop off
+
 set disassembly-flavor intel
 
 set history save on

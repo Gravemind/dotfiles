@@ -1,7 +1,6 @@
 daemonize = true
-max_history = 50
-# history_file_path = '$XDG_RUNTIME_DIR/clipcatd/db'
-# history_file_path = '/tmp/clipcatd/db'
+max_history = 500
+history_file_path = '/run/user/1000/clipcat'
 log_level = 'INFO'
 
 [monitor]

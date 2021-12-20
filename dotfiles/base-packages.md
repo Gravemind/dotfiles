@@ -26,7 +26,8 @@ yay -S --asexplicit --needed \
     iftop iotop atop powertop \
     lm_sensors smartmontools hdparm acpi \
     dosfstools ntfs-3g nfs-utils parted \
-    nvme-cli hwinfo
+    nvme-cli hwinfo \
+    dkms linux-headers
 
 yay -S collectd
 
@@ -36,7 +37,7 @@ yay -S --asexplicit --needed \
     zsh-completions bash-completion \
     ripgrep fd moreutils autojump readline bc wget pwgen gnu-netcat neofetch tree tldr pv \
     imagemagick gnuplot \
-    p7zip pigz zstd \
+    p7zip unzip pigz zstd \
     pacutils reflector pacman-contrib expac pyalpm pkgfile expac \
     vulkan-devel
 
@@ -44,13 +45,14 @@ yay -S --asexplicit --needed \
 
 yay -S --asexplicit --needed \
     ispell aspell aspell-en aspell-fr \
-    cmake gdb valgrind strace ccache boost cloc \
+    cmake ninja meson \
+    gdb valgrind strace ccache boost cloc \
     jq asciidoc dos2unix astyle \
     clang clang-tools-extra llvm \
     ruby python dmd go rustup rust-racer \
     python-i3-py python-matplotlib python-pyserial python-pyqt5
 
-yay -S --asexplicit --neded \
+yay -S --asexplicit --needed \
     android-file-transfer android-tools android-udev
 
 yay -S avrdude dfu-programmer arduino-cli
@@ -78,6 +80,10 @@ yay -S --asexplicit --needed \
 pulseaudio pulseaudio-alsa pamixer pavucontrol
 flatpak
 flameshot : screenshot
+
+(for winetricks)
+yay -S --asexplicit --needed cabextract
+
 
 ## nvidia
 

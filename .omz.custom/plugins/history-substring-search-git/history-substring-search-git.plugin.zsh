@@ -29,3 +29,8 @@ if [[ -n "$terminfo[kcud1]" ]]; then
   bindkey -M viins "$terminfo[kcud1]" history-substring-search-down
 fi
 
+# Fix tmux arrow keys on fedora
+bindkey -M emacs '^[[A' history-substring-search-up
+bindkey -M viins '^[[A' history-substring-search-up
+bindkey -M emacs '^[[B' history-substring-search-down
+bindkey -M viins '^[[B' history-substring-search-down

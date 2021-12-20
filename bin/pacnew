@@ -1,6 +1,11 @@
 #!/bin/bash
 
+auto_rm=(
+    /etc/pacman.d/mirrorlist.pacnew
+)
+
 pacnews=()
+pacnewrm=()
 
 PAC_LOGFILE="/var/log/pacman.log"
 
@@ -43,10 +48,26 @@ echo "== ${#pacnews[@]} pacnew found"
 # emacs --fg-daemon=pacnew &
 # export EDIFF_EMACS="emacsclient --socket-name=pacnew --create-frame"
 
+for NEW in "${auto_rm[@]}"
+do
+    [[ -e "$NEW" ]] || continue
+    read -p "?? delete \"$NEW\" ? [y/n]: " -r RESP
+    case "$RESP"
+    in
+        y)
+            sudo rm "$NEW"
+            ;;
+    esac
+done
+
 for NEW in "${pacnews[@]}"
 do
-
     OLD=${NEW%.*}
+
+    [[ -e "$NEW" ]] || {
+        echo ">> already deleted: $NEW"
+        continue
+    }
 
     remerge=true
     while $remerge

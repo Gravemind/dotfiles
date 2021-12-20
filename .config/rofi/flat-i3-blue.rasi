@@ -1,7 +1,4 @@
 
-configuration {
-}
-
 * {
     bg: #282828;
     bghl: #285577;

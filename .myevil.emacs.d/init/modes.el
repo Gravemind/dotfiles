@@ -446,6 +446,8 @@
    ahs-inhibit-face-list '()
    ;;ahs-inhibit-face-list '(font-lock-comment-delimiter-face font-lock-comment-face font-lock-doc-face font-lock-doc-string-face font-lock-string-face)
 
+   ;; Highlight in all windows
+   ahs-highlight-all-windows t
    )
 
   (defun ahs-select-range (pred range &optional reverse onlydef)
