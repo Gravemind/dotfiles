@@ -57,6 +57,8 @@
 !/.config/starship*
 !/.config/gtk-3*
 !/.config/clipcat
+!/.config/greenclip*
+!/.config/user-dirs*
 
 !/bin
 !/dotfiles
