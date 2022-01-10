@@ -31,8 +31,10 @@ if ! command -v fd >& /dev/null && command -v fdfind >& /dev/null; then
 	alias fd='fdfind'
 fi
 
-alias gdiff='pipes2files git d --no-index'
-alias gdiffw='pipes2files git dw --no-index'
+gdiff() { pipes2files git d --no-index "$@"; }
+gdiffw() { pipes2files git dw --no-index "$@"; }
+run-help-gdiff() { echo "run-help gdiff $*"; run-help git-diff; }
+run-help-gdiffw() { echo "run-help gdiffw $*"; run-help git-diff; }
 
 alias clean='find . \( -name "*~" -or -name "#*#" -or -name ".#*" \) -print -delete'
 alias fclean='find . \( -name "*~" -or -name "#*#" -or -name ".#*" -or -name "*.o" -or -name "*.pyc" \) -print -delete'
