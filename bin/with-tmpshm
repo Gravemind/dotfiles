@@ -1,0 +1,10 @@
+#!/bin/bash
+
+tmpdir="$(TMPDIR=/dev/shm mktemp -d -t "tmpshm.XXXXXXXX")"
+cleanup() { echo "with-tmpdir: cleanup $tmpdir" >&2; rm -rf "$tmpdir"; }
+trap cleanup EXIT
+
+export TMPDIR="$tmpdir"
+echo "with-tmpdir: TMPDIR=$TMPDIR" >&2
+"$@"
+exit $?
