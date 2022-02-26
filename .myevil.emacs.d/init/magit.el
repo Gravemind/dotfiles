@@ -329,6 +329,7 @@ many times might take a long time."
    diff-hl-fringe-bmp-function 'my--diff-hl-fringe-bmp
    diff-hl-draw-borders nil
    diff-hl-flydiff-delay 0.01
+   diff-hl-disable-on-remote t
    )
 
   ;; diff-hl in dired
