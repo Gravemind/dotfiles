@@ -82,3 +82,14 @@ alias -g     BG='& ; disown'
 alias -g  ERROR="2> >(sed -u 's/^/'\"$fg_bold[red]\"'stderr:'\"$reset_color\"' /g' >&2)"
 
 alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test100.zip'
+
+# usage: BASH <anything; realy *, passed literally to bash -c>
+#   Runs everything after BASH in bash -c '...'
+#   https://unix.stackexchange.com/questions/456508/zsh-print-literal-text-from-the-command-line
+bash_literally () {
+  local str="$history[$(print -P %h)]"
+  bash -c "${str#*BASH\ }"
+}
+alias BASH='bash_literally #'
+# zmodload zsh/parameter
+# setopt interactivecomments
