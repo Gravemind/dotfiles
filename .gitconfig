@@ -49,13 +49,11 @@
 	# "un-add"
 	ua = reset HEAD
 
-	# usage: git bo BRANCH
-	# Update other BRANCH to it's upstream
-	bo = "!f() { set -eu; git branch -f $1 $1@{upstream}; }; f"
+	# Update other (non-checkout) branch
+	bu = "!f() { set -eu; git branch -f \"$1\" \"$1@{upstream}\"; }; f"
 
-	# usage: git bco BRANCH
-	# Update other BRANCH to it's upstream, then checkout it
-	bco = "!f() { set -eu; git bo $1 && git checkout $1 && git submodule update; }; f"
+	# Update other branch then checkout it
+	cou = "!f() { set -eu; git bu \"$1\" && git switch \"$1\"; }; f"
 
 	# Fetch prune all
 	fp = fetch --all --prune --tags
