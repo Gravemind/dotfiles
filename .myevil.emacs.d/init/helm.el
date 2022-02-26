@@ -124,6 +124,8 @@
    helm-ff-keep-cached-candidates nil ;; 'local 'remote 'all
    ;; ff cache indicator
    helm-ff-cache-mode-lighter "*"
+   ;; Disable file watcher used for ff cache: seems to slow down ff over tramp
+   helm-ff-use-notify nil
 
    ;; Increase helm-buffers buffer name column width
    helm-buffer-max-length 30
