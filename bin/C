@@ -1,0 +1,8 @@
+#!/bin/bash
+# usage: C <cmd>...
+#   Run <cmd> with LC_ALL=C
+
+export LC_ALL=C
+export LANG=C
+
+exec "$@"
