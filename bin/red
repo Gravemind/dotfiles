@@ -20,11 +20,11 @@ error() {
 file_prefix="/tmp/red.${UID}.${DISPLAY}"
 
 cola=6500	# starting temperature
-bria=100     # starting brightness
+bria=100        # starting brightness
 gama=100	# starting gamma * 100
-colstep=800	# temperature step
-bristep=15	# brightness step
-gamstep=-2	# gamma step * 100
+colstep=1000	# temperature step
+bristep=20	# brightness step
+gamstep=-4	# gamma step * 100
 
 enable_current_output=0
 
@@ -151,14 +151,15 @@ then
 	bri=$(echo "scale=3; $bri / 100.0" | bc)
 	gam=$((- $value * $gamstep + $gama))
 	gam=$(echo "scale=3; $gam / 100.0" | bc)
-	echo "$0: redshifting to $value: redshift -O $col -b $bri $redopt"
 
 	icon="$notify_icon_on"
 
-	redshift -P -O $col -b $bri -g $gam $redopt || {
+	echorun() { echo "$0: running: $*"; "$@"; }
+
+	echorun redshift -P -O $col -b $bri -g $gam $redopt || {
 		echo "$0: redshift failed"
 		_notify-send -u low -i "$icon" -h "int:value:$value" "Red" " FAILED"
-        exit 1
+		exit 1
 	}
 
 	#redshift -P -O $col -g $gam $redopt
