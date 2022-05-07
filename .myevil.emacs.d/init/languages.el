@@ -309,7 +309,8 @@
 
 (use-package dockerfile-mode
   :load-path (my-packages-directory "dockerfile-mode")
-  :mode ("Dockerfile\\(?:\\..*\\)?\\'" . dockerfile-mode)
+  :mode (("Dockerfile\\(?:\\..*\\)?\\'" . dockerfile-mode)
+         ("Containerfile\\(?:\\..*\\)?\\'" . dockerfile-mode))
   )
 
 ;;
