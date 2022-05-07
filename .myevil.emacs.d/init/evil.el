@@ -94,7 +94,7 @@
    evil-want-Y-yank-to-eol t
 
    ;;
-   evil-undo-system 'undo-tree
+   ;; evil-undo-system 'undo-tree
 
    ;; Enable emacs-like undo even inside inserts ("partial undo", "sub-insert undo")
    evil-want-fine-undo t
