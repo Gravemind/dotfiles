@@ -2,6 +2,8 @@
 
 set -eo pipefail
 
+url=()
+# url=(--url https://www.archlinux.org/mirrors/status/tier/1/json/)
 countries=(-c fi -c fr -c de -c lu -c nl -c pl -c se)
 servercount=5
 safemove="mv"
@@ -16,7 +18,7 @@ fi
 
 echo "$0: fetch mirrors..."
 
-reflector --verbose -p https "${countries[@]}" --sort score --age 24 \
+reflector --verbose -p https "${countries[@]}" --sort score --age 24 "${url[@]}" \
     | grep '^Server = ' | tail -n $servercount > "$tmpfile2"
 
 echo "$0: ranking the new $count mirrors..."
@@ -43,8 +45,14 @@ then
 	$su rm /etc/pacman.d/mirrorlist.pacnew
 fi
 
-echo "$0: here is the new mirrorlist:";
-cat /etc/pacman.d/mirrorlist
+
+echo "$0: here is the OLD mirrors:";
+grep -v '^#' /etc/pacman.d/mirrorlist.orig
+echo
+echo "$0: here is the new mirrors:"
+grep -v '^#' /etc/pacman.d/mirrorlist
+echo
+
 rm -f "$tmpfile" "$tmpfile2"
 
 echo "$0: OK, now refreshing packages with pacman";
