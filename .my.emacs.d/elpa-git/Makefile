@@ -73,6 +73,7 @@ DEFCOMPILE	+= ivy-rich
 DEFCOMPILE	+= iy-go-to-char
 DEFMAKE		+= log4e
 DEFMAKE		+= lua-mode
+DEFMAKE		+= compat
 #NODEF		+= magit
 DEFMAKE		+= magit
 DEFCOMPILE	+= makey
@@ -220,7 +221,11 @@ helm-rg: helm
 
 flyspell-correct: helm
 
-magit: transient dash with-editor
+transient: compat
+
+with-editor: compat
+
+magit: transient dash with-editor compat
 
 evil: goto-chg undo-tree
 
@@ -234,7 +239,7 @@ goto-chg: undo-tree
 
 helpful: elisp-refs
 
-magit-delta: xterm-color
+magit-delta: magit xterm-color
 
 better-jumper:
 	@echo "do nothing"

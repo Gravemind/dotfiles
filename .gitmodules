@@ -369,3 +369,7 @@
 	path = .my.emacs.d/elpa-git/spinner
 	url = https://github.com/Malabarba/spinner.el
 	branch = master
+[submodule ".my.emacs.d/elpa-git/compat"]
+	path = .my.emacs.d/elpa-git/compat
+	url = https://git.sr.ht/~pkal/compat
+	branch = master
