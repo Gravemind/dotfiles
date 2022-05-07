@@ -101,6 +101,14 @@
       (setq revision (match-string 1 revision)))
     (magit-run-git "checkout" "-m" revision))
 
+  (defun my-magit-merge-ff (rev &optional args)
+    "Merge --ff-only"
+    (interactive (list (magit-read-other-branch-or-commit "Merge")
+                        (magit-merge-arguments)))
+    (magit-merge-assert)
+    (cl-pushnew "--ff-only" args :test #'equal)
+    (magit-run-git-async "merge" (delete "--no-ff" args) rev))
+
   ;; transient replaced magit popup
   ;; https://github.com/magit/magit/wiki/Converting-popup-modifications-to-transient-modifications
 
@@ -120,13 +128,19 @@
   ;;   'magit-diff-popup
   ;;   ?W "Ignore changes in whitespace at EOL" "--ignore-space-at-eol")
 
-  ;; branch
+  ;; branch/checkout
   (transient-remove-suffix 'magit-branch "o") ;; was checkout --orphan
   (transient-insert-suffix 'magit-branch '(-1)
     ["Custom"
      ("o" "Update other" my-magit-branch-update-other)
      ("-m" "With merge" "-m")
      ;; ("M" "with merge (-m)" my-magit-checkout-merge)
+     ])
+
+  ;; merge
+  (transient-insert-suffix 'magit-merge '(-1)
+    ["Custom"
+     ("f" "Merge ff only" my-magit-merge-ff)
      ])
 
   ;(setq-default git-commit-turn-on-auto-fill nil)
