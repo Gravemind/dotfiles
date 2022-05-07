@@ -36,10 +36,14 @@ yay -S collectd
 yay -S --asexplicit --needed \
     zsh-completions bash-completion \
     ripgrep fd moreutils autojump readline bc wget pwgen gnu-netcat neofetch tree tldr pv \
+    hyperfine \
     imagemagick gnuplot \
     p7zip unzip pigz zstd \
     pacutils reflector pacman-contrib expac pyalpm pkgfile expac \
     vulkan-devel
+
+yay -S --asdeps --needed cni-plugins
+yay -S --asexplicit --needed podman buildah
 
 ## Dev Tools, Languages
 
@@ -84,6 +88,7 @@ flameshot : screenshot
 (for winetricks)
 yay -S --asexplicit --needed cabextract
 
+yay -S --asexplicit --needed virtualbox virtualbox-host-dkms virtualbox-ext-oracle
 
 ## nvidia
 
