@@ -19,7 +19,7 @@ Looks for man pages containing all WORDS using rg (ripgrep).
 
 MANGREP_FIND_CMD="rg --null -uu --files /usr/share/man" ## slightly faster than `find` when cold
 MANGREP_GREPFILE_CMD="rg --null -uu --null-data"
-MANGREP_GREP_CMD="xargs --null --no-run-if-empty rg -uu -zl"
+MANGREP_GREP_CMD="xargs --null --no-run-if-empty rg -uu --sort none -zl"
 
 ## ag is buggy !? `ag -zl urxvt /usr/share/man/man2/memfd_create.2.gz`: "truncated file"
 ## and does not support --null-data
@@ -44,6 +44,9 @@ main() {
     local rg_i=-S
     local files=()
     local words=()
+
+    export LC_ALL=C
+    export LANG=C
 
     while [[ $# -gt 0 ]]
     do
