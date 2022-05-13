@@ -28,6 +28,7 @@
    ("b" . helm-occur)
    ("d" . helm-do-grep-rg-ripgrep)
    ("p" . helm-do-grep-ag-project)
+   ("g" . helm-grep-do-git-grep-project)
    ("i" . helm-imenu)
 
    :map helm-map
@@ -261,6 +262,11 @@ WINDOW."
                 (or (my/project-root-directory-slow default-directory) default-directory)))
       (helm-grep-ag (expand-file-name helm-ff-default-directory) arg)
       ))
+
+  (defun helm-grep-do-git-grep-project ()
+    "Always run helm-grep-do-git-grep project-wide"
+    (interactive)
+    (helm-grep-do-git-grep t))
 
   ;; helm everywhere
   (helm-mode 1)

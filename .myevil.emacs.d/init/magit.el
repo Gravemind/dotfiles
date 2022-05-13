@@ -21,6 +21,7 @@
               ("s" . magit-status)
               ("l" . magit-log)
               ("f" . magit-log-buffer-file)
+              ("d" . magit-diff)
               ("b" . magit-blame)
               )
   :config
