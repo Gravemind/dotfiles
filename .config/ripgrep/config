@@ -1,4 +1,6 @@
 --smart-case
 --hidden
---sort
-path
+--glob=!.git
+--glob=!.hg
+--glob=!.svn
+--sort=path
