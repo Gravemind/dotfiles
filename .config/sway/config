@@ -1,0 +1,518 @@
+# sway config file
+#
+# man 5 sway
+# https://github.com/swaywm/sway/wiki
+# https://wiki.archlinux.org/title/Sway
+#
+#
+
+# Variables
+set $ModK        Mod4
+set $screenL     DisplayPort-0
+set $screenR     DisplayPort-0
+
+set $keyLeft     h
+set $keyRight    l
+set $keyUp       k
+set $keyDown     j
+
+set $here        ~/.config/sway
+set $layouts     ~/.config/sway/layouts
+set $launcher    ~/.config/sway/launch -q
+set $i3          ~/.config/i3
+
+set $Alt         Mod1
+
+# N * [2560, 1440] / 10/8
+set $move_step_x   256
+set $move_step_y   180
+set $resize_step_x 256
+set $resize_step_y 180
+set $float_w       1024
+set $float_w_wide  1024
+set $float_h       720
+# (2560, 1440) × 3 / 5 = [1536, 864]
+# (2560, 1440) × 2 / 5 = [1024, 576]
+set $ffpip_pos     1536 864
+set $ffpip_size    1024 576
+
+include ./input.conf
+
+# Don't do rgb/sub-pixel font hinting/lcdfilter
+output "*" subpixel none
+
+# https://github.com/swaywm/sway/wiki#gtk-applications-take-20-seconds-to-start
+# (Dunst and rofi seem to need this too)
+exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+
+# ipc-socket $here/ipc.sock
+
+#
+# Style and behaviors
+#
+
+# Font for window titles
+# font xft:Hack Bold 9
+font pango:Hack 9
+
+# Hide border if single window/container in workspace
+hide_edge_borders --i3 smart_no_gaps
+# smart_gaps on
+# gaps inner 8px
+# gaps outer 0px
+
+# Default border style: normal[px]|pixel[px]|none
+default_border pixel 2
+default_floating_border normal 2
+
+# Delay the reset of urgent hint workspace focus
+force_display_urgency_hint 500 ms
+
+focus_follows_mouse yes
+default_orientation auto
+workspace_auto_back_and_forth no
+#mouse_warping none
+
+# https://i3wm.org/docs/userguide.html#focus_on_window_activation
+# The window will neither be focused, nor be marked urgent.
+#focus_on_window_activation none
+# The window will always be marked urgent, but the focus will not be stolen.
+focus_on_window_activation urgent
+
+# TODO sway
+# popup_during_fullscreen smart # The default
+
+no_focus [window_role="pop-up"]
+
+# Floating window size range
+floating_minimum_size $resize_step_x x $resize_step_y
+floating_maximum_size -1 x -1
+
+# Default border for programs
+#for_window [class="^.*"] border pixel 2
+#for_window [class="(?i)urxvt"] border pixel 2
+#for_window [class="(?i)emacs"] border pixel 2
+#for_window [class="(?i)firefox"] border none
+#for_window [class="(?i)chromium"] border none
+#for_window [class="(?i)pale moon"] border none
+#for_window [class="(?i)icecat"] border none
+#for_window [class="(?i)mplayer"] border none
+#for_window [class="(?i)mpv"] border none
+
+# Window title format
+# for_window [all] title_window_icon yes, title_window_icon padding 4px
+# for_window [all] title_window_icon no
+# for_window [all] title_format "<span rise='1000'> </span>%class <span size='small' alpha='80%%' weight='normal'>%title</span>"
+# TODO sway all ?
+# for_window [class=".*"] title_format "<span rise='1000'> </span>%class <span size='small' alpha='80%%' weight='normal'>%title</span>"
+for_window [title=".*"] title_format "<b>%app_id%class</b> %title"
+
+# for_window [class="(?i)firefox" title="(?i)picture-in-picture"] resize set $ffpip_size, move position $ffpip_pos, sticky enable, border pixel 2
+for_window [class="(?i)firefox" title="(?i)picture-in-picture"] floating disable
+
+# Colors
+# class                 border  backgr. text    split_indicator child_border
+client.focused          #285577 #285577 #dddddd #2e9ef4   #285577
+client.focused_inactive #282828 #282828 #888888 #303030   #282828
+client.unfocused        #101010 #101010 #555555 #181818   #101010
+client.urgent           #c02020 #c02020 #ffffff #c02020   #c02020
+# placeholder (border, indicator, and child_border are ignored)
+client.placeholder      #0000ff #202020 #888888 #0000ff   #0000ff
+# for windows that do not render all the way (mpv sometimes)
+client.background       #000000
+
+#
+# Workspaces and outputs
+#
+
+# Switch to workspace
+bindsym $ModK+1 workspace 1
+bindsym $ModK+2 workspace 2
+bindsym $ModK+3 workspace 3
+bindsym $ModK+4 workspace 4
+bindsym $ModK+5 workspace 5
+bindsym $ModK+6 workspace 6
+bindsym $ModK+7 workspace 7
+bindsym $ModK+8 workspace 8
+bindsym $ModK+9 workspace 9
+bindsym $ModK+0 workspace 10
+
+# Move focused container to workspace
+bindsym $ModK+Shift+1 move workspace 1
+bindsym $ModK+Shift+2 move workspace 2
+bindsym $ModK+Shift+3 move workspace 3
+bindsym $ModK+Shift+4 move workspace 4
+bindsym $ModK+Shift+5 move workspace 5
+bindsym $ModK+Shift+6 move workspace 6
+bindsym $ModK+Shift+7 move workspace 7
+bindsym $ModK+Shift+8 move workspace 8
+bindsym $ModK+Shift+9 move workspace 9
+bindsym $ModK+Shift+0 move workspace 10
+
+# Assign workspace to output
+workspace 1 output $screenL
+workspace 2 output $screenL
+workspace 3 output $screenL
+workspace 4 output $screenL
+workspace 5 output $screenL
+workspace 6 output $screenR
+workspace 7 output $screenR
+workspace 8 output $screenR
+workspace 9 output $screenR
+workspace 10 output $screenR
+
+# Default workspace assignment for programs
+#assign [window_role="^browser$"] → 10
+#assign [class="^Pidgin$"] → 9
+#for_window [class="(?i)^.*wine.*$"] floating enable
+assign [class="(?i)^.*steam.*$"] → 1
+#for_window [class="(?i)^UE4Editor.*$"] floating enable
+#assign [class="(?i)^UE4Editor.*$"] → 8
+
+for_window [class="(?i)^keepassxc$"] floating enable
+
+# Emacs helm "frame" mode: https://github.com/emacs-helm/helm/wiki/frame#enable-globally-frame-for-all-helm-sessions
+for_window [class="^Emacs$" title="^Helm$"] floating enable, border pixel 2
+for_window [class="^Emacs$" title="^Ediff"] floating enable, border pixel 2
+
+#
+# Bindings
+#
+
+# Use Mouse+ModK to drag floating windows to their wanted position
+floating_modifier $ModK
+
+set $locker    ~/bin/lock
+set $suspend   ~/bin/slock suspend
+set $hibernate ~/bin/slock hibernate
+
+# Lock, Restart, Reboot...
+set $mode_system "    <u>e</u>xit  relo<u>a</u>d  <u>r</u>estart  ·  <u>s</u>hutdown  re<u>b</u>oot  ·  s<u>u</u>spend  <u>h</u>ibernate  ·  <u>w</u>allpaper  "
+mode --pango_markup $mode_system {
+    # bindsym l exec --no-startup-id $locker, mode "default"
+    # bindsym c exec --no-startup-id $locker, mode "default"
+
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym a exec --no-startup-id i3-msg reload, mode "default"
+    bindsym r exec --no-startup-id i3-msg reload, mode "default" # No restart on sway !?
+
+    bindsym s exec --no-startup-id systemctl poweroff, mode "default"
+    bindsym b exec --no-startup-id systemctl reboot, mode "default"
+
+    bindsym u exec --no-startup-id $suspend, mode "default"
+    bindsym h exec --no-startup-id $hibernate, mode "default"
+
+    bindsym w exec --no-startup-id $here/wallpaper_cycle, mode "default"
+
+    bindsym q mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $ModK+Escape mode $mode_system
+
+# The middle button over a titlebar kills the window
+# bindsym --release --border button2 kill
+bindsym --border button2 kill
+
+# Toggle border decoration
+bindsym $ModK+e border toggle
+
+# Kill focused window
+bindsym $ModK+q kill
+# Rofi menu xkill
+bindsym $ModK+Shift+q exec --no-startup-id rofi -show-icons -show window -window-command 'xkill -id {window}' -kb-accept-entry '' -kb-accept-alt 'Return' -display-window ' xkill'
+
+# Move to scrathpad
+bindsym $ModK+Shift+grave move scratchpad
+# Toggle scratchpad
+bindsym $ModK+grave scratchpad show
+
+# Change focus
+bindsym $ModK+$keyLeft  focus left
+bindsym $ModK+$keyDown  focus down
+bindsym $ModK+$keyUp    focus up
+bindsym $ModK+$keyRight focus right
+bindsym $ModK+Left      focus left
+bindsym $ModK+Down      focus down
+bindsym $ModK+Up        focus up
+bindsym $ModK+Right     focus right
+
+# Move focused window
+bindsym $ModK+Shift+$keyLeft  move left  $move_step_x
+bindsym $ModK+Shift+$keyDown  move down  $move_step_y
+bindsym $ModK+Shift+$keyUp    move up    $move_step_y
+bindsym $ModK+Shift+$keyRight move right $move_step_x
+bindsym $ModK+Shift+Left      move left  $move_step_x
+bindsym $ModK+Shift+Down      move down  $move_step_y
+bindsym $ModK+Shift+Up        move up    $move_step_y
+bindsym $ModK+Shift+Right     move right $move_step_x
+
+# Focus other output (when multi screen)
+bindsym $ModK+Tab focus output right
+
+# Split in vertical orientation
+bindsym $ModK+v split v
+
+# Split in horizontal orientation
+bindsym $ModK+b split h
+
+# Focus the parent container
+bindsym $ModK+x focus parent
+
+# Focus the child container
+bindsym $ModK+c focus child
+
+# Change container layout
+bindsym $ModK+a layout tabbed
+bindsym $ModK+s layout stacking
+bindsym $ModK+d layout toggle split
+
+# Enter fullscreen mode for the focused container
+bindsym $ModK+f fullscreen
+
+# Toggle tiling / floating
+#bindsym $ModK+Shift+space floating toggle, resize set 40 ppt 60 ppt, move absolute position center
+bindsym $ModK+Shift+space floating toggle, resize set $float_w_wide $float_h, move absolute position center
+
+# Change focus between tiling / floating windows
+bindsym $ModK+space focus mode_toggle
+
+# Change Window Size and Modes
+set $mode_resize "    [S-]←→↓↑ resize  ·  <u>s</u>ticky  ·  <u>w</u>allpaper  ·  setup-<u>x</u>randr  ·  <u>v</u>ideo-mode    "
+mode --pango_markup $mode_resize {
+    # Move focused window
+    bindsym $ModK+Shift+$keyLeft  move left  $move_step_x
+    bindsym $ModK+Shift+$keyDown  move down  $move_step_y
+    bindsym $ModK+Shift+$keyUp    move up    $move_step_y
+    bindsym $ModK+Shift+$keyRight move right $move_step_x
+    bindsym $ModK+Shift+Left      move left  $move_step_x
+    bindsym $ModK+Shift+Down      move down  $move_step_y
+    bindsym $ModK+Shift+Up        move up    $move_step_y
+    bindsym $ModK+Shift+Right     move right $move_step_x
+
+    bindsym $keyLeft  resize grow   left  $resize_step_x
+    bindsym Left      resize grow   left  $resize_step_x
+    bindsym $keyRight resize shrink left  $resize_step_x
+    bindsym Right     resize shrink left  $resize_step_x
+
+    bindsym Shift+$keyLeft  resize shrink right $resize_step_x
+    bindsym Shift+Left      resize shrink right $resize_step_x
+    bindsym Shift+$keyRight resize grow   right $resize_step_x
+    bindsym Shift+Right     resize grow   right $resize_step_x
+
+    bindsym $keyUp   resize grow   up    $resize_step_y
+    bindsym Up       resize grow   up    $resize_step_y
+    bindsym $keyDown resize shrink up    $resize_step_y
+    bindsym Down     resize shrink up    $resize_step_y
+
+    bindsym Shift+$keyUp   resize shrink down  $resize_step_y
+    bindsym Shift+Up       resize shrink down  $resize_step_y
+    bindsym Shift+$keyDown resize grow   down  $resize_step_y
+    bindsym Shift+Down     resize grow   down  $resize_step_y
+
+    bindsym Shift+minus resize shrink down $resize_step_y, resize shrink right $resize_step_x
+    bindsym Shift+equal resize grow   down $resize_step_y, resize grow   right $resize_step_x
+    bindsym minus       resize shrink up   $resize_step_y, resize shrink left  $resize_step_x
+    bindsym equal       resize grow   up   $resize_step_y, resize grow   left  $resize_step_x
+
+    bindsym s sticky toggle, mode "default"
+
+    bindsym w exec --no-startup-id $here/wallpaper_cycle, mode "default"
+    # bindsym x exec --no-startup-id ~/bin/setup-xrandr, mode "default"
+    # bindsym v exec --no-startup-id exec $here/exec_video_mode.sh, mode "default"
+
+    bindsym q mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $ModK+r mode $mode_resize
+
+#
+# Bindings to launch programs
+#
+
+# Start rofi program launcher
+bindsym $ModK+z exec --no-startup-id $i3/exec_app_launcher.sh
+
+# Clipboard Manager
+# bindsym $ModK+Insert       exec --no-startup-id $here/exec_clipboard.sh
+# exec_always --no-startup-id systemctl --user restart clipmenud.service
+# bindsym $ModK+Insert       exec --no-startup-id ~/bin/installs/bin/clipcat-menu
+# bindsym $ModK+Shift+Insert exec --no-startup-id ~/bin/installs/bin/clipcat-menu remove
+# exec_always --no-startup-id systemctl --user restart clipcat.service
+# bindsym $ModK+Insert       exec --no-startup-id $here/exec_greenclip.sh
+# exec_always --no-startup-id systemctl --user restart greenclip.service
+bindsym $ModK+Insert exec clipman --primary pick -t rofi
+exec_always --no-startup-id systemctl --user restart clipman.service
+# exec_always wl-paste -t text --watch clipman store
+# exec_always wl-paste -p -t text --watch clipman store -P # --histpath="~/.local/share/clipman-primary.json"
+
+# Mpv Clipboard
+bindsym $ModK+y exec --no-startup-id ~/bin/rofi-mpv-clipmenu --rofi-args -p ' mpv' -i
+
+# Overriding Shift-Insert to type what's in primary clipboard (selection)
+# (xdotool bugge ? seems to type while Shift is pressed ?)
+#bindsym Shift+Insert exec --no-startup-id "bash -c 'xdotool type \\"$(xclip -selection primary -o -r)\\"'
+#bindsym Shift+Insert exec --no-startup-id "bash -c 'xclip -selection primary -o -r | xvkbd -xsendevent -delay 1 -file -'"
+
+# Screenshot
+bindsym Print             exec --no-startup-id ~/bin/scrot-rofi
+bindsym $ModK+Print       exec --no-startup-id ~/bin/scrot-rofi
+bindsym Shift+Print       exec --no-startup-id scrot "screen_%y-%m-%d_%H:%M:%S.png"
+bindsym $ModK+Shift+Print exec --no-startup-id scrot "screen_%y-%m-%d_%H:%M:%S.png"
+
+# Volume: Pulse Audio
+# set $volume_mute      exec --no-startup-id pactl set-sink-mute   '@DEFAULT_SINK@' toggle
+# set $volume_inc       exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@' +10%
+# set $volume_dec       exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@' -10%
+# set $volume_inc_shift exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@' +10%
+# set $volume_dec_shift exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@' -10%
+set $volume_mute      exec --no-startup-id ~/bin/pamixer-notify --toggle-mute
+set $volume_inc       exec --no-startup-id ~/bin/pamixer-notify --increase 5
+set $volume_dec       exec --no-startup-id ~/bin/pamixer-notify --decrease 5
+set $volume_inc_shift exec --no-startup-id ~/bin/pamixer-notify --increase 5
+set $volume_dec_shift exec --no-startup-id ~/bin/pamixer-notify --decrease 5
+# +/-
+bindsym $ModK+equal $volume_inc
+bindsym $ModK+minus $volume_dec
+bindsym $ModK+Shift+equal $volume_inc_shift
+bindsym $ModK+Shift+minus $volume_dec_shift
+# Media keys volume up/down
+bindsym XF86AudioRaiseVolume $volume_inc
+bindsym XF86AudioLowerVolume $volume_dec
+bindsym $ModK+XF86AudioRaiseVolume $volume_inc
+bindsym $ModK+XF86AudioLowerVolume $volume_dec
+bindsym Shift+XF86AudioRaiseVolume $volume_inc_shift
+bindsym Shift+XF86AudioLowerVolume $volume_dec_shift
+bindsym $ModK+Shift+XF86AudioRaiseVolume $volume_inc_shift
+bindsym $ModK+Shift+XF86AudioLowerVolume $volume_dec_shift
+# F11/F12
+bindsym $ModK+F12 $volume_inc
+bindsym $ModK+F11 $volume_dec
+bindsym $ModK+Shift+F12 $volume_inc_shift
+bindsym $ModK+Shift+F11 $volume_dec_shift
+# Mute media keys
+bindsym XF86AudioMute $volume_mute
+bindsym Shift+XF86AudioMute $volume_mute
+bindsym $ModK+XF86AudioMute $volume_mute
+bindsym $ModK+Shift+XF86AudioMute $volume_mute
+
+# Player: Playerctl
+set $player_play  exec --no-startup-id playerctl play-pause
+set $player_pause exec --no-startup-id playerctl pause
+set $player_next  exec --no-startup-id playerctl next
+set $player_prev  exec --no-startup-id playerctl previous
+# Player: MPD
+# set $player_play  exec --no-startup-id mpc -q toggle
+# set $player_pause exec --no-startup-id mpc -q stop
+# set $player_next  exec --no-startup-id mpc -q next
+# set $player_prev  exec --no-startup-id mpc -q prev
+# Page Up/Down, End
+bindsym $ModK+End   $player_play
+bindsym $ModK+Prior $player_prev
+bindsym $ModK+Next  $player_next
+# Media Keys
+bindsym XF86AudioPlay $player_play
+bindsym XF86AudioPrev $player_prev
+bindsym XF86AudioNext $player_next
+bindsym XF86AudioStop $player_pause
+bindsym $ModK+XF86AudioPlay $player_play
+bindsym $ModK+XF86AudioPrev $player_prev
+bindsym $ModK+XF86AudioNext $player_next
+bindsym $ModK+XF86AudioStop $player_pause
+#bindsym $ModK+F8 $player_play
+#bindsym $ModK+F9 $player_prev
+#bindsym $ModK+F10 $player_next
+
+# On/Off Touchpad
+bindsym XF86TouchpadToggle exec --no-startup-id zsh ~/bin/toggletouchpad
+
+# Lock
+bindsym $ModK+w       exec --no-startup-id $locker
+bindsym $ModK+Shift+w exec --no-startup-id $suspend
+
+# Terminal
+#bindsym $ModK+Return exec --no-startup-id $launcher -- urxvt
+#bindsym $ModK+Return exec urxvt
+bindsym $ModK+Return exec alacritty
+
+# Emacs
+bindsym $ModK+Shift+Return exec --no-startup-id $launcher -- emacs
+bindsym $ModK+$Alt+Return  exec --no-startup-id $launcher -- emacs ~/NOTE.md
+
+# Rtags rdm server
+bindsym $ModK+F4 exec --no-startup-id $launcher -w 4 -i rdm -- urxvt -name rdm -e zsh -is eval "~/bin/rdm_launch.sh"
+
+# Firefox
+set $browser firefox
+bindsym $ModK+F10       exec --no-startup-id $launcher -w 10 -- $browser
+bindsym $ModK+Shift+F10 exec --no-startup-id $launcher       -- $browser
+bindsym $ModK+F3        exec --no-startup-id $launcher -w 3  -- $browser
+bindsym $ModK+Shift+F3  exec --no-startup-id $launcher       -- $browser
+
+# Qalculate
+bindsym $ModK+F5 exec --no-startup-id $launcher -f "$float_w x $float_h"  -- qalculate-gtk -n
+
+# Redshift
+bindsym $ModK+o       exec --no-startup-id ~/bin/red +1
+bindsym $ModK+p       exec --no-startup-id ~/bin/red -1
+bindsym $ModK+Shift+o exec --no-startup-id ~/bin/red -c +1
+bindsym $ModK+Shift+p exec --no-startup-id ~/bin/red -c -1
+
+# Go to urgent window, and go back
+bindsym $ModK+BackSpace exec --no-startup-id $here/exec_goto_urgent_and_back.sh
+bindsym $ModK+u         exec --no-startup-id $here/exec_goto_urgent_and_back.sh
+
+# set $search_polybar_win --name "^polybar-mybar-big$"
+# bindsym $ModK+g exec xdotool search $search_polybar_win windowmove --relative %@ 0 -21
+# bindsym $ModK+g --release exec xdotool search $search_polybar_win windowmove --relative %@ 0 21
+
+# Dunst notification daemon
+bindsym $ModK+n       exec --no-startup-id dunstctl close
+bindsym $ModK+Shift+n exec --no-startup-id dunstctl history-pop
+bindsym $ModK+Alt+n   exec --no-startup-id dunstctl close-all
+
+#
+# Bar
+#
+
+bar {
+    status_command i3status -c ~/.config/i3/i3status.conf
+    separator_symbol "   "
+    mode hide
+    # font pango:Hack Nerd Font Mono 10
+    font pango:Hack Bold 10
+    #tray_output none
+    position bottom
+    colors {
+        background #101010
+        statusline #E0E0E0
+        separator #666666
+        focused_workspace  #285577 #285577 #dddddd
+        active_workspace   #282828 #282828 #888888
+        inactive_workspace #101010 #101010 #555555
+        urgent_workspace   #c02020 #c02020 #ffffff
+        binding_mode       #c02020 #c02020 #ffffff
+    }
+}
+
+#
+# Run at startup
+#
+
+exec $here/wallpaper_cycle
+
+# Device manager (auto user mount, umount, notify)
+# exec_always --no-startup-id systemctl --user restart daemon_devmon.service
+# exec_always --no-startup-id systemctl --user restart daemon_battery.service
+
+# exec --no-startup-id $locker
+# exec --no-startup-id xss-lock --transfer-sleep-lock -- $locker
+# set $hook_idle_time_min 10
+# exec --no-startup-id xautolock -detectsleep -time $hook_idle_time_min -locker "~/bin/hooks/onidle" -noclose
+
+#
+# Spawn layouts and programs
+# http://i3wm.org/docs/layout-saving.html
+#
+# exec --no-startup-id $layouts/startup.sh

@@ -1,9 +1,11 @@
 #!/bin/bash
 
-if [ -z "$DISPLAY" ]
+if [[ -n "$DISPLAY" ]]
 then
-    emacs -nw "$@"
-else
     # background due to ~/.omz.custom/gravemind.zsh-theme urgent
-    ~/.config/i3/layouts/launch.sh -q emacs "$@" &
+    # ~/.config/i3/layouts/launch.sh -q emacs "$@" &
+    emacs "$@" &
+    disown
+else
+    emacs -nw "$@"
 fi

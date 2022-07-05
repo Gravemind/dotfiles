@@ -1,16 +1,29 @@
 #!/bin/bash
 
-nofork="--nofork"
+i3fork="--nofork"
+swayfork=""
 if [[ "${1:-}" = "--fork" ]]; then
-   nofork=""
-   shift;
+    i3fork=""
+    swayfork="-f"
+    shift
 fi
 
 echo "$0: locking at $(date -Is)"
 
-i3lock $nofork --show-failed-attempts --ignore-empty-password --color=202020 -i ~/.config/i3/wallpaper.blured.png --tiling $@ || {
-    echo "$0: i3lock failed at $(date -Is)"
-    exit 1
-}
+case "${DESKTOP_SESSION:-}"
+in
+    sway)
+        swaylock $swayfork --show-failed-attempts --ignore-empty-password --color=202020 -i ~/.config/sway/wallpaper.blured.png --tiling $@ || {
+            echo "$0: i3lock failed at $(date -Is)"
+            exit 1
+        }
+        ;;
+    *)
+        i3lock $i3fork --show-failed-attempts --ignore-empty-password --color=202020 -i ~/.config/i3/wallpaper.blured.png --tiling $@ || {
+            echo "$0: i3lock failed at $(date -Is)"
+            exit 1
+        }
+        ;;
+esac
 
-[[ -z "$nofork" ]] || echo "$0: unlocked at $(date -Is)"
+[[ -z "$i3lock" ]] || echo "$0: unlocked at $(date -Is)"
