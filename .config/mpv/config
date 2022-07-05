@@ -62,12 +62,12 @@ hr-seek-framedrop=no
 #framedrop=vo
 
 # HQ
-#profile=gpu-hq
+# profile=gpu-hq
 profile=gpu-hqer
 
 # GPU api
-profile=opengl
-# profile=vulkan
+# profile=opengl
+profile=vulkan
 
 #
 # Profiles
@@ -83,12 +83,15 @@ vf-add=@svpf:format=yuv420p
 vf-add=@svpv:vapoursynth=~/.config/mpv/filters/svp.py
 # hwdec=auto-safe
 # hwdec=auto-copy-safe
-hwdec=auto-copy
+# hwdec=vaapi-copy
+# hwdec=auto-copy-safe
+# hwdec=vaapi-copy
+# hwdec-codecs=all
 [disable-svp]
 vf-remove=@svpf
 vf-remove=@svpv
 # hwdec=auto-safe
-hwdec=auto
+# hwdec=auto
 
 
 #
@@ -149,29 +152,41 @@ tscale=oversample
 # GPU api
 #
 [vulkan]
+vo=gpu
 gpu-api=vulkan
-gpu-context=x11vk
-#video-sync=display-resample
-# vo=drm
+# gpu-context=x11
+# gpu-context=x11vk
+# gpu-context=x11egl
+# gpu-context=displayvk
 # gpu-context=drm
-#vulkan-swap-mode=auto
-#vulkan-swap-mode=fifo # vsync
-vulkan-swap-mode=fifo-relaxed # vsync unless too slow
-#vulkan-swap-mode=mailbox # triple buffer sync
-#vulkan-swap-mode=immediate # no sync
-#vulkan-async-compute=yes
-#vulkan-async-transfer=yes
-#vulkan-queue-count=1
+# vulkan-swap-mode=auto
+vulkan-swap-mode=fifo # vsync
+# vulkan-swap-mode=fifo-relaxed # vsync unless too slow
+# vulkan-swap-mode=mailbox # triple buffer sync
+# vulkan-swap-mode=immediate # no sync
+# vulkan-async-compute=yes
+# vulkan-async-transfer=yes
+# vulkan-queue-count=1
 
 # Reduce stutter
+# display-fps=144
 video-sync=display-resample
 interpolation=yes
+# tscale=box
 tscale=oversample
+# tscale=linear
+# tscale=ewa_lanczossharp
+# tscale=box
+# tscale-window=quadric
+# tscale-clamp=0.0
+# tscale-radius=1.025
 
 [opengl]
-opengl-pbo=yes
-opengl-glfinish=yes
-opengl-waitvsync=yes
+vo=gpu
+# hwdec=vaapi
+# opengl-pbo=yes
+# opengl-glfinish=yes
+# opengl-waitvsync=yes
 gpu-api=opengl
 #opengl-swapinterval=0 # no sync
 opengl-swapinterval=1 # vsync
@@ -179,6 +194,10 @@ opengl-swapinterval=1 # vsync
 # Can fix stuttering in some cases, in other cases probably causes it. Try it if you experience stuttering on macOS.
 opengl-early-flush=no
 #opengl-pbo=yes
+
+# video-sync=display-resample
+# interpolation=yes
+# tscale=oversample
 
 #
 # Auto profiles `mpv --list-protocols`

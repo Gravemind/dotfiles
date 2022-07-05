@@ -8,6 +8,7 @@ from pprint import pprint
 #core = vs.get_core(threads=9)
 # core = vs.get_core()
 core = vs.core
+core.num_threads = 6
 clip = video_in
 
 core.std.LoadPlugin("/opt/svp/plugins/libsvpflow1_vs64.so")
@@ -18,7 +19,7 @@ core.std.LoadPlugin("/opt/svp/plugins/libsvpflow2_vs64.so")
 
 enable = True
 
-super_params="gpu:1, scale:{up:0}"
+super_params = "gpu:0, scale:{up:0}"
 
 analyse_params="""
 block: { w:16, overlap:2 },
@@ -36,7 +37,8 @@ main: {
 },
 refine:[{thsad:200}]}
 """
-analyse_params=""
+
+# analyse_params   = "block:{w:32},main:{search:{coarse:{type:2,distance:-6,bad:{sad:2000,range:24}},type:2}},refine:[{thsad:250}]"
 
 '''
 block: { w:16, overlap:2 },
@@ -91,12 +93,10 @@ refine: [{
 }]
 '''
 
-smooth_params="""
+smoothfps_params="""
 ,algo:23,mask:{cover:80,area:0},scene:{limits:{m1:0,m2:0},mode:1}
 """
-smooth_params=",algo:23,scene:{limits:{m1:0,m2:0},mode:1}"
-
-smooth_params=""
+smoothfps_params=",algo:23,scene:{limits:{m1:0,m2:0},mode:1}"
 
 '''
 algo:23,mask:{cover:60},scene:{limits:{m1:0,m2:0},mode:1}
@@ -121,34 +121,42 @@ scene: {
 }
 '''
 
+# super_params     = "scale:{up:2},gpu:0,rc:false"
+# analyse_params   = "block:{w:32},main:{search:{coarse:{type:2,distance:-6,bad:{sad:2000,range:24}},type:2}},refine:[{thsad:250}]"
+# smoothfps_params = "rate:{num:5,den:2},algo:2,scene:{}"
+
+super_params     = "gpu:0"
+analyse_params   = "gpu:0"
+smoothfps_params = ",gpuid:0"
+
 pprefix="svp.py: "
 
 print()
 print(pprefix+"Clip", clip.width, "x", clip.height, clip.format.name, "at", container_fps, "fps")
 
-# display_fps = 143.995
+display_fps = 143.995
 
 max_fps = display_fps * 1.0001
 
-if clip.width > 1920:
-    max_fps = min(max_fps, 60)  # > 1080p
-elif clip.width >= 1920:
-    max_fps = min(max_fps, 144) # <= 1080p
+# if clip.width > 1920:
+#     max_fps = min(max_fps, 60)  # > 1080p
+# elif clip.width >= 1920:
+#     max_fps = min(max_fps, 144) # <= 1080p
 
-max_fps = min(max_fps, 60)  # > 1080p
+max_fps = min(max_fps, 61)
 
 # Interpolate to a multiple of the original source fps
 i = 1
 while container_fps * float(i + 1) <= max_fps + 0.5:
     i += 1
+    # break
 dst_fps = container_fps * float(i)
-
-#dst_fps = display_fps
 
 if not enable or dst_fps <= container_fps:
     print(pprefix+"NOT reflowing clip", clip.width, "x", clip.height, "at", container_fps, "fps (display:", display_fps, ").")
 else:
-    src_fps_num = int(container_fps * 1e5)
+    src_fps = container_fps
+    src_fps_num = int(src_fps * 1e5)
     src_fps_den = int(1e5)
     dst_fps_num = int(dst_fps * 1e5)
     dst_fps_den = int(1e5)
@@ -157,6 +165,7 @@ else:
 
     orig_clip = clip
 
+    ENABLE_CONVERSION_YV12 = True
     ENABLE_CONVERSION_YV12 = False # Using vf=format=yuv420p gives better results !?
     ok = False
     while not ok:
@@ -175,18 +184,22 @@ else:
 
         #pprint(vars(vectors))
 
-        full_smooth_params = "{ gpuid:11, rate:{num:"+str(dst_fps_num)+", den:"+str(dst_fps_den)+", abs:true} "+smooth_params+" }"
-        #full_smooth_params = "{ rate: {num:2,den:1}, "+smooth_params+" }"
+        full_smoothfps_params = "{ gpuid:0, rate:{num:"+str(dst_fps_num)+", den:"+str(dst_fps_den)+", abs:true} "+smoothfps_params+" }"
+        # full_smoothfp_params = "{ "+smoothfps_params+" }"
 
-        clip = core.svp2.SmoothFps(clip, sup["clip"], sup["data"], vectors["clip"], vectors["data"], full_smooth_params)
+        clip = core.svp2.SmoothFps(clip, sup["clip"], sup["data"], vectors["clip"], vectors["data"], full_smoothfps_params)
+        # clip = core.svp2.SmoothFps(clip, sup["clip"], sup["data"], vectors["clip"], vectors["data"],
+        #                            full_smoothfps_params,
+        #                            src=clip,fps=src_fps)
         # help(clip)
+        # print(pprefix+"Got ", clip.fps_num / clip.fps_den)
 
         #pprint(vars(clip))
     else:
         # help(core.svp2.SmoothFps_NVOF)
         # smooth  = core.svp2.SmoothFps_NVOF(input_m,smoothfps_params,nvof_src=input_m8,src=input_um,fps=src_fps)
-        clip  = core.svp2.SmoothFps_NVOF(clip,smooth_params,nvof_src=clip,src=clip)#,fps=src_fps)
-        # clip = core.svp2.SmoothFps_NVOF(clip, smooth_params, sup["clip"], sup["data"], "")
+        clip  = core.svp2.SmoothFps_NVOF(clip,smoothfps_params,nvof_src=clip,src=clip)#,fps=src_fps)
+        # clip = core.svp2.SmoothFps_NVOF(clip, smoothfps_params, sup["clip"], sup["data"], "")
 
     clip = core.std.AssumeFPS(clip, fpsnum=clip.fps_num, fpsden=clip.fps_den)
 
