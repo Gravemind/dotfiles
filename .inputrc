@@ -11,9 +11,10 @@ $else
 "\eOc": forward-word       # [Ctrl-Right]
 "\eOd": backward-word      # [Ctrl-Left]
 "\C-h": backward-kill-word # [Ctrl-Backspace]
-"\e[3^": kill-word         # [Ctrl-Del]
-"\e[8^": end-of-line       # [Ctrl-End]
-"\e[7^": beginning-of-line # [Ctrl-Home]
+
+# "\e[3^": kill-word         # [Ctrl-Del]
+# "\e[8^": end-of-line       # [Ctrl-End]
+# "\e[7^": beginning-of-line # [Ctrl-Home]
 
 # safer paste
 # https://cirw.in/blog/bracketed-paste

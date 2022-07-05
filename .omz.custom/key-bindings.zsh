@@ -58,10 +58,12 @@ do
 
 	bindkey -M $b "\e[3^" delete-word             # [Ctrl-Del]
 	# Enable Ctrl-Backspace only on supported term
-	if [[ "$TERM" = rxvt* ]]
-	then
-		bindkey -M $b "^H" backward-delete-word   # [Ctrl-Backspace]
-	fi
+	case "$TERM"
+	in
+		 rxvt*|alacritty)
+			 bindkey -M $b "^H" backward-delete-word  # [Ctrl-Backspace]
+			 ;;
+	esac
 
 	bindkey -M $b '^_' undo					      # [Ctrl-/]
 	bindkey -M $b '^R' redo						  # [Ctrl-R]
