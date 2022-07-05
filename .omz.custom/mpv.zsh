@@ -99,11 +99,6 @@ mpn() {
 	local next_file=
 	while read -r file
 	do
-		if [[ ! -e "$file" ]]
-		then
-			echo "Escaping error ? file not found: $file" >&2
-			return 1
-		fi
 		if [[ $found = 0 ]]
 		then
 			if [[ "$file" != "$last_file" ]]
@@ -148,8 +143,25 @@ mpn() {
 }
 
 mpf() {
-	local first="$(\ls | _mpn_sort_files | _mpn_grep_valid_files -1)"
+	local first=
+	echo
+	while read -r file
+	do
+		if [[ -z "$first" ]]
+		then
+			first="$file"
+			echo "+ "$'\e[1;32m'"$file"$'\e[0;0m'
+		else
+			echo "  $file"
+		fi
+	done < <( \ls | _mpn_sort_files | _mpn_grep_valid_files )
+	echo
 
+	if [[ -z "$first" ]]
+	then
+		echo "no valid files found" >&2
+		return 1
+	fi
 	local cmd=( mpv $MPN_MPV_ARGS "$@" "$first")
 
 	echo "Now playing: ${(q-)cmd[@]}"

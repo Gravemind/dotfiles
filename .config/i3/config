@@ -87,7 +87,8 @@ floating_maximum_size -1 x -1
 # for_window [all] title_window_icon no
 for_window [all] title_format "<span rise='1000'> </span>%class <span size='small' alpha='80%%' weight='normal'>%title</span>"
 
-for_window [class="(?i)firefox" title="(?i)picture-in-picture"] resize set $ffpip_size, move position $ffpip_pos, sticky enable, border pixel 2
+# for_window [class="(?i)firefox" title="(?i)picture-in-picture"] resize set $ffpip_size, move position $ffpip_pos, sticky enable, border pixel 2
+for_window [class="(?i)firefox" title="(?i)picture-in-picture"] floating disable
 
 # Colors
 # class                 border  backgr. text    split_indicator child_border
