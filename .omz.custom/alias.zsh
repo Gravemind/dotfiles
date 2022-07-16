@@ -76,7 +76,8 @@ alias -g    TEE='|& tee'
 alias -g    ERR='2> /dev/null'
 alias -g   NULL='>& /dev/null'
 alias -g  COLOR='--color=always'
-alias -g  XCLIP='| tee >(xclip -r)'
+#alias -g  XCLIP='| tee >(xclip -r)'
+alias -g  XCLIP='| tee >(rmlastnl | clipcopy)' # .oh-my-zsh/lib/clipboard.zsh
 alias -g   YANK='| yank'
 alias -g     BG='& ; disown'
 alias -g  ERROR="2> >(sed -u 's/^/'\"$fg_bold[red]\"'stderr:'\"$reset_color\"' /g' >&2)"
@@ -93,3 +94,7 @@ bash_literally () {
 alias BASH='bash_literally #'
 # zmodload zsh/parameter
 # setopt interactivecomments
+
+rmlastnl() {
+	perl -pe 'chomp if eof'
+}
