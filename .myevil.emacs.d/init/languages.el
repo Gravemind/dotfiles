@@ -404,6 +404,16 @@
   )
 
 ;;
+;; proglog
+;;
+
+(use-package prolog-mode
+  :pin manual
+  :mode (("\\.lp\\'" . prolog-mode)
+         )
+  )
+
+;;
 ;; pdf-tools
 ;;
 
