@@ -27,3 +27,14 @@ indent_size = 4
 indent_style = space
 indent_size = 2
 tab_width = 8
+
+[*.{yaml,yml}]
+# Yaml is usualy 2-space indented.
+indent_style = space
+indent_size = 2
+tab_width = 8
+
+[{Makefile,*.make}]
+indent_style = tab
+indent_size = 8
+tab_width = 8
