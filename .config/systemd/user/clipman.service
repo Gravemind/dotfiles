@@ -1,0 +1,21 @@
+[Unit]
+Description=Clipman daemon
+
+[Service]
+ExecStart=bash -c "wl-paste -t text --watch clipman store --max-items=10000 & wl-paste -p -t text --watch clipman store -P --max-items=10000 & wait"
+Restart=always
+RestartSec=1000ms
+
+MemoryDenyWriteExecute=yes
+NoNewPrivileges=yes
+ProtectControlGroups=yes
+ProtectKernelTunables=yes
+RestrictAddressFamilies=
+RestrictRealtime=yes
+
+# We don't need to do any clean up, so if something hangs (borked xclip, etc),
+# it's going to stay that way. Just forcefully kill and get it over with.
+TimeoutStopSec=2
+
+[Install]
+WantedBy=default.target
