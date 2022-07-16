@@ -254,12 +254,14 @@
 	# Increase short hash to 10 characters
 	abbrev = 10
 [diff]
+	# Shift diff hunk boundaries
 	indentHeuristic = true
+
 	#algorithm = default # myers
 	#algorithm = myers # The basic greedy diff algorithm. Currently, this is the default.
 	#algorithm = minimal # Spend extra time to make sure the smallest possible diff is produced.
 	#algorithm = patience # Use "patience diff" algorithm when generating patches.
-	#algorithm = histogram # This algorithm extends the patience algorithm to "support low-occurrence common elements".
+	algorithm = histogram # This algorithm extends the patience algorithm to "support low-occurrence common elements".
 
 	# Change "a/" or "b/" to "w/" (wortree) or "c/" (commit) or "i/" (index)
 	# or "o/" (object, "HEAD:file").
