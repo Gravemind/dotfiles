@@ -397,10 +397,19 @@
 ;; yaml
 ;;
 
+(defun my--tweak-yaml-mode-syntax-table ()
+  "See 'my--tweak-sh-mode-syntax-table'."
+  ;; For shell scripts in yaml strings
+  (modify-syntax-entry ?$ "." yaml-mode-syntax-table)
+  (modify-syntax-entry ?/ "." yaml-mode-syntax-table)
+  (modify-syntax-entry ?= "." yaml-mode-syntax-table)
+)
+
 (use-package yaml-mode
   :load-path (my-packages-directory "yaml-mode")
   :mode (("\\.\\(e?ya?\\|ra\\)ml\\'" . yaml-mode)
          )
+  :hook (yaml-mode . (lambda () (my--tweak-yaml-mode-syntax-table)))
   )
 
 ;;
