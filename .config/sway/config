@@ -278,7 +278,7 @@ bindsym $ModK+Shift+space floating toggle, resize set $float_w_wide $float_h, mo
 bindsym $ModK+space focus mode_toggle
 
 # Change Window Size and Modes
-set $mode_resize "    [S-]←→↓↑ resize  ·  <u>s</u>ticky  ·  <u>w</u>allpaper  ·  setup-<u>x</u>randr  ·  <u>v</u>ideo-mode    "
+set $mode_resize "    [S-]←→↓↑ resize  ·  <u>s</u>ticky  ·  <u>w</u>allpaper  ·  setup-<u>x</u>randr  ·  <u>v</u>ideo-mode  ·  <u>e</u>nable-all-outputs  ·  <u>d</u>isable-all-outputs    "
 mode --pango_markup $mode_resize {
     # Move focused window
     bindsym $ModK+Shift+$keyLeft  move left  $move_step_x
@@ -317,9 +317,12 @@ mode --pango_markup $mode_resize {
 
     bindsym s sticky toggle, mode "default"
 
+    bindsym e output * enable, mode "default"
+    bindsym d output * disable, mode "default"
+
     bindsym w exec --no-startup-id $here/wallpaper_cycle, mode "default"
     # bindsym x exec --no-startup-id ~/bin/setup-xrandr, mode "default"
-    # bindsym v exec --no-startup-id exec $here/exec_video_mode.sh, mode "default"
+    bindsym v exec --no-startup-id exec $here/exec_video_mode.sh, mode "default"
 
     bindsym q mode "default"
     bindsym Return mode "default"
