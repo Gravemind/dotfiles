@@ -1,0 +1,56 @@
+#!/usr/bin/bash
+
+set -euo pipefail
+
+shopt -s extglob
+
+clones_git_root="$HOME/git"
+
+error() {
+    echo "clones: error: $*" >&2
+}
+
+run() {
+    echo "+$(printf ' %q' "$@")" >&2
+    "$@"
+}
+
+clone() {
+    local url="$1"
+
+    local path
+    path="$url"
+    path="${path#http?(s)://}"
+    path="${path##+(/)}"
+    path="${path%.git}"
+    path="$clones_git_root/$path"
+
+    local cmd
+    cmd=(git clone "$url" "$path")
+    read -p "${cmd[*]} ? " ans
+    case "$ans"
+    in
+        y|yes) ;;
+        *)
+            error "aborting"
+            exit 1
+            ;;
+    esac
+
+    run "${cmd[@]}"
+}
+
+main() {
+    case "$1"
+    in
+        http*)
+            clone "$1"
+            ;;
+        *)
+            error "unrecognized argument: $1"
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"
