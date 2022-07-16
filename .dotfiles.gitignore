@@ -27,6 +27,7 @@
 !/.toprc
 !/.xinitrc
 !/.Xresources
+!/.Xdefaults
 !/.zshrc
 !/.ccache
 !/.emacs.d
@@ -43,22 +44,7 @@
 !/.gtkrc-2.0
 
 !/.config
-/.config/*
-!/.config/fontconfig
-!/.config/mpd
-!/.config/ripgrep
-!/.config/rofi
-!/.config/systemd
-!/.config/youtube-dl
-!/.config/dunst
-!/.config/feh
-!/.config/i3
-!/.config/mpv
-!/.config/starship*
-!/.config/gtk-3*
-!/.config/clipcat
-!/.config/greenclip*
-!/.config/user-dirs*
 
 !/bin
 !/dotfiles
+!/SNIPPETS.md
