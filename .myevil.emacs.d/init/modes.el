@@ -80,8 +80,16 @@
 ;; ediff
 ;;
 
+;; Fix ediff with zoom-mode
+;; https://github.com/cyrus-and/zoom/issues/29
+(defun my/fix-ediff-size ()
+  (with-selected-window (get-buffer-window "*Ediff Control Panel*")
+    (setq window-size-fixed t)
+    (window-resize (selected-window) (- (if ediff-use-long-help-message 20 5) (window-total-height)) nil t)))
+
 (use-package ediff
   :pin manual
+  :hook (ediff-after-setup-windows . my/fix-ediff-size)
   :config
   (setq
    ediff-split-window-function 'split-window-horizontally
