@@ -89,9 +89,7 @@
   ;; infinite recurse ?
   ;;(add-hook 'window-configuration-change-hook 'zoom--handler)
 
-  (if (not (string-equal (getenv "BIN_EDIFF") "1"))
-      (zoom-mode t)
-    )
+  (zoom-mode t)
 )
 
 ;;
