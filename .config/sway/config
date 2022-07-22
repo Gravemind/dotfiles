@@ -55,6 +55,9 @@ exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSO
 # font xft:Hack Bold 9
 font pango:Hack 9
 
+# Mouse cursor size (need restart sway and applications)
+seat seat0 xcursor_theme default 32
+
 # Hide border if single window/container in workspace
 hide_edge_borders --i3 smart_no_gaps
 # smart_gaps on
