@@ -239,11 +239,15 @@ colors:
   #vi_mode_cursor:
   #  text: CellBackground
   #  cursor: CellForeground
+  vi_mode_cursor:
+    text: '#000000'
+    cursor: '#ff00ff'
 
   # Search colors
   #
   # Colors used for the search bar and match highlighting.
   #search:
+  search:
     # Allowed values are CellForeground/CellBackground, which reference the
     # affected cell, or hexadecimal colors like #ff00ff.
     #matches:
@@ -252,6 +256,12 @@ colors:
     #focused_match:
     #  foreground: '#ffffff'
     #  background: '#000000'
+    matches:
+      foreground: '#000000'
+      background: '#ffffff'
+    focused_match:
+      foreground: '#000000'
+      background: '#ffffff'
 
     #bar:
     #  background: '#c5c8c6'
@@ -284,6 +294,9 @@ colors:
   #line_indicator:
   #  foreground: None
   #  background: None
+  line_indicator:
+    foreground: '#ffffff'
+    background: '#ff00ff'
 
   # Selection colors
   #
@@ -419,6 +432,7 @@ selection:
   #save_to_clipboard: false
 
 #cursor:
+cursor:
   # Cursor style
   #style:
     # Cursor shape
@@ -445,6 +459,7 @@ selection:
   #
   # See `cursor.style` for available options.
   #vi_mode_style: None
+  vi_mode_style: Block
 
   # Cursor blinking interval in milliseconds.
   #blink_interval: 750
@@ -452,10 +467,12 @@ selection:
   # If this is `true`, the cursor will be rendered as a hollow box when the
   # window is not focused.
   #unfocused_hollow: true
+  unfocused_hollow: true
 
   # Thickness of the cursor relative to the cell width as floating point number
   # from `0.0` to `1.0`.
   #thickness: 0.15
+  thickness: 0.3
 
 # Live config reload (changes require restart)
 #live_config_reload: true
@@ -783,6 +800,7 @@ selection:
 # If the same trigger is assigned to multiple actions, all of them are executed
 # in the order they were defined in.
 #key_bindings:
+key_bindings:
   #- { key: Paste,                                       action: Paste          }
   #- { key: Copy,                                        action: Copy           }
   #- { key: L,         mods: Control,                    action: ClearLogNotice }
@@ -791,11 +809,13 @@ selection:
   #- { key: PageDown,  mods: Shift,   mode: ~Alt,        action: ScrollPageDown }
   #- { key: Home,      mods: Shift,   mode: ~Alt,        action: ScrollToTop,   }
   #- { key: End,       mods: Shift,   mode: ~Alt,        action: ScrollToBottom }
+  - { key: S,  mods: Alt, action: ToggleViMode            }
 
   # Vi Mode
   #- { key: Space,  mods: Shift|Control, mode: ~Search,    action: ToggleViMode            }
   #- { key: Space,  mods: Shift|Control, mode: Vi|~Search, action: ScrollToBottom          }
   #- { key: Escape,                      mode: Vi|~Search, action: ClearSelection          }
+  - { key: Escape,                      mode: Vi|~Search, action: ToggleViMode            }
   #- { key: I,                           mode: Vi|~Search, action: ToggleViMode            }
   #- { key: I,                           mode: Vi|~Search, action: ScrollToBottom          }
   #- { key: C,      mods: Control,       mode: Vi|~Search, action: ToggleViMode            }
@@ -840,6 +860,9 @@ selection:
   #- { key: Slash,  mods: Shift,         mode: Vi|~Search, action: SearchBackward          }
   #- { key: N,                           mode: Vi|~Search, action: SearchNext              }
   #- { key: N,      mods: Shift,         mode: Vi|~Search, action: SearchPrevious          }
+  - { key: N,                           mode: Vi|~Search, action: SearchNext              }
+  - { key: N,      mods: Shift,         mode: Vi|~Search, action: SearchPrevious          }
+  - { key: P,                           mode: Vi|~Search, action: SearchPrevious          }
 
   # Search Mode
   #- { key: Return,                mode: Search|Vi,  action: SearchConfirm         }
@@ -864,6 +887,9 @@ selection:
   #- { key: Key0,           mods: Control,                         action: ResetFontSize    }
   #- { key: Equals,         mods: Control,                         action: IncreaseFontSize }
   #- { key: Plus,           mods: Control,                         action: IncreaseFontSize }
+  - { key: Key0,           mods: Control,                         action: ResetFontSize    }
+  - { key: Equals,         mods: Control,                         action: IncreaseFontSize }
+  - { key: Plus,           mods: Control,                         action: IncreaseFontSize }
   #- { key: NumpadAdd,      mods: Control,                         action: IncreaseFontSize }
   #- { key: Minus,          mods: Control,                         action: DecreaseFontSize }
   #- { key: NumpadSubtract, mods: Control,                         action: DecreaseFontSize }
