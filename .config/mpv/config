@@ -28,6 +28,8 @@ audio-channels=stereo
 
 audio-swresample-o=lfe_mix_level=1
 
+# msg-level=vd=v,vo=v,vo/gpu/vaapi-egl=trace
+
 # Dolby Pro Logic II downmix
 #   https://github.com/mpv-player/mpv/issues/2214
 #audio-swresample-o=matrix_encoding=dplii,lfe_mix_level=1
