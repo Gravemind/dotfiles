@@ -1,0 +1,10 @@
+#!/bin/bash
+
+tmpdir="$(mktemp -d -t "tmphome.XXXX")"
+cleanup() { echo "with-tmphome: cleanup $tmpdir" >&2; rm -rf "$tmpdir"; }
+trap cleanup EXIT
+
+export HOME="$tmpdir"
+echo "with-tmphome: HOME=$HOME" >&2
+"$@"
+exit $?
