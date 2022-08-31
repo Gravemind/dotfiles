@@ -1,0 +1,15 @@
+#!/bin/bash
+# https://unix.stackexchange.com/questions/37258/refresh-reload-active-browser-tab-from-command-line
+
+reload_keys="CTRL+R"
+#reload_keys="SHIFT+CTRL+R"
+browser=firefox
+
+pid=$(pgrep firefox | head -n1)
+ffwindow=$(xdotool search --onlyvisible --pid $pid --class $browser | tail -n1)
+
+mywindow=$(xdotool getactivewindow)
+xdotool windowactivate --sync $ffwindow
+xdotool key --clearmodifiers --window $ffwindow $reload_keys
+xdotool windowfocus --sync $mywindow
+xdotool windowactivate --sync $mywindow
