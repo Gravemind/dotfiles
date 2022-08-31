@@ -114,7 +114,7 @@ dl_docsets() {
             pushd docsets > /dev/null
             rm -rf "$name.docset"
             tar xf "$name.tgz"
-            assert -e "$name.docset/Contents"
+            assert -e "$name.docset/Contents"  -o -e "${name^^}.docset/Contents" -o -e "${name,,}.docset/Contents"
             popd > /dev/null
 
             loginfo "$name done."
