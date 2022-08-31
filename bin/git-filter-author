@@ -1,0 +1,28 @@
+#!/bin/bash
+#
+# usage: git-filter-author <new-name> <new-email> <git-rev-list-args...>
+#
+
+set -euo pipefail
+
+export NEW_NAME="$1"
+export NEW_EMAIL="$2"
+shift 2
+
+count="$(git rev-list --count "$@")"
+echo "About to change the author to '$NEW_NAME <$NEW_EMAIL>' of $count commits"
+read -p "Ready [y] ? " y
+if [[ "$y" != y ]]
+then
+    echo "Abort."
+    exit 1
+fi
+
+# --branches --tags
+
+git filter-branch --env-filter '
+    export GIT_COMMITTER_NAME="$NEW_NAME"
+    export GIT_COMMITTER_EMAIL="$NEW_EMAIL"
+    export GIT_AUTHOR_NAME="$NEW_NAME"
+    export GIT_AUTHOR_EMAIL="$NEW_EMAIL"
+' --tag-name-filter cat -- "$@"
