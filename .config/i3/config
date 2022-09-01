@@ -226,6 +226,7 @@ bindsym $ModK+Shift+Right     move right $move_step_x
 
 # Focus other output (when multi screen)
 bindsym $ModK+Tab focus output right
+bindsym $ModK+Shift+Tab move to output right
 
 # Split in vertical orientation
 bindsym $ModK+v split v
