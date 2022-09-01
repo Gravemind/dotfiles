@@ -60,7 +60,7 @@ do
 	# Enable Ctrl-Backspace only on supported term
 	case "$TERM"
 	in
-		 rxvt*|alacritty)
+		 rxvt*|xterm*|alacritty|foot)
 			 bindkey -M $b "^H" backward-delete-word  # [Ctrl-Backspace]
 			 ;;
 	esac
