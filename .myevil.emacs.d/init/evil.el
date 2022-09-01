@@ -352,7 +352,8 @@ point."
   :load-path (my-packages-directory "evil-org-mode")
   :after evil
   :after org
-  :hook (org-mode . (lambda () evil-org-mode))
+  :commands (evil-org-mode)
+  :hook (org-mode . (lambda () (evil-org-mode)))
   :config
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
