@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-export PACPEND='-g explicit -s name,vdiff -H linux,emacs,git,rust,nvidia,firefox,gcc,clang -F eslint,xorg'
+export PACPEND='-g explicit -s name,vdiff -H linux,emacs,git,rust,nvidia,firefox,gcc,clang,amd,firmware -F eslint,xorg'
 
 if ! command which yay > /dev/null
 then
@@ -110,6 +110,7 @@ pacupg() {
 
 	yay -Syu --noconfirm "$@" || { echo "${fg_bold[red]}$0: yay -Syu failed !!$reset_color"; return 1; }
 
+	checkpacorphans
 	checkpacnew
 	echo "${fg_bold[green]}packages updated$reset_color";
 
@@ -141,6 +142,21 @@ checkpacnew() {
 	else
 		echo "${fg_bold[black]}$0: found 0 pacnew.$reset_color"
 	fi
+}
+
+# Check for orphan packages
+checkpacorphans() {
+	# local orphans=($(pacman -Qtdq ||:))
+	local orphans=($(pacman -Qqd | pacman -Rsu --print - | grep -v "there is nothing to do"))
+	if [[ "${#orphans[@]}" -eq 0 ]]; then
+		echo "${fg_bold[black]}$0: found 0 orphan packages.$reset_color"
+		return 0
+	fi
+	echo
+	echo "${fg_bold[red]}$0: found ${#orphans[@]} orphan packages: ${orphans[*]}$reset_color"
+	# echo "${fg_bold[red]}$0: to remove, run: pacman -Qtdq | sudo pacman -Rns -$reset_color"
+	echo "${fg_bold[red]}$0: to remove, run: pacman -Qqd | pacman -Rsu -$reset_color"
+	echo
 }
 
 # Find all packages that could install a file
