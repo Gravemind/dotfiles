@@ -216,7 +216,8 @@ bindsym $ModK+Escape mode $mode_system
 
 # The middle button over a titlebar kills the window
 # bindsym --release --border button2 kill
-bindsym --border button2 kill
+# bindsym --border button2 kill
+bindsym button2 kill
 
 # Toggle border decoration
 bindsym $ModK+e border toggle
