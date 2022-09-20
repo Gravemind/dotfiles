@@ -53,7 +53,7 @@
 	bu = "!f() { set -eu; git branch -f \"$1\" \"$1@{upstream}\"; }; f"
 
 	# Update other branch then checkout it
-	cou = "!f() { set -eu; git bu \"$1\" && git switch \"$1\"; }; f"
+	buco = "!f() { set -eu; git bu \"$1\" && git switch \"$1\"; }; f"
 
 	# Fetch prune all
 	fp = fetch --all --prune --tags
