@@ -40,11 +40,59 @@ clone() {
     run "${cmd[@]}"
 }
 
+list() {
+    # /usr/bin/time -v find "$clones_git_root" -name .git -print -prune ||:
+
+#     /usr/bin/time -v perl -MFile::Find -le '
+#   sub wanted {
+#     if (/^\../) {$File::Find::prune = 1; return}
+#     if (-d && -e "$_/.git") {
+#        print $File::Find::name; $File::Find::prune = 1
+#     }
+#   }; find \&wanted, @ARGV' . ||:
+
+#     /usr/bin/time -v python -c '
+# import os
+
+# def walk(p):
+#     with os.scandir(p) as it:
+#         it = list(it)
+#         if any(e.name == ".git" for e in it):
+#             print(str(p.path))
+#             return
+#         for e in it:
+#             if not e.is_symlink() and e.is_dir():
+#                 try:
+#                     walk(e)
+#                 except PermissionError:
+#                     pass
+
+# walk(".")
+# ' ||:
+
+    while read -r path
+    do
+        name="${path#./}"
+        url="https://$name"
+        path="${clones_git_root/${HOME}\//~\/}/$name"
+        echo $path $url
+    done < <(cd "$clones_git_root" && perl -MFile::Find -le '
+  sub wanted {
+    if (/^\../) {$File::Find::prune = 1; return}
+    if (-d && -e "$_/.git") {
+       print $File::Find::name; $File::Find::prune = 1
+    }
+  }; find \&wanted, @ARGV' . ||:) | column -t
+}
+
 main() {
-    case "$1"
+    case "${1:-}"
     in
         http*)
             clone "$1"
+            ;;
+        ''|list)
+            list
             ;;
         *)
             error "unrecognized argument: $1"
