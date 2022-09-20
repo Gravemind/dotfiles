@@ -29,6 +29,8 @@
    (conf-unix-mode  8 t   8)
    (yaml-mode       2 nil 8)
    (markdown-mode   4 nil 8)
+   (makefile-mode         8 t 8)
+   (makefile-gmake-mode   8 t 8)
 
    (gud-mode             8 t 8)
    (gdb-inferior-io-mode 8 t 8)
