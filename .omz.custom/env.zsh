@@ -31,4 +31,4 @@ export OS=`uname -s`
 export SUDO_PROMPT=$'\a'"[sudo] [%u@%h] password for %p: "
 
 # `bash -x` "prompt" https://wiki.bash-hackers.org/scripting/debuggingtips
-export PS4='+$$+${BASH_SOURCE}:${LINENO}+${FUNCNAME[0]:-}+ '
+export PS4='+$$+${BASH_SOURCE:-?}:${LINENO:-?}+${FUNCNAME[0]:-?}+ '

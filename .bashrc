@@ -54,7 +54,7 @@ export PAGER='less'
 export BROWSER='firefox'
 
 # `bash -x` "prompt" https://wiki.bash-hackers.org/scripting/debuggingtips
-export PS4='+$$+${BASH_SOURCE}:${LINENO}+${FUNCNAME[0]:-}+ '
+export PS4='+$$+${BASH_SOURCE:-?}:${LINENO:-?}+${FUNCNAME[0]:-?}+ '
 
 # less config
 export LESS_TERMCAP_mb=$'\e[01;31m' # begin blinking (?)
