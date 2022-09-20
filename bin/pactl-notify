@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -euo pipefail
+
+basename0="$(basename "$0")"
+lockdir="/tmp/$basename0.lock"
+
+pactl "$@"
+
+if ! mkdir "$lockdir" 2> /dev/null; then
+    # local already taken
+    exit 0
+fi
+
+cleanup() { rm -rf "$lockdir"; }
+trap cleanup EXIT
+
+mute="$({ pactl get-sink-mute '@DEFAULT_SINK@' | grep -q yes; } && echo true || echo false)"
+vol="$(pactl get-sink-volume '@DEFAULT_SINK@'  | perl -ne '/\b([0-9]+)%/ && print($1 . "\n") && exit 0')"
+
+symbolic=""
+symbolic="-symbolic.symbolic"
+icon_nomu="audio-volume-muted$symbolic"
+icon_mute="audio-volume-high$symbolic"
+# icon_nomu="audio-speakers$symbolic"
+# icon_mute="audio-speakers$symbolic"
+
+title="Volume"
+
+if [[ "$mute" = "true" ]]; then
+    title="Mute"
+    icon="$icon_mute"
+else
+    icon="$icon_nomu"
+fi
+
+notify-send -u low -i "$icon" -a "$basename0" -h int:value:$vol -h int:transient:1 -h string:synchronous:volume "$title"
