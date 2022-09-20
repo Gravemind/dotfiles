@@ -57,6 +57,7 @@ font pango:Hack 9
 
 # Mouse cursor size (need restart sway and applications)
 seat seat0 xcursor_theme default 32
+exec_always gsettings set org.gnome.desktop.interface cursor-size 32
 
 # Hide border if single window/container in workspace
 hide_edge_borders --i3 smart_no_gaps
