@@ -283,6 +283,9 @@
 	# checkout as is, commit as is
 	autocrlf = false
 
+# [blame]
+# 	ignoreRevsFile = .git-blame-ignore-revs
+
 # Better Submodules config:
 [fetch]
 	# git-fetch also fetches (only) updated submodules
