@@ -221,6 +221,14 @@ gravemind_prompt_agent() {
 	[[ -z "$o" ]] || echo -n " $o"
 }
 
+gravemind_prompt_proxy() {
+	local o
+	if [[ -n "${http_proxy:-}" || -n "${https_proxy:-}" ]]; then
+		o="%F{green}P"
+	fi
+	[[ -z "$o" ]] || echo -n " $o"
+}
+
 _GRAVEMIND_CMD_START=-1
 _GRAVEMIND_CMD_DURATION=-1
 _GRAVEMIND_LAST_CMD=
@@ -340,6 +348,7 @@ gravemind_build_rprompt() {
 	gravemind_prompt_dir
 	gravemind_prompt_cc
 	gravemind_prompt_agent
+	gravemind_prompt_proxy
 	echo -n " %F{black}%D{%H:%M}" # time
 	echo -n " %B%F{white}$GMPSEND" # suffix
 }
