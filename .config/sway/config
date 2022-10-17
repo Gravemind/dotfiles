@@ -6,6 +6,8 @@
 #
 #
 
+include /etc/sway/config.d/*.conf
+
 # Variables
 set $ModK        Mod4
 set $screenL     DisplayPort-0
@@ -40,10 +42,6 @@ include ./input.conf
 
 # Don't do rgb/sub-pixel font hinting/lcdfilter
 output "*" subpixel none
-
-# https://github.com/swaywm/sway/wiki#gtk-applications-take-20-seconds-to-start
-# (Dunst and rofi seem to need this too)
-exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
 
 # ipc-socket $here/ipc.sock
 
