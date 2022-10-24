@@ -1,0 +1,40 @@
+#!/bin/bash
+#
+# usage: tarnew path/to/mydir
+#
+
+
+set -euo pipefail
+
+die() { echo "error: $*" >&2; exit 1; }
+run() { echo "+ $*"; "$@"; }
+
+src="$1"
+xdg_download="$(xdg-user-dir DOWNLOAD 2>/dev/null || echo "${XDG_DOWNLOAD_DIR:-$HOME/Downloads}")"
+dstdir="$xdg_download"
+
+src="$(cd "$1" && pwd)"
+name="${src##*/}"
+
+oldf="$(ls -rt "$dstdir"/"$name"_*.tar.xz | tail -n1)"
+
+if [[ "$oldf" =~ .*_([0-9]+)\.tar\.xz$ ]]; then
+    oldi=${BASH_REMATCH[1]}
+else
+    die "invalid oldf=$oldf"
+fi
+
+newi=$((oldi + 1))
+newf="$dstdir/${name}_${newi}.tar.xz"
+
+echo "
+old: $oldf
+new: $newf
+"
+
+export XZ_OPT='-T0 -2'
+run tar -cf "$newf.tmp" --newer-mtime="$oldf" -C "${src%/*}" "${src##*/}"
+run mv "$newf.tmp" "$newf"
+run tar -tf "$newf" | grep -v '/$' | LC_ALL=C sort
+
+echo Done.
