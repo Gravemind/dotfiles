@@ -27,6 +27,12 @@ main "$@"
 - `set -o pipefail`: error on uncaught command error in a pipeline chain
 
 
+### Prefix all output lines with date
+
+```sh
+command | ts '[%y-%m-%d %H:%M:%.S]'
+```
+
 ## Python
 
 ### Python2 and Pytnon3 unicode
@@ -51,3 +57,4 @@ g++ -dM -E -x c++ /dev/null
 diff <(gcc -Q --help=target) <(gcc -Q -march=native --help=target)
 diff <(gcc -Q -O0 --help=optimizers) <(gcc -Q -O3 --help=optimizers)
 ```
+
