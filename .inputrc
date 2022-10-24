@@ -12,6 +12,10 @@ $else
 "\eOd": backward-word      # [Ctrl-Left]
 "\C-h": backward-kill-word # [Ctrl-Backspace]
 
+# xterm ? (foot)
+"\e[1;5C": forward-word    # [Ctrl-Right]
+"\e[1;5D": backward-word   # [Ctrl-Left]
+
 # "\e[3^": kill-word         # [Ctrl-Del]
 # "\e[8^": end-of-line       # [Ctrl-End]
 # "\e[7^": beginning-of-line # [Ctrl-Home]
