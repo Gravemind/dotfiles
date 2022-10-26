@@ -13,6 +13,7 @@
  :prefix-map my-yank-map
  :prefix "<leader>y"
  ("r" . my-copy-buffer-relative-filename-to-clipboard)
+ ("p" . my-copy-buffer-relative-filename-to-clipboard)
  ("f" . my-copy-buffer-filename-to-clipboard)
  ("F" . my-copy-buffer-filename-location-to-clipboard)
  )

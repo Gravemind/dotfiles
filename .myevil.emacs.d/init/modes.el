@@ -663,6 +663,11 @@
 ;; other
 ;;
 
+(defun my-buffer-path ()
+  (or buffer-file-name
+      dired-directory
+      (when (boundp 'magit-buffer-file-name) magit-buffer-file-name)))
+
 (defun my-copy-buffer-filename-location-to-clipboard ()
   "Copy current file path and linenum, or dired file at point, to clipboard"
   (interactive)
@@ -670,13 +675,10 @@
     (widen)
     (save-excursion
       (beginning-of-line)
-      (let ((location
-             (if-let* ((dir dired-directory)
-                       (fname (dired-get-filename nil t)))
-                 (abbreviate-file-name fname)
-               (format "%s:%d" (abbreviate-file-name (or buffer-file-name dired-directory))
-                       (1+ (count-lines 1 (point))))
-               )))
+      (let ((location (or (dired-get-filename nil t)
+                          (format "%s:%d"
+                                  (abbreviate-file-name (my-buffer-path))
+                                  (1+ (count-lines 1 (point)))))))
         (message location)
         (gui-set-selection nil location)))))
 
@@ -687,9 +689,7 @@
     (widen)
     (save-excursion
       (beginning-of-line)
-      (let* ((fname (or buffer-file-name
-                        dired-directory))
-             (location (abbreviate-file-name fname)))
+      (let* ((location (abbreviate-file-name (my-buffer-path))))
         (message location)
         (gui-set-selection nil location)))))
 
@@ -700,8 +700,7 @@
     (widen)
     (save-excursion
       (beginning-of-line)
-      (let* ((fname (or buffer-file-name
-                        dired-directory))
+      (let* ((fname (my-buffer-path))
              (root (my/project-root-directory-slow fname))
              (rel (file-relative-name fname root))
              (location (abbreviate-file-name rel)))
