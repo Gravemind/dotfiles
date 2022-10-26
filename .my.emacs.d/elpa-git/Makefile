@@ -150,6 +150,8 @@ DEFCOMPILE_evil-mc = evil-mc*.el
 DEFCOMPILE  += evil-collection
 DEFCOMPILE_evil-collection = *.el modes/*/*.el
 
+DEFCOMPILE  += docker-tramp
+
 all:	${DEFCOMPILE} ${DEFMAKE} ${NODEF}
 .PHONY: all
 
