@@ -320,12 +320,12 @@ WINDOW."
 
 (use-package flx
   :load-path (my-packages-directory "flx")
-  ;;:disabled t
+  :disabled t
   )
 
 (use-package helm-flx
   :load-path (my-packages-directory "helm-flx")
-  ;;:disabled t
+  :disabled t
   :after helm
   :demand t
   ;;:after (helm flx)
