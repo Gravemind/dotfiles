@@ -152,6 +152,9 @@ DEFCOMPILE_evil-collection = *.el modes/*/*.el
 
 DEFCOMPILE  += docker-tramp
 
+DEFCOMPILE  += eglot
+DEFCOMPILE_eglot = eglot*.el
+
 all:	${DEFCOMPILE} ${DEFMAKE} ${NODEF}
 .PHONY: all
 

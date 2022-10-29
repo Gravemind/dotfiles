@@ -377,3 +377,7 @@
 	path = .my.emacs.d/elpa-git/docker-tramp
 	url = https://github.com/emacs-pe/docker-tramp.el
 	branch = master
+[submodule ".my.emacs.d/elpa-git/eglot"]
+	path = .my.emacs.d/elpa-git/eglot
+	url = https://github.com/joaotavora/eglot
+	branch = master
