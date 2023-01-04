@@ -26,6 +26,13 @@ main "$@"
 - `set -e`: error on uncaught command error
 - `set -o pipefail`: error on uncaught command error in a pipeline chain
 
+### bash tmpdir
+
+```sh
+tmpdir="$(mktemp -d -t myscript.XXXXXX)"
+# shellcheck disable=SC2064
+trap "$(printf 'rm -rf %q ||:' "$tmpdir")" EXIT
+```
 
 ### Prefix all output lines with date
 
