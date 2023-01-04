@@ -15,6 +15,7 @@
          ("\\.cwp\\'" . c-mode)
          ("\\.cws\\'" . c-mode)
          ("\\.ino\\'" . c++-mode) ; arduino ide
+         ("\\.cu\\'" . c++-mode)
          )
   :hook (c-mode-common . my--cc-mode)
   :init
