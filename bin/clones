@@ -18,12 +18,32 @@ run() {
 clone() {
     local url="$1"
 
-    local path
+    local path name link
     path="$url"
     path="${path#http?(s)://}"
     path="${path##+(/)}"
     path="${path%.git}"
+    name_parent="${path%/*}"
+    name="${path##*/}"
     path="$clones_git_root/$path"
+
+    while true
+    do
+        link="$clones_git_root/$name"
+        if [[ ! -e "$link" ]]
+        then
+            break
+        fi
+        link=""
+        if [[ -z "${name_parent}" ]]
+        then
+            echo "warning: all links already exists for $path"
+            break
+        fi
+        echo "warning: $link link already exists to $(readlink -f "$link" ||:)"
+        name="$name-${name_parent##*/}"
+        name_parent="${name_parent%/*}"
+    done
 
     local cmd
     cmd=(git clone "$url" "$path")
@@ -38,6 +58,7 @@ clone() {
     esac
 
     run "${cmd[@]}"
+    [[ -z "$link" ]] || run ln -sfrT "$path" "$link"
 }
 
 list() {
