@@ -41,6 +41,12 @@ trap "$(printf 'rm -rf %q ||:' "$tmpdir")" EXIT
 command | ts '[%y-%m-%d %H:%M:%.S]'
 ```
 
+### Date
+
+```sh
+date +%y%m%d-%H%M%S
+```
+
 ## Python
 
 ### Python2 and Pytnon3 unicode
