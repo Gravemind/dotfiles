@@ -1,40 +1,64 @@
-#!/bin/bash
+#!/usr/bin/env python3
 #
 # usage: tarnew path/to/mydir
 #
 
+import sys
+import os
+import os.path
+import glob
+import re
+import subprocess
 
-set -euo pipefail
+src = sys.argv[1]
 
-die() { echo "error: $*" >&2; exit 1; }
-run() { echo "+ $*"; "$@"; }
+xdg_download = None
+if not xdg_download:
+    xdg_download = os.environ.get('XDG_DOWNLOAD_DIR', None)
+if not xdg_download:
+    xdg_download = subprocess.check_output('xdg-user-dir DOWNLOAD 2>/dev/null || :', shell=True, universal_newlines=True, executable='/bin/bash').strip()
+    xdg_download = None if xdg_download == os.environ['HOME'] else xdg_download
+if not xdg_download:
+    xdg_download = os.environ['HOME'] + '/Downloads'
 
-src="$1"
-xdg_download="$(xdg-user-dir DOWNLOAD 2>/dev/null || echo "${XDG_DOWNLOAD_DIR:-$HOME/Downloads}")"
-dstdir="$xdg_download"
+dstext = '.tar.xz'
+dstdir = xdg_download
 
-src="$(cd "$1" && pwd)"
-name="${src##*/}"
+srcdir, srcname = os.path.split(src)
 
-oldf="$(ls -rt "$dstdir"/"$name"_*.tar.xz | tail -n1)"
+pref = srcname + "_"
+suff = dstext
+old_re = re.compile(r'^' + re.escape(pref) + r"([0-9]+)" + re.escape(suff) + r'$')
 
-if [[ "$oldf" =~ .*_([0-9]+)\.tar\.xz$ ]]; then
-    oldi=${BASH_REMATCH[1]}
-else
-    die "invalid oldf=$oldf"
-fi
+olds = []
+for f in sorted(os.listdir(dstdir)):
+    m = old_re.match(f)
+    if m:
+        i = int(m.group(1))
+        # print("MATCH", i, f)
+        olds.append((i, os.path.join(dstdir, f)))
+    else:
+        # print("no match:", f)
+        pass
 
-newi=$((oldi + 1))
-newf="$dstdir/${name}_${newi}.tar.xz"
+if not olds:
+    print("error: no file found matching:", old_re)
+    sys.exit(1)
 
-echo "
-old: $oldf
-new: $newf
-"
+olds.sort()
+print(olds)
+oldi, oldf = olds[-1]
+dst = os.path.join(dstdir, pref + str(oldi + 1) + suff)
 
-export XZ_OPT='-T0 -2'
-run tar -cf "$newf.tmp" --newer-mtime="$oldf" -C "${src%/*}" "${src##*/}"
-run mv "$newf.tmp" "$newf"
-run tar -tf "$newf" | grep -v '/$' | LC_ALL=C sort
+print("old tar:", oldf)
+print("new tar:", dst)
 
-echo Done.
+dsttmp = dst + '.tmp'
+cmd = ['tar', '-cf', dsttmp, '--newer-mtime=' + oldf, '-C', srcdir, srcname]
+print(cmd)
+subprocess.check_call(cmd)
+os.rename(dsttmp, dst)
+
+cmd = ['bash', '-c', r'tar -tf "$1" | grep -v "/\$" | LC_ALL=C sort', '--', dst]
+print(cmd)
+subprocess.check_call(cmd)
