@@ -56,7 +56,7 @@
 	buco = "!f() { set -eu; git bu \"$1\" && git switch \"$1\"; }; f"
 
 	# Fetch prune all
-	fp = fetch --all --prune --tags
+	fp = fetch --all --prune
 
 	# Pull only if fast forward is possible (abort if conflicts)
 	pulf = pull --no-rebase --ff-only
