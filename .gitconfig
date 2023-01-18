@@ -53,7 +53,7 @@
 	bu = "!f() { set -eu; git branch -f \"$1\" \"$1@{upstream}\"; }; f"
 
 	# Update other branch then checkout it
-	buco = "!f() { set -eu; git bu \"$1\" && git switch \"$1\"; }; f"
+	cou = "!f() { set -eu; git bu \"$1\" && git switch \"$1\"; }; f"
 
 	# Fetch prune all
 	fp = fetch --all --prune
@@ -76,6 +76,8 @@
 
 	# Clean deleted branches
 	cleanbranches = !git branch -vv | grep ': gone]' | awk '{ print $1 }' | xargs -n 1 git branch -d
+
+	cleanuporiginal = !git for-each-ref --format '%(refname)' refs/original/ | xargs -n1 -t git update-ref -d
 
 	# Short merge base of HEAD and $1
 	mb = "!f() { set -eu; git rev-parse --short $(git merge-base ${1} ${2:-@}); }; f"
