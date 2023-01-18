@@ -17,6 +17,8 @@ then
     return
 fi
 
+[[ -f ~/bin/shenvtools/shenvtools.sh ]] && . ~/bin/shenvtools/shenvtools.sh
+
 # if [ -f /usr/share/bash-completion/bash_completion ]
 # then
 #     . /usr/share/bash-completion/bash_completion
