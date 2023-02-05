@@ -12,10 +12,11 @@ set -euo pipefail
 
 log() { echo "$*" >&2; }
 fatal() { log "error: $*"; exit 1; }
-run() { local c="$(printf ' %q' "$@")"; log "+$c"; "$@" || fatal "command failed ($?):$c"; }
+run() { local c; c="$(printf ' %q' "$@")"; log "+$c"; "$@" || fatal "command failed ($?):$c"; }
 
 main() {
-    local here="$(cd "$(dirname "$0")"; pwd)"
+    local here
+    here="$(cd "$(dirname "$0")"; pwd)"
 }
 
 main "$@"
