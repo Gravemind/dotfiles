@@ -47,6 +47,32 @@ command | ts '[%y-%m-%d %H:%M:%.S]'
 date +%y%m%d-%H%M%S
 ```
 
+### xdg dir
+
+```sh
+set -euo pipefail
+
+xdg_dir() {
+    local value
+    value="$(eval echo "\${XDG_${1}_DIR:-}")"
+    [[ -z "$value" ]] || { echo "$value"; return 0; }
+    value="$(
+        # See /usr/bin/xdg-user-dir
+        # shellcheck source=/dev/null
+        test -f "${XDG_CONFIG_HOME:-~/.config}/user-dirs.dirs" && . "${XDG_CONFIG_HOME:-~/.config}/user-dirs.dirs"
+        eval echo "\${XDG_${1}_DIR:-}"
+    )"
+    [[ -z "$value" ]] || { echo "$value"; return 0; }
+    echo "$2"
+}
+
+XDG_DOWNLOAD_DIR="$(xdg_dir DOWNLOAD "$HOME/Downloads")"
+XDG_RUNTIME_DIR="$(xdg_dir RUNTIME "/run/user/$UID")"
+XDG_CONFIG_DIR="$(xdg_dir CONFIG "$HOME/.config")"
+
+declare | grep '^XDG_'
+```
+
 ## Python
 
 ### Python2 and Pytnon3 unicode
