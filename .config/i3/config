@@ -445,6 +445,10 @@ bindsym $ModK+n       exec --no-startup-id dunstctl close
 bindsym $ModK+Shift+n exec --no-startup-id dunstctl history-pop
 bindsym $ModK+Alt+n   exec --no-startup-id dunstctl close-all
 
+# Brightness
+bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
+
 #
 # Bar
 #
