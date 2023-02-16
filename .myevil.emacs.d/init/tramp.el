@@ -159,7 +159,16 @@
          ))
       (goto-char position)))
 
+  (require 'docker-tramp)
+  ;; (require 'docker-tramp-compat)
+
 )
+
+(use-package docker-tramp
+  :load-path (my-packages-directory "docker-tramp")
+  :custom (docker-tramp-docker-executable "podman")
+  ;; :after tramp
+  )
 
 ;; might help tramp
 ;;(eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
