@@ -138,11 +138,11 @@
   ;; - https://gist.github.com/ccdunder/5816865
   ;; FIXME: helm helm-display-buffer-in-own-frame and helm-echo-input-in-header-line
   (add-hook 'minibuffer-setup-hook
-            '(lambda ()
-               ;; (if (not helm-alive-p)
-               (set (make-local-variable 'cursor-type) 'bar)
+            (lambda ()
+              ;; (if (not helm-alive-p)
+              (set (make-local-variable 'cursor-type) 'bar)
                ;; )
-               ))
+              ))
 
   :config
   ;; TODO: cursor color

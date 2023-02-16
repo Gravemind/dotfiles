@@ -53,7 +53,6 @@
 
   "use-package.el"
   "theme.el"
-  "modeline.el"
   "core.el"
   "evil.el"
   "modes.el"
@@ -68,6 +67,7 @@
   "compile.el"
   "rtags.el"
   "keybinds.el"
+  "modeline.el"
 
   ))
 (cl-loop for filename in my-configs-filenames
