@@ -18,8 +18,9 @@
 (use-package rtags
   :if (file-exists-p (concat my-rtags-path "/rtags.el"))
   :load-path my-rtags-path
+
   ;;:commands (rtags-diagnostics)
-  :after (helm cc-mode) ;; makes `:bind (:map c-mode-base-map)` work
+  :after (cc-mode) ;; makes `:bind (:map c-mode-base-map)` work
 
   ;; We don't have autoloads, we need to specify commands
   :commands
@@ -75,6 +76,9 @@
   ;;       ("C-c N" . rtags-clear-diagnostics)
   ;;       )
 
+  :init
+  (my--require-compsys)
+
   :config
   (setq-default
    rtags-jump-to-first-match nil
@@ -82,9 +86,9 @@
    ;;rtags-autostart-diagnostics t
    )
 
-  (if my--helm-or-ivy
-      (setq-default
-       rtags-use-helm t
-       rtags-display-result-backend 'helm
-       ))
+  (when (eq my--compsys 'helm)
+    (setq-default
+     rtags-use-helm t
+     rtags-display-result-backend 'helm
+     ))
   )

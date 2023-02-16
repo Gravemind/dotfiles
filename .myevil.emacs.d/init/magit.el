@@ -26,9 +26,7 @@
               )
   :config
 
-  (if my--helm-or-ivy
-      (require 'ivy)
-    (require 'helm))
+  (my--require-compsys)
 
   (setq-default
    magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1

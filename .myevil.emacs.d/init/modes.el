@@ -167,8 +167,10 @@
      ))
 
   ;; helm
-  (add-hook 'helm-goto-line-before-hook (lambda () (history-add-history)))
-  (add-to-list 'history-advised-after-functions 'helm-occur t)
+  (when (eq my--compsys 'helm)
+    (add-hook 'helm-goto-line-before-hook (lambda () (history-add-history)))
+    (add-to-list 'history-advised-after-functions 'helm-occur t)
+    )
 
   ;; isearch
   (add-to-list 'history-advised-before-functions 'isearch-forward)
@@ -245,13 +247,15 @@
   ;; Create a jump point before jumping with imenu.
   (advice-add #'imenu :around #'doom-set-jump-a)
 
-  (add-hook 'helm-goto-line-before-hook
-            (lambda ()
-              (with-helm-current-buffer
-                ;; Don't set-jump if we tab-tab-tab in helm result
-                (unless helm-in-persistent-action
-                  (better-jumper-set-jump))
-                )))
+  (when (eq my--compsys 'helm)
+    (add-hook 'helm-goto-line-before-hook
+              (lambda ()
+                (with-helm-current-buffer
+                  ;; Don't set-jump if we tab-tab-tab in helm result
+                  (unless helm-in-persistent-action
+                    (better-jumper-set-jump))
+                  )))
+    )
 
   (advice-add #'xref-push-marker-stack :around #'doom-set-jump-a)
 )
@@ -350,7 +354,7 @@
 
 (use-package wgrep-helm
   :load-path (my-packages-directory "wgrep")
-  :if my--helm-or-ivy
+  :if (eq my--compsys 'helm)
   :commands (wgrep-change-to-wgrep-mode)
   )
 
@@ -361,7 +365,7 @@
 
 (use-package dumb-jump
   :load-path (my-packages-directory "dumb-jump")
-  :after (helm evil)
+  :after (evil)
   :commands (dumb-jump-xref-activate)
   :bind (:map evil-motion-state-map
               ;; ("gd" . dumb-jump-go)
@@ -374,9 +378,11 @@
        (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
        ))
   :config
-  (setq-default
-   dumb-jump-selector 'helm
-   )
+  (when (eq my--compsys 'helm)
+    (setq-default
+     dumb-jump-selector 'helm
+     )
+    )
 )
 
 ;;

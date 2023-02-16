@@ -8,12 +8,12 @@
 ;; for ivy--regex-fuzzy sorting
 ;; (use-package flx
 ;;   :load-path (my-packages-directory "flx")
-;;   :if (not my--helm-or-ivy)
+;;   :if (eq my--compsys 'ivy)
 ;;   :defer t)
 
 (use-package ivy
   :load-path (my-packages-directory "swiper")
-  :if (not my--helm-or-ivy)
+  :if (eq my--compsys 'ivy)
   :demand
   :bind* (("C-M-x" . ivy-resume)
           )
@@ -65,7 +65,7 @@
 
 (use-package counsel
   :load-path (my-packages-directory "swiper")
-  :if (not my--helm-or-ivy)
+  :if (eq my--compsys 'ivy)
   :demand
   :bind (("C-f C-r" . (lambda () (interactive)
                         ;; FIXME set current directory by default wont work
@@ -80,7 +80,7 @@
 
 (use-package swiper
   :load-path (my-packages-directory "swiper")
-  :if (not my--helm-or-ivy)
+  :if (eq my--compsys 'ivy)
   :defer
   :bind (("C-f <C-return>" . swiper)
          )
@@ -89,7 +89,7 @@
 ;; also see flyspell-correct-helm
 (use-package flyspell-correct-ivy
   :load-path (my-packages-directory "flyspell-correct")
-  :if (not my--helm-or-ivy)
+  :if (eq my--compsys 'ivy)
   :bind (:map flyspell-mode-map
               ("C-;" . flyspell-correct-at-point))
   :defer
@@ -100,7 +100,7 @@
 ;; https://github.com/Yevgnen/ivy-rich
 (use-package ivy-rich
   :load-path (my-packages-directory "ivy-rich")
-  :if (not my--helm-or-ivy)
+  :if (eq my--compsys 'ivy)
   ;;:demand
   :require ivy
   :config

@@ -36,7 +36,12 @@
 (require 'cl-lib)
 (require 'subr-x)
 
-(setq my--helm-or-ivy t)
+(setq my--compsys 'helm)
+
+(defun my--require-compsys ()
+  (cond ((eq my--compsys 'ivy) (require 'ivy))
+        ((eq my--compsys 'helm) (require 'helm))
+        ))
 
 (add-to-list 'load-path (concat user-emacs-directory "lisp"))
 

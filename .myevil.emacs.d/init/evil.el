@@ -28,10 +28,8 @@
 (bind-keys
  :prefix-map my-buffer-map
  :prefix "<leader>b"
- ("b" . helm-mini)
  ("k" . kill-buffer)
  ("r" . revert-buffer)
- ("m" . helm-bookmarks)
 )
 
 ;; (bind-keys
@@ -67,7 +65,7 @@
          ("u" . winner-undo)
          ("C-r" . winner-redo)
 
-         ("b" . helm-mini)
+         ;; ("b" . helm-mini)
 
          )
 

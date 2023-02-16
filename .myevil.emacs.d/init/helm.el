@@ -4,6 +4,7 @@
 
 (use-package helm
   :load-path (my-packages-directory "helm")
+  :if (eq my--compsys 'helm)
   :demand t
 
   :bind*
@@ -23,6 +24,10 @@
    :map my-file-map
    ("f" . helm-find-files)
    ("r" . helm-recentf)
+
+   :map my-buffer-map
+   ("b" . helm-mini)
+   ("m" . helm-bookmarks)
 
    :map my-search-map
    ("b" . helm-occur)
@@ -276,6 +281,7 @@ WINDOW."
 ;; Git status + project buffers + project files (git ls-files)
 (use-package helm-ls-git
   :load-path (my-packages-directory "helm-ls-git")
+  :if (eq my--compsys 'helm)
   :after helm
   :bind (
          ("<leader> SPC" . helm-browse-project)
@@ -287,12 +293,14 @@ WINDOW."
 ;; helm-org
 (use-package helm-org
   :load-path (my-packages-directory "helm-org")
+  :if (eq my--compsys 'helm)
   :after helm
   )
 
 ;; helm dash (dash documentation sets)
 (use-package helm-descbinds
   :load-path (my-packages-directory "helm-descbinds")
+  :if (eq my--compsys 'helm)
   :commands (helm-descbinds)
   :init
   ;; Copied from helm-descbinds.el helm-descbinds-mode
@@ -303,10 +311,12 @@ WINDOW."
 ;; Use Helm for correcting spelling
 (use-package flyspell-correct
   :load-path (my-packages-directory "flyspell-correct")
+  :if (eq my--compsys 'helm)
   :after flyspell
   :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-at-point)))
 (use-package flyspell-correct-helm
   :load-path (my-packages-directory "flyspell-correct")
+  :if (eq my--compsys 'helm)
   :after flyspell-correct
   ;; :config
   ;; (setq-default flyspell-correct-interface #'flyspell-correct-helm)
@@ -315,16 +325,19 @@ WINDOW."
 ;; helm dash (dash documentation sets)
 (use-package helm-dash
   :load-path (my-packages-directory "helm-dash")
+  :if (eq my--compsys 'helm)
   ;;:disabled t
   )
 
 (use-package flx
   :load-path (my-packages-directory "flx")
+  :if (eq my--compsys 'helm)
   :disabled t
   )
 
 (use-package helm-flx
   :load-path (my-packages-directory "helm-flx")
+  :if (eq my--compsys 'helm)
   :disabled t
   :after helm
   :demand t
@@ -335,10 +348,12 @@ WINDOW."
 
 ;; (use-package helm-rg
 ;;   :load-path (my-packages-directory "helm-rg")
+;;   :if (eq my--compsys 'helm)
 ;; )
 
 (use-package helm-xref
   :load-path (my-packages-directory "helm-xref")
+  :if (eq my--compsys 'helm)
   ;;:disabled t
   :after helm
   :commands (helm-xref-show-xrefs helm-xref-show-xrefs-27 helm-xref-show-defs-27)
