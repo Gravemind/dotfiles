@@ -50,6 +50,15 @@
   (add-hook 'minibuffer-setup-hook #'vertico-repeat-save)
 )
 
+(use-package vertico-reverse
+  :load-path (my-packages-directory "vertico/extensions")
+  :if (eq my--compsys 'vertico)
+  :after (vertico)
+  :demand t
+  :config
+  (vertico-reverse-mode)
+)
+
 (use-package orderless
   :load-path (my-packages-directory "orderless")
   :if (eq my--compsys 'vertico)
