@@ -4,6 +4,10 @@
   :if (eq my--compsys 'vertico)
   :demand t
   :config
+  (setq-default
+   vertico-count 30
+   vertico-resize t
+   )
 
   (setq-default
    completion-styles '(flex)
