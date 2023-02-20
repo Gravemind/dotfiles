@@ -7,7 +7,7 @@ CASK=
 export CASK
 
 # (the empty ":" at the end keeps the default paths)
-LISP_DIRS=$(wildcard */) $(wildcard */lisp/)
+LISP_DIRS=$(wildcard */) $(wildcard */lisp/) $(wildcard */extensions/)
 EMACSLOADPATH=$(subst / ,:,$(patsubst %,${ELPAGIT}/%, ${LISP_DIRS})):
 export EMACSLOADPATH
 
@@ -20,6 +20,7 @@ AUTOLOADS_EL=autoloads.el
 .ONESHELL: # Make each rules executed within one shell instance
 SHELL=bash
 
+DEFMAKE		+= compat
 DEFCOMPILE	+= ace-jump-mode
 DEFMAKE		+= async
 DEFCOMPILE	+= auto-highlight-symbol
@@ -74,7 +75,6 @@ DEFCOMPILE	+= ivy-rich
 DEFCOMPILE	+= iy-go-to-char
 DEFMAKE		+= log4e
 DEFMAKE		+= lua-mode
-DEFMAKE		+= compat
 #NODEF		+= magit
 DEFMAKE		+= magit
 DEFCOMPILE	+= makey
@@ -154,6 +154,11 @@ DEFCOMPILE  += docker-tramp
 
 DEFCOMPILE  += eglot
 DEFCOMPILE_eglot = eglot*.el
+
+DEFCOMPILE  += vertico
+DEFCOMPILE  += orderless
+DEFCOMPILE  += marginalia
+DEFCOMPILE  += consult
 
 all:	${DEFCOMPILE} ${DEFMAKE} ${NODEF}
 .PHONY: all

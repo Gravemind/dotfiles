@@ -41,6 +41,7 @@
 (defun my--require-compsys ()
   (cond ((eq my--compsys 'ivy) (require 'ivy))
         ((eq my--compsys 'helm) (require 'helm))
+        ((eq my--compsys 'vertico) (require 'vertico))
         ))
 
 (add-to-list 'load-path (concat user-emacs-directory "lisp"))
@@ -60,7 +61,8 @@
   "magit.el"
   "window.el"
   "helm.el"
-  ;;"ivy.el"
+  ;; "ivy.el"
+  "vertico.el"
   "indent.el"
   "languages.el"
   "org.el"

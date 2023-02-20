@@ -381,3 +381,19 @@
 	path = .my.emacs.d/elpa-git/eglot
 	url = https://github.com/joaotavora/eglot
 	branch = master
+[submodule ".my.emacs.d/elpa-git/consult"]
+	path = .my.emacs.d/elpa-git/consult
+	url = https://github.com/minad/consult.git
+	branch = main
+[submodule ".my.emacs.d/elpa-git/marginalia"]
+	path = .my.emacs.d/elpa-git/marginalia
+	url = https://github.com/minad/marginalia.git
+	branch = main
+[submodule ".my.emacs.d/elpa-git/orderless"]
+	path = .my.emacs.d/elpa-git/orderless
+	url = https://github.com/oantolin/orderless.git
+	branch = master
+[submodule ".my.emacs.d/elpa-git/vertico"]
+	path = .my.emacs.d/elpa-git/vertico
+	url = https://github.com/minad/vertico.git
+	branch = main
