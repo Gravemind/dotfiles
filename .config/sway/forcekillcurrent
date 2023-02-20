@@ -1,0 +1,13 @@
+#!/bin/bash
+# https://www.reddit.com/r/linuxquestions/comments/ufw7tj/is_there_a_wayland_equivalent_for_xkill_command/
+
+set -euo pipefail
+
+FOCUSED_APP_ID="$(swaymsg -t get_tree | jq '.. | select(.type?) | select(.focused==true).pid' -r)"
+
+echorun() { echo "$0:$(printf " %q" "$@")" >&2; "$@"; }
+
+if [[ -n "$FOCUSED_APP_ID" ]]; then
+    # Send QUIT then TERM then KILL with 1s interval
+    echorun "$(which kill)" --verbose --signal QUIT --timeout 1000 TERM --timeout 1000 KILL "$FOCUSED_APP_ID"
+fi
