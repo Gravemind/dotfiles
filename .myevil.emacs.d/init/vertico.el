@@ -41,6 +41,15 @@
   (vertico-buffer-mode 1)
 )
 
+(use-package vertico-repeat
+  :load-path (my-packages-directory "vertico/extensions")
+  :if (eq my--compsys 'vertico)
+  :bind ("C-M-x" . vertico-repeat)
+  :commands (vertico-repeat vertico-repeat-save)
+  :init
+  (add-hook 'minibuffer-setup-hook #'vertico-repeat-save)
+)
+
 (use-package orderless
   :load-path (my-packages-directory "orderless")
   :if (eq my--compsys 'vertico)
