@@ -1,7 +1,7 @@
 # Personal code snippets
 
 
-## Bash
+## Bash and Linux
 
 ### bash strict template, with helper functions
 
@@ -71,6 +71,13 @@ XDG_RUNTIME_DIR="$(xdg_dir RUNTIME "/run/user/$UID")"
 XDG_CONFIG_DIR="$(xdg_dir CONFIG "$HOME/.config")"
 
 declare | grep '^XDG_'
+```
+
+### dd
+
+```sh
+# Burn iso on usb
+dd bs=4M conv=sync,fsync oflag=direct status=progress if=...iso of=/dev/disk/by-id/usb-...
 ```
 
 ## Python
