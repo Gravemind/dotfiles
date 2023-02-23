@@ -25,8 +25,10 @@
               ("b" . magit-blame)
               )
   :config
-
   (my--require-compsys)
+
+  ;; HACK re-enable <leader> key in magit-status and log
+  (define-key magit-mode-map (kbd "<SPC>") `(menu-item "" nil :filter ,(lambda (_cmd) (key-binding [leader]))))
 
   (setq-default
    magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1

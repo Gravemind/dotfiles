@@ -184,7 +184,7 @@
   )
 
   ;; Used as "<leader>" in key bindings
-  (evil-set-leader '(normal visual) (kbd "SPC"))
+  (evil-set-leader '(normal visual) (kbd "<SPC>"))
 
   ;; This controls evil's "selection to clipboard", but keeps "deletion and yank
   ;; to clipboard"
