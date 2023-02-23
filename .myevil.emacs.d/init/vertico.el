@@ -1,4 +1,6 @@
 
+(defun mynoop () (interactive))
+
 (use-package vertico
   :load-path (my-packages-directory "vertico")
   :if (eq my--compsys 'vertico)
@@ -7,6 +9,7 @@
   (:map vertico-map
         ("<prior>" . vertico-scroll-down)
         ("<next>" . vertico-scroll-up)
+        ("TAB" . mynoop) ;; see consult-preview-key
         )
   :config
   (setq-default
@@ -144,6 +147,9 @@
     (interactive) (consult-ripgrep default-directory))
   (defun consult-find-current-dir ()
     (interactive) (consult-find default-directory))
+
+  ;; (setq consult-preview-key nil)
+  (setq consult-preview-key "TAB")
 )
 
 (use-package consult-imenu
