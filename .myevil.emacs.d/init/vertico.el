@@ -3,6 +3,11 @@
   :load-path (my-packages-directory "vertico")
   :if (eq my--compsys 'vertico)
   :demand t
+  :bind
+  (:map vertico-map
+        ("<prior>" . vertico-scroll-down)
+        ("<next>" . vertico-scroll-up)
+        )
   :config
   (setq-default
    vertico-count 30
@@ -31,19 +36,34 @@
 (use-package vertico-buffer
   :load-path (my-packages-directory "vertico/extensions")
   :if (eq my--compsys 'vertico)
+  :after vertico
   :demand t
-  :disabled
-  ;; :custom
-  ;; (vertico-buffer-display-action '(display-buffer-in-side-window
-  ;;                 (window-height . ,(+ 3 vertico-count))
-  ;;                 (side . top)))
+  ;; :disabled
+  :custom
+  (vertico-buffer-display-action '(display-buffer-in-side-window
+                  (window-height . ,(+ 3 vertico-count))
+                  (side . top)))
   :config
   (vertico-buffer-mode 1)
 )
 
+;; Configure directory extension.
+(use-package vertico-directory
+  :load-path (my-packages-directory "vertico/extensions")
+  :if (eq my--compsys 'vertico)
+  :after vertico
+  ;; More convenient directory navigation commands
+  :bind (:map vertico-map
+              ("RET" . vertico-directory-enter)
+              ("DEL" . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word))
+  ;; Tidy shadowed file names
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+
 (use-package vertico-repeat
   :load-path (my-packages-directory "vertico/extensions")
   :if (eq my--compsys 'vertico)
+  :after vertico
   :bind ("C-M-x" . vertico-repeat)
   :commands (vertico-repeat vertico-repeat-save)
   :init
@@ -53,7 +73,8 @@
 (use-package vertico-reverse
   :load-path (my-packages-directory "vertico/extensions")
   :if (eq my--compsys 'vertico)
-  :after (vertico)
+  :after vertico
+  :disabled
   :demand t
   :config
   (vertico-reverse-mode)
@@ -62,6 +83,7 @@
 (use-package orderless
   :load-path (my-packages-directory "orderless")
   :if (eq my--compsys 'vertico)
+  :after vertico
   :demand t
   :config
   (setq-default
@@ -74,6 +96,7 @@
 (use-package marginalia
   :load-path (my-packages-directory "marginalia")
   :if (eq my--compsys 'vertico)
+  :after vertico
   ;; Either bind `marginalia-cycle' globally or only in the minibuffer
   :bind (("M-A" . marginalia-cycle)
          :map minibuffer-local-map
@@ -92,11 +115,11 @@
 (use-package consult
   :load-path (my-packages-directory "consult")
   :if (eq my--compsys 'vertico)
-  ;; :after (vertigo)
+  :after vertico
   :commands (consult-line consult-grep consult-ripgrep consult-git-grep)
   :bind
   (
-   ("<leader> SPC" . consult-find)
+   ;; ("<leader> SPC" . consult-find)
 
    :map my-file-map
    ;; ("f" . helm-find-files)
@@ -115,17 +138,18 @@
    ("f" . consult-find-current-dir)
 
    )
+
   :init
   (defun consult-ripgrep-current-dir ()
     (interactive) (consult-ripgrep default-directory))
   (defun consult-find-current-dir ()
     (interactive) (consult-find default-directory))
-
 )
 
 (use-package consult-imenu
   :load-path (my-packages-directory "consult")
   :if (eq my--compsys 'vertico)
+  :after vertico
   :commands (consult-imenu)
   :bind
   (
@@ -137,5 +161,21 @@
 (use-package consult-xref
   :load-path (my-packages-directory "consult")
   :if (eq my--compsys 'vertico)
+  :after vertico
   :commands (consult-xref)
+  :init
+  ;; Use Consult to select xref locations with preview
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
+)
+
+(use-package consult-ls-git
+  :load-path (my-packages-directory "consult-ls-git")
+  :if (eq my--compsys 'vertico)
+  :after vertico
+  ;; :commands (consult-ls-git)
+  :bind
+  (
+   ("<leader> SPC" . consult-ls-git)
+   )
 )
