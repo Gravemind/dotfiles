@@ -10,8 +10,8 @@
    )
 
   (setq-default
-   completion-styles '(flex)
-   completion-category-overrides '(files (styles flex))
+   ;; completion-styles '(flex)
+   ;; completion-category-overrides '(files (styles flex))
    completion-pcm-complete-word-inserts-delimiters t
    )
 
@@ -62,13 +62,11 @@
 (use-package orderless
   :load-path (my-packages-directory "orderless")
   :if (eq my--compsys 'vertico)
-  :disabled
   :demand t
   :config
-  ;; :custom
   (setq-default
-   (completion-styles '(orderless basic))
-   (completion-category-overrides '((file (styles orderless))))
+   completion-styles '(orderless basic)
+   completion-category-overrides '((file (styles orderless)))
    )
 )
 
