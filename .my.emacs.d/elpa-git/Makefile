@@ -159,6 +159,7 @@ DEFCOMPILE  += vertico
 DEFCOMPILE  += orderless
 DEFCOMPILE  += marginalia
 DEFCOMPILE  += consult
+DEFCOMPILE  += consult-ls-git
 
 all:	${DEFCOMPILE} ${DEFMAKE} ${NODEF}
 .PHONY: all

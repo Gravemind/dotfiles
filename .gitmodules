@@ -397,3 +397,7 @@
 	path = .my.emacs.d/elpa-git/vertico
 	url = https://github.com/minad/vertico.git
 	branch = main
+[submodule ".my.emacs.d/elpa-git/consult-ls-git"]
+	path = .my.emacs.d/elpa-git/consult-ls-git
+	url = https://github.com/rcj/consult-ls-git.git
+	branch = main
