@@ -96,11 +96,46 @@
   :commands (consult-line consult-grep consult-ripgrep consult-git-grep)
   :bind
   (
+   ("<leader> SPC" . consult-find)
+
+   :map my-file-map
+   ;; ("f" . helm-find-files)
+   ("r" . consult-recent-file)
+
+   ;; :map my-buffer-map
+   ;; ("b" . helm-mini)
+   ;; ("m" . helm-bookmarks)
+
    :map my-search-map
    ("b" . consult-line)
-   ("d" . consult-ripgrep)
-   ;; ("p" . helm-do-grep-ag-project)
+   ("d" . consult-ripgrep-current-dir)
+   ("p" . consult-ripgrep)
    ("g" . consult-git-grep)
+
+   ("f" . consult-find-current-dir)
+
+   )
+  :init
+  (defun consult-ripgrep-current-dir ()
+    (interactive) (consult-ripgrep default-directory))
+  (defun consult-find-current-dir ()
+    (interactive) (consult-find default-directory))
+
+)
+
+(use-package consult-imenu
+  :load-path (my-packages-directory "consult")
+  :if (eq my--compsys 'vertico)
+  :commands (consult-imenu)
+  :bind
+  (
+   :map my-search-map
    ("i" . consult-imenu)
    )
-  )
+)
+
+(use-package consult-xref
+  :load-path (my-packages-directory "consult")
+  :if (eq my--compsys 'vertico)
+  :commands (consult-xref)
+)
