@@ -309,11 +309,6 @@ WINDOW."
   )
 
 ;; Use Helm for correcting spelling
-(use-package flyspell-correct
-  :load-path (my-packages-directory "flyspell-correct")
-  :if (eq my--compsys 'helm)
-  :after flyspell
-  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-at-point)))
 (use-package flyspell-correct-helm
   :load-path (my-packages-directory "flyspell-correct")
   :if (eq my--compsys 'helm)

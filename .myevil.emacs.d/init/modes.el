@@ -546,6 +546,11 @@
          (text-mode . (lambda () (flyspell-mode 1))))
   )
 
+(use-package flyspell-correct
+  :load-path (my-packages-directory "flyspell-correct")
+  :after flyspell
+  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-at-point)))
+
 ;;
 ;; flycheck
 ;; https://www.flycheck.org/en/latest/
