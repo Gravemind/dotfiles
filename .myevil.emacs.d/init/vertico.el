@@ -149,7 +149,13 @@
     (interactive) (consult-find default-directory))
 
   ;; (setq consult-preview-key nil)
-  (setq consult-preview-key "TAB")
+  (setq-default consult-preview-key "TAB")
+
+  :config
+  (consult-customize
+   consult-ripgrep consult-ripgrep-current-dir consult-git-grep consult-grep
+   :group nil
+   )
 )
 
 (use-package consult-imenu
