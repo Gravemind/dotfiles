@@ -14,7 +14,7 @@
   :config
   (setq-default
    vertico-count 30
-   vertico-resize t
+   vertico-resize nil
    )
 
   (setq-default
@@ -41,7 +41,7 @@
   :if (eq my--compsys 'vertico)
   :after vertico
   :demand t
-  ;; :disabled
+  :disabled
   :custom
   (vertico-buffer-display-action '(display-buffer-in-side-window
                   (window-height . ,(+ 3 vertico-count))
