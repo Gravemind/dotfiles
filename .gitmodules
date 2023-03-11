@@ -401,3 +401,7 @@
 	path = .my.emacs.d/elpa-git/consult-ls-git
 	url = https://github.com/rcj/consult-ls-git.git
 	branch = main
+[submodule ".my.emacs.d/elpa-git/meson-mode"]
+	path = .my.emacs.d/elpa-git/meson-mode
+	url = https://github.com/wentasah/meson-mode.git
+	branch = master

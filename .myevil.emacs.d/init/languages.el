@@ -441,3 +441,13 @@
    )
   (pdf-tools-install)
   )
+
+
+;;
+;; meson build
+;;
+
+(use-package meson-mode
+  :load-path (my-packages-directory "meson-mode")
+  :mode (("/meson\\(\\.build\\|_options\\.txt\\)\\'" . meson-mode))
+  )

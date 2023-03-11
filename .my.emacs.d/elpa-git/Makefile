@@ -60,6 +60,7 @@ DEFCOMPILE_flyspell-correct = flyspell-correct.el flyspell-correct-helm.el
 DEFCOMPILE	+= gnuplot
 DEFCOMPILE	+= gnuplot-mode
 DEFCOMPILE	+= go-mode
+DEFCOMPILE	+= meson-mode
 NODEF		+= helm
 #DEFMAKE	+= helm
 DEFCOMPILE	+= helm-dash
