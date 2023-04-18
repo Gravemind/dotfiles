@@ -405,3 +405,19 @@
 	path = .my.emacs.d/elpa-git/meson-mode
 	url = https://github.com/wentasah/meson-mode.git
 	branch = master
+[submodule ".my.emacs.d/elpa-git/lsp-mode"]
+	path = .my.emacs.d/elpa-git/lsp-mode
+	url = https://github.com/emacs-lsp/lsp-mode.git
+	branch = master
+[submodule ".my.emacs.d/elpa-git/lsp-ui"]
+	path = .my.emacs.d/elpa-git/lsp-ui
+	url = https://github.com/emacs-lsp/lsp-ui.git
+	branch = master
+[submodule ".my.emacs.d/elpa-git/hydra"]
+	path = .my.emacs.d/elpa-git/hydra
+	url = https://github.com/abo-abo/hydra.git
+	branch = master
+[submodule ".my.emacs.d/elpa-git/consult-lsp"]
+	path = .my.emacs.d/elpa-git/consult-lsp
+	url = https://github.com/gagbo/consult-lsp.git
+	branch = main
