@@ -2,32 +2,34 @@
 
 set -euo pipefail
 
-basename0="$(basename "$0")"
-lockdir="/tmp/$basename0.lock"
-
 pamixer "$@"
 
-if ! mkdir "$lockdir" 2> /dev/null; then
-    # local already taken
-    exit 0
-fi
+progname="pamixer-notify"
 
-cleanup() { rm -rf "$lockdir"; }
-trap cleanup EXIT
+lockdir="${XDG_RUNTIME_DIR:-/run/user/$UID}"
+lockfile="$lockdir/$progname.lock"
+exec {lockfd}<>"$lockfile"
+flock -x -w 10 "$lockfd"
 
 mute="$(pamixer --get-mute || true)"
 vol="$(pamixer --get-volume || true)"
 
 symbolic=""
 symbolic="-symbolic.symbolic"
+icon_mute="audio-volume-muted$symbolic"
+icon_nomu="audio-volume-high$symbolic"
+# icon_nomu="audio-speakers$symbolic"
+# icon_mute="audio-speakers$symbolic"
 
-title="Volume"
+case "$mute" in
+    true)
+        title="Mute"
+        icon="$icon_mute"
+        ;;
+    *)
+        title="Volume"
+        icon="$icon_nomu"
+        ;;
+esac
 
-if [[ "$mute" = "true" ]]; then
-    title="Mute"
-    icon="audio-volume-muted$symbolic"
-else
-    icon="audio-volume-high$symbolic"
-fi
-
-notify-send -u low -i "$icon" -a "$basename0" -h int:value:$vol -h int:transient:1 -h string:synchronous:volume "$title"
+notify-send -u low -i "$icon" -a "$progname" -h int:value:$vol -h int:transient:1 -h string:synchronous:volume "$title"
