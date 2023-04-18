@@ -421,3 +421,31 @@
 	path = .my.emacs.d/elpa-git/consult-lsp
 	url = https://github.com/gagbo/consult-lsp.git
 	branch = main
+[submodule ".my.emacs.d/elpa-git/ace-window"]
+	path = .my.emacs.d/elpa-git/ace-window
+	url = https://github.com/abo-abo/ace-window.git
+	branch = master
+[submodule ".my.emacs.d/elpa-git/cfrs"]
+	path = .my.emacs.d/elpa-git/cfrs
+	url = https://github.com/Alexander-Miller/cfrs.git
+	branch = master
+[submodule ".my.emacs.d/elpa-git/pfuture"]
+	path = .my.emacs.d/elpa-git/pfuture
+	url = https://github.com/Alexander-Miller/pfuture.git
+	branch = master
+[submodule ".my.emacs.d/elpa-git/treemacs"]
+	path = .my.emacs.d/elpa-git/treemacs
+	url = https://github.com/Alexander-Miller/treemacs.git
+	branch = master
+[submodule ".my.emacs.d/elpa-git/lsp-treemacs"]
+	path = .my.emacs.d/elpa-git/lsp-treemacs
+	url = https://github.com/emacs-lsp/lsp-treemacs.git
+	branch = master
+[submodule ".my.emacs.d/elpa-git/posframe"]
+	path = .my.emacs.d/elpa-git/posframe
+	url = https://github.com/tumashu/posframe.git
+	branch = master
+[submodule ".my.emacs.d/elpa-git/avy"]
+	path = .my.emacs.d/elpa-git/avy
+	url = https://github.com/abo-abo/avy.git
+	branch = master
