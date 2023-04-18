@@ -7,7 +7,7 @@ CASK=
 export CASK
 
 # (the empty ":" at the end keeps the default paths)
-LISP_DIRS=$(wildcard */) $(wildcard */lisp/) $(wildcard */extensions/) $(wildcard */clients/)
+LISP_DIRS=$(wildcard */) $(wildcard */lisp/) $(wildcard */extensions/) $(wildcard */clients/) $(wildcard */src/elisp/) $(wildcard */src/extra)
 EMACSLOADPATH=$(subst / ,:,$(patsubst %,${ELPAGIT}/%, ${LISP_DIRS})):
 export EMACSLOADPATH
 
@@ -170,6 +170,23 @@ DEFCOMPILE_lsp-mode = lsp*.el clients/*.el
 DEFCOMPILE  += consult-lsp
 DEFCOMPILE  += lsp-ui
 DEFCOMPILE_lsp-ui = *.el
+
+DEFCOMPILE  += posframe
+DEFCOMPILE_posframe  = posframe.el
+DEFCOMPILE  += avy
+DEFCOMPILE_avy  = avy.el
+DEFCOMPILE  += ace-window
+DEFCOMPILE_ace-window  = *.el
+DEFCOMPILE  += cfrs
+DEFCOMPILE_cfrs  = cfrs.el
+DEFCOMPILE  += pfuture
+DEFCOMPILE_pfuture  = pfuture.el
+DEFCOMPILE  += treemacs
+# DEFCOMPILE_treemacs  = src/elisp/*.el src/extra/*.el
+DEFCOMPILE_treemacs  = src/elisp/*.el src/extra/treemacs-evil.el src/extra/treemacs-magit.el src/extra/treemacs-projectile.el
+DEFCOMPILE  += lsp-treemacs
+DEFCOMPILE_lsp-treemacs  = *.el
+
 
 all:	${DEFCOMPILE} ${DEFMAKE} ${NODEF}
 .PHONY: all
