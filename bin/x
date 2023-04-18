@@ -64,24 +64,38 @@ do
         exit 1
     fi
 
-    abspath="$(readlink -f "$path")"
-    filename="$(basename "$path")"
-    ext="${filename##*.}"
-    basename="${filename%.*}"
+    abspath="$(realpath "$path")"
+    filename="$(basename "$abspath")"
+
+    if [[ "$abspath" =~ /([^/]+)\.(tar\.[^/.]+)$ ]]
+    then
+        basename="${BASH_REMATCH[1]}"
+        ext="${BASH_REMATCH[2]}"
+    else
+        ext="${abspath##*.}"
+        basename="${abspath%.*}"
+    fi
+
+    dir="${basename}"
 
     #
     # Extract in a sub-directory first
     #
-    dir="${basename}"
-    dir="${dir%.tar}"
-
     logdeb "Extracting ./$path in ./$dir/ ..."
     ask_rmrf "$dir" || exit 1
 
     mkdir "$dir"
     pushd "$dir"
 
-    "${x_cmd[@]}" "$abspath"
+    case "$ext"
+    in
+        tar|tar.*|tgz)
+            tar --no-same-owner --no-same-permissions -xf "$abspath"
+            ;;
+        *)
+            "${x_cmd[@]}" "$abspath"
+            ;;
+    esac
 
     files=()
     mapfile -t files < <( find ./ -mindepth 1 -maxdepth 1 )
@@ -89,34 +103,6 @@ do
     file="${files[0]#./}"
 
     popd
-
-    #
-    # Recursively extract .tgz/.tar.gz archives:
-    #
-    # If we extracted only one tar file, extract it recursively
-    #
-    if [[ "$filecount" -eq 1 && "$file" =~ ^.*\.tar$ && -f "$dir/$file" ]]
-    then
-        tar="$file"
-        logdeb "{ Begin recursively extract ./$tar in ./$dir/ ..."
-
-        pushd "$dir"
-
-        "$self" "$file"
-
-        rm "$file" # remove the tar BEFORE re-list files
-
-        files=()
-        mapfile -t files < <( find ./ -mindepth 1 -maxdepth 1 )
-        filecount="${#files[@]}"
-        file="${files[0]#./}"
-
-        popd
-
-        logdeb "} Done recursively extract ./$tar in ./$dir/"
-
-        [[ "$filecount" -eq 1 ]] || { err "Internal error: recursion should have emitted only one file in $dir"; exit 1; }
-    fi
 
     #
     # Try to remove superfluous sub-directory:
