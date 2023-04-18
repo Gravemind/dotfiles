@@ -209,6 +209,7 @@
 [submodule ".emacs.d/elpa-git/transient"]
 	path = .my.emacs.d/elpa-git/transient
 	url = https://github.com/magit/transient.git
+	branch = main
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/history"]
 	path = .my.emacs.d/elpa-git/history
