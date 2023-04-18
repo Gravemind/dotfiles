@@ -54,6 +54,7 @@
   ;;          "^[#$]+ "
   ;;          ))
   (add-to-list 'tramp-remote-process-environment "TERM=dumb")
+  (add-to-list 'tramp-remote-process-environment "GIT_PAGER=cat")
 
   (add-to-list
    'tramp-methods
@@ -174,4 +175,4 @@
 ;;(eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
 (setenv "SHELL" "/bin/bash")
 (setenv "ESHELL" "/bin/bash")
-
+(setenv "GIT_PAGER" "cat")
