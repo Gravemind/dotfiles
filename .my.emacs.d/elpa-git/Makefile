@@ -7,7 +7,7 @@ CASK=
 export CASK
 
 # (the empty ":" at the end keeps the default paths)
-LISP_DIRS=$(wildcard */) $(wildcard */lisp/) $(wildcard */extensions/)
+LISP_DIRS=$(wildcard */) $(wildcard */lisp/) $(wildcard */extensions/) $(wildcard */clients/)
 EMACSLOADPATH=$(subst / ,:,$(patsubst %,${ELPAGIT}/%, ${LISP_DIRS})):
 export EMACSLOADPATH
 
@@ -161,6 +161,15 @@ DEFCOMPILE  += orderless
 DEFCOMPILE  += marginalia
 DEFCOMPILE  += consult
 DEFCOMPILE  += consult-ls-git
+
+DEFCOMPILE  += hydra  # contains "lv", for lsp-mode
+DEFCOMPILE_hydra = *.el
+
+DEFCOMPILE  += lsp-mode
+DEFCOMPILE_lsp-mode = lsp*.el clients/*.el
+DEFCOMPILE  += consult-lsp
+DEFCOMPILE  += lsp-ui
+DEFCOMPILE_lsp-ui = *.el
 
 all:	${DEFCOMPILE} ${DEFMAKE} ${NODEF}
 .PHONY: all

@@ -70,6 +70,8 @@
   "rtags.el"
   "keybinds.el"
   "modeline.el"
+  "eglot.el"
+  "lsp.el"
 
   ))
 (cl-loop for filename in my-configs-filenames
