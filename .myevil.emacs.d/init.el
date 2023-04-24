@@ -11,6 +11,9 @@
 ;; bytes already allocated) has been allocated.
 (setq gc-cons-percentage 0.6)
 
+;; lsp
+(setq read-process-output-max (* 1024 1024))
+
 ;; Allow `emacs -q -l ~/.myevil.emacs.d/init.el`
 (setq user-init-file (or load-file-name (buffer-file-name)))
 (setq user-emacs-directory (file-name-directory user-init-file))
