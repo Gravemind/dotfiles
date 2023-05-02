@@ -39,7 +39,7 @@
 (require 'cl-lib)
 (require 'subr-x)
 
-(setq my--compsys 'helm)
+(setq my--compsys 'vertico)
 
 (defun my--require-compsys ()
   (cond ((eq my--compsys 'ivy) (require 'ivy))
