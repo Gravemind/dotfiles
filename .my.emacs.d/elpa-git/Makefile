@@ -123,6 +123,8 @@ DEFCOMPILE  += ws-butler
 DEFCOMPILE  += explain-pause-mode
 DEFCOMPILE  += magit-delta
 DEFMAKE     += benchmark-init-el
+DEFCOMPILE  += all-the-icons
+DEFCOMPILE_all-the-icons  = *.el data/data-*.el
 
 DEFCOMPILE  += base16-emacs
 DEFCOMPILE_base16-emacs = base16-theme.el

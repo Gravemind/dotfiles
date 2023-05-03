@@ -450,3 +450,7 @@
 	path = .my.emacs.d/elpa-git/avy
 	url = https://github.com/abo-abo/avy.git
 	branch = master
+[submodule ".my.emacs.d/elpa-git/all-the-icons"]
+	path = .my.emacs.d/elpa-git/all-the-icons
+	url = https://github.com/domtronn/all-the-icons.el.git
+	branch = master
