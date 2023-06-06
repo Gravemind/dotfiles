@@ -1,0 +1,12 @@
+{
+    "workbench.colorTheme": "Default Dark+ Experimental",
+    "vim.statusBarColors.visualblock": "",
+    "editor.cursorBlinking": "solid",
+    "workbench.colorCustomizations": {
+        "editorCursor.foreground": "#00FFFF",
+        "terminalCursor.foreground": "#FFFF00"
+    },
+    "editor.fontSize": 11,
+    "window.menuBarVisibility": "compact",
+    "editor.fontFamily": "Hack, Arial"
+}
