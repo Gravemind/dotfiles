@@ -110,6 +110,7 @@ DEFCOMPILE	+= yasnippet
 DEFCOMPILE	+= zoom
 DEFMAKE		+= yaml-mode
 NODEF		+= dumb-jump
+DEFCOMPILE	+= queue
 DEFCOMPILE	+= undo-tree
 DEFCOMPILE	+= org-bullets
 DEFCOMPILE	+= flycheck-grammalecte
@@ -156,8 +157,11 @@ DEFCOMPILE_evil-collection = *.el modes/*/*.el
 
 DEFCOMPILE  += docker-tramp
 
+DEFCOMPILE  += xref
+DEFCOMPILE  += project
+DEFCOMPILE  += external-completion
 DEFCOMPILE  += eglot
-DEFCOMPILE_eglot = eglot*.el
+DEFCOMPILE_eglot = eglot.el
 
 DEFCOMPILE  += vertico
 DEFCOMPILE  += orderless
@@ -316,5 +320,9 @@ ${DEFCOMPILE}:
 
 fetch:
 	( cd cmake-mode ; ./fetch.sh )
+	( cd queue ; ./fetch.sh )
 	( cd undo-tree ; ./fetch.sh )
+	( cd project ; ./fetch.sh )
+	( cd external-completion ; ./fetch.sh )
+	( cd xref ; ./fetch.sh )
 .PHONY: fetch
