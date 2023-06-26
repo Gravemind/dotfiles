@@ -15,7 +15,7 @@
  '(
    ;; Additional mode indent variable
    ;; (mode dtrt-syntax variable)
-   (yaml-mode  default yaml-indent-offset)
+   ;; (yaml-mode  default yaml-indent-offset)
    )
 
  my-default-indentations-by-mode
