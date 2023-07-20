@@ -181,6 +181,12 @@
         xref-show-definitions-function #'consult-xref)
 )
 
+(use-package consult-flymake
+  :load-path (my-packages-directory "consult")
+  :if (eq my--compsys 'vertico)
+  :commands (consult-flymake)
+)
+
 (use-package consult-ls-git
   :load-path (my-packages-directory "consult-ls-git")
   :if (eq my--compsys 'vertico)
