@@ -219,8 +219,10 @@ Called with no arguments and should return a project root dir."
 
 When no project is found in that directory, the result depends on
 the value of MAYBE-PROMPT: if it is nil or omitted, return nil,
-else ask the user for a directory in which to look for the
-project, and if no project is found there, return a \"transient\"
+else prompt the user for the project to use.  To prompt for a
+project, call the function specified by `project-prompter', which
+returns the directory in which to look for the project.  If no
+project is found in that directory, return a \"transient\"
 project instance.
 
 The \"transient\" project instance is a special kind of value
@@ -1679,7 +1681,8 @@ It's also possible to enter an arbitrary directory not in the list."
             ret))
          ;; XXX: Just using this for the category (for the substring
          ;; completion style).
-         (table (project--file-completion-table (cons dir-choice choices)))
+         (table (project--file-completion-table
+                 (reverse (cons dir-choice choices))))
          (pr-name ""))
     (while (equal pr-name "")
       ;; If the user simply pressed RET, do this again until they don't.
