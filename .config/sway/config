@@ -20,7 +20,6 @@ set $keyDown     j
 
 set $here        ~/.config/sway
 set $layouts     ~/.config/sway/layouts
-set $launcher    ~/.config/sway/launch -q
 set $i3          ~/.config/i3
 
 set $Alt         Mod1
@@ -447,26 +446,26 @@ bindsym $ModK+w       exec --no-startup-id $locker
 bindsym $ModK+Shift+w exec --no-startup-id $suspend
 
 # Terminal
-#bindsym $ModK+Return exec --no-startup-id $launcher -- urxvt
 #bindsym $ModK+Return exec urxvt
 bindsym $ModK+Return exec alacritty
 
 # Emacs
-bindsym $ModK+Shift+Return exec --no-startup-id $launcher -- emacs
-bindsym $ModK+$Alt+Return  exec --no-startup-id $launcher -- emacs ~/NOTE.md
+bindsym $ModK+Shift+Return exec emacs
+bindsym $ModK+$Alt+Return  exec emacs ~/NOTE.md
 
 # Rtags rdm server
-bindsym $ModK+F4 exec --no-startup-id $launcher -w 4 -i rdm -- urxvt -name rdm -e zsh -is eval "~/bin/rdm_launch.sh"
+bindsym $ModK+F4 workspace 4; exec urxvt -name rdm -e zsh -is eval "~/bin/rdm_launch.sh"
 
 # Firefox
-set $browser firefox
-bindsym $ModK+F10       exec --no-startup-id $launcher -w 10 -- $browser
-bindsym $ModK+Shift+F10 exec --no-startup-id $launcher       -- $browser
-bindsym $ModK+F3        exec --no-startup-id $launcher -w 3  -- $browser
-bindsym $ModK+Shift+F3  exec --no-startup-id $launcher       -- $browser
+set $browser env MOZ_ENABLE_WAYLAND=1 MOZ_USE_XINPUT2=1 firefox
+bindsym $ModK+F10       workspace 10; exec $browser
+bindsym $ModK+Shift+F10 exec $browser
+bindsym $ModK+F3        workspace 3; exec $browser
+bindsym $ModK+Shift+F3  exec $browser
 
 # Qalculate
-bindsym $ModK+F5 exec --no-startup-id $launcher -f "$float_w x $float_h"  -- qalculate-gtk -n
+for_window [app_id="qalculate-gtk"] floating enable
+bindsym $ModK+F5 exec qalculate-gtk -n
 
 # Redshift
 bindsym $ModK+o       exec --no-startup-id ~/bin/red +1
