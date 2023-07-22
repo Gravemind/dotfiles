@@ -115,7 +115,7 @@ for f in sorted(j['formats'], key=vformat_sort_key, reverse=True):
         continue
     # If we don't have audio in this format, let youtube-dl merge the best audio
     addaudio = '+bestaudio' if f['acodec'] == 'none' else ''
-    print('{format_id}{addaudio}: {format} {vcodec}'.format(addaudio=addaudio, **f))
+    print('{format_id}{addaudio}: {format} {fps}fps {ext} {vcodec}'.format(addaudio=addaudio, **f))
 EOPYTHON
             )
 }
@@ -160,15 +160,17 @@ main() {
 
     log "selected url: $url"
 
+    local ytdl=youtube-dl
+    local ytdl=yt-dlp
     local msg="$(echo "$url" | escape_markup)"
     local do=
     local dummy=
     {
         echo "mpv: play with mpv";
-        echo "youtube-dl: download with youtube-dl";
+        echo "youtube-dl: download with $ytdl";
         echo "wget: download with wget";
         echo "mpv-FORMAT: play with mpv";
-        echo "youtube-dl-FORMAT: download with youtube-dl";
+        echo "youtube-dl-FORMAT: download with $ytdl";
     } | \
         rofi -dmenu "${rofi_args[@]}" -mesg "$msg" | \
         read -r -d: do dummy
@@ -178,22 +180,14 @@ main() {
     local format=""
     if [[ $do =~ .*-FORMAT ]]; then
         log "choosing format"
-        msg="Loading youtube-dl format selection..."
-        youtube-dl --dump-json "$url" | \
+        msg="Loading $ytdl format selection..."
+        "$ytdl" --dump-json "$url" | \
             list_video_format_from_json | \
             tee /dev/fd/2 | \
             rofi -dmenu "${rofi_args[@]}" -mesg "$msg" -async-pre-read 0 | \
             read -r -d: format dummy
         log "choose: $format"
         do="${do%-FORMAT}"
-    elif [[ $do = youtube-dl || $do = mpv ]]; then
-        log "auto choose best format..."
-        youtube-dl --dump-json "$url" | \
-            list_video_format_from_json | \
-            tee /dev/fd/2 | \
-            head -n1 | \
-            read -r -d: format dummy
-        log "auto choose best format: $format"
     fi
 
     if [[ $do = youtube-dl || $do = wget ]]; then
@@ -206,27 +200,27 @@ main() {
         local markupfilename=
         local ok=0
         if [[ $dlwith = youtube-dl ]]; then
-            filename="$(youtube-dl -q --restrict-filenames --get-filename -- "$url" | sanitize_filename)"
+            filename="$("$ytdl" -q --restrict-filenames --get-filename -- "$url" | sanitize_filename)"
             if [[ -n "$filename" ]]; then
                 markupfilename="$(echo "$filename" | escape_markup)"
-                log "youtube-dl $filename"
+                log "$ytdl $filename"
                 notify low "Launching $dlwith..." "$markupfilename"
 
-                local cmd=( youtube-dl -q -o "${filename//%/%%}" --no-mtime )
+                local cmd=( "$ytdl" -q -o "${filename//%/%%}" --no-mtime )
                 [[ -z "$format" ]] || cmd+=( --format "$format" )
                 cmd+=( -- "$url")
 
-                "${cmd[@]}" && ok=1 || err "youtube-dl failed"
+                "${cmd[@]}" && ok=1 || err "$ytdl failed"
 
                 if [[ $ok = 1 && ! -f "$filename" ]]; then
                     ok=0
                     other="$(\ls -t "${filename%\.*}."* | head -n1)"
                     if [[ -f "$other" ]]; then
                         filename="$other"
-                        log "youtube-dl output file not found, but found $filename"
+                        log "$ytdl output file not found, but found $filename"
                         ok=1
                     else
-                        err "youtube-dl output file not found: $filename"
+                        err "$ytdl output file not found: $filename"
                     fi
                 fi
 
