@@ -20,11 +20,14 @@ main() {
             #entry_comm "$i" "--" &&
             entry_prop "$i" adaptive_sync &&
             entry_prop_int "$i" max_render_time &&
+            # entry_win_max_render_time "$i" &&
+            entry_win_max_render_time_all "$i" &&
             # entry_prop "$i" SyncToVBlank &&
             # entry_prop "$i" AllowVRR &&
             # entry_gsync "$i" &&
             # entry_prop "$i" ShowGraphicsVisualIndicator &&
             # entry_prop "$i" ShowVRRVisualIndicator &&
+            entry_quit "$i" &&
             true
         i=""
     done
@@ -114,7 +117,7 @@ entry_prop_int() {
     local v="$(sway_output_get "$pty")"
     local entry=""
     #entry="   $pty"
-    entry="$v $pty"
+    entry="$v output $pty"
     if [[ -z "$input" ]]; then
         echo "+ $entry"
         echo "- $entry"
@@ -139,11 +142,112 @@ entry_prop_int() {
     fi
 }
 
+entry_win_max_render_time_all() {
+    local input="$1"
+    local current_mrt
+    current_mrt="$(
+        swaymsg -t get_tree | jq '
+            [ recurse(.nodes? | .[]) |
+            select(.type == "con" and .max_render_time) |
+            .max_render_time ] | min
+        ' -r
+    )"
+
+    [[ -n "$current_mrt" ]] || current_mrt=0
+
+    local v="$current_mrt"
+
+    local entry=""
+    #entry="   $pty"
+    entry="$v window max_render_time"
+    if [[ -z "$input" ]]; then
+        echo "+ $entry"
+        echo "- $entry"
+    elif [[ "$input" = "+ $entry" ]]; then
+        if [[ "$v" = off || "$v" -le 0 ]]; then
+            v=1
+        else
+            v=$((v + 1))
+        fi
+        checked_swaymsg "[title=\".*\"] max_render_time $v"
+        RERUN=true
+        return 1 # break
+    elif [[ "$input" = "- $entry" ]]; then
+        if [[ "$v" = off || "$v" -le 1 ]]; then
+            v=off
+        else
+            v=$((v - 1))
+        fi
+        checked_swaymsg "[title=\".*\"] max_render_time $v"
+        RERUN=true
+        return 1 # break
+    fi
+}
+
+entry_win_max_render_time() {
+    local input="$1"
+    # local pty="$2"
+    # Rofi is not visible in get_tree ?
+    # local _win="$(swaymsg -t get_tree | jq 'recurse(.nodes? | .[]) | select(.visible? == true and .fullscreen_mode != 0)' ||:)" # current fullscreen
+    local _win="$(swaymsg -t get_tree | jq '
+        recurse(.nodes? | .[]) |
+        select(.visible? == true and .focused? == true) |
+        [.id, .max_render_time? // 0, .app_id?, .window_properties.class?, .name?] |
+        map(select(.)) |
+        join(" ")
+    ' -r ||:)" # current focused
+
+    if [[ -z "$_win" ]]; then
+        echo "could not find a window"
+    fi
+    local con_id current_mrt name
+    read -r con_id current_mrt name <<<"$_win"
+
+    local v="$current_mrt"
+
+    local entry=""
+    #entry="   $pty"
+    entry="$v window max_render_time: $name"
+    if [[ -z "$input" ]]; then
+        echo "+ $entry"
+        echo "- $entry"
+    elif [[ "$input" = "+ $entry" ]]; then
+        if [[ "$v" = off || "$v" -le 0 ]]; then
+            v=1
+        else
+            v=$((v + 1))
+        fi
+        checked_swaymsg "[con_id=$con_id] max_render_time $v"
+        RERUN=true
+        return 1 # break
+    elif [[ "$input" = "- $entry" ]]; then
+        if [[ "$v" = off || "$v" -le 1 ]]; then
+            v=off
+        else
+            v=$((v - 1))
+        fi
+        checked_swaymsg "[con_id=$con_id] max_render_time $v"
+        RERUN=true
+        return 1 # break
+    fi
+}
+
 entry_comm() {
     local input="$1"
     shift
     if [[ -z "$input" ]]; then
         echo "$@"
+    fi
+}
+
+entry_quit() {
+    local input="$1"
+    local txt="Quit"
+    if [[ -z "$input" ]]; then
+        echo "$txt"
+    elif [[ "$input" = "$txt" ]]; then
+        RERUN=false
+        return 1 # break
     fi
 }
 
@@ -190,13 +294,23 @@ sway_output_set() {
     if [[ $check_restart = 1 ]]; then
         sleep 0.1s
         update_pties
+
         if [[ "$(sway_output_get "$pty")" != "$val" ]]; then
-            # FIXME multi screen monitor
+            # FIXME support multi screen monitor
             output="$(sway_output_get name)"
             res="$(swaymsg output "$output" disable ||:)"
             sleep 0.2s
             res="$(swaymsg output "$output" enable ||:)"
         fi
+
+    fi
+}
+
+checked_swaymsg() {
+    local res
+    if ! res="$(swaymsg "$@")" ; then
+        echo "swaymsg failed: swaymsg $*: $res"
+        return 1
     fi
 }
 
