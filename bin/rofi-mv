@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+export LC_ALL=C.utf-8
+
 usage() {
     echo "$0 [-hte] [-c MV_LIKE_BIN] FILE
 

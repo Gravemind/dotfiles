@@ -24,7 +24,7 @@ export __GL_SYNC_DISPLAY_DEVICE=DP-4
 #xset s 3600 3600
 #xset dmps 3600 3600 3600
 
-nvidia-settings -l
+# nvidia-settings -l
 
 # Steam
 export PROTON_DUMP_DEBUG_COMMANDS=1
@@ -75,4 +75,5 @@ xset b 0 &> /dev/null
 
 i3log="$HOME/.config/i3/log"
 mv -f "$i3log" "$i3log.bak"
-exec ~/documents/clones/i3/build/i3 > "$i3log" 2>&1
+# exec ~/Documents/clones/i3/build/i3 > "$i3log" 2>&1
+exec i3 > "$i3log" 2>&1

@@ -5,7 +5,7 @@ alias mpw="mpv --force-window=immediate "
 
 GRAVEMIND_NO_URGENT_CMD+=( mpn mpf )
 
-MPN_SORT_VER=0
+MPN_SORT_VER=1
 MPN_MPV_ARGS= # --fullscreen
 
 _mpn_sort_files() {

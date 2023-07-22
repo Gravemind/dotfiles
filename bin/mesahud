@@ -2,14 +2,21 @@
 # https://www.reddit.com/r/linux_gaming/comments/au3k4p/mesa_vulkan_hud_now_has_fps_counter_and_is/
 
 # For OpenGL
-export GALLIUM_HUD='.dfps:120,frametime,cpu+GPU-load:100=gpu,cpu0+cpu1+cpu2+cpu3+cpu4+cpu5+cpu6+cpu7+cpu8+cpu9+cpu10+cpu11+cpu12+cpu13+cpu14+cpu15:100'
+export GALLIUM_HUD='fps'
+# export GALLIUM_HUD='.dfps:120,frametime,cpu+GPU-load:100=gpu,cpu0+cpu1+cpu2+cpu3+cpu4+cpu5+cpu6+cpu7+cpu8+cpu9+cpu10+cpu11+cpu12+cpu13+cpu14+cpu15:100'
 # export GALLIUM_HUD="fps,GPU-load+cpu:100,.c100cpu0+cpu1+cpu2+cpu3+cpu4+cpu5+cpu6+cpu7+cpu8+cpu9+cpu10+cpu11:100"
 
 # For Vulkan:
-# https://cgit.freedesktop.org/mesa/mesa/tree/src/vulkan/overlay-layer/README?id=add4b8930a219008731f76830ffc12b260b7d1da
+#
+# https://cgit.freedesktop.org/mesa/mesa/tree/src/vulkan/overlay-layer/README.rst
+#
+# VK_INSTANCE_LAYERS=VK_LAYER_MESA_overlay VK_LAYER_MESA_OVERLAY_CONFIG=help vkcube
+#
 export VK_INSTANCE_LAYERS=VK_LAYER_MESA_overlay
-# export VK_LAYER_MESA_OVERLAY_CONFIG=help
-export VK_LAYER_MESA_OVERLAY_CONFIG=acquire_timing,present_timing,position=top-left
-# export VK_LAYER_MESA_OVERLAY_CONFIG=submit,draw,pipeline_graphics,position=top-left
+# VK_LAYER_MESA_OVERLAY_CONFIG=fps,acquire_timing,present_timing,frame_timing,gpu_timing,position=top-left
+# VK_LAYER_MESA_OVERLAY_CONFIG+=submit,draw,pipeline_graphics
+# VK_LAYER_MESA_OVERLAY_CONFIG=device=0,format=0,fps=1
+VK_LAYER_MESA_OVERLAY_CONFIG=help
+export VK_LAYER_MESA_OVERLAY_CONFIG
 
 exec "$@"

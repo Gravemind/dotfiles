@@ -48,6 +48,7 @@ yay -S --asexplicit --needed podman buildah
 ## Dev Tools, Languages
 
 yay -S --asexplicit --needed \
+    git-lfs \
     ispell aspell aspell-en aspell-fr \
     cmake ninja meson \
     gdb valgrind strace ccache boost cloc \

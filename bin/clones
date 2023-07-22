@@ -25,6 +25,7 @@ clone() {
     path="${path##+(/)}"
     path="${path/:/\/}"
     path="${path%.git}"
+    path="${path,,}"
     name_parent="${path%/*}"
     name="${path##*/}"
     path="$clones_git_root/$path"

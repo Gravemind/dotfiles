@@ -26,7 +26,7 @@ local function toggle_svp()
 end
 
 local function init()
-    print('my-script init')
+    -- print('my-script init')
     for k, v in pairs(profiles_enabled) do
         if os.getenv(string.upper(k)) == "0" then
             enable_profile(k, false)

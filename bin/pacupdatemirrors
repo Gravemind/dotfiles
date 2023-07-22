@@ -18,7 +18,7 @@ fi
 
 echo "$0: fetch mirrors..."
 
-reflector --verbose -p https "${countries[@]}" --sort score --age 24 "${url[@]}" \
+reflector --verbose -p https "${countries[@]}" --sort score --age 12 "${url[@]}" \
     | grep '^Server = ' | tail -n $servercount > "$tmpfile2"
 
 echo "$0: ranking the new $count mirrors..."

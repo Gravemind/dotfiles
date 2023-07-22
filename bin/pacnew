@@ -76,7 +76,8 @@ do
 
         echo
         echo ">> merge: " $OLD
-        sudo meld "$NEW" "$OLD" &> /dev/null || echo "!! ERROR merge: $NEW"
+        # sudo meld "$NEW" "$OLD" &> /dev/null || echo "!! ERROR merge: $NEW"
+        ediff "/sudo::$NEW" "/sudo::$OLD" &> /dev/null || echo "!! ERROR merge: $NEW"
         # ediff "/sudo::$NEW" "/sudo::$OLD" &> /dev/null || echo "!! ERROR merge: $NEW"
 
         read -p "?? delete \"$NEW\" ? [e/r/y/n/q]: " -r RESP

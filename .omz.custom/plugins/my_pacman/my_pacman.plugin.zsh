@@ -25,7 +25,7 @@ run-help-yay() {
 
 # Update mirror list if out dated
 pacupmir() {
-	local pacmirrorfile_expire_days=9
+	local pacmirrorfile_expire_days=6
 
 	local pacmirrorfile=/etc/pacman.d/mirrorlist
 	local pacmirrorfile_expire_sec=$(($pacmirrorfile_expire_days * 24 * 60 * 60))
@@ -147,15 +147,14 @@ checkpacnew() {
 # Check for orphan packages
 checkpacorphans() {
 	# local orphans=($(pacman -Qtdq ||:))
-	local orphans=($(pacman -Qqd | pacman -Rsu --print - | grep -v "there is nothing to do"))
+	local orphans=($(pacman -Qqd | pacman -Rsu --print --print-format "%n" - | grep -v "there is nothing to do"))
 	if [[ "${#orphans[@]}" -eq 0 ]]; then
 		echo "${fg_bold[black]}$0: found 0 orphan packages.$reset_color"
 		return 0
 	fi
 	echo
-	echo "${fg_bold[red]}$0: found ${#orphans[@]} orphan packages: ${orphans[*]}$reset_color"
-	# echo "${fg_bold[red]}$0: to remove, run: pacman -Qtdq | sudo pacman -Rns -$reset_color"
-	echo "${fg_bold[red]}$0: to remove, run: pacman -Qqd | pacman -Rsu -$reset_color"
+	echo "${fg_bold[red]}$0: found ${#orphans[@]} orphan packages, to remove them, run:$reset_color"
+	echo "${fg_bold[red]}$0: $ sudo pacman -Rsu ${orphans[*]}$reset_color"
 	echo
 }
 

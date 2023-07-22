@@ -12,7 +12,7 @@ echo "$0: locking at $(date -Is)"
 
 case "${DESKTOP_SESSION:-}"
 in
-    sway)
+    sway*)
         swaylock $swayfork --show-failed-attempts --ignore-empty-password --color=202020 -i ~/.config/sway/wallpaper.blured.png --tiling $@ || {
             echo "$0: i3lock failed at $(date -Is)"
             exit 1
