@@ -152,7 +152,8 @@ main() {
     # rofi-script makes clipmenu list-only entries
     # (we won't get multi-line clips, but don't really care here !?)
     local url=
-    checked greenclip print | \
+    # checked greenclip print | \
+    checked clipman pick --tool=STDOUT | \
         filter_urls | \
         checked rofi -dmenu "${rofi_args[@]}" | \
         IFS= read -r url
