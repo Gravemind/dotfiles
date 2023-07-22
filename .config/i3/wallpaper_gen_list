@@ -48,7 +48,8 @@ gen_blured() {
             # blur and fade
             -filter Lanczos
             -scale 2%
-            -fill black -colorize 80%
+            # -fill black -colorize 80%
+
             -gravity center -resize "${screen_res}^" -extent "$screen_res" # match feh --bg-fill
 
             -write mpr:mpr$mpri
