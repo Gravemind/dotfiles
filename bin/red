@@ -24,7 +24,11 @@ bria=100        # starting brightness
 gama=100	# starting gamma * 100
 colstep=1000	# temperature step
 bristep=20	# brightness step
-gamstep=-4	# gamma step * 100
+gamstep=0	# gamma step * 100
+
+colors=(6500 5500 4800 4000)
+brighs=(100  80   60   40)
+gammas=(100  100  100  100)
 
 enable_current_output=0
 
@@ -71,23 +75,24 @@ echo "$0: found ${#outputs[@]} outputs"
 
 ## find current output crtc from current/active window position
 
-current_crtc=
-current_winpos=($(xwininfo -id $(xdotool getactivewindow) |
-					  sed -nr "s/^\s*Corners:\s+$OFFSET_RE\s+.*$/\1 \2/p"))
-while read crtc name width height xoff yoff
-do
-	#echo $crtc $name $width $height $xoff $yoff
-	if [[ "${current_winpos[0]}" -ge "$xoff" &&
-			  "${current_winpos[1]}" -ge "$yoff" &&
-			  "${current_winpos[0]}" -lt "$(($xoff+$width))" &&
-			  "${current_winpos[1]}" -lt "$(($yoff+$height))" ]]
-	then
-		current_crtc=$crtc
-		break
-	fi
-done < <(printf '%s\n' "${outputs[@]}")
-[[ -n "$current_crtc" ]] || error "could not find current output from active window"
-echo "$0: current output: ${outputs[$current_crtc]}"
+current_crtc=0
+
+# current_winpos=($(xwininfo -id $(xdotool getactivewindow) |
+# 					  sed -nr "s/^\s*Corners:\s+$OFFSET_RE\s+.*$/\1 \2/p"))
+# while read crtc name width height xoff yoff
+# do
+# 	#echo $crtc $name $width $height $xoff $yoff
+# 	if [[ "${current_winpos[0]}" -ge "$xoff" &&
+# 			  "${current_winpos[1]}" -ge "$yoff" &&
+# 			  "${current_winpos[0]}" -lt "$(($xoff+$width))" &&
+# 			  "${current_winpos[1]}" -lt "$(($yoff+$height))" ]]
+# 	then
+# 		current_crtc=$crtc
+# 		break
+# 	fi
+# done < <(printf '%s\n' "${outputs[@]}")
+# [[ -n "$current_crtc" ]] || error "could not find current output from active window"
+# echo "$0: current output: ${outputs[$current_crtc]}"
 
 ## get old output value and parse arg NUM
 
@@ -120,13 +125,9 @@ in
 esac
 [[ -n "$value" ]] || error "invalid value argument \"$arg_raw\""
 
-if [[ $value -lt 0 ]]
-then
-	value=0
-elif [[ $value -gt 9 ]]
-then
-	value=9
-fi
+max=$((${#colors[@]} - 1))
+value=$((value < 0 ? 0 : value))
+value=$((value > max ? max : value))
 
 ## save value(s)
 
@@ -146,21 +147,32 @@ fi
 
 if [[ $value -gt 0 ]]
 then
-	col=$((- $value * $colstep + $cola))
-	bri=$((- $value * $bristep + $bria))
+	# col=$((- $value * $colstep + $cola))
+	# bri=$((- $value * $bristep + $bria))
+	# gam=$((- $value * $gamstep + $gama))
+
+	col="${colors[$value]}"
+	bri="${brighs[$value]}"
+	gam="${gammas[$value]}"
+
 	bri=$(echo "scale=3; $bri / 100.0" | bc)
-	gam=$((- $value * $gamstep + $gama))
 	gam=$(echo "scale=3; $gam / 100.0" | bc)
 
 	icon="$notify_icon_on"
 
 	echorun() { echo "$0: running: $*"; "$@"; }
 
-	echorun redshift -P -O $col -b $bri -g $gam $redopt || {
-		echo "$0: redshift failed"
-		_notify-send -u low -i "$icon" -h "int:value:$value" "Red" " FAILED"
-		exit 1
-	}
+	# echorun redshift -P -O $col -b $bri -g $gam $redopt || {
+	# 	echo "$0: redshift failed"
+	# 	_notify-send -u low -i "$icon" -h "int:value:$value" "Red" " FAILED"
+	# 	exit 1
+	# }
+	while pgrep -u $UID gammastep
+	do
+		pkill -u $UID gammastep
+	done
+	echorun gammastep -P -r -o -O $col -b $bri -g $gam $redopt &
+	disown
 
 	#redshift -P -O $col -g $gam $redopt
 
@@ -180,7 +192,9 @@ then
 else
 	icon="$notify_icon_off"
 	echo "$0: redshifting reset: redshift -x $redopt"
-	redshift -x $redopt
+	#redshift -x $redopt
+	# gammastep -x
+	pkill -u $UID gammastep ||:
 fi
 
 _notify-send -u low -i "$icon" -h "int:value:$value" "Red"
