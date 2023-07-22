@@ -16,6 +16,8 @@ set step-mode on
 # log `skip`d locations
 set debug skip on
 
+set debuginfod enable on
+
 set print inferior-events on
 
 set confirm off
