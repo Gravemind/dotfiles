@@ -6,6 +6,7 @@ cd "$(dirname "$0")"
 here="$(pwd)"
 
 wallpapers_list_file="wallpapers.list"
+dst="wallpaper.png"
 dst_blured="wallpaper.blured.png"
 blured_ext=".blured.png"
 
@@ -13,9 +14,11 @@ mapfile -t wallpapers_list < "$wallpapers_list_file"
 
 wallpaperc="${#wallpapers_list[@]}"
 wallpaper="${wallpapers_list[RANDOM % wallpaperc]}"
+wallpaper="${wallpapers_list[2]}"
 # wallpaper="$wallpaper.blured.png"
+
+ln -sf "$wallpaper" "$dst"
+ln -sf "$wallpaper$blured_ext" "$dst_blured"
 
 # /usr/bin/feh --bg-fill "$wallpaper"
 swaymsg "output * bg $(printf '%q' "$(readlink -f "$wallpaper")") fill"
-
-ln -sf "$wallpaper$blured_ext" "$dst_blured"

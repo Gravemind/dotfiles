@@ -44,6 +44,9 @@ output "*" subpixel none
 
 # ipc-socket $here/ipc.sock
 
+# output "*" max_render_time 1
+# for_window [title=".*"] max_render_time 1
+
 #
 # Style and behaviors
 #
@@ -71,6 +74,8 @@ force_display_urgency_hint 500 ms
 
 focus_follows_mouse yes
 default_orientation auto
+# default is split
+workspace_layout default
 workspace_auto_back_and_forth no
 #mouse_warping none
 
@@ -86,7 +91,9 @@ focus_on_window_activation urgent
 no_focus [window_role="pop-up"]
 
 # Floating window size range
-floating_minimum_size $resize_step_x x $resize_step_y
+# floating_minimum_size $resize_step_x x $resize_step_y
+# Firefox "mic/screen" popup
+floating_minimum_size 30 x 30
 floating_maximum_size -1 x -1
 
 # Default border for programs
@@ -376,16 +383,16 @@ set $volpct 5
 # set $volume_dec       exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@' -$volpct%
 # set $volume_inc_shift exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@' +$volpct%
 # set $volume_dec_shift exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@' -$volpct%
-# set $volume_mute      exec --no-startup-id ~/bin/pamixer-notify --toggle-mute
-# set $volume_inc       exec --no-startup-id ~/bin/pamixer-notify --increase $volpct
-# set $volume_dec       exec --no-startup-id ~/bin/pamixer-notify --decrease $volpct
-# set $volume_inc_shift exec --no-startup-id ~/bin/pamixer-notify --increase $volpct
-# set $volume_dec_shift exec --no-startup-id ~/bin/pamixer-notify --decrease $volpct
-set $volume_mute      exec --no-startup-id ~/bin/pactl-notify set-sink-mute   '@DEFAULT_SINK@' toggle
-set $volume_inc       exec --no-startup-id ~/bin/pactl-notify set-sink-volume '@DEFAULT_SINK@' +$volpct%
-set $volume_dec       exec --no-startup-id ~/bin/pactl-notify set-sink-volume '@DEFAULT_SINK@' -$volpct%
-set $volume_inc_shift exec --no-startup-id ~/bin/pactl-notify set-sink-volume '@DEFAULT_SINK@' +$volpct%
-set $volume_dec_shift exec --no-startup-id ~/bin/pactl-notify set-sink-volume '@DEFAULT_SINK@' -$volpct%
+set $volume_mute      exec --no-startup-id ~/bin/pamixer-notify --toggle-mute
+set $volume_inc       exec --no-startup-id ~/bin/pamixer-notify --increase $volpct
+set $volume_dec       exec --no-startup-id ~/bin/pamixer-notify --decrease $volpct
+set $volume_inc_shift exec --no-startup-id ~/bin/pamixer-notify --increase $volpct
+set $volume_dec_shift exec --no-startup-id ~/bin/pamixer-notify --decrease $volpct
+# set $volume_mute      exec --no-startup-id ~/bin/pactl-notify set-sink-mute   '@DEFAULT_SINK@' toggle
+# set $volume_inc       exec --no-startup-id ~/bin/pactl-notify set-sink-volume '@DEFAULT_SINK@' +$volpct%
+# set $volume_dec       exec --no-startup-id ~/bin/pactl-notify set-sink-volume '@DEFAULT_SINK@' -$volpct%
+# set $volume_inc_shift exec --no-startup-id ~/bin/pactl-notify set-sink-volume '@DEFAULT_SINK@' +$volpct%
+# set $volume_dec_shift exec --no-startup-id ~/bin/pactl-notify set-sink-volume '@DEFAULT_SINK@' -$volpct%
 # +/-
 bindsym $ModK+equal $volume_inc
 bindsym $ModK+minus $volume_dec
@@ -515,7 +522,7 @@ bar {
 # Run at startup
 #
 
-exec $here/wallpaper_cycle
+exec_always $here/wallpaper_cycle
 
 # Device manager (auto user mount, umount, notify)
 # exec_always --no-startup-id systemctl --user restart daemon_devmon.service
@@ -526,8 +533,4 @@ exec $here/wallpaper_cycle
 # set $hook_idle_time_min 10
 # exec --no-startup-id xautolock -detectsleep -time $hook_idle_time_min -locker "~/bin/hooks/onidle" -noclose
 
-#
-# Spawn layouts and programs
-# http://i3wm.org/docs/layout-saving.html
-#
-# exec --no-startup-id $layouts/startup.sh
+workspace 3
