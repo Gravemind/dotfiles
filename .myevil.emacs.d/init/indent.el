@@ -43,11 +43,11 @@
    (default     4 nil 8)
    (c/c++/java  4 nil 8)
    (javascript  2 nil 8)
-   (lua         4 t   4)
+   (lua         4 nil 8)
    (ruby        2 nil 8)
-   (perl        4 t   4)
+   (perl        4 nil 8)
    (sgml        2 nil 8)
-   (css         4 t   4)
+   (css         2 nil 8)
    (cmake       2 nil 8)
    )
 
@@ -60,7 +60,8 @@
   "Returns the symbol of the variable that defines indentation
 for the current major mode (uses dtrt)"
   (require 'dtrt-indent)
-  (nth 2 (dtrt-indent--search-hook-mapping major-mode)))
+  (let ((var (nth 2 (dtrt-indent--search-hook-mapping major-mode))))
+    (if (listp var) (car var) var)))
 
 (defun jo--on-indentation-changed ()
   "Finish setuping indentation"
@@ -235,4 +236,8 @@ spaces are treated."
   :config
   (setcdr (last dtrt-indent-hook-mapping-list)
           my-additional-dtrt-indent-hook-mapping-list)
+
+  ;; Fix files with code that goes deep fast. dtrt was using an offset too
+  ;; large.
+  (setq dtrt-indent-max-merge-deviation 10.0)
 )
