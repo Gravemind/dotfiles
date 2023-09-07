@@ -9,7 +9,11 @@
   (:map vertico-map
         ("<prior>" . vertico-scroll-down)
         ("<next>" . vertico-scroll-up)
-        ("TAB" . mynoop) ;; see consult-preview-key
+        ("C-j" . vertico-next)
+        ("C-k" . vertico-previous)
+        ;; ("TAB" . mynoop) ;; see consult-preview-key
+        ;; ("C-<tab>" . minibuffer-complete)
+        ("C-<tab>" . vertico-insert)
         )
   :config
   (setq-default
@@ -119,7 +123,7 @@
   :load-path (my-packages-directory "consult")
   :if (eq my--compsys 'vertico)
   :after vertico
-  :commands (consult-line consult-grep consult-ripgrep consult-git-grep)
+  :commands (consult-line consult-grep consult-ripgrep consult-git-grep consult-completion-in-region)
   :bind
   (
    ;; ("<leader> SPC" . consult-find)
