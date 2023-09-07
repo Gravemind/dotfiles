@@ -51,6 +51,8 @@
    magit-log-select-margin magit-default-margin
    magit-reflog-margin magit-default-margin
    magit-log-margin magit-default-margin
+   ;; (Also add author to magit refs)
+   magit-refs-margin magit-default-margin
 
    ;; Never remove --graph flag
    magit-log-remove-graph-args nil
