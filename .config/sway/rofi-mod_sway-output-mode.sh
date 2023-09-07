@@ -27,6 +27,7 @@ main() {
             # entry_gsync "$i" &&
             # entry_prop "$i" ShowGraphicsVisualIndicator &&
             # entry_prop "$i" ShowVRRVisualIndicator &&
+            entry_sway_output "$i" &&
             entry_quit "$i" &&
             true
         i=""
@@ -83,6 +84,43 @@ entry_gsync() {
         RERUN=true
         return 1
     fi
+}
+
+entry_sway_output() {
+    local input="$1"
+    local v="$(sway_output_get "$pty")"
+    local entry=""
+    local action=""
+
+    local active name desc
+    while IFS=' ' read -u3 -r active name desc
+    do
+        entry=""
+        if [[ "$active" = 1 ]]; then
+            #entry="   $pty"
+            entry+=" "
+        else
+            entry+=" "
+        fi
+        entry+="$name: $desc"
+        if [[ -z "$input" ]]; then
+            echo "$entry"
+        elif [[ "$input" = "$entry" ]]; then
+
+            if [[ "$active" = 1 ]]; then
+                action="disable"
+            else
+                action="enable"
+            fi
+            swaymsg "output $name $action"
+            RERUN=false
+            return 1 # break
+        fi
+    done 3< <(
+            swaymsg -r -t get_outputs |
+                jq '.[] | "\(if .active then 1 else 0 end) \(.name) [\(.current_workspace?)] \(.make?) \(.model?)"' -r
+        )
+    return 0
 }
 
 entry_prop() {
