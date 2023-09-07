@@ -47,6 +47,14 @@ command | ts '[%y-%m-%d %H:%M:%.S]'
 date +%y%m%d-%H%M%S
 ```
 
+iso 8601:
+```
+date -u +%Y%m%dT%H%M%SZ      # UTC, short
+date -u +%Y-%m-%dT%H:%M:%SZ  # UTC, long
+date +%Y%m%dT%H%M%S%z        # NON-UTC, short
+date +%Y-%m-%dT%H:%M:%S%:z   # NON-UTC, long
+```
+
 ### xdg dir
 
 ```sh
