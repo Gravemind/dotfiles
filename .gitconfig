@@ -152,6 +152,9 @@
 	# pretty reflog, show "ref@{Nth}" instead of "ref@{date}"
 	rli  = log --pretty=myreflog --walk-reflogs
 
+	# Log with tig
+	ltig = "!f() { set -eu; git --no-pager log --format=%H \"$@\" | tig --no-walk --stdin; }; f"
+
 	# Fuller show
 	showf = show --format=fuller
 
