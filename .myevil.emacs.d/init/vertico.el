@@ -197,3 +197,8 @@
    ("<leader> SPC" . consult-ls-git)
    )
 )
+
+(use-package consult-flymake
+  :load-path (my-packages-directory "consult")
+  :commands (consult-flymake)
+)
