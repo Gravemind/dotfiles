@@ -11,6 +11,8 @@ set print frame-arguments none
 set list 25
 set demangle-style gnu-v3
 
+# set debuginfod enabled on
+
 # `step` stops on functions with no debug info
 set step-mode on
 # log `skip`d locations
