@@ -35,6 +35,17 @@
       ;; But don't let the minibuffer grow beyond this size
       max-mini-window-height 0.25)
 
+(defun quit-all-windows-on-the-right ()
+  (interactive)
+  (while-let ((w (window-in-direction 'right nil nil nil nil nil)))
+    ;; (message "%s" w)
+    (delete-window w)
+    ))
+
+(bind-keys
+ ("C-x !" . quit-all-windows-on-the-right)
+)
+
 ;;
 ;; zoom-mode
 ;;   https://github.com/cyrus-and/zoom
