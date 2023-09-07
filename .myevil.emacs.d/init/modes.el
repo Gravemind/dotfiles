@@ -582,6 +582,8 @@
    flycheck-grammalecte-report-nbsp nil
    ;; Don't report useless spaces/tab
    flycheck-grammalecte-report-esp nil
+   ;; Don't report typographic signs errors if non-nil.
+   flycheck-grammalecte-report-typo nil
    )
 
   (defun my-flycheck-grammalecte ()
