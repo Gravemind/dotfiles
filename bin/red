@@ -67,7 +67,7 @@ do
 	[[ -z "${outputs[$crtc]}" ]] || error "2 xrandr output with same crtc $crtc: $name and ${outputs[$crtc]}"
 	outputs[$crtc]="$crtc $name $width $height $xoff $yoff"
 done < <(xrandr --verbose |
-			 awk '/^[-_0-9A-Z]+.*/ { output=$0; } /CRTC:/ { print output " CRTC:" $2 }' |
+			 awk '/^[-_0-9a-zA-Z]+.*/ { output=$0; } /CRTC:/ { print output " CRTC:" $2 }' |
 			 sed -r "s/^(\S+).*\b([-0-9]+)x([-0-9]+)$OFFSET_RE.*CRTC:([0-9]+)\b.*$/\1 \2 \3 \4 \5 \6/")
 set -u
 [[ ${#outputs[@]} != 0 ]] || error "no xrandr output found"
