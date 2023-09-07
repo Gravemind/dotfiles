@@ -85,6 +85,9 @@ export S_COLORS=true
 # ripgrep rg
 export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/config
 
+# CMake always generate a compile_commands.json
+export CMAKE_EXPORT_COMPILE_COMMANDS=1
+
 alias grep='grep --color=auto'
 alias less='less --quiet'
 alias cat='cat -v'

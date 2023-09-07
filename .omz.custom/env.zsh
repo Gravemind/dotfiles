@@ -6,7 +6,11 @@ then
     export ORIG_LD_LIBRARY_PATH="$LD_LIBRARY_PATH"
 fi
 
+# ripgrep rg
 export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/config
+
+# CMake always generate a compile_commands.json
+export CMAKE_EXPORT_COMPILE_COMMANDS=1
 
 # deprecated:
 #export GREP_OPTIONS="--binary-files=without-match"
