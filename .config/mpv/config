@@ -111,7 +111,8 @@ vf-remove=@svpv
 [enable-scaletempo]
 profile-desc="Scaletempo for Playspeed"
 profile-cond=p.speed > 1.01
-af-add=@scaletempo:scaletempo=stride=10:search=16:overlap=1
+# af-add=@scaletempo:scaletempo=stride=10:search=16:overlap=1
+af-add=@scaletempo:scaletempo2
 [disable-scaletempo]
 profile-cond=not (p.speed > 1.01)
 af-remove=@scaletempo
