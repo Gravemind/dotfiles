@@ -357,7 +357,8 @@ bindsym $ModK+z exec --no-startup-id $i3/exec_app_launcher.sh
 # bindsym $ModK+Insert       exec --no-startup-id $here/exec_greenclip.sh
 # exec_always --no-startup-id systemctl --user restart greenclip.service
 bindsym $ModK+Insert exec $here/exec_clipboard_menu.sh
-exec_always --no-startup-id systemctl --user restart clipman.service
+# exec_always --no-startup-id systemctl --user restart clipman.service
+exec_always --no-startup-id systemctl --user restart cliphist.service
 # exec_always wl-paste -t text --watch clipman store
 # exec_always wl-paste -p -t text --watch clipman store -P # --histpath="~/.local/share/clipman-primary.json"
 

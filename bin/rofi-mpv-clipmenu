@@ -120,6 +120,10 @@ EOPYTHON
             )
 }
 
+cliphist_list() {
+    cliphist list | sed -E 's/^[0-9]+\s+//g'
+}
+
 main() {
     # CLIPMENU="${CLIPMENU:-clipmenu}"
     # CLIPMENU="${CLIPMENU:-clipmenu}"
@@ -153,7 +157,8 @@ main() {
     # (we won't get multi-line clips, but don't really care here !?)
     local url=
     # checked greenclip print | \
-    checked clipman pick --tool=STDOUT | \
+    # checked clipman pick --tool=STDOUT | \
+    checked cliphist_list | \
         filter_urls | \
         checked rofi -dmenu "${rofi_args[@]}" | \
         IFS= read -r url
