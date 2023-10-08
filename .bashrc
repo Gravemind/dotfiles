@@ -112,6 +112,9 @@ alias lesss='less -+S'
 
 alias topu='top -u "$(id -nu)"'
 
+# Safe xargs
+alias xargss='xargs -d \\n -r'
+
 if ! command -v fd >& /dev/null && command -v fdfind >& /dev/null; then
     alias fd='fdfind'
 fi

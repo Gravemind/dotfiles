@@ -19,6 +19,9 @@ alias c='clear'
 alias e='exit'
 alias t='urxvt & ; disown'
 
+# Safe xargs
+alias xargss='xargs -d \\n -r'
+
 _rgg() {
 	s="$1"
 	shift
