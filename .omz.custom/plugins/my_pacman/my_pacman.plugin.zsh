@@ -155,6 +155,8 @@ checkpacorphans() {
 	echo
 	echo "${fg_bold[red]}$0: found ${#orphans[@]} orphan packages, to remove them, run:$reset_color"
 	echo "${fg_bold[red]}$0: $ sudo pacman -Rsu ${orphans[*]}$reset_color"
+	printf "%s\n" "${orphans[@]}" | xargs -d\\n -r -n1 pacman -Qs
+
 	echo
 }
 
