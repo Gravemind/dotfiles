@@ -21,6 +21,7 @@ clone() {
     local path name link
     path="$url"
     path="${path#http?(s)://}"
+    path="${path#git://}"
     path="${path#git@}"
     path="${path##+(/)}"
     path="${path/:/\/}"
@@ -112,7 +113,7 @@ list() {
 main() {
     case "${1:-}"
     in
-        http*|git@*)
+        http*|git:*|git@*)
             clone "$1"
             ;;
         ''|list)
