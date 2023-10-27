@@ -891,6 +891,7 @@ key_bindings:
 
   # Search Mode
   #- { key: Return,                mode: Search|Vi,  action: SearchConfirm         }
+  - { key: Return,                mode: Search,  action: SearchCancel         }
   #- { key: Escape,                mode: Search,     action: SearchCancel          }
   #- { key: C,      mods: Control, mode: Search,     action: SearchCancel          }
   #- { key: U,      mods: Control, mode: Search,     action: SearchClear           }
