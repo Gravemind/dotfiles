@@ -129,3 +129,11 @@ diff <(gcc -Q --help=target) <(gcc -Q -march=native --help=target)
 diff <(gcc -Q -O0 --help=optimizers) <(gcc -Q -O3 --help=optimizers)
 ```
 
+
+# Misc
+
+### font-awesome
+
+```txt
+checkboxes:    
+```
