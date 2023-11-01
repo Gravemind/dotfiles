@@ -88,6 +88,22 @@ declare | grep '^XDG_'
 dd bs=4M conv=sync,fsync oflag=direct status=progress if=...iso of=/dev/disk/by-id/usb-...
 ```
 
+### perl oneliners
+
+```sh
+man perlrun
+```
+
+```sh
+# Perl substitute but with perl code eval
+
+# Substitute all matches in text and print all new text
+perl -pe 's/[0-9]+/ sprintf("%04d", $& + 42) /eg'
+
+# Print only matches, substituted
+perl -ne 's/^ foo (.*?) bar (.*?)$/ print $1."\/".$2."\n"; /e'
+```
+
 ## Python
 
 ### Python2 and Pytnon3 unicode
