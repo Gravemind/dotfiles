@@ -18,6 +18,8 @@
 (setq load-path (nconc load-path prev-load-path))
 ;; (load (concat my-packages-directory "autoloads.el") nil my--message-loads-p)
 
+(require 'compat)
+
 (setq-default
  ;; Log *Messages* if the use-package takes longer than 0.1s to load
  ;;use-package-verbose nil
