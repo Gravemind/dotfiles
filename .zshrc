@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 # If you come from bash you might have to change your $PATH.
-export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+export PATH="$HOME/bin:$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
 
 [[ -f ~/.zshrc.local ]] && . ~/.zshrc.local
 

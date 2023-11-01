@@ -8,7 +8,7 @@
 #     source /usr/share/modules/init/bash
 # fi
 
-export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/bin:$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
 export PS1='\s-\v\$ ' # bash default prompt
 [[ -f ~/.bashrc.local ]] && . ~/.bashrc.local
 
