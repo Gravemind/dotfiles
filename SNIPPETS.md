@@ -32,7 +32,7 @@ main "$@"
 ```sh
 tmpdir="$(mktemp -d -t myscript.XXXXXX)"
 # shellcheck disable=SC2064
-trap "$(printf 'rm -rf %q ||:' "$tmpdir")" EXIT
+trap "$(printf 'rm -rf -- %q ||:' "$tmpdir")" EXIT
 ```
 
 ### Prefix all output lines with date
