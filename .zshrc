@@ -6,7 +6,7 @@ export PATH="$HOME/bin:$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
 [[ -f ~/.zshrc.local ]] && . ~/.zshrc.local
 
 ## emacs tramp
-if [[ "$TERM" == "dumb" ]]
+if [[ "$TERM" == "dumb" || "$TERM" == "tramp" ]]
 then
 	unsetopt zle
 	unsetopt prompt_cr

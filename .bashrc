@@ -16,7 +16,7 @@ export PS1='\s-\v\$ ' # bash default prompt
 [[ $- != *i* ]] && return
 
 # emacs tramp
-if [[ "$TERM" == "dumb" ]]
+if [[ "$TERM" == "dumb" || "$TERM" == "tramp" ]]
 then
     export PS1='$ '
     return
