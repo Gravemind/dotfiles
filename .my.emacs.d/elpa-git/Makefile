@@ -152,9 +152,6 @@ DEFCOMPILE_evil-markdown  = evil-markdown.el
 DEFCOMPILE  += evil-mc
 DEFCOMPILE_evil-mc = evil-mc*.el
 
-DEFCOMPILE  += evil-collection
-DEFCOMPILE_evil-collection = *.el modes/*/*.el
-
 DEFCOMPILE  += docker-tramp
 
 DEFCOMPILE  += xref
@@ -193,6 +190,9 @@ DEFCOMPILE  += treemacs
 DEFCOMPILE_treemacs  = src/elisp/*.el src/extra/treemacs-evil.el src/extra/treemacs-magit.el src/extra/treemacs-projectile.el
 DEFCOMPILE  += lsp-treemacs
 DEFCOMPILE_lsp-treemacs  = *.el
+
+DEFCOMPILE  += evil-collection
+DEFCOMPILE_evil-collection = *.el modes/*/*.el
 
 
 all:	${DEFCOMPILE} ${DEFMAKE} ${NODEF}
