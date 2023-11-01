@@ -367,54 +367,15 @@ point."
 ;; evil-mc: multiple cursors
 (use-package evil-mc
   :load-path (my-packages-directory "evil-mc")
-  :after evil
-
-  :bind-keymap (
-                ;; :map evil-normal-state-map ;; FIXME: doesn't work with bind-keymap !?
-                ("<leader>c" . evil-mc-cursors-map)
-                )
-  :bind* (:map evil-mc-cursors-map
-               ("m" . evil-mc-make-all-cursors)
-               ("u" . evil-mc-undo-last-added-cursor)
-               ("q" . evil-mc-undo-all-cursors)
-               ("s" . evil-mc-pause-cursors)
-               ("r" . evil-mc-resume-cursors)
-               ;; ("f" . evil-mc-make-and-goto-first-cursor)
-               ;; ("l" . evil-mc-make-and-goto-last-cursor)
-               ("h" . evil-mc-make-cursor-here)
-               ;; ("j" . evil-mc-make-cursor-move-next-line)
-               ;; ("k" . evil-mc-make-cursor-move-prev-line)
-               ;; ("N" . evil-mc-skip-and-goto-next-cursor)
-               ;; ("P" . evil-mc-skip-and-goto-prev-cursor)
-               ;; ("n" . evil-mc-skip-and-goto-next-match)
-               ;; ("p" . evil-mc-skip-and-goto-prev-match)
-               ("I" . evil-mc-make-cursor-in-visual-selection-beg)
-               ("A" . evil-mc-make-cursor-in-visual-selection-end)
-
-               ("j"     . evil-mc-make-cursor-move-next-line)
-               ("M-j"   . evil-mc-skip-cursor-move-next-line)
-               ("k"     . evil-mc-make-cursor-move-prev-line)
-               ("M-k"   . evil-mc-skip-cursor-move-prev-line)
-               ("n"     . evil-mc-make-and-goto-next-match)
-               ("M-n"   . evil-mc-skip-and-goto-next-match)
-               ("S-n"   . evil-mc-make-and-goto-prev-match)
-               ("M-S-n" . evil-mc-skip-and-goto-prev-match)
-               ("p"     . evil-mc-make-and-goto-prev-match)
-               ("M-p"   . evil-mc-skip-and-goto-prev-match)
-               )
-
-  :init
-  ;; The included keybindings are too imposing and are likely to cause
-  ;; conflicts, so we'll set them ourselves.
-  (defvar evil-mc-key-map (make-sparse-keymap))
-
+  :after (evil evil-collection)
+  :demand t
   :config
-  (global-evil-mc-mode +1)
-
   (setq-default
    ;; Make C-g quit multi cursor mode
    evil-mc-undo-cursors-on-keyboard-quit t
    )
+
+  (global-evil-mc-mode +1)
 
   ;; (doom emacs)
   ;; Whitelist more commands
