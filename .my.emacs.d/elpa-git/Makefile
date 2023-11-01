@@ -198,7 +198,7 @@ DEFCOMPILE_lsp-treemacs  = *.el
 all:	${DEFCOMPILE} ${DEFMAKE} ${NODEF}
 .PHONY: all
 
-gen:	${LOAD_PATHS_EL} ${AUTOLOADS_EL}
+gen:	${LOAD_PATHS_EL} ${AUTOLOADS_EL} lsp-autoloads.el
 .PHONY: gen
 
 
@@ -228,6 +228,13 @@ ${AUTOLOADS_EL}:
 	set -x
 	emacs -Q -batch --eval "(progn (setq generated-autoload-file (expand-file-name \"$@\" \".\")) \
 	 (setq backup-inhibited t) (apply 'update-directory-autoloads (split-string \"${EMACSLOADPATH}\" \":\")))"
+.PHONY: ${AUTOLOADS_EL}
+
+lsp-autoloads.el:
+	@echo -e "\n-------- generate $@ --------\n"
+	set -x
+	emacs -Q -batch --eval "(progn (setq generated-autoload-file (expand-file-name \"$@\" \".\")) \
+	 (setq backup-inhibited t) (apply 'update-directory-autoloads (split-string \"lsp-mode\" \":\")))"
 .PHONY: ${AUTOLOADS_EL}
 
 info:
