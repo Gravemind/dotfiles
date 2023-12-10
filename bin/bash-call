@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+#
+# usage: bash-call <bin> <args>...
+#
+# Calls `<bin> <args>...` in bash. Useful if <bin> is an exported bash function
+# and one cannot easily escape `bash -c 'bin "$@"' -- args...`
+#
+func="$1"
+shift
+"$func" "$@"
+exit $?

@@ -1,12 +1,16 @@
 #!/bin/bash
 
+set -x
+
 base0="$(basename "$0")"
 
 main() {
     local i="$1"
 
+    echo "main '$i'" >&2
+
     RERUN=true
-    while $RERUN
+    while [[ $RERUN = true ]]
     do
         RERUN=false
         # nv_update_pties
@@ -31,6 +35,8 @@ main() {
             entry_quit "$i" &&
             true
         i=""
+        RERUN=false
+        echo "loop RERUN=$RERUN" >&2
     done
 }
 
@@ -88,7 +94,6 @@ entry_gsync() {
 
 entry_sway_output() {
     local input="$1"
-    local v="$(sway_output_get "$pty")"
     local entry=""
     local action=""
 
@@ -112,7 +117,7 @@ entry_sway_output() {
             else
                 action="enable"
             fi
-            swaymsg "output $name $action"
+            swaymsg "output $name $action" >&2
             RERUN=false
             return 1 # break
         fi
@@ -128,12 +133,18 @@ entry_prop() {
     local pty="$2"
     local v="$(sway_output_get "$pty")"
     local entry=""
-    if [[ "$v" = 1 ]]; then
-        #entry="   $pty"
-        entry=" $pty"
-    else
-        entry=" $pty"
-    fi
+    case "$v" in
+        1)
+            #entry="   $pty"
+            entry=" $pty"
+            ;;
+        0)
+            entry=" $pty"
+            ;;
+        *)
+            entry="?$v? $pty"
+            ;;
+    esac
     if [[ -z "$input" ]]; then
         echo "$entry"
     elif [[ "$input" = "$entry" ]]; then
@@ -303,6 +314,7 @@ sway_output_get() {
     esac
 
     local val="$(jq -r --arg pty "$pty" '.[0][$pty]' <<<"$ALL_SWAY_OUTPUT")"
+    echo "sway_output_get $pty $val" >&2
     case "$val" in
     on|enabled)
         echo 1
@@ -314,7 +326,6 @@ sway_output_get() {
         echo "$val"
         ;;
     esac
-    echo "$pty=$val" >&2
 }
 
 sway_output_set() {
@@ -322,22 +333,28 @@ sway_output_set() {
     local val="$2"
 
     local res
-    res="$(swaymsg output "*" "$pty" "$val")"
+    echo "sway_output_set $pty $val" >&2
+    res="$(swaymsg output "*" "$pty" "$val" || true)"
+    # res="$(false)"
+    sleep 0.5s
 
     local check_restart=0
-    case "$pty" in
-    adaptive_sync) check_restart=1; ;;
-    esac
+    # case "$pty" in
+    # adaptive_sync) check_restart=1; ;;
+    # esac
 
     if [[ $check_restart = 1 ]]; then
-        sleep 0.1s
         update_pties
 
-        if [[ "$(sway_output_get "$pty")" != "$val" ]]; then
+        local current
+        current="$(sway_output_get "$pty")"
+        echo "sway_output_set $pty after set=$current target=$val" >&2
+        if [[ "$current" != "$val" ]]; then
+            # true
             # FIXME support multi screen monitor
             output="$(sway_output_get name)"
             res="$(swaymsg output "$output" disable ||:)"
-            sleep 0.2s
+            sleep 0.5s
             res="$(swaymsg output "$output" enable ||:)"
         fi
 

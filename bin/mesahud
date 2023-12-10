@@ -2,7 +2,7 @@
 # https://www.reddit.com/r/linux_gaming/comments/au3k4p/mesa_vulkan_hud_now_has_fps_counter_and_is/
 
 # For OpenGL
-export GALLIUM_HUD='fps'
+export GALLIUM_HUD=fps,frametime
 # export GALLIUM_HUD='.dfps:120,frametime,cpu+GPU-load:100=gpu,cpu0+cpu1+cpu2+cpu3+cpu4+cpu5+cpu6+cpu7+cpu8+cpu9+cpu10+cpu11+cpu12+cpu13+cpu14+cpu15:100'
 # export GALLIUM_HUD="fps,GPU-load+cpu:100,.c100cpu0+cpu1+cpu2+cpu3+cpu4+cpu5+cpu6+cpu7+cpu8+cpu9+cpu10+cpu11:100"
 

@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 
-if [[ -z "$1" ]]; then
+list() {
     echo "**ALL**"
     cliphist list
+}
+
+if [[ -z "$1" ]]; then
+    list
 elif [[ "$1" = "**ALL**" ]]; then
     cliphist wipe
 else
     cliphist delete <<<"$1"
+    list
 fi
