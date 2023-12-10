@@ -123,7 +123,7 @@
   :load-path (my-packages-directory "consult")
   :if (eq my--compsys 'vertico)
   :after vertico
-  :commands (consult-line consult-grep consult-ripgrep consult-git-grep consult-completion-in-region)
+  :commands (consult-line consult-grep consult-ripgrep consult-git-grep consult-completion-in-region consult-find)
   :bind
   (
    ;; ("<leader> SPC" . consult-find)

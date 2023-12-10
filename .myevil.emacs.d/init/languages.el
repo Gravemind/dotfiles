@@ -153,7 +153,10 @@
 
 (use-package markdown-mode
   :load-path (my-packages-directory "markdown-mode")
-  :commands (markdown-mode gfm-mode)
+  :commands (markdown-mode
+             gfm-mode
+             gfm-view-mode ;; Auto-detected by eglot to enable markdown eldoc render
+             )
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . gfm-mode)
          ("\\.markdown\\'" . gfm-mode)
