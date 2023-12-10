@@ -9,6 +9,18 @@
 ;; Defer garbage collection further back in the startup process
 (setq gc-cons-threshold most-positive-fixnum)
 
+;; Ignore ~/.Xresources; its settings would be redundant with the other settings
+;; in this file and can conflict with later config (particularly where the
+;; cursor color is concerned).
+;; /!\ Still usesi Xft.* font configs
+(advice-add #'x-apply-session-resources :override #'ignore)
+(setq inhibit-x-resources t)
+;; Set background early
+;; (add-to-list 'default-frame-alist '(background-color . "#202020"))
+(add-to-list 'default-frame-alist '(background-color . "#101010"))
+(add-to-list 'default-frame-alist '(alpha-background . 90))
+;; (add-to-list 'default-frame-alist '(font-backend . ""))
+
 ;; In Emacs 27+, package initialization occurs before `user-init-file' is
 ;; loaded, but after `early-init-file'. Doom handles package initialization, so
 ;; we must prevent Emacs from doing it early!
@@ -24,8 +36,3 @@
 ;; font. By inhibiting this, we easily halve startup times with fonts that are
 ;; larger than the system default.
 (setq frame-inhibit-implied-resize t)
-
-;; Ignore X resources; its settings would be redundant with the other settings
-;; in this file and can conflict with later config (particularly where the
-;; cursor color is concerned).
-(advice-add #'x-apply-session-resources :override #'ignore)
