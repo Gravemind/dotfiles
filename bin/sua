@@ -3,11 +3,12 @@
 set -eu
 
 user="$1"
+shift
 
 setfacl -m "$user":rwx "$SSH_AUTH_SOCK"
 setfacl -m "$user":x "$(dirname "$SSH_AUTH_SOCK")"
 
-sudo --preserve-env=SSH_AUTH_SOCK -i -u "$user"
+sudo --preserve-env=SSH_AUTH_SOCK -i -u "$user" "$@"
 
 #
 # Needs a ~/.bash_profile containing:
