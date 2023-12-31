@@ -12,7 +12,7 @@
 	url = https://github.com/Gravemind/lsdisk.git
 [submodule ".oh-my-zsh"]
 	path = .oh-my-zsh
-	url = https://github.com/robbyrussell/oh-my-zsh.git
+	url = https://github.com/ohmyzsh/ohmyzsh.git
 [submodule ".omz.custom/plugins/history-substring-search-git/zsh-history-substring-search"]
 	path = .omz.custom/plugins/history-substring-search-git/zsh-history-substring-search
 	url = https://github.com/zsh-users/zsh-history-substring-search.git
