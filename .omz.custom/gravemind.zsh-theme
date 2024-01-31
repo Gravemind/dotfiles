@@ -34,6 +34,8 @@ GMPSGIT="%{⌥%G%}"
 GMPSGITDIRTY="M"
 GMPSTRUNC="%{…%G%}"
 GMPSTRUNC1="…"
+GMPSDUR1="%{↳%G%}"
+GMPSDUR2="%{↲%G%}"
 
 gravemind_init_prompt_vars() {
 	_GRAVEMIND_GIT=0
@@ -287,7 +289,7 @@ gravemind_prompt_cmd_duration() {
 	[[ $sec -lt 1 ]] || { r+="$(($sec))s"; }
 	local c="%F{black}"
 	[[ $sec -le 3 ]] || c="%F{blue}"
-	echo -n " $c↳$r↲"
+	echo -n " $c$GMPSDUR1$r$GMPSDUR2"
 }
 
 gravemind_prompt_umask() {
