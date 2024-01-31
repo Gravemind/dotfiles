@@ -152,13 +152,13 @@ DEFCOMPILE_evil-markdown  = evil-markdown.el
 DEFCOMPILE  += evil-mc
 DEFCOMPILE_evil-mc = evil-mc*.el
 
-DEFCOMPILE  += docker-tramp
+# DEFCOMPILE  += docker-tramp
 
-DEFCOMPILE  += xref
-DEFCOMPILE  += project
-DEFCOMPILE  += external-completion
-DEFCOMPILE  += eglot
-DEFCOMPILE_eglot = eglot.el
+# DEFCOMPILE  += xref
+# DEFCOMPILE  += project
+# DEFCOMPILE  += external-completion
+# DEFCOMPILE  += eglot
+# DEFCOMPILE_eglot = eglot.el
 
 DEFCOMPILE  += vertico
 DEFCOMPILE  += orderless
