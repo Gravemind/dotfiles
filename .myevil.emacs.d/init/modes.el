@@ -381,6 +381,8 @@
        (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
        ))
   :config
+  ;; Issue with git-grep ? https://github.com/jacktasia/dumb-jump/issues/428
+  (setq-default dumb-jump-force-searcher 'rg)
   (when (eq my--compsys 'helm)
     (setq-default
      dumb-jump-selector 'helm
