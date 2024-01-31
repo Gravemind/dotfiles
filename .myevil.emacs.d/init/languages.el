@@ -79,6 +79,17 @@
   (setq-default c-default-style "cc-style")
   )
 
+(use-package clang-format
+  :load-path (my-packages-directory "clang-format")
+  :after cc-mode
+  :commands (clang-format)
+  :bind (:map c-mode-map
+         ("C-c C-f" . clang-format-buffer)
+         :map c++-mode-map
+         ("C-c C-f" . clang-format-buffer)
+         )
+  )
+
 ;;
 ;; sh
 ;;
@@ -335,7 +346,7 @@
   ;; :disabled t
   :load-path (my-packages-directory "cargo")
   :after rust-mode
-  :commands (cargo-process-build cargo-process-run)
+  :commands (cargo-process-build cargo-process-run cargo-process-fmt)
   :bind (:map rust-mode-map
               ("<f3>" . cargo-process-build)
               ("<S-f3>" . cargo-process-build)
@@ -413,6 +424,8 @@
 (use-package yaml-mode
   :load-path (my-packages-directory "yaml-mode")
   :mode (("\\.\\(e?ya?\\|ra\\)ml\\'" . yaml-mode)
+         ("/[._]clang-format\\'" . yaml-mode)
+         ("/[._]clangd\\'" . yaml-mode)
          )
   :hook (yaml-mode . (lambda () (my--tweak-yaml-mode-syntax-table)))
   )
