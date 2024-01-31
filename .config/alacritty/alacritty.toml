@@ -1,0 +1,133 @@
+[colors]
+draw_bold_text_with_bright_colors = true
+transparent_background_colors = true
+
+[colors.bright]
+black = "#666666"
+blue = "#5b90bf"
+cyan = "#6cc6c3"
+green = "#8dca8d"
+magenta = "#bb7793"
+red = "#c96969"
+yellow = "#d2c360"
+
+[colors.cursor]
+cursor = "#ffff00"
+text = "#000000"
+
+[colors.line_indicator]
+background = "#ff00ff"
+foreground = "#ffffff"
+
+[colors.normal]
+black = "#000000"
+blue = "#4e789d"
+cyan = "#55aaa7"
+green = "#6fae6f"
+magenta = "#a15e7a"
+red = "#bd5959"
+yellow = "#b6a849"
+
+[colors.primary]
+background = "#101010"
+foreground = "#b0b0b0"
+
+[colors.search.focused_match]
+background = "#ffff00"
+foreground = "#000000"
+
+[colors.search.matches]
+background = "#ff00ff"
+foreground = "#000000"
+
+[colors.vi_mode_cursor]
+cursor = "#ff00ff"
+text = "#000000"
+
+[cursor]
+thickness = 0.3
+unfocused_hollow = true
+vi_mode_style = "Block"
+
+[font]
+size = 9.0
+
+[font.normal]
+family = "Hack"
+
+[[keyboard.bindings]]
+action = "SearchBackward"
+key = "S"
+mods = "Alt"
+
+[[keyboard.bindings]]
+action = "ToggleViMode"
+key = "Escape"
+mode = "Vi|~Search"
+
+[[keyboard.bindings]]
+action = "SearchNext"
+key = "N"
+mode = "Vi|~Search"
+
+[[keyboard.bindings]]
+action = "SearchPrevious"
+key = "N"
+mode = "Vi|~Search"
+mods = "Shift"
+
+[[keyboard.bindings]]
+action = "SearchPrevious"
+key = "P"
+mode = "Vi|~Search"
+
+[[keyboard.bindings]]
+action = "SearchCancel"
+key = "Return"
+mode = "Search"
+
+[[keyboard.bindings]]
+action = "SearchFocusNext"
+key = "Up"
+mode = "Search"
+
+[[keyboard.bindings]]
+action = "SearchFocusPrevious"
+key = "Down"
+mode = "Search"
+
+[[keyboard.bindings]]
+action = "SearchHistoryPrevious"
+key = "Up"
+mode = "Search"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "SearchHistoryNext"
+key = "Down"
+mode = "Search"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "ResetFontSize"
+key = "Key0"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "IncreaseFontSize"
+key = "Equals"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "IncreaseFontSize"
+key = "Plus"
+mods = "Control"
+
+[scrolling]
+history = 100000
+
+[selection]
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t/="
+
+[window]
+opacity = 0.9
