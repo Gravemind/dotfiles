@@ -6,11 +6,6 @@ ELPAGIT=${ROOT_DIR}
 CASK=
 export CASK
 
-# (the empty ":" at the end keeps the default paths)
-LISP_DIRS=$(wildcard */) $(wildcard */lisp/) $(wildcard */extensions/) $(wildcard */clients/) $(wildcard */src/elisp/) $(wildcard */src/extra)
-EMACSLOADPATH=$(subst / ,:,$(patsubst %,${ELPAGIT}/%, ${LISP_DIRS})):
-export EMACSLOADPATH
-
 BUILD_MAGIT_LIBGIT=false
 export BUILD_MAGIT_LIBGIT
 
@@ -19,6 +14,8 @@ AUTOLOADS_EL=autoloads.el
 
 .ONESHELL: # Make each rules executed within one shell instance
 SHELL=bash
+
+ADDLISPDIR =
 
 DEFMAKE		+= compat
 DEFCOMPILE	+= ace-jump-mode
@@ -79,11 +76,13 @@ DEFMAKE		+= log4e
 DEFMAKE		+= lua-mode
 #NODEF		+= magit
 DEFMAKE		+= magit
+ADDLISPDIR	+= magit/lisp
 DEFCOMPILE	+= makey
 DEFMAKE		+= markdown-mode
 DEFCOMPILE	+= multiple-cursors
 DEFCOMPILE_multiple-cursors	= *.el
 DEFMAKE		+= php-mode
+ADDLISPDIR      += php-mode/lisp
 # DEFMAKE	+= pkg-info			# FIXME: CASK not overidable
 DEFCOMPILE	+= pkg-info
 # DEFMAKE	+= popup				# no compile
@@ -102,10 +101,12 @@ DEFCOMPILE	+= s
 DEFMAKE		+= swiper
 DEFCOMPILE	+= sync-recentf
 DEFMAKE		+= transient
+ADDLISPDIR	+= transient/lisp
 DEFMAKE		+= use-package
 DEFCOMPILE	+= visual-fill-column
 DEFMAKE		+= wgrep
 DEFMAKE		+= with-editor
+ADDLISPDIR	+= with-editor/lisp
 DEFCOMPILE	+= yasnippet
 DEFCOMPILE	+= zoom
 DEFMAKE		+= yaml-mode
@@ -151,15 +152,19 @@ DEFCOMPILE_evil-markdown  = evil-markdown.el
 DEFCOMPILE  += evil-mc
 DEFCOMPILE_evil-mc = evil-mc*.el
 
+# DEFCOMPILE  += tramp
+# ADDLISPDIR  += tramp/lisp
 # DEFCOMPILE  += docker-tramp
 
 # DEFCOMPILE  += xref
 # DEFCOMPILE  += project
 # DEFCOMPILE  += external-completion
 # DEFCOMPILE  += eglot
+# DEFCOMPILE  += flymake
 # DEFCOMPILE_eglot = eglot.el
 
 DEFCOMPILE  += vertico
+ADDLISPDIR  += vertico/extensions
 DEFCOMPILE  += orderless
 DEFCOMPILE  += marginalia
 DEFCOMPILE  += consult
@@ -170,6 +175,7 @@ DEFCOMPILE_hydra = *.el
 
 DEFCOMPILE  += lsp-mode
 DEFCOMPILE_lsp-mode = lsp*.el clients/*.el
+ADDLISPDIR  += lsp-mode/clients
 DEFCOMPILE  += consult-lsp
 DEFCOMPILE  += lsp-ui
 DEFCOMPILE_lsp-ui = *.el
@@ -185,6 +191,7 @@ DEFCOMPILE_cfrs  = cfrs.el
 DEFCOMPILE  += pfuture
 DEFCOMPILE_pfuture  = pfuture.el
 DEFCOMPILE  += treemacs
+ADDLISPDIR  += treemacs/src/elisp treemacs/src/extra
 # DEFCOMPILE_treemacs  = src/elisp/*.el src/extra/*.el
 DEFCOMPILE_treemacs  = src/elisp/*.el src/extra/treemacs-evil.el src/extra/treemacs-magit.el src/extra/treemacs-projectile.el
 DEFCOMPILE  += lsp-treemacs
@@ -193,6 +200,11 @@ DEFCOMPILE_lsp-treemacs  = *.el
 DEFCOMPILE  += evil-collection
 DEFCOMPILE_evil-collection = *.el modes/*/*.el
 
+LISP_DIRS=${DEFCOMPILE} ${DEFMAKE} ${NODEF} ${ADDLISPDIR}
+SPACE := $(subst ,, )
+# (the empty ":" at the end keeps the default paths)
+EMACSLOADPATH=$(subst $(SPACE),:,$(patsubst %,${ELPAGIT}/%, ${LISP_DIRS})):
+export EMACSLOADPATH
 
 all:	${DEFCOMPILE} ${DEFMAKE} ${NODEF}
 .PHONY: all
