@@ -451,3 +451,7 @@
 	path = .my.emacs.d/elpa-git/all-the-icons
 	url = https://github.com/domtronn/all-the-icons.el.git
 	branch = master
+[submodule ".my.emacs.d/elpa-git/eglot-x"]
+	path = .my.emacs.d/elpa-git/eglot-x
+	url = https://github.com/nemethf/eglot-x.git
+	branch = master

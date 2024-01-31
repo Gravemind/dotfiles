@@ -163,6 +163,7 @@ DEFCOMPILE_evil-mc = evil-mc*.el
 # DEFCOMPILE  += eglot
 # DEFCOMPILE  += flymake
 # DEFCOMPILE_eglot = eglot.el
+DEFCOMPILE  += eglot-x
 
 DEFCOMPILE  += vertico
 ADDLISPDIR  += vertico/extensions
