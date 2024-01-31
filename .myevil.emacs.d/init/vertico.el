@@ -141,6 +141,7 @@
    ("d" . consult-ripgrep-current-dir)
    ("p" . consult-ripgrep)
    ("g" . consult-git-grep)
+   ("G" . consult-git-grep-current-dir)
 
    ("f" . consult-find-current-dir)
 
@@ -151,6 +152,8 @@
     (interactive) (consult-ripgrep default-directory))
   (defun consult-find-current-dir ()
     (interactive) (consult-find default-directory))
+  (defun consult-git-grep-current-dir ()
+    (interactive) (consult-git-grep default-directory))
 
   ;; (setq consult-preview-key nil)
   (setq-default consult-preview-key "TAB")
