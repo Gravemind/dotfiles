@@ -91,6 +91,7 @@ plugins=(
 	my_pacman
 	# my_laptop
 	vi-mode
+	fzf
 )
 
 VI_MODE_SET_CURSOR=true

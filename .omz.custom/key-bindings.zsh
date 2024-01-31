@@ -65,8 +65,8 @@ do
 			 ;;
 	esac
 
-	bindkey -M $b '^_' undo					      # [Ctrl-/]
-	bindkey -M $b '^R' redo						  # [Ctrl-R]
+	# bindkey -M $b '^_' undo					      # [Ctrl-/]
+	# bindkey -M $b '^R' redo						  # [Ctrl-R]
 
 	# vi-mode patch
 	bindkey -M $b '^[h' run-help
