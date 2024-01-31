@@ -61,6 +61,7 @@ DEFCOMPILE	+= go-mode
 DEFCOMPILE	+= meson-mode
 NODEF		+= helm
 #DEFMAKE	+= helm
+DEFCOMPILE	+= dash-docs
 DEFCOMPILE	+= helm-dash
 DEFCOMPILE	+= helm-flx
 DEFCOMPILE	+= helm-ls-git
