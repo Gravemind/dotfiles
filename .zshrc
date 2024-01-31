@@ -85,7 +85,6 @@ ZSH_CUSTOM=$HOME/.omz.custom
 plugins=(
 	gitfast
 	syntax-highlight-git
-	# history-substring-search-git
 	history-substring-search
 	autojump
 	safe-paste
