@@ -104,6 +104,12 @@ perl -pe 's/[0-9]+/ sprintf("%04d", $& + 42) /eg'
 perl -ne 's/^ foo (.*?) bar (.*?)$/ print $1."\/".$2."\n"; /e'
 ```
 
+### tar
+
+```sh
+tar --owner=0 --group=0 --no-same-owner --no-same-permissions -caf tar.tar.xz -C dir file ...
+```
+
 ## Python
 
 ### Python2 and Pytnon3 unicode
