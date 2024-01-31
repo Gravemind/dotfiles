@@ -26,8 +26,8 @@
 
    ;; tramp-use-ssh-controlmaster-options nil
    tramp-use-ssh-controlmaster-options t
-   ;; tramp-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath=~/.ssh/tramp.%%C -o ControlPersist=1800"
-   tramp-ssh-controlmaster-options "-S none"
+   tramp-ssh-controlmaster-options (concat "-o ControlMaster=auto -o ControlPath=~/.ssh/tramp." (number-to-string (emacs-pid)) "%%C -o ControlPersist=1800")
+   ;; tramp-ssh-controlmaster-options "-S none"
 
    tramp-remote-path '(tramp-own-remote-path
                        "/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin"
