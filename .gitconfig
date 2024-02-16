@@ -20,6 +20,9 @@
 	dsw = dcw
 	duw = diff --word-diff=color '--word-diff-regex=[a-zA-Z0-9]+|[^[:space:]]' -M @..@{u}
 
+	# Difftastic https://difftastic.wilfred.me.uk/
+	dft = "!env GIT_EXTERNAL_DIFF=difft git diff -M"
+
 	dule = submodule
 
 	# Parallel fetch all submodules
@@ -235,7 +238,8 @@
 	# -X : --no-init : no termcap clear on quit
 	tag = "less -FRX"
 	branch = "less -FRX"
-
+[init]
+	defaultBranch = main
 [tag]
 	sort = version:refname
 	# sort = creatordate
@@ -243,16 +247,24 @@
 	sort = version:refname
 [fetch]
 	prune = true
+	prunetags = true
 [pull]
 	rebase = true
 [push]
-	# push to @{upstream}
+	# Push to @{upstream}
 	default = upstream
+	# Auto setup upstream on first push
+	autoSetupRemote = true
 [rebase]
 	autoStash = true
 	#autoSquash = true
+	# In a "rebase -i"'s todo list, error if a line was removed.
+	# (You should use "drop" instead.)
+	missingCommitsCheck = error
 [merge]
 	conflictstyle = diff3
+	# Don't keep .orig files
+	keepbackup = false
 [rerere]
 	enabled = true
 [core]
