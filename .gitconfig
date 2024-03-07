@@ -67,8 +67,8 @@
 	# Pull rebase with autostash
 	pulr = pull --rebase --autostash
 
-	# Push --force-with-lease
-	pushf = push --force-with-lease
+	# Push force but verifies that we've seen all concurrent work
+	pushf = push --force-with-lease --force-if-includes
 
 	# Push current branch and set upstream
 	pushc = -c push.default=current push -u
