@@ -43,6 +43,22 @@
  :prefix "<leader>g"
 )
 
+(bind-keys
+ :prefix-map my-code-map
+ :prefix "<leader>c"
+)
+
+(bind-keys
+ :prefix-map my-code-map
+ :prefix "<leader>c"
+ ("f" . my-format)
+)
+
+(defun my-format ()
+  (interactive)
+  (cond ((derived-mode-p 'rust-mode) (cargo-rust-fmt))
+        ((or (derived-mode-p 'c++-mode) (derived-mode-p 'c-mode)) (clang-format-buffer))))
+
 (use-package evil
   :load-path (my-packages-directory "evil")
   :demand t
