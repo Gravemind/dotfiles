@@ -260,7 +260,7 @@
 	#autoSquash = true
 	# In a "rebase -i"'s todo list, error if a line was removed.
 	# (You should use "drop" instead.)
-	missingCommitsCheck = error
+	# missingCommitsCheck = error
 [merge]
 	conflictstyle = diff3
 	# Don't keep .orig files
