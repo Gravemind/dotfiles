@@ -171,7 +171,7 @@
 
 	ls-ignored-status = status -sb --ignored
 	ls-ignored-untracked = ls-files --ignored --exclude-standard --others
-	ls-ignored-tracked = ls-files --ignored --exclude-standard
+	ls-ignored-tracked = ls-files --ignored --exclude-standard --cached
 
 [format]
 	# default pretty format for log/show/whatchanged
