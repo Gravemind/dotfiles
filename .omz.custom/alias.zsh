@@ -84,7 +84,7 @@ alias -g  XCLIP='| tee >(rmlastnl | clipcopy)' # .oh-my-zsh/lib/clipboard.zsh
 alias -g   YANK='| yank'
 alias -g     BG='& ; disown'
 alias -g  ERROR="2> >(sed -u 's/^/'\"$fg_bold[red]\"'stderr:'\"$reset_color\"' /g' >&2)"
-alias -g     JQ='| jq "" -C | less'
+alias -g     JQ='| jq . -C | less'
 
 alias speedtest='wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test100.zip'
 
