@@ -16,6 +16,7 @@ vol="$(pactl get-sink-volume '@DEFAULT_SINK@'  | perl -ne '/\b([0-9]+)%/ && prin
 
 symbolic=""
 symbolic="-symbolic.symbolic"
+symbolic="-symbolic"
 icon_mute="audio-volume-muted$symbolic"
 icon_nomu="audio-volume-high$symbolic"
 # icon_nomu="audio-speakers$symbolic"

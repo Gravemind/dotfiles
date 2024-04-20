@@ -16,6 +16,7 @@ vol="$(pamixer --get-volume || true)"
 
 symbolic=""
 symbolic="-symbolic.symbolic"
+symbolic="-symbolic"
 icon_mute="audio-volume-muted$symbolic"
 icon_nomu="audio-volume-high$symbolic"
 # icon_nomu="audio-speakers$symbolic"
