@@ -1,5 +1,0 @@
-#!/bin/zsh
-
-FILE='/sys/class/backlight/intel_backlight/brightness'
-
-sudo sh -c "echo $1 > $FILE"
