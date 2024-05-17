@@ -169,6 +169,8 @@
 	first = commit -m 'first commit' --allow-empty
 	first = commit -m 'First commit' --allow-empty
 
+	branches = for-each-ref --sort committerdate --format '%(align:40)%(refname:lstrip=2)%(end) %(align:40)%(committerdate:relative)%(end) (%(committername)) %(contents:subject)' refs/heads refs/remotes
+
 	ls-ignored-status = status -sb --ignored
 	ls-ignored-untracked = ls-files --ignored --exclude-standard --others
 	ls-ignored-tracked = ls-files --ignored --exclude-standard --cached
