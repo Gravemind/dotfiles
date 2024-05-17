@@ -126,6 +126,18 @@ perl -ne 's/^ foo (.*?) bar (.*?)$/ print $1."\/".$2."\n"; /e'
 tar --owner=0 --group=0 --no-same-owner --no-same-permissions -caf tar.tar.xz -C dir file ...
 ```
 
+### Slurm
+
+```sh
+# QoS
+sacctmgr show qos | less
+```
+
+```sh
+# Reservations
+sacctmgr show reservation
+```
+
 ## Python
 
 ### Python2 and Pytnon3 unicode
