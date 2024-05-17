@@ -247,7 +247,7 @@
 	sort = version:refname
 [fetch]
 	prune = true
-	prunetags = true
+	# prunetags = true  # Borken with multiple remotes
 [pull]
 	rebase = true
 [push]
