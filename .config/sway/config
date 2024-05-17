@@ -326,6 +326,8 @@ mode --pango_markup $mode_resize {
     bindsym minus       resize shrink up   $resize_step_y, resize shrink left  $resize_step_x
     bindsym equal       resize grow   up   $resize_step_y, resize grow   left  $resize_step_x
 
+    bindsym Tab move workspace to output right, mode default
+
     bindsym s sticky toggle, mode "default"
 
     bindsym e output * enable, mode "default"
