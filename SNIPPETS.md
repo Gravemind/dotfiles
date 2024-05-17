@@ -84,8 +84,24 @@ declare | grep '^XDG_'
 ### dd
 
 ```sh
+# Hard-format, zero first 40MiB
+dd bs=4M count=10 conv=sync,fsync status=progress if=/dev/zero of=/dev/disk/by-id/usb-...
+
+partprobe
+
+# Create partiion
+fdisk /dev/disk/by-id/usb-...
+# type 0c "0c W95 FAT32 (LBA)" for classic USB FAT32
+
+partprobe
+
+# Create FAT32 FS
+mkfs.vfat -F 32 -n PARTLABEL /dev/disk/by-id/usb-...-part1
+```
+
+```sh
 # Burn iso on usb
-dd bs=4M conv=sync,fsync oflag=direct status=progress if=...iso of=/dev/disk/by-id/usb-...
+dd bs=4M conv=sync,fsync status=progress if=...iso of=/dev/disk/by-id/usb-...
 ```
 
 ### perl oneliners
