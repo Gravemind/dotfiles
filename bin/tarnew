@@ -53,10 +53,8 @@ dst = os.path.join(dstdir, pref + str(oldi + 1) + suff)
 print("old tar:", oldf)
 print("new tar:", dst)
 
-os.environ["XZ_OPT"] = "-T0 -2"
-
 dsttmp = dst + '.tmp'
-cmd = ['tar', '-cJf', dsttmp, '--newer-mtime=' + oldf, '-C', srcdir, srcname]
+cmd = ['env', 'XZ_OPT=-T0 -2', 'tar', '-cJf', dsttmp, '--newer-mtime=' + oldf, '-C', srcdir, srcname]
 print(cmd)
 subprocess.check_call(cmd)
 os.rename(dsttmp, dst)
