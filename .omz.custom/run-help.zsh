@@ -1,9 +1,6 @@
 
 # Who TF aliases run-help to man?
-if [[ "$(which run-help 2>/dev/null)" =~ ^'run-help: aliased'* ]]
-then
-   unalias run-help
-fi
+unalias run-help 2>/dev/null ||:
 
 autoload run-help
 autoload run-help-git
