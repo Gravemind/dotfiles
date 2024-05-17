@@ -64,7 +64,7 @@ do
         exit 1
     fi
 
-    abspath="$(realpath "$path")"
+    abspath="$(realpath -s "$path")"
     filename="$(basename "$abspath")"
 
     if [[ "$abspath" =~ /([^/]+)\.(tar\.[^/.]+)$ ]]
