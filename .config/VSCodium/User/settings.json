@@ -8,5 +8,11 @@
     },
     "editor.fontSize": 11,
     "window.menuBarVisibility": "compact",
-    "editor.fontFamily": "Hack, Arial"
+    "editor.fontFamily": "Hack",
+    "vim.normalModeKeyBindings": [
+        {
+            "before": ["Y"],
+            "after": ["y", "$"]
+        }
+    ]
 }
