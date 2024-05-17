@@ -41,7 +41,7 @@ isfile() {
     for p in "$@"
     do
         p="$(strip_tramp "$p")"
-        [[ -f "$p" || -p "$p" ]] || return 1
+        [[ $p =~ ^/sshx?: || -f "$p" || -p "$p" ]] || return 1
     done
 }
 
