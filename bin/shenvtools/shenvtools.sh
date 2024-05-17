@@ -128,7 +128,7 @@ addtool() {
     _shenvtools_test "no lib/lib64 dir" "$didlib" -eq 1 || true
 
     for man in "$p/man" "$p/share/man"; do
-        [[ ! -d "$man" ]] || envappend "MANPATH" : "$man"
+        [[ ! -d "$man" ]] || envprepend "MANPATH" : "$man"
     done
 }
 
