@@ -40,6 +40,9 @@ set python print-stack full
 handle SIGPWR nostop
 handle SIGXCPU nostop
 
+# See `help valgrind`
+source /usr/lib/valgrind/valgrind-monitor.py
+
 python
 import sys
 import os.path
