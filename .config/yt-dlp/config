@@ -1,0 +1,25 @@
+# Do not copy the mtime
+--no-mtime
+# Filenames in ASCII, and remove "&" and spaces
+--restrict-filenames
+
+--prefer-free-formats
+
+# Download the video with the largest resolution no better than 720p,
+# or the video with the smallest resolution available if there is no such video,
+# preferring larger framerate for formats with the same resolution
+--format-sort res:1440,fps,codec,ext
+
+# --format (bestvideo[vcodec^=av01]+bestaudio/bestvideo[vcodec^=vp9]+bestaudio/bestvideo+bestaudio/best)[height<=?1440][protocol=https]
+#--format (bv*+ba/b)[protocol=https]
+# bestvideo[vcodec^=av01]+bestaudio/bestvideo[vcodec^=vp9]+bestaudio/bestvideo+bestaudio/best)[height<=?1440][protocol=https]
+
+
+--no-playlist
+
+--embed-subs
+--write-sub
+--write-auto-sub
+--sub-lang=en
+#--sub-format=ass
+#--convert-subs=ass
