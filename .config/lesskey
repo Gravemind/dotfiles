@@ -1,0 +1,4 @@
+#line-edit
+\e[1;5D word-left
+\e[1;5C word-right
+\e[3;5~ word-delete
