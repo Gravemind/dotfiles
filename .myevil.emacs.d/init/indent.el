@@ -131,6 +131,7 @@ for the current major mode (uses dtrt)"
       (dtrt-indent-adapt)
 
       (require 'editorconfig)
+      (require 'editorconfig-tools)
       (editorconfig-mode-apply)
 
       (jo--on-indentation-changed)
