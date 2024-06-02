@@ -69,7 +69,11 @@ profile=gpu-hqer
 
 # GPU api
 # profile=opengl
-profile=vulkan
+# profile=opengl-next
+# profile=vulkan
+profile=vulkan-next
+# profile=vaapi
+# profile=wayland
 
 #
 # Profiles
@@ -126,8 +130,17 @@ af-remove=@scaletempo
 #
 [gpu-hqer]
 profile=gpu-hq
-scale=ewa_lanczossharp
-cscale=ewa_lanczossharp
+# scale=ewa_lanczossharp
+# cscale=ewa_lanczossharp
+
+# Quick fix subtitles transparency with gpu-next ?
+correct-downscaling=no
+linear-downscaling=no
+
+scale=ewa_lanczos
+scale-blur=0.981251
+cscale=ewa_lanczos
+cscale-blur=0.981251
 
 #
 # 60fps interpolation
@@ -137,7 +150,7 @@ interpolation=yes
 #display-fps=60
 #video-sync=audio
 video-sync=display-resample
-#video-sync=display-resample-vdrop
+# video-sync=display-resample-vdrop
 #temporal-dither=yes
 tscale=oversample
 #tscale=linear
@@ -158,35 +171,83 @@ tscale=oversample
 #
 # GPU api
 #
+[vaapi]
+# vo=vaapi
+# hwdec=vaapi
+vo=vaapi-wayland
+hwdec=vaapi
+
+[wayland]
+vo=dmabuf-wayland
+# hwdev=hwdev
+
+[vulkan-next]
+vo=gpu-next
+# hwdec=vaapi-copy  # copy needed for svp
+gpu-api=vulkan
+gpu-context=waylandvk
+
+# vulkan-swap-mode=auto
+# vulkan-swap-mode=immediate    # "Requested swap mode unsupported by this device"
+# vulkan-swap-mode=fifo
+# vulkan-swap-mode=fifo-relaxed # "Requested swap mode unsupported by this device"
+vulkan-swap-mode=mailbox
+
+# video-sync=display-resample
+# video-sync=display-resample-vdrop
+# video-sync=display-resample-vdrop
+# video-sync=audio
+# video-sync=display-vdrop
+# interpolation=no
+# interpolation=yes
+# tscale=oversample
+# tscale=linear
+# tscale=sphinx
+# tscale=mitchell
+# tscale=ewa_lanczoss
+# tscale-blur=0.981251
+# tscale=bicubic
+
+[opengl-next]
+vo=gpu-next
+gpu-api=opengl
+gpu-context=wayland
+
 [vulkan]
 vo=gpu
 gpu-api=vulkan
 # gpu-context=x11
 # gpu-context=x11vk
 # gpu-context=x11egl
+# gpu-context=wayland
+# gpu-context=waylandvk
+# wayland-disable-vsync=yes
 # gpu-context=displayvk
 # gpu-context=drm
 # vulkan-swap-mode=auto
-vulkan-swap-mode=fifo # vsync
+# vulkan-swap-mode=fifo # vsync
 # vulkan-swap-mode=fifo-relaxed # vsync unless too slow
-# vulkan-swap-mode=mailbox # triple buffer sync
+vulkan-swap-mode=mailbox # triple buffer sync
 # vulkan-swap-mode=immediate # no sync
 # vulkan-async-compute=yes
 # vulkan-async-transfer=yes
 # vulkan-queue-count=1
 
-# Reduce stutter
-# display-fps=144
-video-sync=display-resample
-interpolation=yes
-# tscale=box
-tscale=oversample
-# tscale=linear
-# tscale=ewa_lanczossharp
-# tscale=box
-# tscale-window=quadric
-# tscale-clamp=0.0
-# tscale-radius=1.025
+# # Reduce stutter
+# # display-fps=144
+# video-sync=display-vdrop
+# video-sync=display-resample-vdrop
+# # video-sync=display-adrop
+# interpolation=yes
+# # tscale=box
+# tscale=oversample
+# # tscale=sphinx
+# # tscale=linear
+# # tscale=ewa_lanczossharp
+# # tscale=box
+# # tscale-window=quadric
+# # tscale-clamp=0.0
+# # tscale-radius=1.025
 
 [opengl]
 vo=gpu
