@@ -108,13 +108,17 @@ vf-remove=@svpv
 # pitch                          Choices: quality speed consistency (default: consistency)
 # channels                       Choices: apart together (default: together)
 # pitch-scale                    Double (0.01 to 100) (default: 1.000)
+#
+# Tips: debug command: > print-text "toto ${speed} ${af}"
+#
 [enable-scaletempo]
 profile-desc="Scaletempo for Playspeed"
-profile-cond=p.speed > 1.01
+profile-cond=speed > 1.01
 # af-add=@scaletempo:scaletempo=stride=10:search=16:overlap=1
-af-add=@scaletempo:scaletempo2
+# af-add=@scaletempo:scaletempo2
+af-add=@scaletempo:scaletempo2=search-interval=20:window-size=5
 [disable-scaletempo]
-profile-cond=not (p.speed > 1.01)
+profile-cond=not (speed > 1.01)
 af-remove=@scaletempo
 
 #
