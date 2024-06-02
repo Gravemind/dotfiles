@@ -49,12 +49,12 @@ import os.path
 ## @FIXME: hardcoded path
 ueprinters = '/home/jo/ps/UnrealEngine/UnrealEngine/Engine/Extras/GDBPrinters/'
 if os.path.isdir(ueprinters):
-    print("+UE printers: " + ueprinters)
+    print("gdbinit: UE found: " + ueprinters)
     sys.path.append(ueprinters)
     from UE4Printers import register_ue4_printers
     register_ue4_printers(None)
 else:
-    print("-UE not found: " + ueprinters)
+    print("gdbinit: UE not found (" + ueprinters + ")")
 end
 
 ## still requires debug libs:
@@ -64,12 +64,12 @@ import os
 import os.path
 vksdk = os.environ.get('VULKAN_SDK')
 if vksdk is not None and os.path.isdir(vksdk + '/../source/layers'):
-    print("+Vulkan directories: $VULKAN_SDK=" + vksdk)
+    print("gdbinit: Vulkan found: VULKAN_SDK=" + vksdk)
     gdb.execute('directory ' + vksdk + '/../source/layers')
     gdb.execute('directory ' + vksdk + '/../source/loader')
     gdb.execute('directory ' + vksdk + '/../examples')
 else:
-    print("-Vulkan not found: $VULKAN_SDK=" + str(vksdk))
+    print("gdbinit: Vulkan not found (VULKAN_SDK=" + str(vksdk) + ")")
 end
 
 source ~/.gdbinit.local
