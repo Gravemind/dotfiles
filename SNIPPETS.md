@@ -138,6 +138,20 @@ sacctmgr show qos | less
 sacctmgr show reservation
 ```
 
+### lsof
+
+```sh
+lsof /path
+
+lsof -p pid,pid
+
+# List open file for all "zsh" processes
+lsof -c zsh
+
+# List network connections
+lsof -i
+```
+
 ## Python
 
 ### Python2 and Pytnon3 unicode
