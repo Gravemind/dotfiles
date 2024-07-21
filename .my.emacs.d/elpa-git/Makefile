@@ -111,7 +111,8 @@ ADDLISPDIR	+= with-editor/lisp
 DEFCOMPILE	+= yasnippet
 DEFCOMPILE	+= zoom
 DEFMAKE		+= yaml-mode
-NODEF		+= dumb-jump
+DEFCOMPILE	+= dumb-jump
+DEFCOMPILE_dump-jump	= dumb-jump.el
 DEFCOMPILE	+= queue
 DEFCOMPILE	+= undo-tree
 DEFCOMPILE	+= org-bullets
@@ -272,11 +273,6 @@ helm: async popup
 	make -C $@
 .PHONY: helm
 
-dumb-jump: helm
-#	dumb-jump + helm doesn't work when compiled:
-#	get: "invalid function helm-build-sync-source"
-	rm -f dumb-jump/dumb-jump.elc
-
 helm-*: helm
 
 helm-flx: flx
@@ -308,9 +304,6 @@ goto-chg: undo-tree
 helpful: elisp-refs
 
 magit-delta: magit xterm-color
-
-better-jumper:
-	@echo "do nothing"
 
 # rustic: spinner
 
