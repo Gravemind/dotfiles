@@ -370,7 +370,7 @@
 [submodule ".my.emacs.d/elpa-git/compat"]
 	path = .my.emacs.d/elpa-git/compat
 	url = https://github.com/emacs-compat/compat.git
-	branch = master
+	branch = main
 [submodule ".my.emacs.d/elpa-git/docker-tramp"]
 	path = .my.emacs.d/elpa-git/docker-tramp
 	url = https://github.com/emacs-pe/docker-tramp.el
