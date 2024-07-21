@@ -1,11 +1,12 @@
 ;;; queue.el --- Queue data structure  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1991-1995, 2008-2009, 2012, 2017  Free Software Foundation, Inc
+;; Copyright (C) 1991-1995, 2008-2009, 2012, 2017, 2021  Free Software Foundation, Inc
 
 ;; Author: Inge Wallin <inge@lysator.liu.se>
 ;;         Toby Cubitt <toby-predictive@dr-qubit.org>
 ;; Maintainer: Toby Cubitt <toby-predictive@dr-qubit.org>
 ;; Version: 0.2
+;; Package-Requires: ((cl-lib "0.5"))
 ;; Keywords: extensions, data structures, queue
 ;; URL: http://www.dr-qubit.org/emacs.php
 ;; Repository: http://www.dr-qubit.org/git/predictive.git
@@ -44,7 +45,7 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl))
+(eval-when-compile (require 'cl-lib))
 
 (defmacro queue--when-generators (then)
   "Evaluate THEN if `generator' library is available."
@@ -52,18 +53,17 @@
   (if (require 'generator nil 'noerror) then))
 
 
-(defstruct (queue
-            ;; A tagged list is the pre-defstruct representation.
-            ;; (:type list)
-	    :named
-	    (:constructor nil)
-	    (:constructor queue-create ())
-	    (:copier nil))
+(cl-defstruct (queue
+               ;; A tagged list is the pre-defstruct representation.
+               ;; (:type list)
+	       :named
+	       (:constructor nil)
+	       (:constructor queue-create ())
+	       (:copier nil))
   head tail)
 
 
-;;;###autoload
-(defalias 'make-queue 'queue-create
+(defalias 'make-queue #'queue-create
   "Create an empty queue data structure.")
 
 
@@ -75,7 +75,7 @@
     (setf (queue-head queue)
 	  (setf (queue-tail queue) (cons element nil)))))
 
-(defalias 'queue-append 'queue-enqueue)
+(defalias 'queue-append #'queue-enqueue)
 
 
 (defun queue-prepend (queue element)
@@ -157,33 +157,6 @@ Calling `iter-next' on this object will retrieve the next element
 from the queue. The queue itself is not modified."
    (let ((list (queue-head queue)))
      (while list (iter-yield (pop list))))))
-
-;;;; ChangeLog:
-
-;; 2017-08-16  Toby S. Cubitt  <tsc25@cantab.net>
-;; 
-;; 	Upgrade data structure packages to latest versions.
-;; 
-;; 2014-05-15  Toby S. Cubitt  <tsc25@cantab.net>
-;; 
-;; 	queue.el: fix buggy queue-first and queue-empty definitions.
-;; 
-;; 2012-04-30  Toby S. Cubitt  <tsc25@cantab.net>
-;; 
-;; 	Minor fixes to commentaries, package headers, and whitespace
-;; 
-;; 	* queue.el: fix description of data structure in Commentary; add
-;; 	Maintainer
-;; 	 header.
-;; 
-;; 	* queue.el, heap.el, tNFA.el, trie.el, dict-tree.el: trivial whitespace
-;; 	fixes.
-;; 
-;; 2012-04-29  Toby S. Cubitt  <tsc25@cantab.net>
-;; 
-;; 	Add queue.el
-;; 
-
 
 
 (provide 'queue)

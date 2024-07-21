@@ -5,6 +5,6 @@ set -x
 
 cd "$(dirname "$0")"
 
-# https://elpa.gnu.org/packages/queue.html
-url="https://elpa.gnu.org/packages/queue-0.2.el"
+url="https://git.savannah.gnu.org/cgit/emacs/elpa.git/plain/queue.el?h=externals/queue"
+rm -f queue.el
 curl -o queue.el "$url"
