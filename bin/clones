@@ -5,6 +5,7 @@ set -euo pipefail
 shopt -s extglob
 
 clones_git_root="$HOME/git"
+parent_sh_do_file=""
 
 error() {
     echo "clones: error: $*" >&2
@@ -15,10 +16,17 @@ run() {
     "$@"
 }
 
-clone() {
+parent_sh_do() {
+    if [[ -n "$parent_sh_do_file" ]]
+    then
+        echo "$*" >> "$parent_sh_do_file"
+    fi
+}
+
+clone_path_from_url() {
     local url="$1"
 
-    local path name link
+    local path
     path="$url"
     path="${path#http?(s)://}"
     path="${path#git://}"
@@ -27,31 +35,90 @@ clone() {
     path="${path/:/\/}"
     path="${path%.git}"
     path="${path,,}"
-    name_parent="${path%/*}"
-    name="${path##*/}"
-    path="$clones_git_root/$path"
 
-    while true
-    do
-        link="$clones_git_root/$name"
-        if [[ ! -e "$link" ]]
-        then
-            break
-        fi
-        link=""
-        if [[ -z "${name_parent}" ]]
-        then
-            echo "warning: all links already exists for $path"
-            break
-        fi
-        echo "warning: $link link already exists to $(readlink -f "$link" ||:)"
-        name="$name-${name_parent##*/}"
-        name_parent="${name_parent%/*}"
-    done
+    echo "$path"
+}
+
+cd_clone() {
+    local path abspath
+    path="$(clone_path_from_url "$1")"
+    abspath="$clones_git_root/$path"
+    if [[ -d "$path" ]]
+    then
+        parent_sh_do cd "$abspath"
+        return 0
+    fi
+
+    local res
+    res="$(list_git_tops | grep -e "$1")"
+    if [[ -z "$res" ]]
+    then
+        error "could not find a clone '$1'"
+        return 1
+    fi
+
+    echo "$res"
+
+    path="$(echo "$res" | head -n1)"
+    abspath="$clones_git_root/$path"
+    parent_sh_do cd "$abspath"
+}
+
+fzf_clone() {
+    local path
+
+    local res
+    res="$(list_git_tops | fzf)"
+
+    if [[ -d "$clones_git_root/$res" ]]
+    then
+        parent_sh_do cd "$clones_git_root/$res"
+    else
+        error "Clone of $1 not found ($path)"
+        return 1
+    fi
+}
+
+clone() {
+    local url="$1"
+    local path abspath
+    path="$(clone_path_from_url "$url")"
+    abspath="$clones_git_root/$path"
+    if [[ -d "$abspath" ]]
+    then
+        parent_sh_do cd "$abspath"
+        return 0
+    fi
+
+    local link=""
+    if false
+    then
+        local name parent_name
+        name="${path#*/}"
+        parent_name="${path%/*}"
+
+        while true
+        do
+            link="$clones_git_root/$name"
+            if [[ ! -e "$link" ]]
+            then
+                break
+            fi
+            link=""
+            if [[ -z "${parent_name}" ]]
+            then
+                echo "warning: all links already exists for $path"
+                break
+            fi
+            echo "warning: $link link already exists to $(readlink -f "$link" ||:)"
+            name="$name-${parent_name##*/}"
+            parent_name="${parent_name%/*}"
+        done
+    fi
 
     local cmd
-    cmd=(git clone "$url" "$path")
-    read -p "${cmd[*]} ? " ans
+    cmd=(git clone "$url" "$abspath")
+    read -rp "${cmd[*]} ? " ans
     case "$ans"
     in
         y|yes) ;;
@@ -62,68 +129,108 @@ clone() {
     esac
 
     run "${cmd[@]}"
-    [[ -z "$link" ]] || run ln -sfrT "$path" "$link"
+    [[ -z "$link" ]] || run ln -sfrT "$abspath" "$link"
+
+    parent_sh_do cd "$abspath"
+}
+
+list_git_tops() {
+    (
+        cd "$clones_git_root"
+        perl -MFile::Find -le '
+  sub wanted {
+    if (/^\../) {
+       $File::Find::prune = 1;
+       return;
+    }
+    if (-d && -e "$_/.git") {
+       $File::Find::prune = 1;
+       my $name = $File::Find::name;
+       $name =~ s/^\.\///;
+       print $name;
+    }
+  }
+  find \&wanted, ".";
+' | sort ||:
+    )
 }
 
 list() {
-    # /usr/bin/time -v find "$clones_git_root" -name .git -print -prune ||:
-
-#     /usr/bin/time -v perl -MFile::Find -le '
-#   sub wanted {
-#     if (/^\../) {$File::Find::prune = 1; return}
-#     if (-d && -e "$_/.git") {
-#        print $File::Find::name; $File::Find::prune = 1
-#     }
-#   }; find \&wanted, @ARGV' . ||:
-
-#     /usr/bin/time -v python -c '
-# import os
-
-# def walk(p):
-#     with os.scandir(p) as it:
-#         it = list(it)
-#         if any(e.name == ".git" for e in it):
-#             print(str(p.path))
-#             return
-#         for e in it:
-#             if not e.is_symlink() and e.is_dir():
-#                 try:
-#                     walk(e)
-#                 except PermissionError:
-#                     pass
-
-# walk(".")
-# ' ||:
-
-    while read -r path
-    do
-        name="${path#./}"
-        url="https://$name"
-        path="${clones_git_root/${HOME}\//~\/}/$name"
-        echo $path $url
-    done < <(cd "$clones_git_root" && perl -MFile::Find -le '
-  sub wanted {
-    if (/^\../) {$File::Find::prune = 1; return}
-    if (-d && -e "$_/.git") {
-       print $File::Find::name; $File::Find::prune = 1
-    }
-  }; find \&wanted, @ARGV' . ||:) | column -t
+    list_git_tops
 }
 
+upgrade_clones() {
+    local path
+    while read -u3 -r path
+    do
+
+        # Rename clones to lower-case paths
+        local newpath="${path,,}"
+        if [[ "$newpath" != "$path" ]]
+        then
+            read -rp "rename '$path' to '$newpath' ? " ans
+            case "$ans"
+            in
+                y|yes)
+                    mkdir -p "$clones_git_root/${newpath%/*}"
+                    mv "$clones_git_root/$path" "$clones_git_root/$newpath"
+                    (
+                        cd "$clones_git_root" || exit 1
+                        rmdir --ignore-fail-on-non-empty --parents -- "${path%/*}" ||:
+                    )
+                    ;;
+                *)
+                    echo "no."
+                    ;;
+            esac
+        fi
+
+    done 3< <(list_git_tops)
+}
+
+
 main() {
-    case "${1:-}"
-    in
-        http*|git:*|git@*)
-            clone "$1"
-            ;;
-        ''|list)
-            list
-            ;;
-        *)
-            error "unrecognized argument: $1"
-            exit 1
-            ;;
-    esac
+    local cmd
+    while true
+    do
+        cmd="${1:-}"
+        shift ||:
+        case "$cmd"
+        in
+            --parent-sh-do=*)
+                parent_sh_do_file="${cmd#--parent-sh-do=}"
+                continue
+                ;;
+            http*|git:*|git@*)
+                clone "$cmd" "$@"
+                return $?
+                ;;
+            clone)
+                clone "$@"
+                return $?
+                ;;
+            cd)
+                cd_clone "$@"
+                return $?
+                ;;
+            fzf)
+                fzf_clone "$@"
+                return $?
+                ;;
+            ''|list)
+                list "$@"
+                return $?
+                ;;
+            upgrade-clones)
+                upgrade_clones "$@"
+                return $?
+                ;;
+            *)
+                error "unrecognized argument: $cmd"
+                exit 1
+                ;;
+        esac
+    done
 }
 
 main "$@"
