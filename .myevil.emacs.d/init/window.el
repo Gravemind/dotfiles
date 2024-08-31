@@ -57,6 +57,7 @@
   :load-path (my-packages-directory "zoom")
   ;; :disabled t
   :demand t
+  :diminish
   :config
   (setq-default
    ;;zoom-size '(0.618 . 0.618) ;; golden-ratio

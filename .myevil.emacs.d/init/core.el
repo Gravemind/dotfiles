@@ -249,4 +249,12 @@ Saves to a temp file and puts the filename in the kill ring."
 
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t)
+
+)
+(use-package diminish
+  :demand t
+)
+
+(use-package whitespace
+  :diminish
 )

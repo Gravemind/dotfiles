@@ -31,10 +31,11 @@
  package-archives '()
  )
 
-(eval-when-compile
-  (require 'use-package))
 (require 'diminish)
-(require 'bind-key)
+;; (require 'bind-key)
+(eval-when-compile
+  (require 'use-package)
+)
 
 ;; See .emacs.d/lisp/cb-use-pacokage-extensions.el
 ;; Provides :evil-bind

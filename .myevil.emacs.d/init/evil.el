@@ -238,6 +238,7 @@ point."
   :load-path (my-packages-directory "evil-collection")
   :after evil
   :demand t
+  :diminish evil-collection-unimpaired-mode
   :init
   (setq
    evil-collection-key-blacklist '("SPC") ;; Don't override leader key!
@@ -251,6 +252,7 @@ point."
   :load-path (my-packages-directory "evil-goggles")
   :after evil
   :demand t
+  :diminish
   :config
   (setq evil-goggles-pulse nil)
   (evil-goggles-mode)
@@ -261,6 +263,7 @@ point."
   :load-path (my-packages-directory "evil-traces")
   :after evil
   :demand t
+  :diminish
   :config
   (evil-traces-mode)
   )

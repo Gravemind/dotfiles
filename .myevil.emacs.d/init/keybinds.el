@@ -19,6 +19,7 @@
   :load-path (my-packages-directory "emacs-which-key")
   :after evil
   :demand t
+  :diminish
   :init
 
   ;; Move C-h C-h to C-h M-h so C-h C-h is for which-key

@@ -194,6 +194,7 @@
   ;;        ("C-o" . better-jumper-jump-backward)
   ;;        ("C-i" . better-jumper-jump-forward)
   ;;        )
+  :diminish better-jumper-local-mode
   :init
   (setq
    better-jumper-use-evil-jump-advice t
@@ -454,6 +455,7 @@
   ;;             ("M-<up>" . ahs-backward-whole-buffer)
   ;;             ("M-<down>" . ahs-forward-whole-buffer)
   ;;             )
+  :diminish
   :config
   (setq-default
    ahs-idle-interval 0.07
@@ -663,6 +665,7 @@
   :load-path (my-packages-directory "helpful")
   :hook (prog-mode . ws-butler-mode)
   :commands (ws-butler-mode)
+  :diminish
   )
 
 ;;
