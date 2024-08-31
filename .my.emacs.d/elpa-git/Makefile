@@ -214,7 +214,7 @@ export EMACSLOADPATH
 all:	${DEFCOMPILE} ${DEFMAKE} ${NODEF}
 .PHONY: all
 
-gen:	${LOAD_PATHS_EL} ${AUTOLOADS_EL} lsp-autoloads.el
+gen:	${LOAD_PATHS_EL}c ${LOAD_PATHS_EL} ${AUTOLOADS_EL} lsp-autoloads.el
 .PHONY: gen
 
 
@@ -238,6 +238,10 @@ ${LOAD_PATHS_EL}:
 	echo ')))' >> ${LOAD_PATHS_EL}
 	echo "Generated ${LOAD_PATHS_EL}"
 .PHONY: ${LOAD_PATHS_EL}
+
+${LOAD_PATHS_EL}c: ${LOAD_PATHS_EL}
+	emacs -Q -batch -f batch-byte-compile $<
+.PHONY: ${LOAD_PATHS_EL}c
 
 ${AUTOLOADS_EL}:
 	@echo -e "\n-------- generate $@ --------\n"
