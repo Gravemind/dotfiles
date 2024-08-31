@@ -114,6 +114,7 @@ DEFMAKE		+= yaml-mode
 DEFCOMPILE	+= dumb-jump
 DEFCOMPILE_dump-jump	= dumb-jump.el
 DEFCOMPILE	+= queue
+DEFCOMPILE	+= adaptive-wrap
 DEFCOMPILE	+= undo-tree
 DEFCOMPILE	+= org-bullets
 DEFCOMPILE	+= flycheck-grammalecte
@@ -340,4 +341,5 @@ fetch:
 	( cd external-completion ; ./fetch.sh )
 	( cd xref ; ./fetch.sh )
 	( cd clang-format ; ./fetch.sh )
+	( cd adaptive-wrap ; ./fetch.sh )
 .PHONY: fetch

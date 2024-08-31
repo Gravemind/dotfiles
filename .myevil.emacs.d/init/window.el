@@ -230,3 +230,14 @@
   ;; (global-visual-fill-column-mode 1)
 
   )
+
+;;
+;; adaptive-wrap
+;;   Companion to visual-fill-column
+;;   https://codeberg.org/joostkremers/visual-fill-column#wrap-prefix
+;;
+
+(use-package adaptive-wrap
+  :load-path (my-packages-directory "adaptive-wrap")
+  :commands (adaptive-wrap-prefix-mode)
+)
