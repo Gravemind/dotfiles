@@ -13,8 +13,9 @@
         ("C-k" . vertico-previous)
         ;; ("TAB" . mynoop) ;; see consult-preview-key
         ;; ("C-<tab>" . minibuffer-complete)
-        ("C-<tab>" . vertico-insert)
+        ;; ("C-<tab>" . vertico-insert)
         )
+
   :config
   (setq-default
    vertico-count 30
@@ -155,13 +156,20 @@
   (defun consult-git-grep-current-dir ()
     (interactive) (consult-git-grep default-directory))
 
-  ;; (setq consult-preview-key nil)
-  (setq-default consult-preview-key "TAB")
-
   :config
   (consult-customize
    consult-ripgrep consult-ripgrep-current-dir consult-git-grep consult-grep
    :group nil
+   )
+
+  ;; Force TAB to preview instead of inserting current candidate
+  (setq consult-preview-key '("<tab>" "C-<tab>"))
+  (unbind-key "C-<tab>" minibuffer-local-map)
+  (consult-customize
+   consult-line
+   :keymap (let ((map (make-sparse-keymap)))
+             (define-key map (kbd "<tab>") #'mynoop)
+             map)
    )
 )
 
