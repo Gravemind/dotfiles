@@ -96,26 +96,53 @@
   "Indentation info")
 (put 'my/mode-line-indent-info 'risky-local-variable t)
 
+(defun my/make-mode-line-bar-image ()
+  (let ((fg nil) ;; (face-background 'mode-line))
+        (bg (face-background 'mode-line))
+        (height 32)
+        (width 8)
+        )
+    (create-image
+     (concat
+      (format "P1\n%i %i\n" width height)
+      (make-string (* height width) ?0)
+      "\n")
+     'pbm t :foreground fg :background bg :ascent 'center)
+    )
+  )
+
+(let ((bar (my/make-mode-line-bar-image)))
+  (setq
+   my/mode-line-active-bar bar
+   my/mode-line-inactive-bar bar
+   )
+)
+
 (setq-default
 
  ;; Window margin padd here so it works for helm too (because helm use this first in its modeline)
- mode-line-buffer-identification '("" my/mode-line-ro-indicator my/mode-line-buffer)
+ mode-line-buffer-identification '(""
+                                   my/mode-line-ro-indicator
+                                   my/mode-line-buffer
+                                   )
 
  ;; Dummy variable where evil will insert its state tag
  my--evil-mode-line-placeholder ""
 
  mode-line-format
- '(""
-   my/mode-line-left-margin-padd
+ `(
+   ""
+   ;; my/mode-line-left-margin-padd
+   (:propertize " " display ,my/mode-line-active-bar)
 
    my--evil-mode-line-placeholder   ;; evil state. TODO needs to be at top-level, how do face it ?
 
    mode-line-buffer-identification  ;; buffer name
-           ;; ro symbol
+   ;; ro symbol
    ":%l:%c"                         ;; line column
-   " %p"                            ;; scroll percent
+   ;; " %p"                            ;; scroll percent
    " " mode-line-mule-info          ;; encoding (%Z)
-   " " my/mode-line-indent-info     ;; indent info
+   ;; " " my/mode-line-indent-info     ;; indent info
    ;; mode-line-client
    ;; mode-line-modified
    ;; mode-line-remote
@@ -123,19 +150,25 @@
    " " mode-line-modes              ;; modes
    mode-line-misc-info              ;; ?
    ;; mode-line-end-spaces          ;; trailing dashes in terminal mode
+
    )
 
  header-line-format
- '(""
-   my/mode-line-left-margin-padd
-   " "
+ `(
+   ""
+   ;; my/mode-line-left-margin-padd
+   (:propertize " " display ,my/mode-line-active-bar)
+
    my/mode-line-ro-indicator
    my/mode-line-buffer-long
+
    )
 
  ;; frame title (X window title)
  frame-title-format
- '("" (:eval (cond (buffer-read-only "[%%] ") ((buffer-modified-p) "[*] ") (t ""))) "%b")
+ '(
+   "" (:eval (cond (buffer-read-only "[%%] ") ((buffer-modified-p) "[*] ") (t ""))) "%b"
+   )
 
  )
 

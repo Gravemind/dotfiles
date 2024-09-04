@@ -551,6 +551,10 @@
   :defer t
   :hook ((prog-mode . (lambda () (flyspell-mode -1) (flyspell-prog-mode)))
          (text-mode . (lambda () (flyspell-mode 1))))
+  :config
+  (setq-default
+   flyspell-mode-line-string " spell"
+   )
   )
 
 (use-package flyspell-correct
