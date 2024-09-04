@@ -24,9 +24,9 @@
     ### Geometry ###
 
     # dynamic width from 0 to 300
-    # width = (0, 300)
-    # constant width of 300
     width = (300, 700)
+    # constant width of 300
+    # width = 300
 
     # The maximum height of a single notification, excluding the frame.
     height = 300
@@ -92,10 +92,10 @@
     separator_height = 2
 
     # Padding between text and separator.
-    padding = 10
+    padding = 20
 
     # Horizontal padding.
-    horizontal_padding = 16
+    horizontal_padding = 26
 
     # Padding between text and icon.
     text_icon_padding = 0
