@@ -124,7 +124,7 @@
   :load-path (my-packages-directory "consult")
   :if (eq my--compsys 'vertico)
   :after vertico
-  :commands (consult-line consult-grep consult-ripgrep consult-git-grep consult-completion-in-region consult-find)
+  :commands (consult-buffer consult-line consult-grep consult-ripgrep consult-git-grep consult-completion-in-region consult-find)
   :bind
   (
    ;; ("<leader> SPC" . consult-find)
@@ -156,7 +156,21 @@
   (defun consult-git-grep-current-dir ()
     (interactive) (consult-git-grep default-directory))
 
+  ;; switch-to-buffer does not respect completion-styles: if any buffer name
+  ;; starts with user input, it removes all other buffer from the list.
+  (global-set-key [remap switch-to-buffer] #'consult-buffer)
+
   :config
+  (setq-default consult-buffer-sources
+                '(consult--source-hidden-buffer
+                  consult--source-modified-buffer
+                  consult--source-buffer
+                  ;; consult--source-recent-file
+                  ;; consult--source-file-register
+                  ;; consult--source-bookmark
+                  ;; consult--source-project-buffer-hidden
+                  ))
+
   (consult-customize
    consult-ripgrep consult-ripgrep-current-dir consult-git-grep consult-grep
    :group nil
