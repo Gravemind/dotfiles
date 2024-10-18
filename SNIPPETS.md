@@ -120,6 +120,25 @@ perl -pe 's/[0-9]+/ sprintf("%04d", $& + 42) /eg'
 perl -ne 's/^ foo (.*?) bar (.*?)$/ print $1."\/".$2."\n"; /e'
 ```
 
+```sh
+# Readable regex code and commants: /x ignores non-backslashed whitespaces, and allow '#' comments.
+perl -pe 's/
+  # This is a comment, not part of regex.
+  # The following is part of the regex match:
+  [a-z0-9]+
+  # Whitespaces and newlines match nothing, and must be matched explicitly
+  \ + \s+ [ \t]+
+/repl/x'
+```
+
+```sh
+# Matching over multi-line input
+# * -0777 : slurps the whole file (777 is a convention)
+# * //m   : /^/ and /$/ match begin and end of each lines in input, instead of begin and end of whole input
+# * //s   : /./ also match newlines (note: /\s/ always match newlines, /\s+$/ match trailing spaces)
+perl -0777 -pe 's///gms'
+```
+
 ### tar
 
 ```sh
