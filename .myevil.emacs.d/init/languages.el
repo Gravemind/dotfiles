@@ -468,3 +468,20 @@
   :load-path (my-packages-directory "meson-mode")
   :mode (("/meson\\(\\.build\\|_options\\.txt\\)\\'" . meson-mode))
   )
+
+;;
+;; dash-docs
+;;
+
+(use-package dash-docs
+  :load-path (my-packages-directory "dash-docs")
+  ;;:disabled t
+  :commands (dash-docs-install-docset dash-docs-activate-docset dash-docs-async-install-docset)
+  )
+
+(use-package consult-dash
+  :load-path (my-packages-directory "consult-dash")
+  :if (eq my--compsys 'vertico)
+  ;;:disabled t
+  :commands (consult-dash)
+  )

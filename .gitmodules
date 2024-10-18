@@ -214,6 +214,7 @@
 [submodule ".emacs.d/elpa-git/dash-docs"]
 	path = .my.emacs.d/elpa-git/dash-docs
 	url = https://github.com/dash-docs-el/dash-docs.git
+        branch = master
 [submodule ".emacs.d/elpa-git/yaml-mode"]
 	path = .my.emacs.d/elpa-git/yaml-mode
 	url = https://github.com/yoshiki/yaml-mode.git
@@ -454,4 +455,8 @@
 [submodule ".my.emacs.d/elpa-git/eglot-x"]
 	path = .my.emacs.d/elpa-git/eglot-x
 	url = https://github.com/nemethf/eglot-x.git
+	branch = master
+[submodule ".my.emacs.d/elpa-git/consult-dash"]
+	path = .my.emacs.d/elpa-git/consult-dash
+	url = https://codeberg.org/ravi/consult-dash.git
 	branch = master

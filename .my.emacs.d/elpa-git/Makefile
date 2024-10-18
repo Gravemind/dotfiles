@@ -174,6 +174,7 @@ DEFCOMPILE  += orderless
 DEFCOMPILE  += marginalia
 DEFCOMPILE  += consult
 DEFCOMPILE  += consult-ls-git
+DEFCOMPILE  += consult-dash
 
 DEFCOMPILE  += hydra  # contains "lv", for lsp-mode
 DEFCOMPILE_hydra = *.el
