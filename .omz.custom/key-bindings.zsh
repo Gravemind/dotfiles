@@ -74,4 +74,7 @@ do
 	# vi-mode patch: unbind
 	bindkey -M $b '^[Oa' _my-zle-noop # [Ctrl-Up]
 	bindkey -M $b '^[Ob' _my-zle-noop # [Ctrl-Down]
+
+	# Remove the current prompt, and put it back after executing a command
+	bindkey -M $b '^[q' push-input # [Alt-Q]
 done
