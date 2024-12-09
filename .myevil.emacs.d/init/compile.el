@@ -90,8 +90,22 @@
   (x-urgency-hint (selected-frame) t)
   )
 
-(add-to-list 'display-buffer-alist
-             '("." nil (reusable-frames . t)))
+;; https://www.masteringemacs.org/article/demystifying-emacs-window-manager
+(add-to-list
+ 'display-buffer-alist
+ '("\\*compilation\\*"
+   (display-buffer-in-side-window)
+   (side . bottom)
+   ))
+(add-to-list
+ 'display-buffer-alist
+ '("\\*eldoc\\*"
+   (display-buffer-in-side-window)
+   (side . bottom)
+   ))
+
+;; (add-to-list 'display-buffer-alist
+;;              '("." nil (reusable-frames . t)))
 
 (use-package compile
   :pin manual
@@ -114,7 +128,8 @@
    compilation-always-kill t
    compilation-auto-jump-to-first-error nil
    compilation-scroll-output 'first-error
-   compilation-window-height 12
+   compilation-window-height 20  ;; (overridden by zoom-mode)
    )
   (add-hook 'compilation-finish-functions #'jo/compilation-finished)
+
   )
