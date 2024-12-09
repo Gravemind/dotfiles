@@ -146,6 +146,9 @@
 
    ("f" . consult-find-current-dir)
 
+   :map minibuffer-local-map
+   ("C-r" . consult-history)
+
    )
 
   :init
