@@ -64,6 +64,14 @@
    transient-default-level 7
    ;; Highlight switches mismatching their true CLI switch
    transient-highlight-mismatched-keys t
+
+   magit-blame-goto-chunk-hook
+   '(
+     ;; Disable this to avoid auto updating the (slow) git revision buffer on current line change
+     ;; magit-blame-maybe-update-revision-buffer
+     magit-blame-maybe-show-message
+     )
+
    )
 
   (add-hook 'git-commit-setup-hook 'git-commit-turn-on-flyspell)
