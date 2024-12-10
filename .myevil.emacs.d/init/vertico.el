@@ -158,7 +158,7 @@
 
    )
 
-  :init
+  :config
   (defun consult-ripgrep-current-dir ()
     (interactive) (consult-ripgrep default-directory))
   (defun consult-find-current-dir ()
@@ -234,6 +234,18 @@
   :bind
   (
    ("<leader> SPC" . consult-ls-git)
+   )
+  :config
+  (setq-default
+   ;; Remove stash
+   consult-ls-git-sources
+   '(
+     consult-ls-git--source-status-files
+     ;; consult-ls-git--source-stash
+     consult-ls-git--source-tracked-files
+     )
+   ;; Remove untrack
+   consult-ls-git-show-untracked-files nil
    )
 )
 
