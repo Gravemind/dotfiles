@@ -277,6 +277,8 @@
   :config
   ;; Save minibuffer history for compile
   ;;(setq-default savehist-additional-variables '(compile-command))
+  ;; Save all minibuffer histories
+  (setq savehist-save-minibuffer-history t)
   (savehist-mode 1)
   )
 
