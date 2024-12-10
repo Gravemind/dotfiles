@@ -27,6 +27,8 @@ def read_line(path):
             out = f.read().strip()
     except FileNotFoundError:
         return None
+    except OSError:
+        return None
     return out
 
 def main():
