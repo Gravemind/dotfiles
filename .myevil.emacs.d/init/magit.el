@@ -10,6 +10,7 @@
   :mode (("/git-rebase-todo\\'" . git-rebase-mode))
   :commands (magit-repolist-here
              magit--handle-bookmark ;; For bookmark made from magit-status buffer
+             magit-find-file
              )
   :bind* (("C-x g" . magit-status-here)
           ("C-x C-g" . magit-status)
