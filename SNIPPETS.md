@@ -11,12 +11,15 @@
 set -euo pipefail
 
 log() { echo "$*" >&2; }
-fatal() { log "error: $*"; exit 1; }
-run() { local c; c="$(printf ' %q' "$@")"; log "+$c"; "$@" || fatal "command failed ($?):$c"; }
+die() { log "error: $*"; exit 1; }
+run() { local c; c="$(printf ' %q' "$@")"; log "+$c"; "$@" || die "command failed ($?):$c"; }
 
 main() {
     local here
     here="$(cd "$(dirname "$0")"; pwd)"
+
+    run ls
+    [[ ... ]] || die "some error"
 }
 
 main "$@"
@@ -33,6 +36,14 @@ main "$@"
 tmpdir="$(mktemp -d -t myscript.XXXXXX)"
 # shellcheck disable=SC2064
 trap "$(printf 'rm -rf -- %q ||:' "$tmpdir")" EXIT
+```
+
+### bash debug helpers
+
+```sh
+# Better debug prefix (bash -x, set -x):
+PS4=$'\e[1;30m''${BASH_SOURCE[0]}:${LINENO:-}+ '$'\e[0m'
+set -x
 ```
 
 ### Prefix all output lines with date
@@ -169,6 +180,20 @@ lsof -c zsh
 
 # List network connections
 lsof -i
+```
+
+### ssh
+
+```sh
+# List ssh key fingerprint (md5)
+find ~/.ssh -name '*.pub' -exec ssh-keygen -E md5 -lf {} \;
+
+# Test ssh authentification to github.com/gitlab.com
+ssh -T git@github.com
+ssh -T -i ~/.ssh/id_ed25519 -p 22 git@github.com
+
+# Generate ssh key
+ssh-keygen -t ed25519 -C "your_email@example.com" -f ~/.ssh/my_ssh_key
 ```
 
 ## Python
