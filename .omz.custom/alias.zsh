@@ -67,7 +67,9 @@ reboot() {
 
 alias suspend='systemctl suspend'
 
-alias ssh-fingerprint="find . -name '*.pub' -exec ssh-keygen -l -f {} \;"
+ssh-fingerprint() {
+	find ~/.ssh -name '*.pub' -exec ssh-keygen -E md5 -lf {} \;
+}
 
 alias rchttpd='sudo /etc/rc.d/httpd'
 alias rcmysqld='sudo /etc/rc.d/mysqld'
