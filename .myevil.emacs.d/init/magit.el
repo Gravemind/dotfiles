@@ -286,6 +286,8 @@ many times might take a long time."
      (call-interactively command))
     (magit-refresh))
 
+  ;; See diff-hl README, fixes diff-hl refresh ?
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
   )
 
 ;;
@@ -331,6 +333,7 @@ many times might take a long time."
   ;:disabled
   :if window-system
   :demand t
+  :commands (diff-hl-magit-post-refresh)
   ;;:defer 1
   :bind (("M-n" . diff-hl-next-hunk)
          ("M-p" . diff-hl-previous-hunk))
