@@ -460,3 +460,7 @@
 	path = .my.emacs.d/elpa-git/consult-dash
 	url = https://codeberg.org/ravi/consult-dash.git
 	branch = master
+[submodule ".my.emacs.d/elpa-git/haskell-mode"]
+	path = .my.emacs.d/elpa-git/haskell-mode
+	url = https://github.com/haskell/haskell-mode
+	branch = master

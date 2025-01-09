@@ -131,6 +131,8 @@ DEFMAKE     += benchmark-init-el
 DEFCOMPILE  += all-the-icons
 DEFCOMPILE_all-the-icons  = *.el data/data-*.el
 DEFCOMPILE  += clang-format
+DEFCOMPILE  += haskell-mode
+DEFCOMPILE_haskell-mode = *.el
 
 DEFCOMPILE  += base16-emacs
 DEFCOMPILE_base16-emacs = base16-theme.el

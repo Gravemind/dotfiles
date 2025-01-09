@@ -485,3 +485,13 @@
   ;;:disabled t
   :commands (consult-dash)
   )
+
+;;
+;; haskell
+;;
+
+(use-package haskell
+  :load-path (my-packages-directory "haskell-mode")
+  :mode (("\\.hs\\'" . haskell-mode)
+         )
+  )
