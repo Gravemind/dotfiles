@@ -548,4 +548,7 @@ exec_always $here/wallpaper_cycle
 # Screen power off and sleep timer
 exec_always --no-startup-id $here/exec_swayidle.sh
 
+# Force start dunst to avoid conflicts with other Notification services
+exec_always --no-startup-id systemctl --user restart dunst.service
+
 workspace 3
