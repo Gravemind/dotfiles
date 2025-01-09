@@ -15,6 +15,10 @@
   (key-chord-mode 1)
 )
 
+;;
+;; which-key shows the next possible keystrokes keybindings
+;;
+
 (use-package which-key
   :load-path (my-packages-directory "emacs-which-key")
   :after evil
