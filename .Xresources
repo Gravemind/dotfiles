@@ -84,7 +84,7 @@ URxvt.keysym.M-u:       perl:keyboard-select:activate
 ! Fontconfig for some programs (emacs)
 ! For others, see ~/.config/fontconfig/conf.d (firefox, urxvt)
 Xft.autohint:       0
-Xft.antialias:      1
+! Xft.antialias:      1  ! See note in ~/.config/fontconfig/conf.d/20-render.conf
 Xft.hinting:        1
 Xft.hintstyle:      hintslight
 Xft.lcdfilter:      lcdnone
