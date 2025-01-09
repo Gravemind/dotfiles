@@ -56,14 +56,21 @@ output "*" subpixel none
 font pango:Hack 9
 
 # Mouse cursor size (need restart sway and applications)
-seat seat0 xcursor_theme default 32
-exec_always gsettings set org.gnome.desktop.interface cursor-size 32
+seat * xcursor_theme default 32
+exec_always --no-startup-id gsettings set org.gnome.desktop.interface cursor-size 32
 
-# Hide border if single window/container in workspace
-hide_edge_borders --i3 smart_no_gaps
-# smart_gaps on
-# gaps inner 8px
-# gaps outer 0px
+# Hide mouse cursor
+# seat * hide_cursor 4000
+# seat * hide_cursor when-typing disable
+
+# Hide titlebar when only one child in container
+hide_edge_borders --i3 none
+# Hide borders if single container in workspace
+smart_borders on
+
+# Ultrawide monitor mode: add gaps left and right when single container in workspace
+smart_gaps inverse_outer
+gaps horizontal 440
 
 # Default border style: normal[px]|pixel[px]|none
 default_border pixel 2
