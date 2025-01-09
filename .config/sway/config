@@ -545,4 +545,7 @@ exec_always $here/wallpaper_cycle
 # set $hook_idle_time_min 10
 # exec --no-startup-id xautolock -detectsleep -time $hook_idle_time_min -locker "~/bin/hooks/onidle" -noclose
 
+# Screen power off and sleep timer
+exec_always --no-startup-id $here/exec_swayidle.sh
+
 workspace 3
