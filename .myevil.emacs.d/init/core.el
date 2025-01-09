@@ -250,6 +250,10 @@ Saves to a temp file and puts the filename in the kill ring."
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t)
 
+  ;; Ignore case in minibuffers (applies to vertico too)
+  (setq read-file-name-completion-ignore-case t
+        read-buffer-completion-ignore-case t
+        completion-ignore-case t)
 )
 (use-package diminish
   :demand t
