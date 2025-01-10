@@ -338,7 +338,7 @@ mode --pango_markup $mode_resize {
     bindsym s sticky toggle, mode "default"
 
     bindsym e output * power on, mode "default"
-    bindsym E output * enable, output * power on, mode "default"
+    bindsym Shift+e output * enable, output * power on, mode "default"
     bindsym d output * power off, mode "default"
 
     bindsym w exec --no-startup-id $here/wallpaper_cycle, mode "default"
