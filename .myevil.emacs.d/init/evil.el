@@ -244,6 +244,10 @@ point."
    evil-collection-key-blacklist '("SPC") ;; Don't override leader key!
    )
   :config
+  ;; Disable evil-collection smerge bindings
+  ;; (will use smerge `gm` prefix instead) (Because it overrides "gc")
+  (setq evil-collection-mode-list (delq 'smerge-mode evil-collection-mode-list))
+
   (evil-collection-init)
   )
 

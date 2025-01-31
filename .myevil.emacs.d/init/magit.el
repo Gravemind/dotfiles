@@ -301,9 +301,11 @@ many times might take a long time."
               ("m" . smerge-refine)
               )
   :init
-  (setq-default
-   smerge-command-prefix "\C-cm"
-   )
+  :config
+  ;; Bind smerge map to key prefix "g m" in evil mode
+  (when (featurep 'evil)
+    (evil-define-key 'normal 'smerge-mode-map (kbd "g m") smerge-basic-map)
+    )
   )
 
 ;;
