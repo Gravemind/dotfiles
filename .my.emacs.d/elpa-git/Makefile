@@ -208,6 +208,10 @@ DEFCOMPILE_lsp-treemacs  = *.el
 DEFCOMPILE  += evil-collection
 DEFCOMPILE_evil-collection = *.el modes/*/*.el
 
+DEFCOMPILE  += gptel
+DEFCOMPILE_gptel = *.el
+
+
 LISP_DIRS=${DEFCOMPILE} ${DEFMAKE} ${NODEF} ${ADDLISPDIR}
 SPACE := $(subst ,, )
 # (the empty ":" at the end keeps the default paths)

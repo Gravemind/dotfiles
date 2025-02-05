@@ -464,3 +464,7 @@
 	path = .my.emacs.d/elpa-git/haskell-mode
 	url = https://github.com/haskell/haskell-mode
 	branch = master
+[submodule ".my.emacs.d/elpa-git/gptel"]
+	path = .my.emacs.d/elpa-git/gptel
+	url = https://github.com/karthink/gptel.git
+	branch = master
