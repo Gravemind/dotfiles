@@ -76,6 +76,7 @@ DEFCOMPILE	+= iy-go-to-char
 DEFMAKE		+= log4e
 DEFMAKE		+= lua-mode
 #NODEF		+= magit
+DEFMAKE		+= llama
 DEFMAKE		+= magit
 ADDLISPDIR	+= magit/lisp
 DEFCOMPILE	+= makey
@@ -301,7 +302,7 @@ transient: compat
 
 with-editor: compat
 
-magit: transient dash with-editor compat
+magit: transient dash with-editor llama compat
 
 evil: goto-chg undo-tree
 

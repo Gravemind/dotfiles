@@ -468,3 +468,7 @@
 	path = .my.emacs.d/elpa-git/gptel
 	url = https://github.com/karthink/gptel.git
 	branch = master
+[submodule ".my.emacs.d/elpa-git/llama"]
+	path = .my.emacs.d/elpa-git/llama
+	url = https://github.com/tarsius/llama.git
+	branch = main
