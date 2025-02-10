@@ -302,6 +302,10 @@
 	# checkout as is, commit as is
 	autocrlf = false
 
+[core]
+	# Global gitignore
+	excludesfile = "~/.gitignore.global"
+
 # [blame]
 # 	ignoreRevsFile = .git-blame-ignore-revs
 

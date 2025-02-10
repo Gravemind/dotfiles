@@ -1,0 +1,10 @@
+#
+# Global gitignore file for all projects
+#   See git config core.excludesfile
+#
+
+/.cache/
+.gdb_history
+
+/compile_commands.json
+/build*/

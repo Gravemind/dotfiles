@@ -16,6 +16,7 @@
 !/.gitconfig
 !/.gitmodules
 !/.gitignore
+!/.gitignore.global
 !/.dotfiles.gitignore
 
 !/.bash_profile
