@@ -240,7 +240,8 @@
 
   (defun doom-set-jump-h ()
     "Run `better-jumper-set-jump' but return nil, for short-circuiting hooks."
-    (better-jumper-set-jump)
+    (when (get-buffer-window)
+      (better-jumper-set-jump))
     nil)
 
   ;; Creates a jump point before killing a buffer. This allows you to undo
@@ -249,17 +250,17 @@
   ;;
   ;; I'm not advising `kill-buffer' because I only want this to affect
   ;; interactively killed buffers.
-  (advice-add #'kill-current-buffer :around #'doom-set-jump-a)
+  (add-hook 'kill-buffer-hook #'doom-set-jump-h)
 
   ;; Create a jump point before jumping with imenu.
   (advice-add #'imenu :around #'doom-set-jump-a)
 
-  (advice-add #'xref-push-marker-stack :around #'doom-set-jump-a)
+  ;; /from doomemacs
 
+  ;; (advice-add #'xref-push-marker-stack :around #'doom-set-jump-a)
   ;; (advice-add #'find-function-do-it :around #'doom-set-jump-a)
   ;; (advice-add #'find-file :around #'doom-set-jump-a)
-
-  (advice-add #'isearch-mode :around #'doom-set-jump-a)
+  ;; (advice-add #'isearch-mode :around #'doom-set-jump-a)
 
   (better-jumper-mode 1)
 )
