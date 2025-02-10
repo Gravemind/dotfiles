@@ -237,13 +237,13 @@ fclean:
 ${LOAD_PATHS_EL}:
 	@echo -e "\n-------- generate $@ --------\n"
 	echo ';; Generated' > ${LOAD_PATHS_EL}
-	echo '(setq load-path (nconc load-path (list' >> ${LOAD_PATHS_EL}
+	echo '(setq load-path (nconc (list ' >> ${LOAD_PATHS_EL}
 	echo "\"${ELPAGIT}\"" >> ${LOAD_PATHS_EL}
 	for p in ${LISP_DIRS}
 	do
 		echo "\"${ELPAGIT}/$$p\""
 	done >> ${LOAD_PATHS_EL}
-	echo ')))' >> ${LOAD_PATHS_EL}
+	echo ') load-path))' >> ${LOAD_PATHS_EL}
 	echo "Generated ${LOAD_PATHS_EL}"
 .PHONY: ${LOAD_PATHS_EL}
 
