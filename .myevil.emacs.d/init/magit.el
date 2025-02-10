@@ -123,15 +123,6 @@
      ;; ("-a" "Auto stash" "--autostash") ;; "-A"
      ])
 
-  ;; diff
-  (transient-insert-suffix 'magit-diff '(-1)
-    ["Custom" ("-R" "Reverse" "-R")])
-  (transient-insert-suffix 'magit-diff-refresh '(-1)
-    ["Custom" ("-R" "Reverse" "-R")])
-  ;; (magit-define-popup-switch
-  ;;   'magit-diff-popup
-  ;;   ?W "Ignore changes in whitespace at EOL" "--ignore-space-at-eol")
-
   ;; branch/checkout
   (transient-remove-suffix 'magit-branch "o") ;; was checkout --orphan
   (transient-insert-suffix 'magit-branch '(-1)
@@ -189,8 +180,10 @@
             )
         "")))
 
+
   (defun my-magit-repolist-column-new (_id)
     "Insert new tags"
+    (require 'dash)  ;; --drop-while
     (let* ((curr-tag (magit-git-string "describe" "--tags" "--abbrev=0"))
            (all-tags (magit-git-lines "tag" "--sort=creatordate"))
            (new-tags (cond
