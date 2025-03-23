@@ -103,6 +103,12 @@
    (display-buffer-in-side-window)
    (side . bottom)
    ))
+(add-to-list
+ 'display-buffer-alist
+ '("\\*Cargo Build\\*"
+   (display-buffer-in-side-window)
+   (side . bottom)
+   ))
 
 ;; (add-to-list 'display-buffer-alist
 ;;              '("." nil (reusable-frames . t)))
