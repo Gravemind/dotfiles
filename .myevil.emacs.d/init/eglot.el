@@ -19,4 +19,11 @@
                                  ("clangd-16")
                                  ("clangd-15")
                                  ))))
+
+  (add-to-list 'eglot-server-programs
+               `(python-mode . ,(eglot-alternatives '(
+                                                      ("pyright-langserver" "--stdio")
+                                                      ("jedi-language-server")
+                                                      ("pylsp")
+                                                      ))))
 )
