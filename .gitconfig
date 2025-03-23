@@ -211,6 +211,12 @@
 	localBranch = bold green
 	remoteBranch = bold cyan
 
+[color "diff-highlight"]
+       oldNormal = red
+       oldHighlight = reverse dim red
+       newNormal = green
+       newHighlight = reverse dim green
+
 [color "diff"]
 	# 256color git diff --color-moved=zebra
 	newMoved = 65
