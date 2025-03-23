@@ -26,4 +26,14 @@
                                                       ("jedi-language-server")
                                                       ("pylsp")
                                                       ))))
+
+  (defun my/eglot-mode-tweak ()
+    (setq eldoc-documentation-functions '(flymake-eldoc-function
+                                          eglot-signature-eldoc-function
+                                          eglot-hover-eldoc-function)
+          ;; Display section bit by bit instead for waiting all sections
+          eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly
+          )
+    )
+  (add-hook 'eglot-managed-mode-hook 'my/eglot-mode-tweak)
 )
