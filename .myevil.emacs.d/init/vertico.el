@@ -78,6 +78,13 @@
   (add-hook 'minibuffer-setup-hook #'vertico-repeat-save)
 )
 
+(use-package vertico-suspend
+  :load-path (my-packages-directory "vertico/extensions")
+  :if (eq my--compsys 'vertico)
+  :after vertico
+  :commands (vertico-suspend)
+)
+
 (use-package vertico-reverse
   :load-path (my-packages-directory "vertico/extensions")
   :if (eq my--compsys 'vertico)
