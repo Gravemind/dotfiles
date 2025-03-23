@@ -32,6 +32,14 @@
   (define-key magit-mode-map (kbd "<SPC>") `(menu-item "" nil :filter ,(lambda (_cmd) (key-binding [leader]))))
   (define-key magit-diff-mode-map (kbd "<SPC>") `(menu-item "" nil :filter ,(lambda (_cmd) (key-binding [leader]))))
 
+  ;; By default, make buffer -> magit-log -> magit-diff *NOT* "limited to file"
+  ;; Use `DF` from magit-diff to toggle between "limited to file" or not.
+  (defun my/magit-diff-swap-file-restriction ()
+    (when (local-variable-p 'magit-buffer-diff-files)
+      (cl-rotatef magit-buffer-diff-files
+                  magit-buffer-diff-files-suspended)))
+  (add-hook 'magit-setup-buffer-hook #'my/magit-diff-swap-file-restriction)
+
   (setq-default
    magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1
    magit-last-seen-setup-instructions "1.4.0"
