@@ -1,0 +1,26 @@
+#!/bin/bash
+#
+# usage: git-set-all-upstreams [remote]
+#
+# remote defaults to "origin"
+#
+# For all local branches <br>, set upstream <remote>/<br> if it exists and if no
+# upstream is already set for <br>
+#
+
+set -euo pipefail
+
+remote="${1:-origin}"
+
+while IFS='' read -r -u3 b
+do
+    if ! git rev-parse --quiet --verify --revs-only "$b@{upstream}" >/dev/null
+    then
+        if git rev-parse --quiet --verify --revs-only "$remote/$b"
+        then
+            git branch -u "$remote/$b" "$b"
+        else
+            echo "$remote/$b not found"
+        fi
+    fi
+done 3< <(git for-each-ref --format '%(refname:short)' refs/heads)

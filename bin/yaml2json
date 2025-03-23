@@ -1,0 +1,11 @@
+#!/usr/bin/python3 -E
+
+import sys
+import yaml
+import json
+
+args = sys.argv[1:] or ['/dev/stdin']
+for arg in args:
+    with open(arg, 'rb') as f:
+        sys.stdout.write(json.dumps(yaml.safe_load(f), sort_keys=False))
+        sys.stdout.write("\n")

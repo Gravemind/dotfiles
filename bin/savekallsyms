@@ -1,0 +1,5 @@
+#!/bin/bash
+out="$1"
+shift
+cat /proc/kallsyms > "$out"
+exec "$@"
