@@ -36,4 +36,11 @@
           )
     )
   (add-hook 'eglot-managed-mode-hook 'my/eglot-mode-tweak)
+
+  (require 'eglot-x)
+)
+
+(use-package eglot-x
+  :load-path (my-packages-directory "eglot-x")
+  :after eglot
 )
