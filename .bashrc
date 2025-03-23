@@ -3,6 +3,7 @@
 # ~/.bashrc
 #
 
+# Load environment modules
 # if ! type module >/dev/null 2>&1 && [[ -f /usr/share/modules/init/bash ]]
 # then
 #     source /usr/share/modules/init/bash

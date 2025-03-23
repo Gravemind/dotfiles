@@ -21,6 +21,12 @@ then
 	return
 fi
 
+# Load environment modules
+# if ! type module >/dev/null 2>&1 && [[ -f /usr/share/modules/init/bash ]]
+# then
+#     source /usr/share/modules/init/zsh
+# fi
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
