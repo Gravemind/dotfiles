@@ -8,6 +8,12 @@
    ;; When jumping across references, keep eglot connection from original source file.
    ;; i.e. When jumping to an (external) header, keep asking LSP from the original .cpp.
    eglot-extend-to-xref t
+
+   eglot-ignored-server-capabilities
+   '(
+     ;; Disable rust-analyzer adding parenthesis
+     :documentOnTypeFormattingProvider
+     )
    )
 
   (add-to-list 'eglot-server-programs
