@@ -350,6 +350,9 @@
   :bind (:map rust-mode-map
               ("<f3>" . cargo-process-build)
               ("<S-f3>" . cargo-process-build)
+              ;; FIXME: Sometimes, f4 from (use-package compile) is not effective
+              ("<f4>" . next-error)
+              ("S-<f4>" . previous-error)
               ("<f5>" . cargo-process-run)
               )
   )
