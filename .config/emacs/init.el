@@ -3,6 +3,7 @@
 
 ;; (setq debug-on-error t)
 ;; (setq debug-on-quit t)
+;; (setq byte-compile-warnings nil)
 (setq my--message-loads-p 'nomessage)
 
 ;; GC only after every `gc-cons-threshold` new bytes has been allocated
@@ -18,7 +19,7 @@
 (setq user-init-file (or load-file-name (buffer-file-name)))
 (setq user-emacs-directory (file-name-directory user-init-file))
 
-;; Profile init with https://github.com/dholm/benchmark-init-el
+;; ;; Profile init with https://github.com/dholm/benchmark-init-el
 ;; (add-to-list 'load-path "~/.emacs.d/packages/benchmark-init-el")
 ;; (require 'benchmark-init-loaddefs)
 ;; (benchmark-init/activate)
@@ -34,7 +35,7 @@
 
 ;; Custom file path
 (setq-default custom-file (concat user-emacs-directory "custom.el"))
-(load custom-file nil 'nomessage)
+(load custom-file nil my--message-loads-p)
 
 (require 'cl-lib)
 (require 'subr-x)
