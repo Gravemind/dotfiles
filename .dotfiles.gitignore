@@ -32,8 +32,6 @@
 !/.zshrc
 !/.ccache
 !/.emacs.d
-!/.my.emacs.d
-!/.myevil.emacs.d
 !/.doom.d
 !/.i3
 !/.mpv
