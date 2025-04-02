@@ -2,7 +2,7 @@
 	path = .omz.custom/plugins/syntax-highlight-git/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
 [submodule ".emacs.d/themes/emacs-theme-autumn"]
-	path = .my.emacs.d/themes/emacs-theme-autumn
+	path = .config/emacs/themes/emacs-theme-autumn
 	url = https://github.com/Gravemind/emacs-theme-autumn.git
 [submodule "bin/pacpend-git"]
 	path = bin/pacpend-git
@@ -14,281 +14,281 @@
 	path = .oh-my-zsh
 	url = https://github.com/ohmyzsh/ohmyzsh.git
 [submodule ".emacs.d/elpa-git/zoom"]
-	path = .my.emacs.d/elpa-git/zoom
+	path = .config/emacs/packages/zoom
 	url = https://github.com/cyrus-and/zoom.git
 [submodule ".emacs.d/elpa-git/with-editor"]
-	path = .my.emacs.d/elpa-git/with-editor
+	path = .config/emacs/packages/with-editor
 	url = https://github.com/magit/with-editor.git
 [submodule ".emacs.d/elpa-git/use-package"]
-	path = .my.emacs.d/elpa-git/use-package
+	path = .config/emacs/packages/use-package
 	url = https://github.com/jwiegley/use-package.git
 [submodule ".emacs.d/elpa-git/sync-recentf"]
-	path = .my.emacs.d/elpa-git/sync-recentf
+	path = .config/emacs/packages/sync-recentf
 	url = https://github.com/ffevotte/sync-recentf.git
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/swiper"]
-	path = .my.emacs.d/elpa-git/swiper
+	path = .config/emacs/packages/swiper
 	url = https://github.com/abo-abo/swiper.git
 [submodule ".emacs.d/elpa-git/rust-mode"]
-	path = .my.emacs.d/elpa-git/rust-mode
+	path = .config/emacs/packages/rust-mode
 	url = https://github.com/rust-lang/rust-mode.git
 [submodule ".emacs.d/elpa-git/req-package"]
-	path = .my.emacs.d/elpa-git/req-package
+	path = .config/emacs/packages/req-package
 	url = https://github.com/edvorg/req-package.git
 [submodule ".emacs.d/elpa-git/racer"]
-	path = .my.emacs.d/elpa-git/racer
+	path = .config/emacs/packages/racer
 	url = https://github.com/racer-rust/emacs-racer.git
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/pkg-info"]
-	path = .my.emacs.d/elpa-git/pkg-info
+	path = .config/emacs/packages/pkg-info
 	url = https://github.com/lunaryorn/pkg-info.el.git
 [submodule ".emacs.d/elpa-git/php-mode"]
-	path = .my.emacs.d/elpa-git/php-mode
+	path = .config/emacs/packages/php-mode
 	url = https://github.com/emacs-php/php-mode.git
 [submodule ".emacs.d/elpa-git/log4e"]
-	path = .my.emacs.d/elpa-git/log4e
+	path = .config/emacs/packages/log4e
 	url = https://github.com/aki2o/log4e.git
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/iy-go-to-char"]
-	path = .my.emacs.d/elpa-git/iy-go-to-char
+	path = .config/emacs/packages/iy-go-to-char
 	url = https://github.com/doitian/iy-go-to-char.git
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/helm-dash"]
-	path = .my.emacs.d/elpa-git/helm-dash
+	path = .config/emacs/packages/helm-dash
 	url = https://github.com/dash-docs-el/helm-dash.git
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/go-mode"]
-	path = .my.emacs.d/elpa-git/go-mode
+	path = .config/emacs/packages/go-mode
 	url = https://github.com/dominikh/go-mode.el.git
 [submodule ".emacs.d/elpa-git/gnuplot-mode"]
-	path = .my.emacs.d/elpa-git/gnuplot-mode
+	path = .config/emacs/packages/gnuplot-mode
 	url = https://github.com/mkmcc/gnuplot-mode.git
 [submodule ".emacs.d/elpa-git/flyspell-correct"]
-	path = .my.emacs.d/elpa-git/flyspell-correct
+	path = .config/emacs/packages/flyspell-correct
 	url = https://github.com/d12frosted/flyspell-correct.git
 [submodule ".emacs.d/elpa-git/flycheck-rust"]
-	path = .my.emacs.d/elpa-git/flycheck-rust
+	path = .config/emacs/packages/flycheck-rust
 	url = https://github.com/flycheck/flycheck-rust.git
 [submodule ".emacs.d/elpa-git/flycheck-inline"]
-	path = .my.emacs.d/elpa-git/flycheck-inline
+	path = .config/emacs/packages/flycheck-inline
 	url = https://github.com/flycheck/flycheck-inline.git
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/flx"]
-	path = .my.emacs.d/elpa-git/flx
+	path = .config/emacs/packages/flx
 	url = https://github.com/lewang/flx.git
 [submodule ".emacs.d/elpa-git/dockerfile-mode"]
-	path = .my.emacs.d/elpa-git/dockerfile-mode
+	path = .config/emacs/packages/dockerfile-mode
 	url = https://github.com/spotify/dockerfile-mode.git
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/disaster"]
-	path = .my.emacs.d/elpa-git/disaster
+	path = .config/emacs/packages/disaster
 	url = https://github.com/jart/disaster.git
 [submodule ".emacs.d/elpa-git/dired-k"]
-	path = .my.emacs.d/elpa-git/dired-k
+	path = .config/emacs/packages/dired-k
 	url = https://github.com/syohex/emacs-dired-k.git
 [submodule ".emacs.d/elpa-git/diminish"]
-	path = .my.emacs.d/elpa-git/diminish
+	path = .config/emacs/packages/diminish
 	url = https://github.com/myrjola/diminish.el.git
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/diff-hl"]
-	path = .my.emacs.d/elpa-git/diff-hl
+	path = .config/emacs/packages/diff-hl
 	url = https://github.com/dgutov/diff-hl.git
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/demangle-mode"]
-	path = .my.emacs.d/elpa-git/demangle-mode
+	path = .config/emacs/packages/demangle-mode
 	url = https://github.com/liblit/demangle-mode.git
 [submodule ".emacs.d/elpa-git/centered-cursor-mode"]
-	path = .my.emacs.d/elpa-git/centered-cursor-mode
+	path = .config/emacs/packages/centered-cursor-mode
 	url = https://github.com/andre-r/centered-cursor-mode.el.git
 [submodule ".emacs.d/elpa-git/async"]
-	path = .my.emacs.d/elpa-git/async
+	path = .config/emacs/packages/async
 	url = https://github.com/jwiegley/emacs-async.git
 [submodule ".emacs.d/elpa-git/ace-jump-mode"]
-	path = .my.emacs.d/elpa-git/ace-jump-mode
+	path = .config/emacs/packages/ace-jump-mode
 	url = https://github.com/winterTTr/ace-jump-mode.git
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/yasnippet"]
-	path = .my.emacs.d/elpa-git/yasnippet
+	path = .config/emacs/packages/yasnippet
 	url = https://github.com/joaotavora/yasnippet.git
 [submodule ".emacs.d/elpa-git/lua-mode"]
-	path = .my.emacs.d/elpa-git/lua-mode
+	path = .config/emacs/packages/lua-mode
 	url = https://github.com/immerrr/lua-mode.git
 [submodule ".emacs.d/elpa-git/markdown-mode"]
-	path = .my.emacs.d/elpa-git/markdown-mode
+	path = .config/emacs/packages/markdown-mode
 	url = https://github.com/jrblevin/markdown-mode.git
 [submodule ".emacs.d/elpa-git/helm"]
-	path = .my.emacs.d/elpa-git/helm
+	path = .config/emacs/packages/helm
 	url = https://github.com/emacs-helm/helm.git
 [submodule ".emacs.d/elpa-git/expand-region"]
-	path = .my.emacs.d/elpa-git/expand-region
+	path = .config/emacs/packages/expand-region
 	url = https://github.com/magnars/expand-region.el.git
 [submodule ".emacs.d/elpa-git/auto-highlight-symbol"]
-	path = .my.emacs.d/elpa-git/auto-highlight-symbol
+	path = .config/emacs/packages/auto-highlight-symbol
 	url = https://github.com/gennad/auto-highlight-symbol.git
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/wgrep"]
-	path = .my.emacs.d/elpa-git/wgrep
+	path = .config/emacs/packages/wgrep
 	url = https://github.com/mhayashi1120/Emacs-wgrep.git
 [submodule ".emacs.d/elpa-git/f"]
-	path = .my.emacs.d/elpa-git/f
+	path = .config/emacs/packages/f
 	url = https://github.com/rejeep/f.el.git
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/discover-my-major"]
-	path = .my.emacs.d/elpa-git/discover-my-major
+	path = .config/emacs/packages/discover-my-major
 	url = https://framagit.org/steckerhalter/discover-my-major.git
 [submodule ".emacs.d/elpa-git/visual-fill-column"]
-	path = .my.emacs.d/elpa-git/visual-fill-column
+	path = .config/emacs/packages/visual-fill-column
 	url = https://codeberg.org/joostkremers/visual-fill-column.git
 [submodule ".emacs.d/elpa-git/s"]
-	path = .my.emacs.d/elpa-git/s
+	path = .config/emacs/packages/s
 	url = https://github.com/magnars/s.el.git
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/pos-tip"]
-	path = .my.emacs.d/elpa-git/pos-tip
+	path = .config/emacs/packages/pos-tip
 	url = https://github.com/pitkali/pos-tip.git
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/popwin"]
-	path = .my.emacs.d/elpa-git/popwin
+	path = .config/emacs/packages/popwin
 	url = https://github.com/m2ym/popwin-el.git
 [submodule ".emacs.d/elpa-git/popup"]
-	path = .my.emacs.d/elpa-git/popup
+	path = .config/emacs/packages/popup
 	url = https://github.com/auto-complete/popup-el.git
 [submodule ".emacs.d/elpa-git/multiple-cursors"]
-	path = .my.emacs.d/elpa-git/multiple-cursors
+	path = .config/emacs/packages/multiple-cursors
 	url = https://github.com/magnars/multiple-cursors.el.git
 [submodule ".emacs.d/elpa-git/makey"]
-	path = .my.emacs.d/elpa-git/makey
+	path = .config/emacs/packages/makey
 	url = https://github.com/mickeynp/makey.git
 [submodule ".emacs.d/elpa-git/magit"]
-	path = .my.emacs.d/elpa-git/magit
+	path = .config/emacs/packages/magit
 	url = https://github.com/magit/magit.git
 [submodule ".emacs.d/elpa-git/ivy-rich"]
-	path = .my.emacs.d/elpa-git/ivy-rich
+	path = .config/emacs/packages/ivy-rich
 	url = https://github.com/Yevgnen/ivy-rich.git
 [submodule ".emacs.d/elpa-git/htmlize"]
-	path = .my.emacs.d/elpa-git/htmlize
+	path = .config/emacs/packages/htmlize
 	url = https://github.com/hniksic/emacs-htmlize.git
 [submodule ".emacs.d/elpa-git/ht"]
-	path = .my.emacs.d/elpa-git/ht
+	path = .config/emacs/packages/ht
 	url = https://github.com/Wilfred/ht.el.git
 [submodule ".emacs.d/elpa-git/gnuplot"]
-	path = .my.emacs.d/elpa-git/gnuplot
+	path = .config/emacs/packages/gnuplot
 	url = https://github.com/bruceravel/gnuplot-mode.git
 [submodule ".emacs.d/elpa-git/flycheck-dmd-dub"]
-	path = .my.emacs.d/elpa-git/flycheck-dmd-dub
+	path = .config/emacs/packages/flycheck-dmd-dub
 	url = https://github.com/atilaneves/flycheck-dmd-dub.git
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/flycheck"]
-	path = .my.emacs.d/elpa-git/flycheck
+	path = .config/emacs/packages/flycheck
 	url = https://github.com/flycheck/flycheck.git
 [submodule ".emacs.d/elpa-git/epl"]
-	path = .my.emacs.d/elpa-git/epl
+	path = .config/emacs/packages/epl
 	url = https://github.com/cask/epl.git
 [submodule ".emacs.d/elpa-git/el-get"]
-	path = .my.emacs.d/elpa-git/el-get
+	path = .config/emacs/packages/el-get
 	url = https://github.com/dimitri/el-get.git
 [submodule ".emacs.d/elpa-git/dtrt-indent"]
-	path = .my.emacs.d/elpa-git/dtrt-indent
+	path = .config/emacs/packages/dtrt-indent
 	url = https://github.com/jscheid/dtrt-indent.git
 [submodule ".emacs.d/elpa-git/dash"]
-	path = .my.emacs.d/elpa-git/dash
+	path = .config/emacs/packages/dash
 	url = https://github.com/magnars/dash.el.git
 [submodule ".emacs.d/elpa-git/d-mode"]
-	path = .my.emacs.d/elpa-git/d-mode
+	path = .config/emacs/packages/d-mode
 	url = https://github.com/Emacs-D-Mode-Maintainers/Emacs-D-Mode.git
 [submodule ".emacs.d/elpa-git/cargo"]
-	path = .my.emacs.d/elpa-git/cargo
+	path = .config/emacs/packages/cargo
 	url = https://github.com/kwrooijen/cargo.el.git
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/editorconfig"]
-	path = .my.emacs.d/elpa-git/editorconfig
+	path = .config/emacs/packages/editorconfig
 	url = https://github.com/editorconfig/editorconfig-emacs.git
 [submodule ".emacs.d/elpa-git/transient"]
-	path = .my.emacs.d/elpa-git/transient
+	path = .config/emacs/packages/transient
 	url = https://github.com/magit/transient.git
 	branch = main
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/history"]
-	path = .my.emacs.d/elpa-git/history
+	path = .config/emacs/packages/history
 	url = https://github.com/Gravemind/history.git
 [submodule ".emacs.d/elpa-git/dash-docs"]
-	path = .my.emacs.d/elpa-git/dash-docs
+	path = .config/emacs/packages/dash-docs
 	url = https://github.com/dash-docs-el/dash-docs.git
         branch = master
 [submodule ".emacs.d/elpa-git/yaml-mode"]
-	path = .my.emacs.d/elpa-git/yaml-mode
+	path = .config/emacs/packages/yaml-mode
 	url = https://github.com/yoshiki/yaml-mode.git
 [submodule ".emacs.d/elpa-git/dumb-jump"]
-	path = .my.emacs.d/elpa-git/dumb-jump
+	path = .config/emacs/packages/dumb-jump
 	url = https://github.com/jacktasia/dumb-jump.git
 [submodule ".emacs.d/elpa-git/helm-flx"]
-	path = .my.emacs.d/elpa-git/helm-flx
+	path = .config/emacs/packages/helm-flx
 	url = https://github.com/PythonNut/helm-flx.git
 [submodule ".emacs.d/elpa-git/org-bullets"]
-	path = .my.emacs.d/elpa-git/org-bullets
+	path = .config/emacs/packages/org-bullets
 	url = https://github.com/sabof/org-bullets.git
 	ignore = untracked
 [submodule ".emacs.d/elpa-git/flycheck-grammalecte"]
-	path = .my.emacs.d/elpa-git/flycheck-grammalecte
+	path = .config/emacs/packages/flycheck-grammalecte
 	url = https://github.com/milouse/flycheck-grammalecte.git
 	branch = main
 [submodule ".my.emacs.d/elpa-git/evil"]
-	path = .my.emacs.d/elpa-git/evil
+	path = .config/emacs/packages/evil
 	url = https://github.com/emacs-evil/evil.git
 [submodule ".my.emacs.d/elpa-git/evil-collection"]
-	path = .my.emacs.d/elpa-git/evil-collection
+	path = .config/emacs/packages/evil-collection
 	url = https://github.com/emacs-evil/evil-collection.git
 [submodule ".my.emacs.d/elpa-git/emacs-which-key"]
-	path = .my.emacs.d/elpa-git/emacs-which-key
+	path = .config/emacs/packages/emacs-which-key
 	url = https://github.com/justbur/emacs-which-key.git
 [submodule ".my.emacs.d/elpa-git/goto-chg"]
-	path = .my.emacs.d/elpa-git/goto-chg
+	path = .config/emacs/packages/goto-chg
 	url = https://github.com/emacs-evil/goto-chg.git
 	ignore = untracked
 [submodule ".my.emacs.d/elpa-git/key-chord"]
-	path = .my.emacs.d/elpa-git/key-chord
+	path = .config/emacs/packages/key-chord
 	url = https://github.com/emacsorphanage/key-chord.git
 	ignore = untracked
 [submodule ".my.emacs.d/elpa-git/evil-nerd-commenter"]
-	path = .my.emacs.d/elpa-git/evil-nerd-commenter
+	path = .config/emacs/packages/evil-nerd-commenter
 	url = https://github.com/redguardtoo/evil-nerd-commenter.git
 [submodule ".my.emacs.d/elpa-git/evil-surround"]
-	path = .my.emacs.d/elpa-git/evil-surround
+	path = .config/emacs/packages/evil-surround
 	url = https://github.com/emacs-evil/evil-surround.git
 [submodule ".my.emacs.d/elpa-git/annalist"]
-	path = .my.emacs.d/elpa-git/annalist
+	path = .config/emacs/packages/annalist
 	url = https://github.com/noctuid/annalist.el.git
 [submodule ".my.emacs.d/elpa-git/better-jumper"]
-	path = .my.emacs.d/elpa-git/better-jumper
+	path = .config/emacs/packages/better-jumper
 	url = https://github.com/gilbertw1/better-jumper.git
 	ignore = untracked
 [submodule ".my.emacs.d/elpa-git/evil-lion"]
-	path = .my.emacs.d/elpa-git/evil-lion
+	path = .config/emacs/packages/evil-lion
 	url = https://github.com/edkolev/evil-lion.git
 	ignore = untracked
 [submodule ".my.emacs.d/elpa-git/projectile"]
-	path = .my.emacs.d/elpa-git/projectile
+	path = .config/emacs/packages/projectile
 	url = https://github.com/bbatsov/projectile.git
 [submodule ".my.emacs.d/elpa-git/evil-indent-plus"]
-	path = .my.emacs.d/elpa-git/evil-indent-plus
+	path = .config/emacs/packages/evil-indent-plus
 	url = https://github.com/TheBB/evil-indent-plus.git
 	ignore = untracked
 [submodule ".my.emacs.d/elpa-git/evil-args"]
-	path = .my.emacs.d/elpa-git/evil-args
+	path = .config/emacs/packages/evil-args
 	url = https://github.com/wcsmith/evil-args.git
 	ignore = untracked
 [submodule ".my.emacs.d/elpa-git/evil-goggles"]
-	path = .my.emacs.d/elpa-git/evil-goggles
+	path = .config/emacs/packages/evil-goggles
 	url = https://github.com/edkolev/evil-goggles.git
 [submodule ".my.emacs.d/elpa-git/helm-ls-git"]
-	path = .my.emacs.d/elpa-git/helm-ls-git
+	path = .config/emacs/packages/helm-ls-git
 	url = https://github.com/emacs-helm/helm-ls-git.git
 [submodule ".my.emacs.d/elpa-git/helm-org"]
-	path = .my.emacs.d/elpa-git/helm-org
+	path = .config/emacs/packages/helm-org
 	url = https://github.com/emacs-helm/helm-org.git
 	ignore = untracked
 [submodule ".my.emacs.d/elpa-git/helm-descbinds"]
-	path = .my.emacs.d/elpa-git/helm-descbinds
+	path = .config/emacs/packages/helm-descbinds
 	url = https://github.com/emacs-helm/helm-descbinds.git
 [submodule "bin/git-archive-recursive-git"]
 	path = bin/git-archive-recursive-git
@@ -299,176 +299,176 @@
 	url = https://github.com/Gravemind/git-rebase-all.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/base16-emacs"]
-	path = .my.emacs.d/elpa-git/base16-emacs
+	path = .config/emacs/packages/base16-emacs
 	url = https://github.com/belak/base16-emacs.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/evil-traces"]
-	path = .my.emacs.d/elpa-git/evil-traces
+	path = .config/emacs/packages/evil-traces
 	url = https://github.com/mamapanda/evil-traces.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/evil-quick-diff"]
-	path = .my.emacs.d/elpa-git/evil-quick-diff
+	path = .config/emacs/packages/evil-quick-diff
 	url = https://github.com/rgrinberg/evil-quick-diff.git
 	branch = master
 	ignore = untracked
 [submodule ".my.emacs.d/elpa-git/elisp-refs"]
-	path = .my.emacs.d/elpa-git/elisp-refs
+	path = .config/emacs/packages/elisp-refs
 	url = https://github.com/Wilfred/elisp-refs.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/helpful"]
-	path = .my.emacs.d/elpa-git/helpful
+	path = .config/emacs/packages/helpful
 	url = https://github.com/Wilfred/helpful.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/ws-butler"]
-	path = .my.emacs.d/elpa-git/ws-butler
+	path = .config/emacs/packages/ws-butler
 	url = https://github.com/lewang/ws-butler.git
 	branch = master
 	ignore = untracked
 [submodule ".my.emacs.d/elpa-git/evil-markdown"]
-	path = .my.emacs.d/elpa-git/evil-markdown
+	path = .config/emacs/packages/evil-markdown
 	url = https://github.com/Somelauw/evil-markdown.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/evil-org-mode"]
-	path = .my.emacs.d/elpa-git/evil-org-mode
+	path = .config/emacs/packages/evil-org-mode
 	url = https://github.com/Somelauw/evil-org-mode.git
 	ignore = untracked
 	branch = master
 [submodule ".my.emacs.d/elpa-git/explain-pause-mode"]
-	path = .my.emacs.d/elpa-git/explain-pause-mode
+	path = .config/emacs/packages/explain-pause-mode
 	url = https://github.com/lastquestion/explain-pause-mode.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/xterm-color"]
-	path = .my.emacs.d/elpa-git/xterm-color
+	path = .config/emacs/packages/xterm-color
 	url = https://github.com/atomontage/xterm-color.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/magit-delta"]
-	path = .my.emacs.d/elpa-git/magit-delta
+	path = .config/emacs/packages/magit-delta
 	url = https://github.com/dandavison/magit-delta.git
 	ignore = untracked
 	branch = master
 [submodule ".my.emacs.d/elpa-git/helm-xref"]
-	path = .my.emacs.d/elpa-git/helm-xref
+	path = .config/emacs/packages/helm-xref
 	url = https://github.com/brotzeit/helm-xref.git
 	ignore = untracked
 	branch = master
 [submodule ".my.emacs.d/elpa-git/evil-mc"]
-	path = .my.emacs.d/elpa-git/evil-mc
+	path = .config/emacs/packages/evil-mc
 	url = https://github.com/gabesoft/evil-mc.git
 	ignore = untracked
 	branch = master
 [submodule ".my.emacs.d/elpa-git/rustic"]
-	path = .my.emacs.d/elpa-git/rustic
+	path = .config/emacs/packages/rustic
 	url = https://github.com/emacs-rustic/rustic.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/benchmark-init-el"]
-	path = .my.emacs.d/elpa-git/benchmark-init-el
+	path = .config/emacs/packages/benchmark-init-el
 	url = https://github.com/dholm/benchmark-init-el.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/spinner"]
-	path = .my.emacs.d/elpa-git/spinner
+	path = .config/emacs/packages/spinner
 	url = https://github.com/Malabarba/spinner.el
 	branch = master
 [submodule ".my.emacs.d/elpa-git/compat"]
-	path = .my.emacs.d/elpa-git/compat
+	path = .config/emacs/packages/compat
 	url = https://github.com/emacs-compat/compat.git
 	branch = main
 [submodule ".my.emacs.d/elpa-git/docker-tramp"]
-	path = .my.emacs.d/elpa-git/docker-tramp
+	path = .config/emacs/packages/docker-tramp
 	url = https://github.com/emacs-pe/docker-tramp.el
 	branch = master
 [submodule ".my.emacs.d/elpa-git/eglot"]
-	path = .my.emacs.d/elpa-git/eglot
+	path = .config/emacs/packages/eglot
 	url = https://github.com/joaotavora/eglot
 	branch = master
 [submodule ".my.emacs.d/elpa-git/consult"]
-	path = .my.emacs.d/elpa-git/consult
+	path = .config/emacs/packages/consult
 	url = https://github.com/minad/consult.git
 	branch = main
 [submodule ".my.emacs.d/elpa-git/marginalia"]
-	path = .my.emacs.d/elpa-git/marginalia
+	path = .config/emacs/packages/marginalia
 	url = https://github.com/minad/marginalia.git
 	branch = main
 [submodule ".my.emacs.d/elpa-git/orderless"]
-	path = .my.emacs.d/elpa-git/orderless
+	path = .config/emacs/packages/orderless
 	url = https://github.com/oantolin/orderless.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/vertico"]
-	path = .my.emacs.d/elpa-git/vertico
+	path = .config/emacs/packages/vertico
 	url = https://github.com/minad/vertico.git
 	branch = main
 [submodule ".my.emacs.d/elpa-git/consult-ls-git"]
-	path = .my.emacs.d/elpa-git/consult-ls-git
+	path = .config/emacs/packages/consult-ls-git
 	url = https://github.com/rcj/consult-ls-git.git
 	branch = main
 [submodule ".my.emacs.d/elpa-git/meson-mode"]
-	path = .my.emacs.d/elpa-git/meson-mode
+	path = .config/emacs/packages/meson-mode
 	url = https://github.com/wentasah/meson-mode.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/lsp-mode"]
-	path = .my.emacs.d/elpa-git/lsp-mode
+	path = .config/emacs/packages/lsp-mode
 	url = https://github.com/emacs-lsp/lsp-mode.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/lsp-ui"]
-	path = .my.emacs.d/elpa-git/lsp-ui
+	path = .config/emacs/packages/lsp-ui
 	url = https://github.com/emacs-lsp/lsp-ui.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/hydra"]
-	path = .my.emacs.d/elpa-git/hydra
+	path = .config/emacs/packages/hydra
 	url = https://github.com/abo-abo/hydra.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/consult-lsp"]
-	path = .my.emacs.d/elpa-git/consult-lsp
+	path = .config/emacs/packages/consult-lsp
 	url = https://github.com/gagbo/consult-lsp.git
 	branch = main
 [submodule ".my.emacs.d/elpa-git/ace-window"]
-	path = .my.emacs.d/elpa-git/ace-window
+	path = .config/emacs/packages/ace-window
 	url = https://github.com/abo-abo/ace-window.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/cfrs"]
-	path = .my.emacs.d/elpa-git/cfrs
+	path = .config/emacs/packages/cfrs
 	url = https://github.com/Alexander-Miller/cfrs.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/pfuture"]
-	path = .my.emacs.d/elpa-git/pfuture
+	path = .config/emacs/packages/pfuture
 	url = https://github.com/Alexander-Miller/pfuture.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/treemacs"]
-	path = .my.emacs.d/elpa-git/treemacs
+	path = .config/emacs/packages/treemacs
 	url = https://github.com/Alexander-Miller/treemacs.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/lsp-treemacs"]
-	path = .my.emacs.d/elpa-git/lsp-treemacs
+	path = .config/emacs/packages/lsp-treemacs
 	url = https://github.com/emacs-lsp/lsp-treemacs.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/posframe"]
-	path = .my.emacs.d/elpa-git/posframe
+	path = .config/emacs/packages/posframe
 	url = https://github.com/tumashu/posframe.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/avy"]
-	path = .my.emacs.d/elpa-git/avy
+	path = .config/emacs/packages/avy
 	url = https://github.com/abo-abo/avy.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/all-the-icons"]
-	path = .my.emacs.d/elpa-git/all-the-icons
+	path = .config/emacs/packages/all-the-icons
 	url = https://github.com/domtronn/all-the-icons.el.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/eglot-x"]
-	path = .my.emacs.d/elpa-git/eglot-x
+	path = .config/emacs/packages/eglot-x
 	url = https://github.com/nemethf/eglot-x.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/consult-dash"]
-	path = .my.emacs.d/elpa-git/consult-dash
+	path = .config/emacs/packages/consult-dash
 	url = https://codeberg.org/ravi/consult-dash.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/haskell-mode"]
-	path = .my.emacs.d/elpa-git/haskell-mode
+	path = .config/emacs/packages/haskell-mode
 	url = https://github.com/haskell/haskell-mode
 	branch = master
 [submodule ".my.emacs.d/elpa-git/gptel"]
-	path = .my.emacs.d/elpa-git/gptel
+	path = .config/emacs/packages/gptel
 	url = https://github.com/karthink/gptel.git
 	branch = master
 [submodule ".my.emacs.d/elpa-git/llama"]
-	path = .my.emacs.d/elpa-git/llama
+	path = .config/emacs/packages/llama
 	url = https://github.com/tarsius/llama.git
 	branch = main
