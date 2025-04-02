@@ -52,6 +52,7 @@
 (setq
  my-configs-directory (concat user-emacs-directory "init/")
  my-packages-directory (concat user-emacs-directory "packages/")
+ my-packages-el (concat my-packages-directory "my-packages.el")
  my-configs-filenames
  (list
 
@@ -77,6 +78,12 @@
   "lsp.el"
 
   ))
+
+;; Add my packages to load-path
+(load my-packages-el nil my--message-loads-p)
+(setq load-path (append my-packages-load-path load-path))
+
+;; Load my init files
 (cl-loop for filename in my-configs-filenames
       ;; (load FILE &optional NOERROR NOMESSAGE NOSUFFIX MUST-SUFFIX)
       do (load (concat my-configs-directory filename) nil my--message-loads-p))
