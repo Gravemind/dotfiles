@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+"""Load JSON or YAML and validate against a schema file or URL."""
+
+import sys
+import os.path
+import argparse
+import yaml
+import json
+import requests
+import jsonschema
+
+
+def load_yaml(file_path):
+    with open(file_path, "r") as f:
+        return yaml.safe_load(f)
+
+
+def load_json(file_path):
+    with open(file_path, "r") as f:
+        return json.load(f)
+
+
+def download_json(url):
+    response = requests.get(url)
+    response.raise_for_status()
+    return response.json()
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Load JSON or YAML and validate against a schema file or URL."
+    )
+    parser.add_argument(
+        "schema", help="json file or URL of the JSON schema to validate against"
+    )
+    parser.add_argument("files", nargs="+", help="Path to the YAML file to validate")
+
+    args = parser.parse_args()
+    if os.path.exists(args.schema):
+        schema = load_json(args.schema)
+    else:
+        schema = download_json(args.schema)
+
+    errors = 0
+    for path in args.files:
+        try:
+            ext = os.path.splitext(path)[1]
+            if ext in [".json"]:
+                data = load_json(path)
+            elif ext in [".yaml", ".yml"]:
+                data = load_yaml(path)
+            else:
+                raise RuntimeError(f"unsupported extension {ext!r}")
+
+            jsonschema.validate(instance=data, schema=schema)
+
+        except Exception as e:
+            errors += 1
+            print(f"error: {path}: {e}", file=sys.stderr)
+        else:
+            print(f"ok: {path}", file=sys.stderr)
+
+    if errors:
+        print(f"error: {errors} files failed validation.", file=sys.stderr)
+        return 1
+
+    print("done.", file=sys.stderr)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
