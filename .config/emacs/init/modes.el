@@ -695,7 +695,9 @@
 (defun my-buffer-path ()
   (or buffer-file-name
       dired-directory
-      (when (boundp 'magit-buffer-file-name) magit-buffer-file-name)))
+      (when (boundp 'magit-buffer-file-name) magit-buffer-file-name)
+      default-directory
+      ))
 
 (defun my-copy-buffer-filename-location-to-clipboard ()
   "Copy current file path and linenum, or dired file at point, to clipboard"
