@@ -37,6 +37,8 @@ set $float_h       720
 set $ffpip_pos     1536 864
 set $ffpip_size    1024 576
 
+set $hgap          440
+
 include ./input.conf
 
 # Don't do rgb/sub-pixel font hinting/lcdfilter
@@ -70,7 +72,7 @@ smart_borders on
 
 # Ultrawide monitor mode: add gaps left and right when single container in workspace
 smart_gaps inverse_outer
-gaps horizontal 440
+gaps horizontal $hgap
 
 # Default border style: normal[px]|pixel[px]|none
 default_border pixel 2
@@ -296,7 +298,7 @@ bindsym $ModK+Shift+space floating toggle, resize set $float_w_wide $float_h, mo
 bindsym $ModK+space focus mode_toggle
 
 # Change Window Size and Modes
-set $mode_resize "    [S-]←→↓↑ resize  ·  <u>s</u>ticky  ·  <u>w</u>allpaper  ·  setup-<u>x</u>randr  ·  <u>v</u>ideo-mode  ·  <u>e</u>nable-all-outputs  ·  <u>d</u>isable-all-outputs    "
+set $mode_resize "    [S-]←→↓↑ resize  ·  <u>s</u>ticky  ·  <u>g</u>aps  ·  <u>w</u>allpaper  ·  setup-<u>x</u>randr  ·  <u>v</u>ideo-mode  ·  <u>e</u>nable-all-outputs  ·  <u>d</u>isable-all-outputs    "
 mode --pango_markup $mode_resize {
     # Move focused window
     bindsym $ModK+Shift+$keyLeft  move left  $move_step_x
@@ -344,6 +346,8 @@ mode --pango_markup $mode_resize {
     bindsym w exec --no-startup-id $here/wallpaper_cycle, mode "default"
     # bindsym x exec --no-startup-id ~/bin/setup-xrandr, mode "default"
     bindsym v exec --no-startup-id exec $here/exec_video_mode.sh, mode "default"
+
+    bindsym g gaps horizontal current toggle $hgap, mode "default"
 
     bindsym q mode "default"
     bindsym Return mode "default"
