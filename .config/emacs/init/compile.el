@@ -105,7 +105,7 @@
    ))
 (add-to-list
  'display-buffer-alist
- '("\\*Cargo Build\\*"
+ '("\\*Cargo \\(Build\\|Run\\)\\*"
    (display-buffer-in-side-window)
    (side . bottom)
    ))
