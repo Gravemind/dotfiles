@@ -41,6 +41,15 @@
 
 )
 
+(use-package vertico-sort
+  :load-path (my-packages-directory "vertico/extensions")
+  :if (eq my--compsys 'vertico)
+  :after vertico
+  :demand t
+  :custom
+  (vertico-sort-function 'vertico-sort-history-length-alpha)
+)
+
 (use-package vertico-buffer
   :load-path (my-packages-directory "vertico/extensions")
   :if (eq my--compsys 'vertico)
@@ -131,6 +140,7 @@
   :load-path (my-packages-directory "consult")
   :if (eq my--compsys 'vertico)
   :after vertico
+  :demand t
   :commands (consult-buffer consult-line consult-grep consult-ripgrep consult-git-grep consult-completion-in-region consult-find)
   :bind
   (
