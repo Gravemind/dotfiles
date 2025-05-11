@@ -25,17 +25,17 @@ set $i3          ~/.config/i3
 set $Alt         Mod1
 
 # N * [2560, 1440] / 10/8
-set $move_step_x   256
-set $move_step_y   180
-set $resize_step_x 256
-set $resize_step_y 180
-set $float_w       1024
-set $float_w_wide  1024
-set $float_h       720
+set $move_step_x   256 px
+set $move_step_y   180 px
+set $resize_step_x 256 px
+set $resize_step_y 180 px
+set $float_w       1024 px
+set $float_w_wide  1024 px
+set $float_h       720 px
 # (2560, 1440) × 3 / 5 = [1536, 864]
 # (2560, 1440) × 2 / 5 = [1024, 576]
-set $ffpip_pos     1536 864
-set $ffpip_size    1024 576
+set $ffpip_pos     1536 864 px
+set $ffpip_size    1024 576 px
 
 set $hgap          440
 
@@ -300,6 +300,7 @@ bindsym $ModK+space focus mode_toggle
 # Change Window Size and Modes
 set $mode_resize "    [S-]←→↓↑ resize  ·  <u>s</u>ticky  ·  <u>g</u>aps  ·  <u>w</u>allpaper  ·  setup-<u>x</u>randr  ·  <u>v</u>ideo-mode  ·  <u>e</u>nable-all-outputs  ·  <u>d</u>isable-all-outputs    "
 mode --pango_markup $mode_resize {
+    # (from normal mode)
     # Move focused window
     bindsym $ModK+Shift+$keyLeft  move left  $move_step_x
     bindsym $ModK+Shift+$keyDown  move down  $move_step_y
@@ -310,30 +311,29 @@ mode --pango_markup $mode_resize {
     bindsym $ModK+Shift+Up        move up    $move_step_y
     bindsym $ModK+Shift+Right     move right $move_step_x
 
-    bindsym $keyLeft  resize grow   left  $resize_step_x
-    bindsym Left      resize grow   left  $resize_step_x
-    bindsym $keyRight resize shrink left  $resize_step_x
-    bindsym Right     resize shrink left  $resize_step_x
+    # Left/Right = horizontal grow/shrink
+    bindsym $keyLeft  resize grow   width $resize_step_x
+    bindsym Left      resize grow   width $resize_step_x
+    bindsym $keyRight resize shrink width $resize_step_x
+    bindsym Right     resize shrink width $resize_step_x
 
+    # + Shift = right edge only
     bindsym Shift+$keyLeft  resize shrink right $resize_step_x
     bindsym Shift+Left      resize shrink right $resize_step_x
     bindsym Shift+$keyRight resize grow   right $resize_step_x
     bindsym Shift+Right     resize grow   right $resize_step_x
 
-    bindsym $keyUp   resize grow   up    $resize_step_y
-    bindsym Up       resize grow   up    $resize_step_y
-    bindsym $keyDown resize shrink up    $resize_step_y
-    bindsym Down     resize shrink up    $resize_step_y
+    # Up/Down = vertical grow/shrink
+    bindsym $keyUp   resize grow   height $resize_step_y
+    bindsym Up       resize grow   height $resize_step_y
+    bindsym $keyDown resize shrink height $resize_step_y
+    bindsym Down     resize shrink height $resize_step_y
 
+    # + Shift = down edge only
     bindsym Shift+$keyUp   resize shrink down  $resize_step_y
     bindsym Shift+Up       resize shrink down  $resize_step_y
     bindsym Shift+$keyDown resize grow   down  $resize_step_y
     bindsym Shift+Down     resize grow   down  $resize_step_y
-
-    bindsym Shift+minus resize shrink down $resize_step_y, resize shrink right $resize_step_x
-    bindsym Shift+equal resize grow   down $resize_step_y, resize grow   right $resize_step_x
-    bindsym minus       resize shrink up   $resize_step_y, resize shrink left  $resize_step_x
-    bindsym equal       resize grow   up   $resize_step_y, resize grow   left  $resize_step_x
 
     bindsym Tab move workspace to output right, mode default
 
