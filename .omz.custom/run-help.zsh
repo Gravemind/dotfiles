@@ -7,47 +7,11 @@ autoload run-help-git
 autoload run-help-ip
 autoload run-help-openssl
 autoload run-help-p4
-autoload run-help-sudo
+# autoload run-help-sudo  # See ours
 autoload run-help-svk
 autoload run-help-svn
 
-_run-help-sub-command() {
-	local msg="$*"
-	local cmd="$1"
-	shift
-	local mansubcmd=
-	local mancmd_fallback="$cmd"
-	while [[ $# -gt 0 ]]
-	do
-		case "$1"
-		in
-			-*) ;;
-			*)
-			mancmd_fallback=
-			if man -w "$cmd-$1"
-			then
-				mansubcmd="$cmd-$1"
-				break
-			fi
-			;;
-		esac
-		shift
-	done
-	if [[ -n "$mansubcmd" ]]
-	then
-		echo "running 'man $mansubcmd' found in $msg"
-		man "$mansubcmd"
-	elif [[ -n "$mancmd_fallback" ]]
-	then
-		echo "running 'man $cmd'. no apparent subcommand in $msg"
-		man "$cmd"
-	else
-		echo "error: could not find a valid 'man $cmd-<subcommand>' in $msg"
-	fi
-}
-
 # default run-help-sudo does not recurse run-help (sudo git add)
-# autoload run-help-sudo
 run-help-sudo() {
 	if [ $# -eq 0 ]; then
 		man sudo
@@ -56,65 +20,36 @@ run-help-sudo() {
 	fi
 }
 
-# /usr/share/zsh/functions/Misc/run-help-git
-run-help-docker() {
-	if [ $# -eq 0 ]; then
-		man docker
-	elif [[ $# -gt 1 && "$2" == [a-z]* ]]; then
-		man docker-$1-$2
+# Find man for up to "command subcommand subsubcommand"
+_run-help-sub-command() {
+	local base="$1"
+	shift
+	# TODO: support "command -ignore-me subcommand" ?
+	if [[ $# -ge 2 && "$1" =~ ^[a-z_-]+$ && "$2" =~ ^[a-z_-]+$ ]] && man -w $base-$1-$2; then
+		man $base-$1-$2
+	elif [[ $# -ge 1 && "$1" =~ ^[a-z_-]+$ ]] && man -w $base-$1; then
+		man $base-$1
 	else
-		# local al
-		# if al=$(git config --get "alias.$1"); then
-		#	1=${al%% *}
-		# fi
-		man docker-$1
+		man $base
 	fi
 }
 
-# /usr/share/zsh/functions/Misc/run-help-git
+run-help-docker() {
+	_run-help-sub-command docker "$@"
+}
+
 run-help-podman() {
-	if [ $# -eq 0 ]; then
-		man podman
-	# elif [[ $# -gt 1 && "$2" == [a-z]* ]]; then
-	# 	man podman-$1-$2
-	else
-		# local al
-		# if al=$(git config --get "alias.$1"); then
-		#	1=${al%% *}
-		# fi
-		man podman-$1
-	fi
+	_run-help-sub-command podman "$@"
 }
 
 run-help-flatpak() {
-	echo "run-help $@" >&2
-	if [ $# -eq 0 ]; then
-		man flatpak
-	else
-		_run-help-sub-command flatpak "$@"
-	fi
+	_run-help-sub-command flatpak "$@"
 }
 
 run-help-perf() {
-	if [ $# -eq 0 ]; then
-		man perf
-	else
-		man perf-$1
-	fi
+	_run-help-sub-command perf "$@"
 }
 
 run-help-semanage() {
-	if [ $# -eq 0 ]; then
-		man semanage
-	else
-		man semanage-$1
-	fi
-}
-
-run-help-openssl() {
-	if [ $# -eq 0 ]; then
-		man openssl
-	else
-		man openssl-$1
-	fi
+	_run-help-sub-command semanage "$@"
 }
