@@ -64,7 +64,7 @@
      "flx"
      "flycheck"
      "flycheck-dmd-dub"
-     ;; "flycheck-eglot"
+     "flycheck-eglot"
      "flycheck-grammalecte"
      "flycheck-inline"
      "flycheck-rust"
@@ -143,6 +143,7 @@
      "yaml-mode"
      "yasnippet"
      "zoom"
+     "wgsl-mode"
      )
     "Directories to add to load-path, and to compile")
   )

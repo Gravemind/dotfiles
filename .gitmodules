@@ -386,7 +386,7 @@
 [submodule ".my.emacs.d/elpa-git/base16-emacs"]
 	path = .config/emacs/packages/base16-emacs
 	url = https://github.com/belak/base16-emacs.git
-	branch = master
+	branch = main
 [submodule ".my.emacs.d/elpa-git/evil-traces"]
 	path = .config/emacs/packages/evil-traces
 	url = https://github.com/mamapanda/evil-traces.git
