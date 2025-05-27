@@ -358,6 +358,7 @@
 
 # # Convert push url from https to ssh.
 # # Use fake ssh url with per-account ssh key config (see .ssh/config).
-# # Note: only applies at `git remote add`
 # [url "git@github.com-ACCOUNT:ACCOUNT/"]
 # pushInsteadOf = "https://github.com/ACCOUNT/"
+# [includeIf "hasconfig:remote.*.url:https://github.com/ACCOUNT/**"]
+# path = ~/.gitconfig.local.ACCOUNT  # [user] name email
