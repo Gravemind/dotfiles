@@ -1,6 +1,3 @@
 #!/bin/bash
 
-for l in "$@"
-do
-    echo "$l"
-done
+printf -- '%s\n' "$@"
