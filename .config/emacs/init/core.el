@@ -165,7 +165,8 @@
 
 (setq-default
 
- Man-width 120
+ Man-width 100
+ Man-width-max 100
 
  ;; https://www.emacswiki.org/emacs/FillParagraph
  ;; The original value is "\f\\|[ \t]*$", so we add the bullets (-), (+), and (*).
@@ -179,7 +180,9 @@
 
  )
 
-(setenv "MANWIDTH" (int-to-string Man-width))
+(setenv "MANWIDTH" 'nil)
+;; Disable man hyphenation (truncated words at eol)
+(setenv "MANOPT" "--no-hyphenation")
 
 ;;
 ;; unfill
