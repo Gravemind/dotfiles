@@ -174,10 +174,9 @@
  ;paragraph-start "\f\\|[ \t]*$\\|[ \t]*[-+] "
  ;paragraph-separate "\\([ \t\f]*\\|.*\\.\\)$"
  ;c-paragraph-start "[ \t]*\\(//+\\|\\**\\)[ \t]*\\([-+*] \\)?$\\|^\f"
- fill-column 80
+ fill-column 100
 
  c-backslash-max-column 1000
-
  )
 
 (setenv "MANWIDTH" 'nil)
