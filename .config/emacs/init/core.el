@@ -66,6 +66,9 @@
  ;; Delete duplicates in M-x history (helm)
  history-delete-duplicates t
  history-length 100
+
+ ;; Search whitespace include newline
+ search-whitespace-regexp "[ \11\12]+"
  )
 
 ;; Mouse
