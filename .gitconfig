@@ -130,7 +130,8 @@
 	# Log all, topologic
 	lat = log --pretty=my --graph --full-history --simplify-merges --show-pulls --topo-order --all
 
-	# Log left-right with boundaries
+	# Log a "left" and a "right" rev up to their common ancestor
+	# usage: git lr <left-commit>...<right-commit>
 	lr = log --pretty=my --graph --full-history --simplify-merges --show-pulls --date-order --left-right --boundary
 
 	# Log commits between HEAD (<) and its upstream (>)
@@ -246,6 +247,7 @@
 	# -X : --no-init : no termcap clear on quit
 	tag = "less -FRX"
 	branch = "less -FRX"
+	show-branch = "less -FRX"
 [init]
 	defaultBranch = main
 [tag]
