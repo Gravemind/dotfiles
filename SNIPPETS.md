@@ -30,6 +30,35 @@ main "$@"
 - `set -e`: error on uncaught command error
 - `set -o pipefail`: error on uncaught command error in a pipeline chain
 
+### log to stdout, but escape pipes and redirections
+
+```sh
+#!/bin/bash
+
+# Duplicate stdout fd for logging (makes it immune to future pipes and redirs)
+exec {loggingfd}>&1
+log() { echo "$*" >&$loggingfd; }
+
+# example:
+{
+    echo foobar    # piped to sed
+    log debug      # not piped, still prints to stdout
+    echo err >&2   # not piped, prints to stderr (as expected)
+} | sed 's/^/piped:/'
+```
+
+### Duplicate stdout and stderr to a logfile
+
+```sh
+#!/bin/bash
+
+# Merge stdout and stderr to stdout, and duplicate to logfile
+exec > >(tee logfile) 2>&1
+
+# with timestamps in file
+exec > >(tee >(ts "[%y-%m-%d %H:%M:%.S]" > logfile)) 2>&1
+```
+
 ### bash tmpdir
 
 ```sh
@@ -198,7 +227,7 @@ ssh-keygen -t ed25519 -C "your_email@example.com" -f ~/.ssh/my_ssh_key
 
 ## Python
 
-### Python2 and Pytnon3 unicode
+### Python2 and Python3 unicode
 
 ```py
 # -*- coding: utf-8 -*-
