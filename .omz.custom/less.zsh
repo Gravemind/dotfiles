@@ -39,6 +39,9 @@ function man() {
 # for systemd (journalctl...)
 export SYSTEMD_LESS="$LESS -F"
 
+# Disable man hyphenation (truncated words at eol)
+export MANOPT="--no-hyphenation"
+
 alias lesss='less -+S'
 
 alias -g LESS='|& less'
