@@ -14,8 +14,8 @@
 --no-playlist
 
 --embed-subs
---write-sub
---write-auto-sub
+# --write-sub
+--write-auto-subs
 --sub-lang=en
 #--sub-format=ass
 #--convert-subs=ass
