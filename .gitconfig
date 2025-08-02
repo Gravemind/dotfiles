@@ -40,13 +40,13 @@
 	# usage: refs FOR-EACH-REF-ARGS
 	# List branch and tags in a short form
 	# FIXME: where is the color ?! git 2.24 had colors !?
-	refs = for-each-ref --format='%(refname:lstrip=2)' --sort=version:refname
+	rfs = for-each-ref --format='%(refname:lstrip=2)' --sort=version:refname
 
 	# usage: git cont REV
 	# Show branch and tags containing REV
 	#cont = branch --sort=version:refname --all --contains
 	#contt = tag --contains
-	cont = refs --contains
+	cont = rfs --contains
 
 	a = add
 	# "un-add"
