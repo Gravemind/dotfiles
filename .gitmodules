@@ -557,3 +557,7 @@
 	path = .config/emacs/packages/llama
 	url = https://github.com/tarsius/llama.git
 	branch = main
+[submodule ".config/emacs/packages/flycheck-eglot"]
+	path = .config/emacs/packages/flycheck-eglot
+	url = https://github.com/flycheck/flycheck-eglot.git
+	branch = main
