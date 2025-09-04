@@ -561,3 +561,7 @@
 	path = .config/emacs/packages/flycheck-eglot
 	url = https://github.com/flycheck/flycheck-eglot.git
 	branch = main
+[submodule ".config/emacs/packages/wgsl-mode"]
+	path = .config/emacs/packages/wgsl-mode
+	url = https://github.com/acowley/wgsl-mode.git
+	branch = master
