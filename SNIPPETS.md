@@ -83,6 +83,12 @@ command | ts '[%y-%m-%d %H:%M:%.S]'
 
 ### Date
 
+from timestamp:
+```sh
+date -d @1758809457
+```
+
+simple:
 ```sh
 date +%y%m%d-%H%M%S
 ```
@@ -225,6 +231,14 @@ ssh -T -i ~/.ssh/id_ed25519 -p 22 git@github.com
 ssh-keygen -t ed25519 -C "your_email@example.com" -f ~/.ssh/my_ssh_key
 ```
 
+### stat
+
+```
+stat -c '%s %n' /file
+stat --help | grep perm
+```
+
+
 ## Python
 
 ### Python2 and Python3 unicode
@@ -257,4 +271,15 @@ diff <(gcc -Q -O0 --help=optimizers) <(gcc -Q -O3 --help=optimizers)
 
 ```txt
 checkboxes:    
+```
+
+### PostgreSQL
+
+```
+$ pgsql -U user
+=# \l        # List databases
+=# \c db     # Connect to db
+=# \dt       # List tables
+=# \d table  # List table columns
+=# select * from table where column = 42 ;
 ```
