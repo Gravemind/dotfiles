@@ -565,3 +565,7 @@
 	path = .config/emacs/packages/wgsl-mode
 	url = https://github.com/acowley/wgsl-mode.git
 	branch = master
+[submodule ".config/emacs/packages/cond-let"]
+	path = .config/emacs/packages/cond-let
+	url = https://github.com/tarsius/cond-let.git
+	branch = main

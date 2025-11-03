@@ -20,6 +20,7 @@
      "clang-format"
      "cmake-mode"
      "compat"
+     "cond-let"
      "consult"
      "consult-dash"
      "consult-ls-git"
