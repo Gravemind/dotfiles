@@ -238,6 +238,78 @@ stat -c '%s %n' /file
 stat --help | grep perm
 ```
 
+### git
+
+```
+# don't clone blobs (alternative to shallow clone)
+git clone --filter=blob:limit=200k ...
+```
+
+### strace
+
+```
+strace -f -rttT -o /tmp/trace cmd...
+strace -f     # follow fork
+strace -rttT  # relative/absolute/syscall times
+```
+
+### signals
+
+| SIG       | number | action      | description                                                              |
+|-----------|--------|-------------|--------------------------------------------------------------------------|
+| HUP       | 1      | Terminate   | Hangup detected on controlling terminal or death of controlling process. |
+| INT       | 2      | Terminate   | Interrupt from keyboard (Ctrl+C)                                         |
+| QUIT      | 3      | Coredump    | Quit from keyboard (Ctrl+\\)                                             |
+| ILL       | 4      | Coredump    | Illegal instruction                                                      |
+| ABRT, IOT | 6      | 🔒Coredump  | Abort signal from abort(3). IOT trap.                                    |
+| BUS       | 7      | Coredump    | Bus error (bad memory access)                                            |
+| FPE       | 8      | Terminate   | Erroneous arithmetic operation (e.g., divide by zero).                   |
+| KILL      | 9      | 🔒Terminate | Kill signal.                                                             |
+| USR1      | 10     | Terminate   | User-defined signal 1.                                                   |
+| SEGV      | 11     | Coredump    | Segmentation fault; invalid memory reference.                            |
+| USR2      | 12     | Terminate   | User-defined signal 2.                                                   |
+| PIPE      | 13     | Terminate   | Broken pipe: write to pipe with no readers pipe(7).                      |
+| ALRM      | 14     | Terminate   | Timer signal from alarm(2).                                              |
+| TERM      | 15     | Terminate   | Termination signal.                                                      |
+| CHLD, CLD | 17     | Ignore      | Child stopped, terminated, or continued.                                 |
+| CONT      | 18     | 🔒Continue  | Continue if stopped. (handler allowed)                                   |
+| STOP      | 19     | 🔒Stop      | Stop (pause) the process.                                                |
+| TSTP      | 20     | Stop        | Stop (pause) typed at terminal.                                          |
+
+🔒: Cannot be caught, blocked, or ignored. SIGCONT can have a handler.
+
+```sh
+# graceful kill: TERM then KILL after 2s
+/bin/kill --verbose --timeout 2000 KILL --signal TERM "$pid" 2>/dev/null
+```
+
+### errno
+
+| number | hex  | symbol      | description                                             |
+|--------|------|-------------|---------------------------------------------------------|
+| 1      | 0x01 | EPERM       | Operation not permitted                                 |
+| 2      | 0x02 | ENOENT      | No such file or directory                               |
+| 3      | 0x03 | ESRCH       | No such process                                         |
+| 4      | 0x04 | EINTR       | Interrupted system call                                 |
+| 5      | 0x05 | EIO         | Input/output error                                      |
+| 6      | 0x06 | ENXIO       | No such device or address                               |
+| 7      | 0x07 | E2BIG       | Argument list too long                                  |
+| 8      | 0x08 | ENOEXEC     | Exec format error                                       |
+| 9      | 0x09 | EBADF       | Bad file descriptor                                     |
+| 10     | 0x0a | ECHILD      | No child processes                                      |
+| 11     | 0x0b | EAGAIN      | Resource temporarily unavailable                        |
+| 11     | 0x0b | EWOULDBLOCK | (Same value as EAGAIN) Resource temporarily unavailable |
+| 12     | 0x0c | ENOMEM      | Cannot allocate memory                                  |
+| 13     | 0x0d | EACCES      | Permission denied                                       |
+| 14     | 0x0e | EFAULT      | Bad address                                             |
+| 15     | 0x0f | ENOTBLK     | Block device required                                   |
+| 16     | 0x10 | EBUSY       | Device or resource busy                                 |
+| 17     | 0x11 | EEXIST      | File exists                                             |
+| 18     | 0x12 | EXDEV       | Invalid cross-device link                               |
+| 19     | 0x13 | ENODEV      | No such device                                          |
+| 20     | 0x14 | ENOTDIR     | Not a directory                                         |
+| 21     | 0x15 | EISDIR      | Is a directory                                          |
+| 22     | 0x16 | EINVAL      | Invalid argument                                        |
 
 ## Python
 
@@ -247,6 +319,14 @@ stat --help | grep perm
 # -*- coding: utf-8 -*-
 ```
 
+
+### IPython/Jupyter
+
+```py
+%xmode Verbose  # Exception handlers: Plain, Context, Verbose, and Minimal
+%debug          # After an exception, run this to open post-mortem ipdb
+%pdb on         # Automatic post-mortem pdb debug on exception
+```
 
 ## Compilers
 
