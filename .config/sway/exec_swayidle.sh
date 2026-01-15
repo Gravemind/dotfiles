@@ -2,8 +2,6 @@
 
 set -euo pipefail
 
-killall --wait --exact swayidle ||:
-
 cmd=(
     swayidle -w
 
@@ -14,4 +12,5 @@ cmd=(
     timeout $((10 * 60)) 'swaymsg "output * power off"'
     resume 'swaymsg "output * power on"'
 )
+
 exec "${cmd[@]}"

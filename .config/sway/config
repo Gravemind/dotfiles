@@ -6,8 +6,6 @@
 #
 #
 
-include /etc/sway/config.d/*.conf
-
 # Variables
 set $ModK        Mod4
 set $screenL     DisplayPort-0
@@ -38,6 +36,9 @@ set $ffpip_pos     1536 864 px
 set $ffpip_size    1024 576 px
 
 set $hgap          440
+
+# include /etc/sway/config.d/*.conf
+exec_always --no-startup-id $here/exec_setup_env.sh
 
 include ./input.conf
 
@@ -367,7 +368,8 @@ bindsym $ModK+z exec --no-startup-id $i3/exec_app_launcher.sh
 # exec_always --no-startup-id systemctl --user restart greenclip.service
 bindsym $ModK+Insert exec $here/exec_clipboard_menu.sh
 # exec_always --no-startup-id systemctl --user restart clipman.service
-exec_always --no-startup-id systemctl --user restart cliphist.service
+# exec_always --no-startup-id systemctl --user restart cliphist.service
+exec_always --no-startup-id $here/exec_daemon.sh cliphist bash -c "wl-paste --watch cliphist store & wl-paste -p --watch cliphist store & wait"
 # exec_always wl-paste -t text --watch clipman store
 # exec_always wl-paste -p -t text --watch clipman store -P # --histpath="~/.local/share/clipman-primary.json"
 
@@ -533,7 +535,7 @@ bar {
 # Run at startup
 #
 
-exec_always $here/wallpaper_cycle
+exec_always --no-startup-id $here/wallpaper_cycle
 
 # Device manager (auto user mount, umount, notify)
 # exec_always --no-startup-id systemctl --user restart daemon_devmon.service
@@ -545,9 +547,10 @@ exec_always $here/wallpaper_cycle
 # exec --no-startup-id xautolock -detectsleep -time $hook_idle_time_min -locker "~/bin/hooks/onidle" -noclose
 
 # Screen power off and sleep timer
-exec_always --no-startup-id $here/exec_swayidle.sh
+exec_always --no-startup-id exec $here/exec_daemon.sh swayidle $here/exec_swayidle.sh
 
 # Force start dunst to avoid conflicts with other Notification services
-exec_always --no-startup-id systemctl --user restart dunst.service
+# exec_always --no-startup-id systemctl --user restart dunst.service
+exec_always --no-startup-id $here/exec_daemon.sh dunst dunst
 
 workspace 3
