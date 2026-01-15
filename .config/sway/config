@@ -122,7 +122,7 @@ client.urgent           #c02020 #c02020 #ffffff #c02020   #c02020
 # placeholder (border, indicator, and child_border are ignored)
 client.placeholder      #0000ff #202020 #888888 #0000ff   #0000ff
 # for windows that do not render all the way (mpv sometimes)
-client.background       #000000
+client.background       #202020
 
 #
 # Workspaces and outputs
@@ -517,8 +517,8 @@ bar {
     #tray_output none
     position bottom
     colors {
-        background #101010B0
-        statusline #E0E0E0
+        background #101010E0
+        statusline #d0d0d0
         separator #666666
         #                  <border> <background> <text>
         focused_workspace  #285577 #285577 #dddddd
