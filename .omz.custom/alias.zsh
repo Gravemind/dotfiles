@@ -19,6 +19,8 @@ alias c='clear'
 alias e='exit'
 alias t='urxvt & ; disown'
 
+alias ip='ip --color=auto'
+
 # Safe xargs
 alias xargss='xargs -d \\n -r'
 
