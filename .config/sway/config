@@ -105,17 +105,6 @@ no_focus [window_role="pop-up"]
 floating_minimum_size 30 x 30
 floating_maximum_size -1 x -1
 
-# Default border for programs
-#for_window [class="^.*"] border pixel 2
-#for_window [class="(?i)urxvt"] border pixel 2
-#for_window [class="(?i)emacs"] border pixel 2
-#for_window [class="(?i)firefox"] border none
-#for_window [class="(?i)chromium"] border none
-#for_window [class="(?i)pale moon"] border none
-#for_window [class="(?i)icecat"] border none
-#for_window [class="(?i)mplayer"] border none
-#for_window [class="(?i)mpv"] border none
-
 # Window title format
 # for_window [all] title_window_icon yes, title_window_icon padding 4px
 # for_window [all] title_window_icon no
@@ -123,9 +112,6 @@ floating_maximum_size -1 x -1
 # TODO sway all ?
 # for_window [class=".*"] title_format "<span rise='1000'> </span>%class <span size='small' alpha='80%%' weight='normal'>%title</span>"
 for_window [title=".*"] title_format "<b>%app_id%class</b> %title"
-
-# for_window [class="(?i)firefox" title="(?i)picture-in-picture"] resize set $ffpip_size, move position $ffpip_pos, sticky enable, border pixel 2
-for_window [class="(?i)firefox" title="(?i)picture-in-picture"] floating disable
 
 # Colors
 # class                 border  backgr. text    split_indicator child_border
@@ -178,11 +164,13 @@ workspace 8 output $screenR
 workspace 9 output $screenR
 workspace 10 output $screenR
 
-# Default workspace assignment for programs
+#
+# Window specific config
+#
+
 #assign [window_role="^browser$"] → 10
 #assign [class="^Pidgin$"] → 9
 #for_window [class="(?i)^.*wine.*$"] floating enable
-assign [class="(?i)^.*steam.*$"] → 1
 #for_window [class="(?i)^UE4Editor.*$"] floating enable
 #assign [class="(?i)^UE4Editor.*$"] → 8
 
@@ -191,6 +179,13 @@ for_window [class="(?i)^keepassxc$"] floating enable
 # Emacs helm "frame" mode: https://github.com/emacs-helm/helm/wiki/frame#enable-globally-frame-for-all-helm-sessions
 for_window [class="^Emacs$" title="^Helm$"] floating enable, border pixel 2
 for_window [class="^Emacs$" title="^Ediff"] floating enable, border pixel 2
+
+for_window [class="(?i)firefox" title="(?i)picture-in-picture"] floating disable
+
+assign [class="(?i)^.*steam.*$"] → 1
+for_window [class="^steam$" title="^Steam Settings$"] floating enable
+
+for_window [app_id="qalculate-gtk"] floating enable
 
 #
 # Bindings
@@ -484,7 +479,6 @@ bindsym $ModK+F3        workspace 3; exec $browser
 bindsym $ModK+Shift+F3  exec $browser
 
 # Qalculate
-for_window [app_id="qalculate-gtk"] floating enable
 bindsym $ModK+F5 exec qalculate-gtk -n
 
 # Redshift
