@@ -41,7 +41,7 @@ _notify-send() {
 	fi
 }
 
-_notify-send -u low -i "$notify_icon_on" "Red…"
+_notify-send -u low -i "$notify_icon_on" "Red …"
 
 if [[ "${1-}" = '-h' || "${1-}" = '--help' ]]
 then
@@ -197,4 +197,4 @@ else
 	pkill -u $UID gammastep ||:
 fi
 
-_notify-send -u low -i "$icon" -h "int:value:$value" "Red"
+_notify-send -u low -i "$icon" "Red $value"
