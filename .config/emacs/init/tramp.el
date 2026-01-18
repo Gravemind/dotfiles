@@ -7,29 +7,30 @@
 (use-package tramp
   :pin manual
   :defer t
-  :bind (("C-x C-r" . sudo-edit-current-file)
+  :bind (
+         ("C-x C-r" . doom/sudo-this-file)
          )
   :config
+
+  (require 'tramp-cmds) ;; workaround missing autoloads for tramp-taint-remote-process-buffer etc.
+
   (setq-default
-   ;;tramp-verbose 2 ; warnings
-   tramp-verbose 1 ; + connections (default)
-   ;;tramp-verbose 6 ; verbose
-   ;;tramp-verbose 10
-   tramp-connection-timeout 20
-   password-cache-expiry 300
-   ;;tramp-chunksize 4050
+   ;; tramp-verbose 1 ; errors
+   ;; tramp-verbose 2 ; warnings
+   tramp-verbose 3 ; connections (default)
+   ;; tramp-verbose 6 ; transfers
 
-   ;; Size before running out-of-band copy
-   tramp-copy-size-limit (* 1 1024 1024)
-   ;; Quick fix "gzip: stdin: unexpected end of file" !?
-   tramp-inline-compress-start-size nil
+   tramp-connection-timeout 10 ; Timeout for establishing connection
+   password-cache-expiry 1800
 
-   ;; tramp-use-ssh-controlmaster-options nil
+   ;; Use a ssh ControlMaster unique to tramp, to each remote host, and to each emacs process
    tramp-use-ssh-controlmaster-options t
+   ;; tramp-use-ssh-controlmaster-options nil
    tramp-ssh-controlmaster-options (concat "-o ControlMaster=auto -o ControlPath=~/.ssh/tramp." (number-to-string (emacs-pid)) "%%C -o ControlPersist=1800")
    ;; tramp-ssh-controlmaster-options "-S none"
 
-   tramp-remote-path '(tramp-own-remote-path
+   tramp-remote-path '(
+                       tramp-own-remote-path
                        "/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin"
                        "/usr/local/sbin" "/local/bin" "/local/freeware/bin"
                        "/local/gnu/bin" "/usr/freeware/bin" "/usr/pkg/bin"
@@ -37,6 +38,48 @@
 
    )
 
+  ;;
+  ;; Faster tramp
+  ;;   https://coredumped.dev/2025/06/18/making-tramp-go-brrrr./
+  ;;
+  (setq-default
+   ;; Don't create lock files for remote files
+   remote-file-name-inhibit-locks t
+   ;; ;; Use scp to copy directly between two remote hosts
+   ;; tramp-use-scp-direct-remote-copying t
+   ;; Don't auto-save remote files
+   remote-file-name-inhibit-auto-save-visited t
+   ;; Size before running out-of-band copy
+   tramp-copy-size-limit (* 1 1024 1024)
+   ;; Quick fix "gzip: stdin: unexpected end of file" !?
+   tramp-inline-compress-start-size nil
+   )
+
+  ;; Use ssh controlmaster for compilation too
+  (with-eval-after-load 'compile
+    (remove-hook 'compilation-mode-hook #'tramp-compile-disable-ssh-controlmaster-options))
+
+  ;;
+  ;; Use direct async processes
+  ;;   https://coredumped.dev/2025/06/18/making-tramp-go-brrrr./
+  ;;   https://www.gnu.org/software/tramp/#Improving-performance-of-asynchronous-remote-processes-1
+  ;;
+  ;; Declare an async profile
+  (connection-local-set-profile-variables
+   'remote-direct-async-process
+   '((tramp-direct-async-process . t)))
+  ;; Enable async profile for scp and ssh
+  (connection-local-set-profiles
+   '(:application tramp :protocol "scp")
+   'remote-direct-async-process)
+  (connection-local-set-profiles
+    '(:application tramp :protocol "ssh")
+    'remote-direct-async-process)
+  ;; Maybe fix DOS eol with magit
+  (setq-default magit-tramp-pipe-stty-settings 'pty)
+
+
+  ;;
   ;; Simpler prompt when `TERM=dump ssh ...`
   ;;   https://www.emacswiki.org/emacs/TrampMode#toc9
   ;;
@@ -53,28 +96,9 @@
   ;;          ;; "[^]#$%>\n]*#?[]#$%>] *\\(\e\\[[0-9;]*[a-zA-Z] *\\)*"
   ;;          "^[#$]+ "
   ;;          ))
+  ;;
   (add-to-list 'tramp-remote-process-environment "TERM=dumb")
   (add-to-list 'tramp-remote-process-environment "GIT_PAGER=cat")
-
-  (add-to-list
-   'tramp-methods
-   '("sshs"
-    (tramp-login-program "ssh")
-    (tramp-login-args
-     (("-l" "%u")
-      ("-p" "%p")
-      ("%c")
-      ("-e" "none")
-      ("%h")
-      ;; ("/bin/bash" "--noediting" "-i")
-      ))
-    (tramp-async-args
-     (("-q")))
-    (tramp-remote-shell "/bin/sh")
-    (tramp-remote-shell-login
-     ("-l"))
-    (tramp-remote-shell-args
-     ("-c"))))
 
   ;;
   ;; Custom 'ssha' hop: '/ssha:user@addr:/home/user'
@@ -120,45 +144,42 @@
      (tramp-remote-shell-args    ("-c"))
      (tramp-connection-timeout   10)))
 
-  ;;
   ;; Open in tramp sudo.
+  ;;   https://github.com/doomemacs/doomemacs/blob/master/lisp/lib/files.el
+  ;; See also:
   ;;   https://www.emacswiki.org/emacs/TrampMode#toc30
-  ;; CHANGELOG:
-  ;;   - modified to work in dired too
-  ;;   - fix new tramp-make-tramp-file-name parameters ?? (fix "wrong-number-of-arguments" error)
-  ;;   - works from non-existing files (file-remote-p replaced by tramp-tramp-file-p)
-  ;;   - use tramp-make-tramp-file-name instead of format
   ;;
-  (defun sudo-edit-current-file ()
+  (defun doom--sudo-file-path (file)
+    (let ((host (or (file-remote-p file 'host) "localhost")))
+      (concat "/" (when (file-remote-p file)
+                    (concat (file-remote-p file 'method) ":"
+                            (if-let (user (file-remote-p file 'user))
+                                (concat user "@" host)
+                              host)
+                            "|"))
+              "sudo:root@" host
+              ":" (or (file-remote-p file 'localname)
+                      file))))
+  (defun doom/sudo-find-file (file)
+    "Open FILE as root."
+    (interactive "FOpen file as root: ")
+    ;; HACK: Disable auto-save in temporary tramp buffers because it could trigger
+    ;;   processes that hang silently in the background, making those buffers
+    ;;   inoperable for the rest of that session (Tramp caches them).
+    (let ((auto-save-default nil)
+          ;; REVIEW: use only these when we drop 28 support
+          (remote-file-name-inhibit-auto-save t)
+          (remote-file-name-inhibit-auto-save-visited t))
+      (find-file (doom--sudo-file-path (expand-file-name file)))))
+  (defun doom/sudo-this-file ()
+    "Open the current file as root."
     (interactive)
-    (require 'tramp)
-    (let ((position (point))
-          (fname (or buffer-file-name
-                     dired-directory)))
-      (find-alternate-file
-       (if (tramp-tramp-file-p fname)
-           (let* ((vec (tramp-dissect-file-name fname))
-                  ;; "/ssh:you@host:" --> "ssh:you@host|"
-                  (hop (concat (substring
-                                (tramp-make-tramp-file-name
-                                 (tramp-file-name-method vec)
-                                 (tramp-file-name-user vec)
-                                 (tramp-file-name-domain vec)
-                                 (tramp-file-name-host vec)
-                                 (tramp-file-name-port vec)
-                                 nil)
-                                1 -1) "|"))
-                  (sudoed (tramp-make-tramp-file-name
-                           "sudo" nil nil (tramp-file-name-host vec) nil
-                           (tramp-file-name-localname vec)
-                           hop))
-                  )
-             ;; (message "hop: %s" hop)
-             ;; (message "sudoed: %s" sudoed)
-             sudoed)
-         (tramp-make-tramp-file-name "sudo" nil nil nil nil fname)
-         ))
-      (goto-char position)))
+    (doom/sudo-find-file
+     (or (buffer-file-name (buffer-base-buffer))
+         (when (or (derived-mode-p 'dired-mode)
+                   (derived-mode-p 'wdired-mode))
+           default-directory)
+         (user-error "Cannot determine the file path of the current buffer"))))
 
   ;; (require 'docker-tramp)
   ;; (require 'docker-tramp-compat)
