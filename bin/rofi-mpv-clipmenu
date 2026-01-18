@@ -121,7 +121,7 @@ EOPYTHON
 }
 
 cliphist_list() {
-    cliphist list | sed -E 's/^[0-9]+\s+//g'
+    cliphist -preview-width 1000 list | sed -E 's/^[0-9]+\s+//g'
 }
 
 main() {
