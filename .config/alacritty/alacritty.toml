@@ -1,3 +1,6 @@
+[env]
+#TERM="xterm-256color"
+
 [colors]
 draw_bold_text_with_bright_colors = true
 transparent_background_colors = true
@@ -50,7 +53,7 @@ unfocused_hollow = true
 vi_mode_style = "Block"
 
 [font]
-size = 9.0
+size = 10.5
 
 [font.normal]
 family = "Hack"
@@ -130,4 +133,5 @@ history = 100000
 semantic_escape_chars = ",│`|:\"' ()[]{}<>\t/="
 
 [window]
-opacity = 0.9
+opacity = 0.97
+
