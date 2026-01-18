@@ -98,13 +98,3 @@ Xft.dpi:            110
 ! Mouse cursor
 Xcursor.theme:    Adwaita
 Xcursor.size:     32
-
-! Nice flicker-free emacs startup !
-! (evaluated much sooner than init.el)
-emacs.menuBar:              off
-emacs.toolBar:              off
-emacs.verticalScrollBars:   off
-!emacs.font:                 DejaVu Sans Mono-9
-emacs.font:                 Hack-8
-emacs.background:           #202020
-emacs.cursorBlink:          off
