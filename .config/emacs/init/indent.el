@@ -59,7 +59,7 @@
 (defun jo--indent-offset-var ()
   "Returns the symbol of the variable that defines indentation
 for the current major mode (uses dtrt)"
-  (require 'dtrt-indent)
+  ;; (require 'dtrt-indent)
   (let ((var (nth 2 (dtrt-indent--search-hook-mapping major-mode))))
     (if (listp var) (car var) var)))
 
@@ -91,7 +91,7 @@ for the current major mode (uses dtrt)"
 (defun jo--my-default-indentations-apply ()
   "Lookup my-default-indentations* and apply it"
 
-  (require 'dtrt-indent)
+  ;; (require 'dtrt-indent)
   (when-let ((indentations
               (cond ((assoc major-mode my-default-indentations-by-mode))
                     ((assoc (nth 1 (dtrt-indent--search-hook-mapping major-mode)) my-default-indentations-by-dtrt-lang))))
@@ -127,10 +127,10 @@ for the current major mode (uses dtrt)"
 
       (jo--my-default-indentations-apply)
 
-      (require 'dtrt-indent)
+      ;; (require 'dtrt-indent)
       (dtrt-indent-adapt)
 
-      (require 'editorconfig)
+      ;; (require 'editorconfig)
       (require 'editorconfig-tools)
       (editorconfig-mode-apply)
 
@@ -202,8 +202,7 @@ spaces are treated."
 ;;
 (use-package editorconfig
   :load-path (my-packages-directory "editorconfig")
-  ;;:ensure t
-  ;;:defer t
+  :demand t
   :mode (("\\.editorconfig\\'" . editorconfig-conf-mode))
   :commands (editorconfig-mode-apply)
   :config
@@ -231,8 +230,7 @@ spaces are treated."
 ;;
 (use-package dtrt-indent
   :load-path (my-packages-directory "dtrt-indent")
-  ;;:ensure t
-  ;;:defer t
+  :demand t
   :commands (dtrt-indent-try-set-offset)
   :config
   (setcdr (last dtrt-indent-hook-mapping-list)

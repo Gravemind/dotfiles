@@ -203,11 +203,27 @@
    ;; Save history per window
    better-jumper-context 'window
    better-jumper-new-window-behavior 'copy
+
+   ;; Allow more buffers (including magit) to be valid better-jumper buffer target
+   ;; Note: matching this means it is unconditionally use switch-to-buffer instead of find-file
+   evil--jumps-buffer-targets "^\\*\\|^magit"
+   better-jumper--buffer-targets evil--jumps-buffer-targets
+   better-jumper-disabled-modes '()
    )
   :config
 
-  ;; See doom emacs
+  (with-eval-after-load 'evil-maps
+    (define-key evil-motion-state-map (kbd "C-o") 'better-jumper-jump-backward)
+    (define-key evil-motion-state-map (kbd "<C-i>") 'better-jumper-jump-forward))
 
+  ;; Workaround Ctrl-I interpreted as TAB (in magit status buffer)
+  ;;  https://stackoverflow.com/questions/4512075/how-to-use-ctrl-i-for-an-emacs-shortcut-without-breaking-tabs
+  (keyboard-translate ?\C-i ?\H-i)
+  (global-set-key [?\H-i] 'better-jumper-jump-forward)
+
+  ;;
+  ;; https://github.com/doomemacs/doomemacs/blob/master/lisp/doom-editor.el
+  ;;
   (global-set-key [remap evil-jump-forward]  #'better-jumper-jump-forward)
   (global-set-key [remap evil-jump-backward] #'better-jumper-jump-backward)
   (global-set-key [remap xref-pop-marker-stack] #'better-jumper-jump-backward)
@@ -256,7 +272,9 @@
   ;; Create a jump point before jumping with imenu.
   (advice-add #'imenu :around #'doom-set-jump-a)
 
-  ;; /from doomemacs
+  ;;
+  ;;
+  ;;
 
   ;; (advice-add #'xref-push-marker-stack :around #'doom-set-jump-a)
   ;; (advice-add #'find-function-do-it :around #'doom-set-jump-a)
@@ -426,6 +444,10 @@
   "Dired sort by time."
   (interactive)
   (dired-sort-other (concat dired-listing-switches "t")))
+(defun dired-sort-rtime ()
+  "Dired sort by time."
+  (interactive)
+  (dired-sort-other (concat dired-listing-switches "rt")))
 (defun dired-sort-name ()
   "Dired sort by name."
   (interactive)

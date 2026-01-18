@@ -78,8 +78,6 @@
 (put 'my/mode-line-left-margin-padd 'risky-local-variable t)
 
 (defun my/indent-info ()
-  (require 'editorconfig)
-  (require 'dtrt-indent)
   (concat
    ;; ↹ → ⇀ ⇁ ↦ ⇥
    (format "%s" (symbol-value (jo--indent-offset-var)))
@@ -153,16 +151,14 @@
 
    )
 
- header-line-format
- `(
-   ""
-   ;; my/mode-line-left-margin-padd
-   (:propertize " " display ,my/mode-line-active-bar)
-
-   my/mode-line-ro-indicator
-   my/mode-line-buffer-long
-
-   )
+ ;; header-line-format
+ ;; `(
+ ;;   ""
+ ;;   ;; my/mode-line-left-margin-padd
+ ;;   (:propertize " " display ,my/mode-line-active-bar)
+ ;;   my/mode-line-ro-indicator
+ ;;   my/mode-line-buffer-long ;; FIXME: makes emacs freeze when tramp sudo password timeouts
+ ;;   )
 
  ;; frame title (X window title)
  frame-title-format

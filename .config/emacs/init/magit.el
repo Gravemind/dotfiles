@@ -24,6 +24,8 @@
               ("f" . magit-log-buffer-file)
               ("d" . magit-diff)
               ("b" . magit-blame)
+              :map magit-section-mode-map
+              ("C-i" . better-jumper-jump-backward)
               )
   :config
   (my--require-compsys)
@@ -79,6 +81,11 @@
      ;; magit-blame-maybe-update-revision-buffer
      magit-blame-maybe-show-message
      )
+
+   ;; Configure space/tab/width in magit diffs
+   magit-diff-adjust-tab-width t ; Look for already opened buffer
+   ;; magit-diff-adjust-tab-width 'always ; Force open the file
+   ;; magit-diff-adjust-tab-width (1 * 1024 * 1024) ; Force open if size is smaller
 
    )
 

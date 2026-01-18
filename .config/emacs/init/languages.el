@@ -35,6 +35,9 @@
 
   (defun my--cc-mode ()
     "Executed on cc-mode."
+    ;; Use c++ style comment // instead of /**/
+    (c-toggle-comment-style -1)
+    ;; Add highlights
     (font-lock-add-keywords
      nil
      '(
@@ -46,7 +49,7 @@
         1 font-lock-format-specifier-face t)
        ;;
        ("\\<\\(FIXME\\|TODO\\\)\\>" 1 font-lock-warning-face prepend)
-       ("\\<\\(null\\)\\>" 1 font-lock-keyword-face)
+       ;; ("\\<\\(null\\)\\>" 1 font-lock-keyword-face)
        ("\\<\\(co_await\\|co_yield\\|co_return\\)\\>" 1 font-lock-keyword-face)
        ))
 

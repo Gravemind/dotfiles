@@ -172,7 +172,7 @@
 ;;
 
 ;;
-;; visual-fill-column
+;; visual-fill-column: shrink window to fill-column width, and center it
 ;;   https://github.com/joostkremers/visual-fill-column
 ;;
 
@@ -182,6 +182,9 @@
   :if window-system
   ;; :demand t
   :commands (visual-fill-column-mode)
+  :init
+  ;; More searchable alias
+  (defalias 'visual-fill-column-mode-wrap-and-center-window 'visual-fill-column-mode)
   :config
 
   ;; Set a max width and center buffer inside window

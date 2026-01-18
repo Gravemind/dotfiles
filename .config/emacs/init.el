@@ -65,7 +65,7 @@
   "tramp.el"
   "magit.el"
   "window.el"
-  "helm.el"
+  ;; "helm.el"
   ;; "ivy.el"
   "vertico.el"
   "indent.el"

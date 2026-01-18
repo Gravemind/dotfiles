@@ -15,11 +15,17 @@
 ;; /!\ Still usesi Xft.* font configs
 (advice-add #'x-apply-session-resources :override #'ignore)
 (setq inhibit-x-resources t)
+
 ;; Set background early
-;; (add-to-list 'default-frame-alist '(background-color . "#202020"))
 (add-to-list 'default-frame-alist '(background-color . "#101010"))
-(add-to-list 'default-frame-alist '(alpha-background . 90))
-;; (add-to-list 'default-frame-alist '(font-backend . ""))
+(add-to-list 'default-frame-alist '(alpha-background . 96))
+;; Execute me: (set-frame-parameter nil 'alpha-background 96)
+;; Execute me: (set-frame-parameter nil 'background-color "#101010")
+;; (set-frame-parameter nil 'alpha-background 98)
+;; (set-frame-parameter nil 'background-color "#18181B")
+
+;; (add-to-list 'default-frame-alist '(font-backend . "ftcrhb"))
+
 
 ;; In Emacs 27+, package initialization occurs before `user-init-file' is
 ;; loaded, but after `early-init-file'. Doom handles package initialization, so

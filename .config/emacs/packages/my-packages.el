@@ -151,8 +151,8 @@
 
 (defconst my-packages-byte-compile-ignore-files
   (list
-   "/flyspell-correct/flyspell-correct-avy-menu.el"
-   "/wgrep/wgrep-subtest.el"
+   "/flyspell-correct/flyspell-correct-avy-menu\\.el"
+   "/wgrep/wgrep-subtest\\.el"
    )
   "Paths failing to compile (errors, missing dependencies, etc.)")
 

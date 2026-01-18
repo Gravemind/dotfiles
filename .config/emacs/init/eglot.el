@@ -24,6 +24,7 @@
                                  ("clangd-17")
                                  ("clangd-16")
                                  ("clangd-15")
+                                 ("clangd")
                                  ))))
 
   (add-to-list 'eglot-server-programs
@@ -39,6 +40,8 @@
                                           eglot-hover-eldoc-function)
           ;; Display section bit by bit instead for waiting all sections
           eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly
+          ;; Show multiline errors (rust eglot flymake)
+          eldoc-echo-area-use-multiline-p t
           )
     )
   (add-hook 'eglot-managed-mode-hook 'my/eglot-mode-tweak)

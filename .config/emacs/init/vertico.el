@@ -20,6 +20,10 @@
   (setq-default
    vertico-count 30
    vertico-resize nil
+
+   ;; ;; Show newlines in multiline outputs (e.g. consult-flymake rust errors)
+   ;; ;; Note: not useful because it doesn't keep rust error indentation
+   ;; vertico-multiline '("\n" #("…" 0 1 (face vertico-multiline)))
    )
 
   (setq-default

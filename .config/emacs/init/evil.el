@@ -129,7 +129,7 @@
    track-eol nil
 
    ;; Insert evil state tag before in mode-line
-   evil-mode-line-format '(before . my--evil-mode-line-placeholder)
+   ;; evil-mode-line-format '(before . my--evil-mode-line-placeholder)
 
    evil-auto-balance-windows nil ;; leave that to zoom
 
@@ -390,20 +390,22 @@ point."
 ;; evil-mc: multiple cursors
 (use-package evil-mc
   :load-path (my-packages-directory "evil-mc")
+  ;; :disabled
   :after (evil evil-collection)
   :demand t
   :config
   (setq-default
    ;; Make C-g quit multi cursor mode
    evil-mc-undo-cursors-on-keyboard-quit t
+   ;; Hide mode-line "emc" when no mc cursors
+   evil-mc-one-cursor-show-mode-line-text nil
    )
 
   (global-evil-mc-mode +1)
 
-  ;; (doom emacs)
+  ;; https://github.com/doomemacs/doomemacs/blob/master/modules/editor/multiple-cursors/config.el
   ;; Whitelist more commands
-  (dolist (fn '((delete-char)
-                (backward-kill-word)
+  (dolist (fn '((backward-kill-word)
                 (company-complete-common . evil-mc-execute-default-complete)
                 (doom/backward-to-bol-or-indent . evil-mc-execute-default-call)
                 (doom/forward-to-last-non-comment-or-eol . evil-mc-execute-default-call)
@@ -415,6 +417,9 @@ point."
                 (evil-escape . evil-mc-execute-default-evil-normal-state)  ; C-g
                 (evil-numbers/inc-at-pt-incremental)
                 (evil-numbers/dec-at-pt-incremental)
+                (evil-digit-argument-or-evil-beginning-of-visual-line
+                 (:default . evil-mc-execute-default-call)
+                 (visual . evil-mc-execute-visual-call))
                 ;; :tools eval
                 (+eval:replace-region . +multiple-cursors-execute-default-operator-fn)
                 ;; :lang ess
@@ -422,8 +427,10 @@ point."
                 ;; :lang org
                 (evil-org-delete . evil-mc-execute-default-evil-delete)))
     (setf (alist-get (car fn) evil-mc-custom-known-commands)
-          (list (cons :default
-                      (or (cdr fn)
-                          #'evil-mc-execute-default-call-with-count)))))
+          (if (and (cdr fn) (listp (cdr fn)))
+              (cdr fn)
+            (list (cons :default
+                        (or (cdr fn)
+                            #'evil-mc-execute-default-call-with-count))))))
 
 )
