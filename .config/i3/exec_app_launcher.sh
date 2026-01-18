@@ -10,6 +10,8 @@ cmd=(
     rofi
     -i
 
+    -show-icons
+
     -show drun -modi
     "drun, flatpak:$here/rofi-mode_flatpak.sh,run, firejail:$here/rofi-mode_firejail.sh,window"
     -display-drun ' drun'
