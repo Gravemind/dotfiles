@@ -146,8 +146,7 @@ checkpacnew() {
 
 # Check for orphan packages
 checkpacorphans() {
-	# local orphans=($(pacman -Qtdq ||:))
-	local orphans=($(pacman -Qqd | pacman -Rsu --print --print-format "%n" - | grep -v "there is nothing to do"))
+	local orphans=($({pacman -Qtdq ||:;} | grep -v -Ee '-debug$'))
 	if [[ "${#orphans[@]}" -eq 0 ]]; then
 		echo "${fg_bold[black]}$0: found 0 orphan packages.$reset_color"
 		return 0
@@ -155,7 +154,7 @@ checkpacorphans() {
 	echo
 	echo "${fg_bold[red]}$0: found ${#orphans[@]} orphan packages, to remove them, run:$reset_color"
 	echo "${fg_bold[red]}$0: $ sudo pacman -Rsu ${orphans[*]}$reset_color"
-	printf "%s\n" "${orphans[@]}" | xargs -d\\n -r -n1 pacman -Qs
+	printf "%s\n" "${orphans[@]}" | xargs -d\\n -r -I{} pacman -Qs '^{}$'
 
 	echo
 }
