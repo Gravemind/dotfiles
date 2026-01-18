@@ -1,20 +1,25 @@
-
 * {
-    bg: #282828;
+    // bg: #282828;
+    bg: #101010F0;
     bghl: #285577;
+
     scrollbar-handle: #a0a0a0;
     fg: #b0b0b0;
     fghl: #dddddd;
     fgurgent: #c02020;
 
     text-color: inherit;
-    background-color: inherit;
+    background-color: transparent;
     padding: 0px;
     margin: 0px;
     spacing: 0px;
 }
 
 #window {
+    // transparency: "/homeasdsda/jo/.config/sway/wallpaper.blured.png";
+    // transparency: "real";
+    // transparency: "background";
+
     text-color: @fg;
     background-color: @bg;
     fullscreen: false;
@@ -72,4 +77,8 @@
 }
 #element urgent, element selected.urgent {
     text-color: @fgurgent;
+}
+
+#element-icon {
+    margin: 0px 10px;
 }
