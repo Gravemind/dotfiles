@@ -3,6 +3,7 @@ input-ipc-server=/tmp/mpvsocket
 
 osd-font='DejaVu Sans'
 osd-font-size=20
+osd-color=0.7
 sub-font='DejaVu Sans'
 
 #volume=70
@@ -11,11 +12,23 @@ sub-pos=84
 sub-scale=0.6
 sid=no # no subtitle by default
 #sub-font-size=30
-sub-color=1.0/0.5
-#exact|fuzzy|all
-sub-auto=fuzzy
+sub-color=1.0/0.8
+
+sub-font="Nunito"
+sub-font-size=60
+sub-border-size=4
+
+# sub-auto=exact  # excat media name
+# sub-auto=fuzzy  # matching media name
+sub-auto=all   # all under sub-file-paths
 sub-file-paths=sub:Sub:subs:Subs:subtitle:Subtitle:subtitles:Subtitles
 blend-subtitles=yes
+
+# Try harder to show subtitles when seeking
+demuxer-mkv-subtitle-preroll=yes
+# Remove minor gaps or overlaps between subtitles
+sub-fix-timing=yes
+
 screenshot-format=png
 # allow any size window (with back bars)
 no-keepaspect-window=
