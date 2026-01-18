@@ -18,7 +18,14 @@ do
     shift
 done
 
-screensh="$HOME/Pictures/$(date '+screen_%y-%m-%d_%H:%M:%S.png')"
+screendir="$HOME/Pictures"
+
+screensh="$screendir/$(date '+screen_%Y-%m-%d_%H:%M:%S.png')"
+if [[ -e "$screensh" ]]
+then
+    screensh="$screendir/$(date '+screen_%Y-%m-%d_%H:%M:%S.%N.png')"
+fi
+touch "$screensh"
 
 if [[ $select = 1 ]]
 then
@@ -27,6 +34,8 @@ else
     grim "$screensh"
 fi
 echo "$screensh"
+
+notify-send -u low "${screensh/#$HOME/'~'}"
 
 if [[ $edit = 1 ]]
 then
