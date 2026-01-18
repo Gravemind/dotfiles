@@ -53,8 +53,13 @@ audio-swresample-o=lfe_mix_level=1
 #af=pan="stereo| FL = FL + LFE + 0.7071*FC + 0.8660*BL + 0.5*BR | FR = FR + LFE + 0.7071*FC + 0.8660*BR + 0.5*BL"
 
 # Default youtube-dl config ignored
-ytdl-raw-options=ignore-config=,prefer-free-formats=,write-sub=,write-auto-sub=,sub-lang=en
-ytdl-format=(bestvideo[vcodec^=av01]+bestaudio/bestvideo[vcodec^=vp9]+bestaudio/bestvideo+bestaudio/best)[height<=?1440][protocol=https]
+# ytdl-raw-options=ignore-config=,prefer-free-formats=,write-sub=,write-auto-sub=,sub-lang=en
+# ytdl-format=(bestvideo[vcodec^=av01]+bestaudio/bestvideo[vcodec^=vp9]+bestaudio/bestvideo+bestaudio/best)[height<=?1440][protocol=https]
+# ytdl-format=(bestvideo[vcodec^=av01]+bestaudio/bestvideo[vcodec^=vp9]+bestaudio/bestvideo+bestaudio/best)[height<=?1440][protocol=https]
+# ytdl-format=best/bestvideo+bestaudio
+ytdl-format=(best/bestvideo+bestaudio)[height<=?1440]
+# Use yt-dlp https://github.com/yt-dlp/yt-dlp
+script-opts=ytdl_hook-ytdl_path=/usr/bin/yt-dlp
 
 #cache-default=100000 # 100MiB
 #cache-secs=300
@@ -133,7 +138,8 @@ profile-desc="Scaletempo for Playspeed"
 profile-cond=speed > 1.01
 # af-add=@scaletempo:scaletempo=stride=10:search=16:overlap=1
 # af-add=@scaletempo:scaletempo2
-af-add=@scaletempo:scaletempo2=search-interval=20:window-size=5
+# af-add=@scaletempo:scaletempo2=search-interval=20:window-size=5
+af-add=@scaletempo:scaletempo2=search-interval=10:window-size=10:max-speed=100
 [disable-scaletempo]
 profile-cond=not (speed > 1.01)
 af-remove=@scaletempo
@@ -240,8 +246,8 @@ gpu-api=vulkan
 # vulkan-swap-mode=auto
 # vulkan-swap-mode=fifo # vsync
 # vulkan-swap-mode=fifo-relaxed # vsync unless too slow
-vulkan-swap-mode=mailbox # triple buffer sync
-# vulkan-swap-mode=immediate # no sync
+# vulkan-swap-mode=mailbox # triple buffer sync
+vulkan-swap-mode=immediate # no sync
 # vulkan-async-compute=yes
 # vulkan-async-transfer=yes
 # vulkan-queue-count=1
