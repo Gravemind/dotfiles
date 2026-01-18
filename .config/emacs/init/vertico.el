@@ -186,13 +186,17 @@
 
   :config
   (setq-default consult-buffer-sources
-                '(consult--source-hidden-buffer
-                  consult--source-modified-buffer
-                  consult--source-buffer
-                  ;; consult--source-recent-file
-                  ;; consult--source-file-register
-                  ;; consult--source-bookmark
-                  ;; consult--source-project-buffer-hidden
+                '(consult-source-buffer
+                  consult-source-hidden-buffer
+                  consult-source-modified-buffer
+                  consult-source-other-buffer
+                  ;; consult-source-recent-file
+                  ;; consult-source-buffer-register
+                  ;; consult-source-file-register
+                  ;; consult-source-bookmark
+                  ;; consult-source-project-buffer-hidden
+                  ;; consult-source-project-recent-file-hidden
+                  ;; consult-source-project-root-hidden
                   ))
 
   (consult-customize
