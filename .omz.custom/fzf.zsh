@@ -43,3 +43,9 @@ zle     -N             fzf-live-preview-widget
 bindkey -M emacs '\ei' fzf-live-preview-widget
 bindkey -M vicmd '\ei' fzf-live-preview-widget
 bindkey -M viins '\ei' fzf-live-preview-widget
+
+#
+# Bind Ctrl-arrow/delete/backspace
+#
+# FIXME: ctrl-backspace doesn't work (termio issue ?)
+export FZF_DEFAULT_OPTS="--bind='ctrl-left:backward-word,ctrl-right:forward-word,ctrl-delete:kill-word,ctrl-backspace:backward-delete-char'"
