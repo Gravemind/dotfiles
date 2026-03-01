@@ -1,0 +1,83 @@
+#!/bin/bash
+#
+# usage: create-vfat-img output.img file_or_dir [file_or_dir...]
+#
+# Creates a FAT32 image file output.img, and copy files into it.
+#
+# Uses udisks. Doesn't need sudo/root.
+#
+
+set -euo pipefail
+
+log() { echo "$*" >&2; }
+die() { log "error: $*"; exit 1; }
+run() { local c; c="$(printf ' %q' "$@")"; log "+$c"; "$@" || die "command failed ($?):$c"; }
+
+usage="$0 output.img file_or_dir [file_or_dir...]"
+
+for arg in "$@"
+do
+    case "$arg"
+    in
+        -h|--help)
+            echo "usage: $usage"
+            exit 0
+            ;;
+    esac
+done
+
+image="$1"
+[[ "$image" = *.img ]] || die "output image should be a .img: $image"
+shift
+inputs=("$@")
+[[ "${#inputs[@]}" -gt 0 ]] || die "missing input files image argument"
+
+size="$(run du -B1 --total "${inputs[@]}" | tail -n1 | cut -f1)"
+
+mb=$((1024 * 1024))
+min=$((33 * mb)) # https://en.wikipedia.org/wiki/Design_of_the_FAT_file_system#Size_limits (not quite right)
+round=$((4 * 1024))
+add=$((1 * mb)) # just in case size are different between FS types
+rounded_size="$(( (((size + add) / round) + 1) * round))"
+rounded_size="$(( rounded_size < min ? min : rounded_size ))"
+
+log "input size: ${size} ($((size / mb))M)"
+log "image size: ${rounded_size} ($((rounded_size / mb))M)"
+
+run dd if=/dev/zero of="$image" bs=$mb count=$((rounded_size / mb))
+
+run mkfs.vfat -F 32 -n MYIMAGE "$image"
+
+loop=""
+mount=""
+
+atexit() {
+    set +e
+    if [[ -n "$loop" ]]
+    then
+        log "exit teardown..."
+        if [[ -n "$mount" ]]
+        then
+            run udisksctl unmount -b "$loop" || true
+        fi
+        run udisksctl loop-delete -b "$loop" || true
+    fi
+    run losetup -l
+}
+
+trap "atexit" EXIT
+
+out="$(run udisksctl loop-setup -f "$image")"
+loop="$(perl <<<"$out" -ne 's/^Mapped file .* as (\/dev\/.*)\.$/$1/ && print')"
+[[ -n "$loop" && -b "$loop" ]] || die "unexpected udisksctl loop-setup output: $out"
+
+out="$(run udisksctl mount -b "$loop")"
+mount="$(perl <<<"$out" -ne 's/^Mounted .* at (\/run\/.*)$/$1/ && print')"
+[[ -n "$mount" && -d "$mount" ]] || die "unexpected udisksctl loop-setup output: $out"
+
+log "loop: $loop"
+log "mount: $mount"
+
+run cp -r -t "$mount" "${inputs[@]}"
+
+run tree "$mount" || run ls -la "$mount"
