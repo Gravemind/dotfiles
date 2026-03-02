@@ -2,14 +2,14 @@
 #
 # usage: create-vfat-img output.img file_or_dir [file_or_dir...]
 #
-# Creates a FAT32 image file output.img, and copy files into it.
+# Creates an image file output.img, containing a FAT32, containing the given files.
 #
-# Uses udisks. Doesn't need sudo/root.
+# Uses udisks, so it doesn't need sudo/root.
 #
 
 set -euo pipefail
 
-log() { echo "$*" >&2; }
+log() { echo "create-vfat-img: $*" >&2; }
 die() { log "error: $*"; exit 1; }
 run() { local c; c="$(printf ' %q' "$@")"; log "+$c"; "$@" || die "command failed ($?):$c"; }
 
@@ -32,52 +32,80 @@ shift
 inputs=("$@")
 [[ "${#inputs[@]}" -gt 0 ]] || die "missing input files image argument"
 
+# FIXME: we should use --apparent-size (--bytes) and correctly compute overhead
 size="$(run du -B1 --total "${inputs[@]}" | tail -n1 | cut -f1)"
+size="$((size + 0))"
+[[ "$size" -gt 1 ]] || die "unexpected input file size: $size"
 
-mb=$((1024 * 1024))
-min=$((33 * mb)) # https://en.wikipedia.org/wiki/Design_of_the_FAT_file_system#Size_limits (not quite right)
-round=$((4 * 1024))
-add=$((1 * mb)) # just in case size are different between FS types
-rounded_size="$(( (((size + add) / round) + 1) * round))"
-rounded_size="$(( rounded_size < min ? min : rounded_size ))"
+mib=$((1024 * 1024))
 
-log "input size: ${size} ($((size / mb))M)"
-log "image size: ${rounded_size} ($((rounded_size / mb))M)"
+image_size=$size
 
-run dd if=/dev/zero of="$image" bs=$mb count=$((rounded_size / mb))
+# Add overhead for FS metadata
+# FIXME: overhead must depend on number of files/dirs/clusters
+overhead=$((4 * mib))
+image_size=$((image_size + overhead))
+
+# FAT32 requires a minimum size, or else we get:
+#   WARNING: Number of clusters for 32 bit FAT is less then suggested minimum.
+# https://en.wikipedia.org/wiki/Design_of_the_FAT_file_system#Size_limits
+# https://github.com/dosfstools/dosfstools/blob/289a48b9cb5b3c589391d28aa2515c325c932c7a/src/mkfs.fat.c#L980
+# Wiki says 33,548,800, but it's missing metadata, so make it 36 MiB...
+min=$((33 * mib))
+image_size="$(( image_size < min ? min : image_size ))"
+
+# Align size
+align=$((4 * mib))
+image_size="$(( ((image_size + align - 1) / align) * align ))"
+
+log "input size: ${size} ($((size / mib))MiB)"
+log "image size: ${image_size} ($((image_size / mib))MiB)"
+
+run dd if=/dev/zero of="$image" bs=$mib count=$((image_size / mib)) status=none
 
 run mkfs.vfat -F 32 -n MYIMAGE "$image"
 
 loop=""
 mount=""
 
-atexit() {
+atexit_teardown() {
     set +e
     if [[ -n "$loop" ]]
     then
-        log "exit teardown..."
+        log "(exit teardown...)"
         if [[ -n "$mount" ]]
         then
             run udisksctl unmount -b "$loop" || true
+            mount=""
         fi
         run udisksctl loop-delete -b "$loop" || true
+        loop=""
+        # run losetup -l
     fi
-    run losetup -l
 }
 
-trap "atexit" EXIT
+trap "atexit_teardown" EXIT
 
 out="$(run udisksctl loop-setup -f "$image")"
-loop="$(perl <<<"$out" -ne 's/^Mapped file .* as (\/dev\/.*)\.$/$1/ && print')"
+loop="$(perl <<<"$out" -ne 's/^Mapped file .* as (\/dev\/loop\d+)\.?$/$1/ && print')"
 [[ -n "$loop" && -b "$loop" ]] || die "unexpected udisksctl loop-setup output: $out"
+log "loop: $loop"
 
 out="$(run udisksctl mount -b "$loop")"
 mount="$(perl <<<"$out" -ne 's/^Mounted .* at (\/run\/.*)$/$1/ && print')"
 [[ -n "$mount" && -d "$mount" ]] || die "unexpected udisksctl loop-setup output: $out"
-
-log "loop: $loop"
 log "mount: $mount"
 
 run cp -r -t "$mount" "${inputs[@]}"
 
-run tree "$mount" || run ls -la "$mount"
+if command -v tree &>/dev/null; then
+    run tree "$mount"
+else
+    run ls -la "$mount"
+fi
+
+atexit_teardown
+
+log ""
+log "Done: $image"
+log ""
