@@ -20,6 +20,8 @@ done
 
 screendir="$HOME/Pictures"
 
+# See also ~/.config/swappy/config
+
 screensh="$screendir/$(date '+screen_%Y-%m-%d_%H:%M:%S.png')"
 if [[ -e "$screensh" ]]
 then

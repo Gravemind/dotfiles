@@ -1,0 +1,6 @@
+[Default]
+
+# See also ~/.config/sway/exec_screenshot.sh
+
+save_dir=$HOME/Pictures
+save_filename_format=screen_%Y-%m-%d_%H:%M:%S-swappy.png
