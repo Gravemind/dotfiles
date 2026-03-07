@@ -11,6 +11,6 @@ cmd=(
     rofi
     -i
     -show " cliphist"
-    -modi " cliphist:$here/rofi-mod_cliphist.sh, delete:$here/rofi-mod_cliphist-delete.sh"
+    -modi " cliphist:$here/rofi-mod_cliphist.sh, delete:$here/rofi-mod_cliphist-delete.sh, sanitized:$here/rofi-mod_cliphist-sanitize.sh"
 )
 "${cmd[@]}"
