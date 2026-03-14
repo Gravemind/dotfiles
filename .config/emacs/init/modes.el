@@ -431,27 +431,23 @@
 (defun dired-sort-size ()
   "Dired sort by size."
   (interactive)
-  (dired-sort-other (concat dired-listing-switches "S")))
+  (dired-sort-other (concat dired-listing-switches "S" (if current-prefix-arg "r" ""))))
 (defun dired-sort-extension ()
   "Dired sort by extension."
   (interactive)
-  (dired-sort-other (concat dired-listing-switches "X")))
+  (dired-sort-other (concat dired-listing-switches "X" (if current-prefix-arg "r" ""))))
 (defun dired-sort-ctime ()
   "Dired sort by create time."
   (interactive)
-  (dired-sort-other (concat dired-listing-switches "ct")))
+  (dired-sort-other (concat dired-listing-switches "ct" (if current-prefix-arg "r" ""))))
 (defun dired-sort-time ()
   "Dired sort by time."
   (interactive)
-  (dired-sort-other (concat dired-listing-switches "t")))
-(defun dired-sort-rtime ()
-  "Dired sort by time."
-  (interactive)
-  (dired-sort-other (concat dired-listing-switches "rt")))
+  (dired-sort-other (concat dired-listing-switches "t" (if current-prefix-arg "r" ""))))
 (defun dired-sort-name ()
   "Dired sort by name."
   (interactive)
-  (dired-sort-other (concat dired-listing-switches "")))
+  (dired-sort-other (concat dired-listing-switches "" (if current-prefix-arg "r" ""))))
 
 (use-package dired-k
   :load-path (my-packages-directory "dired-k")
