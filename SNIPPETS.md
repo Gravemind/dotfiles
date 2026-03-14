@@ -30,6 +30,19 @@ main "$@"
 - `set -e`: error on uncaught command error
 - `set -o pipefail`: error on uncaught command error in a pipeline chain
 
+### array/list operations
+
+```sh
+# Command output lines to array
+mapfile -t array < <( command )
+
+# Command output words to array
+mapfile -t array -d " " < <( command )
+
+# Shift array
+shifted=("${array[@]:1}")
+```
+
 ### log to stdout, but escape pipes and redirections
 
 ```sh
@@ -150,6 +163,13 @@ mkfs.vfat -F 32 -n PARTLABEL /dev/disk/by-id/usb-...-part1
 dd bs=4M conv=sync,fsync status=progress if=...iso of=/dev/disk/by-id/usb-...
 ```
 
+### gawk
+
+```
+# Match regex and capture groups
+gawk 'match($0, /pat(ter)n/, m) { ter = m[1]; }'
+```
+
 ### perl oneliners
 
 ```sh
@@ -250,7 +270,7 @@ git clone --filter=blob:limit=200k ...
 ```
 strace -f -rttT -o /tmp/trace cmd...
 strace -f     # follow fork
-strace -rttT  # relative/absolute/syscall times
+strace -rttT  # relative+absolute+syscall times
 ```
 
 ### signals
@@ -272,14 +292,17 @@ strace -rttT  # relative/absolute/syscall times
 | ALRM      | 14     | Terminate   | Timer signal from alarm(2).                                              |
 | TERM      | 15     | Terminate   | Termination signal.                                                      |
 | CHLD, CLD | 17     | Ignore      | Child stopped, terminated, or continued.                                 |
-| CONT      | 18     | 🔒Continue  | Continue if stopped. (handler allowed)                                   |
+| CONT      | 18     | 🔒*Continue | Continue if stopped. (handler allowed)                                   |
 | STOP      | 19     | 🔒Stop      | Stop (pause) the process.                                                |
 | TSTP      | 20     | Stop        | Stop (pause) typed at terminal.                                          |
 
-🔒: Cannot be caught, blocked, or ignored. SIGCONT can have a handler.
+🔒: Cannot be caught, blocked, or ignored.
+🔒*: Ditto except SIGCONT can have a handler.
+
+### kill
 
 ```sh
-# graceful kill: TERM then KILL after 2s
+# graceful kill: send TERM then KILL after 2s
 /bin/kill --verbose --timeout 2000 KILL --signal TERM "$pid" 2>/dev/null
 ```
 
@@ -310,6 +333,53 @@ strace -rttT  # relative/absolute/syscall times
 | 20     | 0x14 | ENOTDIR     | Not a directory                                         |
 | 21     | 0x15 | EISDIR      | Is a directory                                          |
 | 22     | 0x16 | EINVAL      | Invalid argument                                        |
+
+### permissions chmod
+
+| symbolic       | octal                         |
+|----------------|-------------------------------|
+| rwx            | 04 + 02 + 01 = 07             |
+| u=rwx,g=rw,o=x | 0700 + 0060 + 0001 = 0761     |
+| u+s,g+s,a+t    | 04000 + 02000 + 01000 = 07000 |
+
+- `u+s`: "set-user-ID-on-execution", set uid bit, SUID bit.
+- `g+s`: "set-group-ID-on-execution", set gid bit, SGID bit.
+- `a+t` or `+t`: "sticky bit", SVTX bit. On directories, it prevents rename or delete entries not
+  owned, for example: set on world-writable /tmp.
+
+### acl
+
+```sh
+$ getfacl /path
+$ setfacl -m user:buddy:rw /path
+```
+
+| acl           | def                          |
+|---------------|------------------------------|
+| `user::rwx`   | owning user                  |
+| `group::rwx`  | owning group                 |
+| `user:U:rwx`  | some user U                  |
+| `group:G:rwx` | some group G                 |
+| `mask::rwx`   | masks owning group, U, and G |
+| `other::rwx`  | others                       |
+
+`mask::`:
+- masks `group::`, `user:U:`, and `group:G:`
+- does **NOT mask `user::` nor `other::`**
+- replaces the "unix group" in classic file permissions:
+  - read/write group with `ls`/`chmod`/etc. actually reads/writes the `mask::`
+
+```sh
+$ ls -ld /path
+-rwxrw-r--+ 1 owner group ... /path
+
+          + = with acl,
+ rwx        = user::rwx           = owner
+    rw-     = mask::rw- (NOT grp) = masks group::, group:G:, and user:U:
+       r--  = other::r--          = others
+
+$ chmod g-w /path   # changes the acl mask (!)
+```
 
 ## Python
 
@@ -347,6 +417,22 @@ diff <(gcc -Q -O0 --help=optimizers) <(gcc -Q -O3 --help=optimizers)
 
 # Misc
 
+### unicode
+
+https://en.wikipedia.org/wiki/Box-drawing_characters
+https://en.wikipedia.org/wiki/Dingbat
+https://en.wikipedia.org/wiki/List_of_emojis
+
+```txt
+┌─┬┐  ╔═╦╗  ╓─╥╖  ╒═╤╕
+│ ││  ║ ║║  ║ ║║  │ ││
+├─┼┤  ╠═╬╣  ╟─╫╢  ╞═╪╡
+└─┴┘  ╚═╩╝  ╙─╨╜  ╘═╧╛
+┬─ ✓ ✗
+├─ ‣ ☐ ☑ ☒
+└─ • ❎ ✅
+```
+
 ### font-awesome
 
 ```txt
@@ -362,4 +448,32 @@ $ pgsql -U user
 =# \dt       # List tables
 =# \d table  # List table columns
 =# select * from table where column = 42 ;
+```
+
+### ffmpeg
+
+```
+ffin=/input/file.X
+ffout=/output/file.mkv
+
+# Info
+ffprobe "$ffin"
+
+# Info json format
+ffprobe -v quiet -print_format json -show_format -show_streams "$ffin"
+
+# Convert to 30fps 720p h264 - software decode and re-encode
+ffmpeg -i "$ffin" -vf 'fps=30,scale=1280:-1' -c:v libx264 -preset fast "$ffout"
+
+# https://trac.ffmpeg.org/wiki/Hardware/VAAPI
+
+# Convert to 30fps 720p h264
+# - vaapi encode output
+ffmpeg -vaapi_device /dev/dri/renderD128 -i "$ffin" -vf 'fps=30,format=nv12,hwupload,scale_vaapi=1280:-1' -c:v h264_vaapi -q 0 -compression_level 1 "$ffout"
+
+# Convert to 30fps 720p h264
+# - vaapi decode input (very slow ??)
+# - vaapi encode output
+ffmpeg -vaapi_device /dev/dri/renderD128 -hwaccel vaapi -hwaccel_output_format vaapi -i "$ffin" -vf 'fps=30,scale_vaapi=1280:-1' -c:v h264_vaapi -q 0 -compression_level 1 "$ffout"
+
 ```
