@@ -104,6 +104,7 @@
      "makey"
      "marginalia"
      "markdown-mode"
+     "math-preview"
      "meson-mode"
      "multiple-cursors"
      "orderless"

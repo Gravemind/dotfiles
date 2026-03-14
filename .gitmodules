@@ -569,3 +569,7 @@
 	path = .config/emacs/packages/cond-let
 	url = https://github.com/tarsius/cond-let.git
 	branch = main
+[submodule ".config/emacs/packages/math-preview"]
+	path = .config/emacs/packages/math-preview
+	url = https://gitlab.com/matsievskiysv/math-preview.git
+	branch = master

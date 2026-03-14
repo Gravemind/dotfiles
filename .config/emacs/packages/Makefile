@@ -2,13 +2,20 @@
 
 .PHONY: all clean compile fetch
 
-all: compile
+all: compile math-preview
 
 clean:
 	find . -name '*.elc' -print -delete
 
 compile:
 	./compile-my-packages.el
+
+math-preview:
+	@echo "Compiling $@..."
+	cd $@ && npm install
+	@echo "Finished $@."
+	@echo ""
+.PHONY: math-preview
 
 fetch:
 	( cd cmake-mode ; ./fetch.sh )

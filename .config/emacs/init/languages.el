@@ -191,6 +191,20 @@
   ;;(setq-default markdown-command "multimarkdown --smart --notes")
   )
 
+;;
+;; Mathjax markdown math rendering
+;;
+
+(use-package math-preview
+  :load-path (my-packages-directory "math-preview")
+  :commands (math-preview-all math-preview-region math-preview-at-point)
+  :config
+  (setq-default
+   ;; Look for math-preview directly in source
+   math-preview-command (expand-file-name "math-preview.js" (file-name-directory (locate-library "math-preview")))
+   )
+)
+
 ;; (use-package flymd
 ;;   :commands (flymd-flyit))
 
