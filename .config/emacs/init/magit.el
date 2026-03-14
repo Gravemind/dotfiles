@@ -137,6 +137,14 @@
     (cl-pushnew "--ff-only" args :test #'equal)
     (magit-run-git-async "merge" (delete "--no-ff" args) rev))
 
+  (defun my-magit-diff-upstream (&optional args files)
+    "Show changes between the working tree and the upstream."
+    (interactive (magit-diff-arguments))
+    (let ((current (or (magit-get-current-branch) (user-error "No current branch")))
+          (upstream (or (magit-get-upstream-branch) (user-error "No upstream for current branch")))
+          )
+      (magit-diff-setup-buffer (format "%s..%s" current upstream) nil args files 'committed)))
+
   ;; transient replaced magit popup
   ;; https://github.com/magit/magit/wiki/Converting-popup-modifications-to-transient-modifications
 
@@ -160,6 +168,14 @@
   (transient-insert-suffix 'magit-merge '(-1)
     ["Custom"
      ("f" "Merge ff only" my-magit-merge-ff)
+     ])
+
+  ;; diff
+  (transient-remove-suffix 'magit-diff "u") ;; Rebind diff unstaged to "U"
+  (transient-insert-suffix 'magit-diff '(-1)
+    ["Custom"
+     ("U" "Diff unstaged" magit-diff-unstaged)
+     ("u" "Upstream" my-magit-diff-upstream)
      ])
 
   ;(setq-default git-commit-turn-on-auto-fill nil)
