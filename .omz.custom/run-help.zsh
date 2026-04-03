@@ -3,13 +3,63 @@
 unalias run-help 2>/dev/null ||:
 
 autoload run-help
-autoload run-help-git
+# autoload run-help-git # See ours
 autoload run-help-ip
 autoload run-help-openssl
 autoload run-help-p4
 # autoload run-help-sudo  # See ours
 autoload run-help-svk
 autoload run-help-svn
+
+# Resolve git aliases
+run-help-git() {
+	local sub="${1:-git}"
+
+	git help "$sub" || {
+		return 1
+	}
+
+	local resolved
+	resolved="$(git config --get "alias.$sub" 2>/dev/null || true)"
+
+	if [[ -n "$resolved" ]]
+	then
+		local -a cmd=( "${(z)resolved}" )
+
+		# Note: zsh uses one-based indexing
+		if [[ "${cmd[1]}" = "!git" ]]
+		then
+			shift cmd
+		elif [[ "${cmd[1]}" = "!"* ]]
+		then
+			echo "(no further help for unknown git alias script)"
+			return 1
+		fi
+
+		while [[ "${#cmd[@]}" -gt 0 && "${cmd[1]}" = -* ]]
+		do
+			shift cmd
+		done
+
+		# printf -- '-%s-\n' "${cmd[@]}"
+		local res="${cmd[1]}"
+		if [[ -n "$res" ]]
+		then
+			# See /usr/share/zsh/functions/Misc/run-help
+			local what newline='
+'
+			builtin print -nP "%SPress any key for more help on 'git $res' or q to quit%s"
+			builtin read -k what
+			[[ $what != $newline ]] && echo
+			[[ $what == [qQ] ]] && break
+
+			run-help-git "${cmd[@]}"
+		else
+			echo "(no further help for unknown git alias command)"
+			return 1
+		fi
+	fi
+}
 
 # default run-help-sudo does not recurse run-help (sudo git add)
 run-help-sudo() {
