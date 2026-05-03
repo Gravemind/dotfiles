@@ -48,4 +48,4 @@ bindkey -M viins '\ei' fzf-live-preview-widget
 # Bind Ctrl-arrow/delete/backspace
 #
 # FIXME: ctrl-backspace doesn't work (termio issue ?)
-export FZF_DEFAULT_OPTS="--bind='ctrl-left:backward-word,ctrl-right:forward-word,ctrl-delete:kill-word,ctrl-backspace:backward-delete-char'"
+export FZF_DEFAULT_OPTS="--bind='ctrl-left:backward-word,ctrl-right:forward-word,ctrl-delete:kill-word,ctrl-backspace:backward-kill-word'"
