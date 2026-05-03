@@ -30,7 +30,7 @@ fzf-live-preview-widget() {
 	local prompt="$BUFFER"
 	local shell="${(qqq)SHELL} -c {q}"
 	local newprompt
-	newprompt="$(:| $(__fzfcmd) --print-query --multi --preview="$shell" --preview-window=down:99% --query="$prompt" --prompt="$SHELL > ")"
+	newprompt="$(:| $(__fzfcmd) --print-query --multi --preview="$shell" --preview-window=down:99% --query="$prompt" --prompt="$SHELL > " --bind='up:preview-up,down:preview-down,page-up:preview-page-up,page-down:preview-page-down')"
 	local r=$?
 	if [[ $r -eq 0 || $r -eq 1 ]]
 	then
