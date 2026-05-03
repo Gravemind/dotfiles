@@ -372,8 +372,26 @@ fi
 ## http://stackoverflow.com/questions/13125825/zsh-update-prompt-with-current-time-when-a-command-is-started
 TMOUT=$(( 5 + 60 - $(date '+%s') % 60 ))
 TRAPALRM() {
-	zle reset-prompt
+	if [[ -z "${OMZ_DISABLE_PROMPT_REFRESH:-}" ]]; then
+		zle reset-prompt
+	fi
 	TMOUT=$(( 5 + 60 - $(date '+%s') % 60 ))
 }
+
+# Fix fzf widgets broken by prompt refresh.
+# `zle reset-prompt` breaks fzf when run by TRAPALRM.
+_fix-all-fzf-widgets() {
+	local widget
+	for widget in ${(k)widgets[(R)user:fzf*widget]}; do
+		eval "
+		wrapped_${widget}() {
+			local OMZ_DISABLE_PROMPT_REFRESH=1
+			${widget}
+		}
+		"
+		zle -N "${widget}" "wrapped_${widget}"
+	done
+}
+_fix-all-fzf-widgets
 
 my_sourcing_again=true
