@@ -548,9 +548,11 @@
 
 (use-package yasnippet
   :load-path (my-packages-directory "yasnippet")
-  :hook (c-mode-common . yas-minor-mode) ;; NOTE: cc-mode-hook does not work, c-mode-common-hook do.
-  :config
+  ;; NOTE: cc-mode-hook does not work, c-mode-common-hook do.
+  :hook ((c-mode-common python-mode) . yas-minor-mode)
+  :init
   (setq-default yas-snippet-dirs `(,(concat user-emacs-directory "snippets")))
+  :config
   (yas-reload-all)
   )
 
