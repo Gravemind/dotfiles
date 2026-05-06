@@ -25,4 +25,3 @@ fetch:
 	( cd external-completion ; ./fetch.sh )
 	( cd xref ; ./fetch.sh )
 	( cd clang-format ; ./fetch.sh )
-	( cd adaptive-wrap ; ./fetch.sh )

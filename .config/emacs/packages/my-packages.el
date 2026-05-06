@@ -5,7 +5,6 @@
     (list
      "ace-jump-mode"
      "ace-window"
-     "adaptive-wrap"
      "all-the-icons"
      "annalist"
      "async"

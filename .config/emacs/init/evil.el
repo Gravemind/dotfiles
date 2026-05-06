@@ -121,7 +121,7 @@
    evil-cross-lines t
 
    ;; If j/k moves across wrapped lines, or physical lines
-   evil-respect-visual-line-mode nil
+   evil-respect-visual-line-mode t
 
    ;; If '$' makes cursor stick to eol
    evil-track-eol t

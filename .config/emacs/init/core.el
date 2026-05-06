@@ -32,10 +32,6 @@
  ;; No foo~ files
  make-backup-files nil
 
- ;; Truncate lines by default
- truncate-lines t
- word-wrap nil
-
  ;; Needed for diff-hl to work
  vc-handled-backends '(Git) ;; '(RCS CVS SVN SCCS SRC Bzr Git Hg Mtn)
 
@@ -69,7 +65,19 @@
 
  ;; Search whitespace include newline
  search-whitespace-regexp "[ \11\12]+"
+
+ ;; When running visual-mode, indicate wrapped lines in the fringe
+ visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow)
+
  )
+
+;; Wrap lines and makes cursor move into wrapped line like normal lines
+(global-visual-line-mode t)
+(setq word-wrap nil) ;; FIXME visual-line-mode sets word-wrap t
+
+;; Indent wrapped lines depending on context
+;; Replaces adaptive-wrap since emacs 30
+(global-visual-wrap-prefix-mode t)
 
 ;; Mouse
 (setq-default
