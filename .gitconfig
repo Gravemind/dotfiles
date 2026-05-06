@@ -23,6 +23,9 @@
 	# Difftastic https://difftastic.wilfred.me.uk/
 	dft = "!env GIT_EXTERNAL_DIFF=difft git diff -M"
 
+	# See /usr/share/git/diff-highlight/README
+	diff-highlight = "!git -c core.pager='diff-highlight | less' diff"
+
 	dule = submodule
 
 	# Parallel fetch all submodules

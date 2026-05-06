@@ -1,0 +1,5 @@
+#!/bin/bash
+
+path=/usr/share/git/diff-highlight/diff-highlight
+
+exec "$path" "$@"
