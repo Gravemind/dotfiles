@@ -1,0 +1,163 @@
+#!/usr/bin/env python3
+#
+# Mount filesystems using udisks via rofi menu.
+#
+
+import dbus
+from subprocess import run
+from functools import partial
+
+ROFI_CMD = ["rofi", "-dmenu"]
+
+g_bus = None
+
+
+def get_fs_iface(dbus_path):
+    obj = g_bus.get_object("org.freedesktop.UDisks2", dbus_path)
+    iface = dbus.Interface(obj, "org.freedesktop.UDisks2.Filesystem")
+    return iface
+
+
+def action_mount(dbus_path):
+    iface = get_fs_iface(dbus_path)
+    options = dbus.Dictionary({}, signature="sv")
+    res = iface.Mount(options)
+    action_copy(res)
+    return True
+
+
+def action_unmount(dbus_path):
+    iface = get_fs_iface(dbus_path)
+    options = dbus.Dictionary({}, signature="sv")
+    iface.Unmount(options)
+    return True
+
+
+def action_copy(s):
+    # TODO: Support xorg
+    run("wl-copy", input=s, encoding="utf-8", check=True)
+    return False
+
+
+def loop(manager):
+    entries = []
+    actions = {}
+
+    def add_entry(entry, action):
+        assert entry not in entries
+        entries.append(entry)
+        actions[entry] = action
+
+    objects = manager.GetManagedObjects()
+
+    for dbus_path, ifaces in objects.items():
+        if not dbus_path.startswith("/org/freedesktop/UDisks2/block_devices/"):
+            continue
+
+        fs = ifaces.get("org.freedesktop.UDisks2.Filesystem", None)
+        block = ifaces.get("org.freedesktop.UDisks2.Block", None)
+        if not fs or not block:
+            continue
+
+        if block["HintIgnore"]:
+            continue
+
+        # https://storaged.org/doc/udisks2-api/latest/gdbus-org.freedesktop.UDisks2.Block.html
+        # Notes:
+        # - Don't check IdUsage, having an Filesystem interface is enough.
+
+        is_system = block["HintSystem"]
+        if is_system:
+            continue
+
+        # TODO: Add drive level to allow ejection ?
+        drive_dbus_path = block["Drive"]
+        ejectable = False
+        if drive_dbus_path and drive_dbus_path != "/":
+            drive = objects[drive_dbus_path].get("org.freedesktop.UDisks2.Drive", None)
+            if drive:
+                ejectable = drive["Ejectable"]
+
+        size = block["Size"]  # Note: fs Size is more accurate but can be 0
+        blkid = block["Id"]
+        label = block["IdLabel"]
+        # uuid = block["IdUUID"]
+        fstype = block["IdType"]
+
+        mountpoints = [
+            bytes(m).replace(b"\x00", b"").decode("ascii", errors="replace")
+            for m in fs["MountPoints"]
+        ]
+
+        mounted = bool(mountpoints)
+
+        if mounted:
+            prefix = "[Unmount]"
+            action = partial(action_unmount, dbus_path)
+            tree = "┬"
+        else:
+            prefix = "  [Mount]"
+            action = partial(action_mount, dbus_path)
+            tree = "─"
+        eject = "⏏" if ejectable else "•"
+        tree = ""
+        add_entry(
+            f"{prefix} {eject} {label or blkid} - {size / 10e9:.2f}GB - {fstype}",
+            action,
+        )
+
+        if mountpoints:
+            for i, mount in enumerate(mountpoints):
+                if i < len(mountpoints) - 1:
+                    tree = "├──"
+                else:
+                    tree = "└──"
+                add_entry(
+                    f"   [Copy]   {tree} {mount}",
+                    partial(action_copy, mount),
+                )
+        else:
+            pass
+
+    if not entries:
+        rofi_error_msg("No mountable udisks found")
+        return False
+
+    proc = run(
+        ROFI_CMD,
+        input="\n".join(entries),
+        capture_output=True,
+        encoding="utf-8",
+    )
+    if proc.returncode != 0:
+        return False
+
+    res = proc.stdout.rstrip("\n")
+    assert res in actions, f"unknown entry {res!r}"
+
+    action_func = actions[res]
+
+    return action_func()
+
+
+def rofi_error_msg(msg):
+    print(f"error: {msg}")
+    run(ROFI_CMD, input=f"error: {msg}", encoding="utf-8")
+
+
+def main():
+    global g_bus
+    g_bus = dbus.SystemBus()
+    udisk_obj = g_bus.get_object("org.freedesktop.UDisks2", "/org/freedesktop/UDisks2")
+    manager = dbus.Interface(udisk_obj, "org.freedesktop.DBus.ObjectManager")
+
+    try:
+        while loop(manager):
+            pass
+    except Exception as e:
+        rofi_error_msg(str(e))
+        raise
+
+
+if __name__ == "__main__":
+    main()
