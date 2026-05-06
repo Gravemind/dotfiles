@@ -381,6 +381,21 @@ $ ls -ld /path
 $ chmod g-w /path   # changes the acl mask (!)
 ```
 
+### make
+
+Makefile variable assignment:
+
+| assignment     | evaluation     | overridable from |
+|----------------|----------------|------------------|
+| `VAR = val`    | lazy, each use | cli              |
+| `VAR ?= val`   | lazy, each use | env and cli      |
+| `VAR := val`   | once at decl   | cli              |
+| `VAR != shell` | once at decl   | cli              |
+
+Overridable from cli: `make VAR=42`. Overridable from env: `VAR=42 make`.
+
+make automatic/magic variables:`$@` is the targeted rule name, `$<` is first prerequisite. See https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html
+
 ## Python
 
 ### Python2 and Python3 unicode

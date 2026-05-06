@@ -76,7 +76,7 @@
 (setq word-wrap nil) ;; FIXME visual-line-mode sets word-wrap t
 
 ;; Indent wrapped lines depending on context
-;; Replaces adaptive-wrap since emacs 30
+;; (Replaces adaptive-wrap since emacs 30)
 (global-visual-wrap-prefix-mode t)
 
 ;; Mouse
