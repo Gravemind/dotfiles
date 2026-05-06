@@ -183,7 +183,8 @@ for_window [class="(?i)^keepassxc$"] floating enable
 for_window [class="^Emacs$" title="^Helm$"] floating enable, border pixel 2
 for_window [class="^Emacs$" title="^Ediff"] floating enable, border pixel 2
 
-for_window [class="(?i)firefox" title="(?i)picture-in-picture"] floating disable
+# Move Picture-in-Picture window to the side
+for_window [app_id="(?i)firefox" title="(?i)picture-in-picture"] move right, resize set width 1200 px, split v
 
 assign [class="(?i)^.*steam.*$"] → 1
 for_window [class="^steam$" title="^Steam Settings$"] floating enable
