@@ -179,6 +179,9 @@
 	ls-ignored-untracked = ls-files --ignored --exclude-standard --others
 	ls-ignored-tracked = ls-files --ignored --exclude-standard --cached
 
+	# Exact version since last tag
+	v = describe --abbrev=12 --tag --long --always
+
 [format]
 	# default pretty format for log/show/whatchanged
 	#pretty = my
