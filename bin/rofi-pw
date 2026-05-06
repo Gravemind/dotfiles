@@ -1,0 +1,201 @@
+#!/usr/bin/env python3
+#
+# Toggle pipewire options using rofi: default sink, default source, toggle smart filters
+#
+
+import json
+import subprocess as subp
+from functools import partial
+from types import SimpleNamespace
+
+RADIO_ICONS = ["", ""]
+CHECK_ICONS = [" ", "✓"]
+FILTER_ICON = "𜸈"
+SINK_ICON = "🔊"
+SOURCE_ICON = "🎤"
+
+
+def enable_smart_filter(node_id, enabled):
+    disable = "true" if not enabled else "false"
+    subp.run(
+        [
+            "pw-metadata",
+            "-n",
+            "filters",
+            str(node_id),
+            "filter.smart.disabled",
+            disable,
+            "Spa:String:JSON",
+        ],
+        check=True,
+    )
+
+
+def set_default(key, name):
+    jsstr = json.dumps({"name": name})
+    subp.run(
+        ["pw-metadata", "-n", "default", "0", key, jsstr, "Spa:String:JSON"],
+        check=True,
+    )
+
+
+def unset_default(key):
+    subp.run(
+        ["pw-metadata", "-n", "default", "--delete", "0", key],
+        check=True,
+    )
+
+
+class Rofi:
+    def __init__(self, select_row=None):
+        self.select_row = select_row
+        self.entries = []
+        self.actions = []
+        self.proc = None
+        self.selected = None
+
+    def __enter__(self):
+        args = []
+        if self.select_row is not None:
+            args += ["-selected-row", str(self.select_row)]
+        self.proc = subp.Popen(
+            ["rofi", "-dmenu", "-i", "-p", "pipewire"] + args,
+            encoding="utf-8",
+            stdin=subp.PIPE,
+            stdout=subp.PIPE,
+        )
+        return self
+
+    def entry(self, entry, action):
+        assert self.proc is not None
+        assert entry not in self.entries
+        assert entry == entry.rstrip()
+        self.proc.stdin.write(entry + "\n")
+        self.entries.append(entry)
+        self.actions.append(action)
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        proc = self.proc
+        self.proc = None
+        if exc_type is not None:
+            proc.kill()
+            return
+        proc.stdin.close()
+        stdout, _ = proc.communicate()
+        if proc.returncode == 1:
+            return
+        if proc.returncode != 0:
+            raise RuntimeError(f"unexpected rofi exit status {proc.returncode}")
+        entry = stdout.rstrip()
+        if not entry:
+            return
+        row = self.entries.index(entry)
+        action = self.actions[row]
+        self.selected = SimpleNamespace(
+            row=row,
+            entry=entry,
+            action=action,
+        )
+
+
+def loop(ctx):
+    with Rofi(select_row=ctx.get("row", None)) as rofi:
+        with subp.Popen("pw-dump", stdout=subp.PIPE, encoding="utf-8") as proc:
+            pwdump = json.load(proc.stdout)
+        if proc.returncode != 0:
+            raise RuntimeError(f"pw-dump failed with exit {proc.returncode}")
+
+        metadata = {"filters": {}, "default": {}}
+        smart_filters = []
+        sinks = []
+        sources = []
+
+        for node in pwdump:
+            typ = node["type"]
+            if typ == "PipeWire:Interface:Metadata":
+                mtname = node.get("props", {}).get("metadata.name")
+                if mtname in metadata:
+                    for mt in node["metadata"]:
+                        metadata[mtname].setdefault(mt["subject"], {})[mt["key"]] = mt[
+                            "value"
+                        ]
+            elif typ == "PipeWire:Interface:Node":
+                props = node.get("info", {}).get("props", {})
+                if props.get("filter.smart", False):
+                    smart_filters.append(node)
+                elif props.get("media.class") == "Audio/Sink":
+                    sinks.append(node)
+                elif props.get("media.class") == "Audio/Source":
+                    sources.append(node)
+
+        def nop():
+            pass
+
+        if smart_filters:
+            rofi.entry(f"Smart Filters {FILTER_ICON}:", nop)
+            for node in smart_filters:
+                props = node["info"]["props"]
+                desc = props["node.description"]
+                mt = metadata["filters"].get(node["id"], {})
+                enabled = not mt.get(
+                    "filter.smart.disabled", props.get("filter.smart.disabled", False)
+                )
+                rofi.entry(
+                    f"  {RADIO_ICONS[enabled]} {desc}",
+                    partial(enable_smart_filter, node["id"], not enabled),
+                )
+
+        for name, icon, def_conf_key, def_key, nodes in [
+            (
+                "Audio/Sink",
+                SINK_ICON,
+                "default.configured.audio.sink",
+                "default.audio.sink",
+                sinks,
+            ),
+            (
+                "Audio/Source",
+                SOURCE_ICON,
+                "default.configured.audio.source",
+                "default.audio.source",
+                sources,
+            ),
+        ]:
+            rofi.entry(f"Default {name} {icon}:", nop)
+            def_conf_name = (
+                metadata["default"].get(0, {}).get(def_conf_key, {}).get("name", None)
+            )
+            def_name = metadata["default"].get(0, {}).get(def_key, {}).get("name", None)
+            for node in nodes:
+                props = node["info"]["props"]
+                desc = props["node.description"]
+                isdef = props["node.name"] == def_name
+                isconf = props["node.name"] == def_conf_name
+                rofi.entry(
+                    f"  {RADIO_ICONS[isconf]} {CHECK_ICONS[isdef]} {desc}",
+                    partial(set_default, def_conf_key, props["node.name"]),
+                )
+            isdef = def_name is None
+            isconf = def_conf_name is None
+            rofi.entry(
+                f"  {RADIO_ICONS[isconf]} {CHECK_ICONS[isdef]} ø No default {name}",
+                partial(unset_default, def_conf_key),
+            )
+
+    if rofi.selected is None:
+        return False
+
+    rofi.selected.action()
+
+    ctx["row"] = rofi.selected.row
+    return True
+
+
+def main():
+    ctx = {}
+    while loop(ctx):
+        pass
+
+
+if __name__ == "__main__":
+    main()
