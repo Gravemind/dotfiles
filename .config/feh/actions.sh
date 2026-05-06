@@ -11,7 +11,7 @@ file="$2"
 
 file="$(readlink -f "$file")"
 
-log "running $action on $file ..."
+# log "running $action on $file ..."
 
 markfile=/tmp/fehmark.txt
 
@@ -41,7 +41,7 @@ case "$action" in
         fi
         ;;
     info)
-        if grep -q -xFe "$file" "$markfile"
+        if [[ -f "$markfile" ]] && grep -q -xFe "$file" "$markfile"
         then
             echo "MARKED in $markfile"
         else
