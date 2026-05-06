@@ -356,6 +356,11 @@
   ;; :disabled t
   :load-path (my-packages-directory "rust-mode")
   :mode (("\\.rs\\'" . rust-mode))
+  :config
+  ;; Fix rust source file links in cargo build output in compilation window
+  ;; (this cargo regex matches can match comma from the line above)
+  ;; (actual compilation error are matched by 'rustc regexp)
+  (delq 'cargo compilation-error-regexp-alist)
   )
 
 ;; https://github.com/kwrooijen/cargo.el
