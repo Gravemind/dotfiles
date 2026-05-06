@@ -294,7 +294,7 @@ bindsym $ModK+Shift+space floating toggle, resize set $float_w_wide $float_h, mo
 bindsym $ModK+space focus mode_toggle
 
 # Change Window Size and Modes
-set $mode_resize "    [S-]←→↓↑ resize  ·  <u>s</u>ticky  ·  <u>g</u>aps  ·  <u>w</u>allpaper  ·  setup-<u>x</u>randr  ·  <u>v</u>ideo-mode  ·  <u>e</u>nable-all-outputs  ·  <u>d</u>isable-all-outputs    "
+set $mode_resize "    [S-]←→↓↑ resize  ·  <u>s</u>ticky  ·  <u>g</u>aps  ·  <u>w</u>allpaper  ·  setup-<u>x</u>randr  ·  <u>v</u>ideo-mode  ·  <u>e</u>nable-all-outputs  ·  <u>d</u>isable-all-outputs  ·  hd<u>r</u>  ·  <u>u</u>disks  ·  <u>p</u>ipewire  "
 mode --pango_markup $mode_resize {
     # (from normal mode)
     # Move focused window
@@ -342,6 +342,12 @@ mode --pango_markup $mode_resize {
     bindsym w exec --no-startup-id $here/wallpaper_cycle, mode "default"
     # bindsym x exec --no-startup-id ~/bin/setup-xrandr, mode "default"
     bindsym v exec --no-startup-id exec $here/exec_video_mode.sh, mode "default"
+
+    # bindsym r output - hdr toggle, mode "default"  # Config wont load on sway 1.11
+    bindsym r exec --no-startup-id exec swaymsg "output - hdr toggle", mode "default"
+
+    bindsym u exec --no-startup-id exec ~/bin/rofi-udisks, mode "default"
+    bindsym p exec --no-startup-id exec ~/bin/rofi-pw, mode "default"
 
     bindsym g gaps horizontal current toggle $hgap, mode "default"
 
