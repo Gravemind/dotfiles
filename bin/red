@@ -26,9 +26,9 @@ colstep=1000	# temperature step
 bristep=20	# brightness step
 gamstep=0	# gamma step * 100
 
-colors=(6500 5500 4800 4000)
-brighs=(100  80   60   40)
-gammas=(100  100  100  100)
+colors=(6500 6000 5500 5000 4000)
+brighs=(100  90   80   80   80)
+gammas=(100  100  100  100  100)
 
 enable_current_output=0
 

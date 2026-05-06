@@ -2,7 +2,6 @@
 
 import sys
 import os
-import collections.abc
 import subprocess
 import re
 import time
@@ -48,7 +47,7 @@ def run(*args, **kwargs):
     output = str(proc.stdout, 'utf-8')
     if proc.returncode != 0:
         log("run failed: {}".format(args))
-        print(stdout, end="")
+        print(output, end="")
         return None
     if len(output) == 0:
         return None
@@ -196,8 +195,6 @@ def scrot_rofi(rawargs):
         indexend = res.find(" ")
         index = int(res[:indexend])
         userinput = res[indexend + 1:]
-
-        rename_magic_char = '!'
 
         if (len(userinput) == 0 or userinput == prefill) and index >= 0 and index < len(rofi_base_entries):
             res = rofi_base_entries[index]

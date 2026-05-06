@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec mv --exchange "$1" "$2"

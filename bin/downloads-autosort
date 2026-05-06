@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -euo pipefail
+
+DOWNLOADS=$HOME/Downloads
+
+VIDEOS=$HOME/Downloads/videos
+BOOKS=$HOME/Downloads/books
+DOCUMENTS=$HOME/Downloads/documents
+
+main() {
+    mkdir -p "$VIDEOS" "$BOOKS" "$DOCUMENTS"
+
+    local ext file dst
+    while IFS='' read -r -u3 file
+    do
+        dst=""
+        filename="${file##*/}"
+        ext="${file##*.}"
+        case "$ext"
+        in
+            webm|mkv|mp4)
+                dst="$VIDEOS"
+                ;;
+            epub|epub3|mobi|azw3)
+                dst="$BOOKS"
+                ;;
+            pdf)
+                dst="$DOCUMENTS"
+                ;;
+        esac
+
+        if [[ -n "$dst" ]]
+        then
+            echo "$dst/$filename"
+            mv -iT "$file" "$dst/$filename"
+        fi
+
+    done 3< <(find "$DOWNLOADS" -mindepth 1 -maxdepth 1 -type f)
+}
+
+main "$@"

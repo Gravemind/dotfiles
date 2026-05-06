@@ -20,13 +20,13 @@ echo "$0: locking $mode $fork at $(date -Is)"
 case "$mode"
 in
     sway)
-        swaylock ${fork:+-f} --show-failed-attempts --ignore-empty-password --color=202020 -i ~/.config/sway/wallpaper.blured.png --tiling "$@" || {
+        swaylock ${fork:+-f} --show-failed-attempts --ignore-empty-password --color=202020 -i ~/.config/sway/wallpaper.png -s fill "$@" || {
             echo "$0: swaylock failed at $(date -Is)"
             exit 1
         }
         ;;
     i3)
-        i3lock ${fork:---nofork} --show-failed-attempts --ignore-empty-password --color=202020 -i ~/.config/i3/wallpaper.blured.png --tiling "$@" || {
+        i3lock ${fork:---nofork} --show-failed-attempts --ignore-empty-password --color=202020 -i ~/.config/i3/wallpaper.png --tiling "$@" || {
             echo "$0: i3lock failed at $(date -Is)"
             exit 1
         }

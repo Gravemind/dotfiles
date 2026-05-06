@@ -80,7 +80,22 @@ fzf_clone() {
 }
 
 clone() {
-    local url="$1"
+    local url=
+    local light=
+    while [[ $# -gt 0 ]]
+    do
+        case "$1"
+        in
+            --light) light=1; ;;
+            *)
+                [[ -z "$url" ]] || { error "only support a single url"; return 1; }
+                url="$1"
+                ;;
+        esac
+        shift
+    done
+    [[ -n "$url" ]] || { error "missing url"; return 1; }
+
     local path abspath
     path="$(clone_path_from_url "$url")"
     abspath="$clones_git_root/$path"
@@ -117,7 +132,9 @@ clone() {
     fi
 
     local cmd
-    cmd=(git clone "$url" "$abspath")
+    cmd=(git clone)
+    [[ -z "$light" ]] || cmd+=("--filter=blob:limit=200k")
+    cmd+=("$url" "$abspath")
     read -rp "${cmd[*]} ? " ans
     case "$ans"
     in
