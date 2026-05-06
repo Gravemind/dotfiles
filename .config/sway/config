@@ -82,7 +82,9 @@ default_floating_border normal 2
 # Delay the reset of urgent hint workspace focus
 force_display_urgency_hint 500 ms
 
-focus_follows_mouse yes
+# Always focus on mouse move and workspace change
+focus_follows_mouse always
+
 default_orientation auto
 # default is split
 workspace_layout default
