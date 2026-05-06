@@ -1,0 +1,67 @@
+#!/bin/bash
+
+set -euo pipefail
+
+case "$1"
+in
+    toggle-mute)
+        wpctl set-mute @DEFAULT_SINK@ toggle
+        ;;
+    increase|decrease)
+        #
+        # Round the volume to the nearest step
+        #
+        vol_step="$2"
+        dir="1"
+        [[ "$1" = increase ]] || dir="-1"
+        vol="$(wpctl get-volume @DEFAULT_SINK@)"
+        vol="${vol#* }"
+        vol="${vol% *}"
+        vol="$(awk -v vol="$vol" -v step="$vol_step" -v dir="$dir" \
+         'BEGIN { print (int(vol * 100 / step) + dir) * step; }')"
+        wpctl set-volume @DEFAULT_SINK@ "${vol}%" -l 1.0
+        ;;
+    *)
+        echo "$0: invalid argument '$1'"
+        exit 1
+        ;;
+esac
+
+progname="wpvolume-notify"
+
+lockdir="${XDG_RUNTIME_DIR:-/run/user/$UID}"
+lockfile="$lockdir/$progname.lock"
+exec {lockfd}<>"$lockfile"
+flock -x -w 10 "$lockfd"
+
+vol="$(wpctl get-volume @DEFAULT_SINK@)"
+vol="${vol#* }"
+if [[ "$vol" = *" [MUTED]" ]]
+then
+    vol="${vol% \[MUTED\]}"
+    mute=1
+else
+    mute=0
+fi
+vol="$(awk -v vol="$vol" 'BEGIN { print int(vol * 100) }')"
+
+symbolic=""
+symbolic="-symbolic.symbolic"
+symbolic="-symbolic"
+icon_mute="audio-volume-muted$symbolic"
+icon_nomu="audio-volume-high$symbolic"
+# icon_nomu="audio-speakers$symbolic"
+# icon_mute="audio-speakers$symbolic"
+
+case "$mute" in
+    1)
+        title="Mute"
+        icon="$icon_mute"
+        ;;
+    *)
+        title="Volume"
+        icon="$icon_nomu"
+        ;;
+esac
+
+notify-send -u low -i "$icon" -a "$progname" -h int:value:"$vol" -h int:transient:1 -h string:synchronous:volume "$title"

@@ -400,16 +400,21 @@ set $volpct 5
 # set $volume_dec       exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@' -$volpct%
 # set $volume_inc_shift exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@' +$volpct%
 # set $volume_dec_shift exec --no-startup-id pactl set-sink-volume '@DEFAULT_SINK@' -$volpct%
-set $volume_mute      exec --no-startup-id ~/bin/pamixer-notify --toggle-mute
-set $volume_inc       exec --no-startup-id ~/bin/pamixer-notify --increase $volpct
-set $volume_dec       exec --no-startup-id ~/bin/pamixer-notify --decrease $volpct
-set $volume_inc_shift exec --no-startup-id ~/bin/pamixer-notify --increase $volpct
-set $volume_dec_shift exec --no-startup-id ~/bin/pamixer-notify --decrease $volpct
+# set $volume_mute      exec --no-startup-id ~/bin/pamixer-notify --toggle-mute
+# set $volume_inc       exec --no-startup-id ~/bin/pamixer-notify --increase $volpct
+# set $volume_dec       exec --no-startup-id ~/bin/pamixer-notify --decrease $volpct
+# set $volume_inc_shift exec --no-startup-id ~/bin/pamixer-notify --increase $volpct
+# set $volume_dec_shift exec --no-startup-id ~/bin/pamixer-notify --decrease $volpct
 # set $volume_mute      exec --no-startup-id ~/bin/pactl-notify set-sink-mute   '@DEFAULT_SINK@' toggle
 # set $volume_inc       exec --no-startup-id ~/bin/pactl-notify set-sink-volume '@DEFAULT_SINK@' +$volpct%
 # set $volume_dec       exec --no-startup-id ~/bin/pactl-notify set-sink-volume '@DEFAULT_SINK@' -$volpct%
 # set $volume_inc_shift exec --no-startup-id ~/bin/pactl-notify set-sink-volume '@DEFAULT_SINK@' +$volpct%
 # set $volume_dec_shift exec --no-startup-id ~/bin/pactl-notify set-sink-volume '@DEFAULT_SINK@' -$volpct%
+set $volume_mute      exec --no-startup-id ~/bin/wpvolume-notify toggle-mute
+set $volume_inc       exec --no-startup-id ~/bin/wpvolume-notify increase $volpct
+set $volume_dec       exec --no-startup-id ~/bin/wpvolume-notify decrease $volpct
+set $volume_inc_shift exec --no-startup-id ~/bin/wpvolume-notify increase $volpct
+set $volume_dec_shift exec --no-startup-id ~/bin/wpvolume-notify decrease $volpct
 # +/-
 bindsym $ModK+equal $volume_inc
 bindsym $ModK+minus $volume_dec
