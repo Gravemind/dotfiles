@@ -148,6 +148,9 @@
    ;; errors will abort macros, so suppress them:
    evil-kbd-macro-suppress-motion-error t
 
+   ;; Visit file version on RET, worktree file on S-RET
+   evil-collection-magit-visit-worktree-file-on-return nil
+
    )
 
   ;; Set insert-state style cursor in minibuffer
