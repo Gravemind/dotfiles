@@ -120,8 +120,9 @@
    ;; If h/l/f/t/... moves to other lines (like emacs)
    evil-cross-lines t
 
-   ;; If j/k moves across wrapped lines, or physical lines
-   evil-respect-visual-line-mode t
+   ;; Whether operation with motion affect visual line or entire line
+   ;; (when t, `gcc` (comment) will not comment truncated part)
+   evil-respect-visual-line-mode nil
 
    ;; If '$' makes cursor stick to eol
    evil-track-eol t

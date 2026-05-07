@@ -73,7 +73,16 @@
 
 ;; Wrap lines and makes cursor move into wrapped line like normal lines
 (global-visual-line-mode t)
-(setq word-wrap nil) ;; FIXME visual-line-mode sets word-wrap t
+;; restore variables changed by visual-mode
+(add-hook 'visual-line-mode-hook
+          (lambda ()
+            (setq
+             ;; Truncate on any character
+             word-wrap nil
+             ;; If window width too small, don't truncate (helps with zoom)
+             truncate-partial-width-windows 50
+             )
+            ))
 
 ;; Indent wrapped lines depending on context
 ;; (Replaces adaptive-wrap since emacs 30)
@@ -243,6 +252,7 @@ Saves to a temp file and puts the filename in the kill ring."
 
 ;; A few more useful configurations...
 (use-package emacs
+  :diminish (visual-line-mode)
   :init
   ;; Add prompt indicator to `completing-read-multiple'.
   ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
