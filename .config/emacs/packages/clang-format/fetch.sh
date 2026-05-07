@@ -8,6 +8,6 @@ cd "$(dirname "$0")"
 url="https://raw.githubusercontent.com/llvm/llvm-project/main/clang/tools/clang-format/clang-format.el"
 
 rm -f -- clang-format.el*
-curl -o clang-format.el "$url"
+curl -o clang-format.el -Lf "$url"
 
 echo OK
