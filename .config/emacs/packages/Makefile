@@ -12,7 +12,7 @@ compile:
 
 math-preview:
 	@echo "Compiling $@..."
-	cd $@ && npm install
+	set -eo pipefail; cd $@ && npm install |& sed 's/^/math-preview npm install: /'
 	@echo "Finished $@."
 	@echo ""
 .PHONY: math-preview
