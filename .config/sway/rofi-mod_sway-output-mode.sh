@@ -22,6 +22,7 @@ main() {
             # entry_mode "$i" " Game Sync:   VSync + Indicators" 1 0 1 &&
             # entry_mode "$i" " Game Unsync: Unsync + Indicators" 0 0 1 &&
             #entry_comm "$i" "--" &&
+            entry_prop "$i" hdr &&
             entry_prop "$i" adaptive_sync &&
             entry_prop_int "$i" max_render_time &&
             # entry_win_max_render_time "$i" &&
@@ -35,7 +36,6 @@ main() {
             entry_quit "$i" &&
             true
         i=""
-        RERUN=false
         echo "loop RERUN=$RERUN" >&2
     done
 }
@@ -118,7 +118,7 @@ entry_sway_output() {
                 action="enable"
             fi
             swaymsg "output $name $action" >&2
-            RERUN=false
+            RERUN=true
             return 1 # break
         fi
     done 3< <(
@@ -311,15 +311,16 @@ sway_output_get() {
     # Remap to get_outputs pties
     case "$pty" in
     adaptive_sync) pty=adaptive_sync_status; ;;
+    hdr) pty=hdr; ;;
     esac
 
     local val="$(jq -r --arg pty "$pty" '.[0][$pty]' <<<"$ALL_SWAY_OUTPUT")"
     echo "sway_output_get $pty $val" >&2
     case "$val" in
-    on|enabled)
+    true|on|enabled)
         echo 1
         ;;
-    off|disabled)
+    false|off|disabled)
         echo 0
         ;;
     *)
