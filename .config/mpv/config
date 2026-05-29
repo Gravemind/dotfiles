@@ -4,25 +4,25 @@ input-ipc-server=/tmp/mpvsocket
 osd-font='DejaVu Sans'
 osd-font-size=20
 osd-color=0.7
-sub-font='DejaVu Sans'
 
 #volume=70
 hr-seek=yes
 sub-pos=84
 sub-scale=0.6
-sid=no # no subtitle by default
-#sub-font-size=30
-sub-color=1.0/0.8
 
-sub-font="Nunito"
+# Subtitle styles
+sid=no # no subtitle by default
+# sub-font="Nunito"
+sub-font='Sylexiad Sans Medium'
 sub-font-size=60
+sub-color=1.0/0.5
 sub-border-size=4
+blend-subtitles=yes
 
 # sub-auto=exact  # excat media name
 # sub-auto=fuzzy  # matching media name
 sub-auto=all   # all under sub-file-paths
 sub-file-paths=sub:Sub:subs:Subs:subtitle:Subtitle:subtitles:Subtitles
-blend-subtitles=yes
 
 # Try harder to show subtitles when seeking
 demuxer-mkv-subtitle-preroll=yes
