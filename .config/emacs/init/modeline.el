@@ -37,6 +37,9 @@
 
 (defvar my/mode-line-buffer-long
   '(:eval
+    ;; FIXME: freezes emacs on tramp after a while
+    ;;        - file-truename do a tramp remote call ? then prompts for a password and everything freezes
+    ;;        - we must only use a cached project root
     (let* ((bfname (or buffer-file-truename buffer-file-name dired-directory))
            (fname (when bfname (file-truename bfname))))
       (if fname
@@ -57,6 +60,20 @@
       ))
   "My mode-line-buffer-id.")
 (put 'my/mode-line-buffer-long 'risky-local-variable t)
+
+(defvar my/mode-line-buffer-long-simple
+  '(:eval
+    (let* ((dir default-directory)
+           (is-local (not (file-remote-p dir)))      ;; `true' if the file is local
+           (is-connected (file-remote-p dir nil t))) ;; `true' if the file is remote AND we are connected to the remote
+      (or (and
+           is-local ;; (or is-local is-connected)
+           (let ((bfname (or buffer-file-truename buffer-file-name dired-directory)))
+             (and bfname (abbreviate-file-name bfname))))
+          "%b")
+      ))
+  "My mode-line-buffer-id - simpler version, should avoid tramp calls.")
+(put 'my/mode-line-buffer-long-simple 'risky-local-variable t)
 
 (defvar my/mode-line-ro-indicator
   ;; !! if the icon/glyph is not from the main/first font directly, it will be slow to load !!
@@ -151,14 +168,15 @@
 
    )
 
- ;; header-line-format
- ;; `(
- ;;   ""
- ;;   ;; my/mode-line-left-margin-padd
- ;;   (:propertize " " display ,my/mode-line-active-bar)
- ;;   my/mode-line-ro-indicator
- ;;   my/mode-line-buffer-long ;; FIXME: makes emacs freeze when tramp sudo password timeouts
- ;;   )
+ header-line-format
+ `(
+   ""
+   ;; my/mode-line-left-margin-padd
+   (:propertize " " display ,my/mode-line-active-bar)
+   my/mode-line-ro-indicator
+   ;; my/mode-line-buffer-long ;; FIXME: makes emacs freeze when tramp sudo password timeouts
+   my/mode-line-buffer-long-simple
+   )
 
  ;; frame title (X window title)
  frame-title-format
