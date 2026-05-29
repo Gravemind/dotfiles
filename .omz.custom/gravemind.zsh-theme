@@ -7,8 +7,11 @@
 # zsh prompt expansion: http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
 #
 
-my_sourcing_again="${my_sourcing_again:-false}"
-$my_sourcing_again || export _shell_depth="$((${_shell_depth:-0} + 1))"
+if [[ -z "${_did_shell_depth:-}" ]]
+then
+	_did_shell_depth=1
+	export _shell_depth="$((${_shell_depth:-0} + 1))"
+fi
 
 GRAVEMIND_NO_GIT=0
 
