@@ -74,7 +74,7 @@ shopt -s checkwinsize
 # shopt -u dotglob # Because non-empty GLOBIGNORE enables dotglob
 
 # add commands to the history file each time you hit enter
-PROMPT_COMMAND="history -a"
+PROMPT_COMMAND+=("history -a")
 
 # 'ignorespace' ignore commands that start with spaces
 # 'ignoredups' ignore duplicates
@@ -160,19 +160,18 @@ take() {
     mkdir -p "$1" && cd "$1"
 }
 
-my_sourcing_again="${my_sourcing_again:-false}"
-$my_sourcing_again || export _shell_depth="$((${_shell_depth:-0} + 1))"
+if [[ -z "${_did_shell_depth:-}" ]]
+then
+    _did_shell_depth=1
+    export _shell_depth="$((${_shell_depth:-0} + 1))"
+fi
 
 my_prompt_command() {
-    _PROMPT_STATUS=$?
-    eval "${_MY_PREV_PROMPT_COMMAND:-}"
+    _MY_PROMPT_STATUS=$?
 }
-if ! $my_sourcing_again
-then
-    _MY_PREV_PROMPT_COMMAND="${PROMPT_COMMAND:-}"
-    PROMPT_COMMAND=my_prompt_command
-fi
-export PS1='\[\033[1;30;40m\]\[\033[1;30m\]$_shell_depth \[\033[1;34m\]\u${SSH_CONNECTION:+\[\033[1;32m\]@\H} \[\033[1;34m\]\W\[\033[1;31m\]$([[ $_PROMPT_STATUS -eq 0 ]] || echo " $_PROMPT_STATUS") \[\033[1;37m\]\$\[\033[0;0;0m\] '
+PROMPT_COMMAND+=("my_prompt_command")
+
+export PS1='\[\033[1;30;40m\]\[\033[1;30m\]$_shell_depth \[\033[1;34m\]\u${SSH_CONNECTION:+\[\033[1;32m\]@\H} \[\033[1;34m\]\W\[\033[1;31m\]$([[ $_MY_PROMPT_STATUS -eq 0 ]] || echo " $_MY_PROMPT_STATUS") \[\033[1;37m\]\$\[\033[0;0;0m\] '
 export ORIG_PS1="$PS1"
 
 if false # true
@@ -184,5 +183,3 @@ then
     export _STARSHIP_ENV_VAR=$(if ((_shell_depth > 1)); then echo $_shell_depth ; fi)
     eval "$(starship init bash)"
 fi
-
-my_sourcing_again=true
