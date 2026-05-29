@@ -30,6 +30,9 @@ set $resize_step_y 180 px
 set $float_w       1024 px
 set $float_w_wide  1024 px
 set $float_h       720 px
+# 13 + (3440 − 2560) / 2 = 453
+set $bar_vgap      453px
+set $bar_hgap      13px
 # (2560, 1440) × 3 / 5 = [1536, 864]
 # (2560, 1440) × 2 / 5 = [1024, 576]
 set $ffpip_pos     1536 864 px
@@ -48,7 +51,7 @@ output "*" subpixel none
 # ipc-socket $here/ipc.sock
 
 # output "*" max_render_time 1
-# for_window [title=".*"] max_render_time 1
+# for_window [all] max_render_time 2
 
 #
 # Style and behaviors
@@ -85,6 +88,9 @@ force_display_urgency_hint 500 ms
 # Always focus on mouse move and workspace change
 focus_follows_mouse always
 
+# Do not wrap on window focus change (or on window close)
+focus_wrapping no
+
 default_orientation auto
 # layout default = split
 workspace_layout default
@@ -108,13 +114,10 @@ no_focus [window_role="pop-up"]
 floating_minimum_size 30 x 30
 floating_maximum_size -1 x -1
 
-# Window title format
-# for_window [all] title_window_icon yes, title_window_icon padding 4px
-# for_window [all] title_window_icon no
-# for_window [all] title_format "<span rise='1000'> </span>%class <span size='small' alpha='80%%' weight='normal'>%title</span>"
-# TODO sway all ?
-# for_window [class=".*"] title_format "<span rise='1000'> </span>%class <span size='small' alpha='80%%' weight='normal'>%title</span>"
-for_window [title=".*"] title_format "<b>%app_id%class</b> %title"
+# Window title padding and format
+titlebar_padding 6 5
+titlebar_border_thickness 0
+for_window [all] title_format "▎<span text_transform='capitalize' weight='bold'>%app_id%class</span> %title"
 
 # Colors
 # class                 border  backgr. text    split_indicator child_border
@@ -526,12 +529,19 @@ bar {
     status_command i3status -c ~/.config/i3/i3status.conf
     separator_symbol "   "
     mode hide
-    # font pango:Hack Nerd Font Mono 10
-    font pango:Hack Bold 10
     #tray_output none
     position bottom
+
+    # Style
+    font pango:Hack Bold 11
+    gaps $bar_hgap $bar_vgap
+    status_padding 8
+    status_edge_padding 20
+    workspace_min_width 30
+
     colors {
-        background #101010E0
+        # background #101010FF
+        background #000000
         statusline #d0d0d0
         separator #666666
         #                  <border> <background> <text>

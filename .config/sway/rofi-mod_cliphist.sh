@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [[ -z "$1" ]]; then
-    cliphist list
+    cliphist -preview-width 1000 list
 else
     {
         # cliphist decode <<<"$1" | wl-copy
