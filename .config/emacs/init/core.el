@@ -69,6 +69,11 @@
  ;; When running visual-mode, indicate wrapped lines in the fringe
  visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow)
 
+ ;; Don't ignore/exclude vcs dirs from find-file completion
+ completion-ignored-extensions (cl-set-difference
+                                completion-ignored-extensions
+                                '(".svn/" ".hg/" ".git/" ".bzr/")
+                                :test #'equal)
  )
 
 ;; Wrap lines and makes cursor move into wrapped line like normal lines
