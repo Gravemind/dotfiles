@@ -56,8 +56,9 @@
 
 (defun my-format ()
   (interactive)
-  (cond ((derived-mode-p 'rust-mode) (cargo-rust-fmt))
-        ((or (derived-mode-p 'c++-mode) (derived-mode-p 'c-mode)) (clang-format-buffer))))
+  ;; (note: derived-mode-p works as expected with ts modes
+  (cond ((derived-mode-p '(rust-mode)) (rust-format-buffer))
+        ((derived-mode-p '(c++-mode c-mode)) (clang-format-buffer))))
 
 (use-package evil
   :load-path (my-packages-directory "evil")
