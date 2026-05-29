@@ -317,8 +317,13 @@ force-window=immediate
 volume=80
 
 # Larger cache
-#cache-secs=600
-demuxer-max-bytes=512MiB
+demuxer-max-bytes=1GiB  # 1GiB / 400Mbit/min (high 4k bitrate) = 21 min
+cache-secs=600
+# Add cache hysteresis:
+# i.e. Download in chunks and avoid trickle download
+# i.e. Once the cache is full, pause download until this value remains in cache
+# Fixes a bug(?) with jellyfin streams where download would stop
+demuxer-hysteresis-secs=120
 
 [protocol.https]
 profile=protocol.http
