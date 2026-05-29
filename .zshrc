@@ -1,7 +1,18 @@
 #!/usr/bin/env zsh
 
-# If you come from bash you might have to change your $PATH.
-export PATH="$HOME/bin:$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
+# Prepend to PATH (reverse order)
+for p in "$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/bin"
+do
+    if [[ -d "$p" ]]
+    then
+        PATH=":${PATH}:"
+        PATH="${PATH//:$p:/:}"
+        PATH="${PATH#:}"
+        PATH="${PATH%:}"
+        export PATH="$p:$PATH"
+    fi
+done
+unset p
 
 [[ -f ~/.zshrc.local ]] && . ~/.zshrc.local
 

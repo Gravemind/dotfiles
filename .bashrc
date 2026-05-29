@@ -9,7 +9,20 @@
 #     source /usr/share/modules/init/bash
 # fi
 
-export PATH="$HOME/bin:$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
+# Prepend to PATH (reverse order)
+for p in "$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/bin"
+do
+    if [[ -d "$p" ]]
+    then
+        PATH=":${PATH}:"
+        PATH="${PATH//:$p:/:}"
+        PATH="${PATH#:}"
+        PATH="${PATH%:}"
+        export PATH="$p:$PATH"
+    fi
+done
+unset p
+
 export PS1='\s-\v\$ ' # bash default prompt
 [[ -f ~/.bashrc.local ]] && . ~/.bashrc.local
 
