@@ -3,6 +3,11 @@
 # ~/.bashrc
 #
 
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
+
 # Load environment modules
 # if ! type module >/dev/null 2>&1 && [[ -f /usr/share/modules/init/bash ]]
 # then
