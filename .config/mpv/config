@@ -98,6 +98,29 @@ profile=vulkan-next
 #
 
 #
+# SDR/HDR auto profiles
+#
+[SDR-to-SDR]
+profile-cond=p["video-params/primaries"] ~= "bt.2020" and p["video-target-params/primaries"] ~= "bt.2020"
+# target-trc=srgb
+
+[SDR-to-HDR]
+profile-cond=p["video-params/primaries"] ~= "bt.2020" and p["video-target-params/primaries"] == "bt.2020"
+target-contrast=10000000
+target-peak=1001  # Workaround pending sway HDR luminance hint
+# vf=format:gamma=gamma2.2 # use gamma 2.2 for SDR
+
+[HDR-to-SDR]
+profile-cond=p["video-params/primaries"] == "bt.2020" and p["video-target-params/primaries"] ~= "bt.2020"
+# vf=format:gamma=gamma2.2 # use gamma 2.2 for SDR
+# target-trc=srgb
+
+[HDR-to-HDR]
+profile-cond=p["video-params/primaries"] == "bt.2020" and p["video-target-params/primaries"] == "bt.2020"
+target-peak=1000  # Workaround pending sway HDR luminance hint implem
+target-contrast=10000000
+
+#
 # SVP
 #
 [enable-svp]
