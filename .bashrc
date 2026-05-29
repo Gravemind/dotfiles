@@ -29,7 +29,16 @@ done
 unset p
 
 export PS1='\s-\v\$ ' # bash default prompt
-[[ -f ~/.bashrc.local ]] && . ~/.bashrc.local
+
+# User specific aliases and functions
+if [[ -d ~/.bashrc.d ]]; then
+    for rc in ~/.bashrc.d/*; do
+        if [[ -f "$rc" ]]; then
+            . "$rc"
+        fi
+    done
+fi
+unset rc
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
