@@ -365,7 +365,8 @@ RPROMPT='%f%b%K{black}$(gravemind_build_rprompt)%f%b%k'
 PROMPT2="%K{black}%B  %F{blue}%_ %F{white}$GMPSEND %f%b%K{black}"
 
 ## prepend
-if ! $my_sourcing_again; then
+if [[ -z "${_did_cmd_functions:-}" ]]; then
+	_did_cmd_functions=1
 	preexec_functions+=(gravemind_preexec)
 	precmd_functions=(gravemind_precmd "${precmd_functions[@]}")
 fi
@@ -396,5 +397,3 @@ _fix-all-fzf-widgets() {
 	done
 }
 _fix-all-fzf-widgets
-
-my_sourcing_again=true
