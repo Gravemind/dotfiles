@@ -13,6 +13,7 @@ CHECK_ICONS = [" ", "✓"]
 FILTER_ICON = "𜸈"
 SINK_ICON = "🔊"
 SOURCE_ICON = "🎤"
+WARN_ICON = "⚠"
 
 
 def enable_smart_filter(node_id, enabled):
@@ -161,19 +162,25 @@ def loop(ctx):
                 sources,
             ),
         ]:
+            defaults = metadata["default"].get(0, {})
+            def_conf_name = defaults.get(def_conf_key, {}).get("name", None)
+            def_name = defaults.get(def_key, {}).get("name", None)
             rofi.entry(f"Default {name} {icon}:", nop)
-            def_conf_name = (
-                metadata["default"].get(0, {}).get(def_conf_key, {}).get("name", None)
-            )
-            def_name = metadata["default"].get(0, {}).get(def_key, {}).get("name", None)
+            foundconf = False
             for node in nodes:
                 props = node["info"]["props"]
                 desc = props["node.description"]
                 isdef = props["node.name"] == def_name
                 isconf = props["node.name"] == def_conf_name
+                foundconf = foundconf or isconf
                 rofi.entry(
                     f"  {RADIO_ICONS[isconf]} {CHECK_ICONS[isdef]} {desc}",
                     partial(set_default, def_conf_key, props["node.name"]),
+                )
+            if not foundconf and def_conf_name is not None:
+                rofi.entry(
+                    f"  {RADIO_ICONS[True]}   {def_conf_name} [{WARN_ICON} Unknown {name} {WARN_ICON}]",
+                    nop,
                 )
             isdef = def_name is None
             isconf = def_conf_name is None
