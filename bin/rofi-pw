@@ -8,6 +8,7 @@ import subprocess as subp
 from functools import partial
 from types import SimpleNamespace
 import traceback
+import argparse
 
 
 RADIO_ICONS = ["", ""]
@@ -16,6 +17,24 @@ FILTER_ICON = "𜸈"
 SINK_ICON = "🔊"
 SOURCE_ICON = "🎤"
 WARN_ICON = "⚠"
+
+
+def make_parser():
+    parser = argparse.ArgumentParser()
+
+    subparsers = parser.add_subparsers(dest="command")
+    parser.set_defaults(command_func=command_rofi)
+
+    rof = subparsers.add_parser("rofi")
+    rof.set_defaults(command_func=command_rofi)
+
+    esf = subparsers.add_parser("smart-filter")
+    esf.set_defaults(command_func=command_smart_filter)
+    esf.add_argument("--enable", dest="enable", action="store_true")
+    esf.add_argument("--disable", dest="enable", action="store_false")
+    esf.add_argument("name")
+
+    return parser
 
 
 def enable_smart_filter(node_id, enabled):
@@ -105,35 +124,41 @@ class Rofi:
         )
 
 
+def pw_dump():
+    with subp.Popen("pw-dump", stdout=subp.PIPE, encoding="utf-8") as proc:
+        pwdump = json.load(proc.stdout)
+    if proc.returncode != 0:
+        raise RuntimeError(f"pw-dump failed with exit {proc.returncode}")
+
+    metadata = {"filters": {}, "default": {}}
+    smart_filters = []
+    sinks = []
+    sources = []
+
+    for node in pwdump:
+        typ = node["type"]
+        if typ == "PipeWire:Interface:Metadata":
+            mtname = node.get("props", {}).get("metadata.name")
+            if mtname in metadata:
+                for mt in node["metadata"]:
+                    metadata[mtname].setdefault(mt["subject"], {})[mt["key"]] = mt[
+                        "value"
+                    ]
+        elif typ == "PipeWire:Interface:Node":
+            props = node.get("info", {}).get("props", {})
+            if props.get("filter.smart", False):
+                smart_filters.append(node)
+            elif props.get("media.class") == "Audio/Sink":
+                sinks.append(node)
+            elif props.get("media.class") == "Audio/Source":
+                sources.append(node)
+
+    return smart_filters, sinks, sources, metadata
+
+
 def loop(ctx):
     with Rofi(select_row=ctx.get("row", None)) as rofi:
-        with subp.Popen("pw-dump", stdout=subp.PIPE, encoding="utf-8") as proc:
-            pwdump = json.load(proc.stdout)
-        if proc.returncode != 0:
-            raise RuntimeError(f"pw-dump failed with exit {proc.returncode}")
-
-        metadata = {"filters": {}, "default": {}}
-        smart_filters = []
-        sinks = []
-        sources = []
-
-        for node in pwdump:
-            typ = node["type"]
-            if typ == "PipeWire:Interface:Metadata":
-                mtname = node.get("props", {}).get("metadata.name")
-                if mtname in metadata:
-                    for mt in node["metadata"]:
-                        metadata[mtname].setdefault(mt["subject"], {})[mt["key"]] = mt[
-                            "value"
-                        ]
-            elif typ == "PipeWire:Interface:Node":
-                props = node.get("info", {}).get("props", {})
-                if props.get("filter.smart", False):
-                    smart_filters.append(node)
-                elif props.get("media.class") == "Audio/Sink":
-                    sinks.append(node)
-                elif props.get("media.class") == "Audio/Source":
-                    sources.append(node)
+        smart_filters, sinks, sources, metadata = pw_dump()
 
         def nop():
             pass
@@ -206,10 +231,27 @@ def loop(ctx):
     return True
 
 
-def main():
+def command_rofi(args):
     ctx = {}
     while loop(ctx):
         pass
+
+
+def command_smart_filter(args):
+    smart_filters, _, _, _ = pw_dump()
+
+    if hasattr(args, "enable"):
+        needle = args.name
+        for node in smart_filters:
+            props = node["info"]["props"]
+            if props["node.name"] == needle:
+                enable_smart_filter(node["id"], args.enable)
+
+
+def main():
+    parser = make_parser()
+    args = parser.parse_args()
+    args.command_func(args)
 
 
 if __name__ == "__main__":
