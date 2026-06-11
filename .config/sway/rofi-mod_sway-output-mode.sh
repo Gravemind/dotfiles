@@ -204,7 +204,7 @@ entry_win_max_render_time_all() {
         swaymsg -t get_tree | jq '
             [ recurse(.nodes? | .[]) |
             select(.type == "con" and .max_render_time) |
-            .max_render_time ] | min
+            .max_render_time ] | max
         ' -r
     )"
 
@@ -224,7 +224,8 @@ entry_win_max_render_time_all() {
         else
             v=$((v + 1))
         fi
-        checked_swaymsg "[title=\".*\"] max_render_time $v"
+        checked_swaymsg "for_window [all] max_render_time $v"
+        checked_swaymsg "[all] max_render_time $v"
         RERUN=true
         return 1 # break
     elif [[ "$input" = "- $entry" ]]; then
@@ -233,7 +234,8 @@ entry_win_max_render_time_all() {
         else
             v=$((v - 1))
         fi
-        checked_swaymsg "[title=\".*\"] max_render_time $v"
+        checked_swaymsg "for_window [all] max_render_time $v"
+        checked_swaymsg "[all] max_render_time $v"
         RERUN=true
         return 1 # break
     fi
