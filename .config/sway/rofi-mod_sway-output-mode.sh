@@ -1,13 +1,19 @@
 #!/bin/bash
 
-set -x
+set -euo pipefail
+# set -x
+
+log() { echo "$*" >&2; }
+die() { log "error: $*"; exit 1; }
+run() { local c; c="$(printf ' %q' "$@")"; log "+$c"; "$@" || die "command failed ($?):$c"; }
+debug() { true; }
 
 base0="$(basename "$0")"
 
 main() {
-    local i="$1"
+    local i="${1:-}"
 
-    echo "main '$i'" >&2
+    debug "main '$i'"
 
     RERUN=true
     while [[ $RERUN = true ]]
@@ -36,7 +42,7 @@ main() {
             entry_quit "$i" &&
             true
         i=""
-        echo "loop RERUN=$RERUN" >&2
+        debug "loop RERUN=$RERUN"
     done
 }
 
@@ -315,7 +321,7 @@ sway_output_get() {
     esac
 
     local val="$(jq -r --arg pty "$pty" '.[0][$pty]' <<<"$ALL_SWAY_OUTPUT")"
-    echo "sway_output_get $pty $val" >&2
+    debug "sway_output_get $pty $val"
     case "$val" in
     true|on|enabled)
         echo 1
@@ -334,7 +340,7 @@ sway_output_set() {
     local val="$2"
 
     local res
-    echo "sway_output_set $pty $val" >&2
+    debug "sway_output_set $pty $val"
     res="$(swaymsg output "*" "$pty" "$val" || true)"
     # res="$(false)"
     sleep 0.5s
@@ -349,7 +355,7 @@ sway_output_set() {
 
         local current
         current="$(sway_output_get "$pty")"
-        echo "sway_output_set $pty after set=$current target=$val" >&2
+        debug "sway_output_set $pty after set=$current target=$val"
         if [[ "$current" != "$val" ]]; then
             # true
             # FIXME support multi screen monitor
