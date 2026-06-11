@@ -27,6 +27,7 @@
               :map magit-section-mode-map
               ("C-i" . better-jumper-jump-backward)
               )
+  :hook ((magit-status-mode magit-log-mode) . (lambda () (visual-line-mode -1) (setq truncate-lines t)))
   :config
   (my--require-compsys)
 

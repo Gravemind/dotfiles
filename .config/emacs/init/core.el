@@ -85,7 +85,7 @@
              ;; Truncate on any character
              word-wrap nil
              ;; If window width too small, don't truncate (helps with zoom)
-             truncate-partial-width-windows 50
+             truncate-partial-width-windows 70
              )
             ))
 
