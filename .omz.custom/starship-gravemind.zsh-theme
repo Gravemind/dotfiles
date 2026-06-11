@@ -42,5 +42,3 @@ TRAPALRM() {
 # #GMPSGIT="%{%G%}"
 # # RPS1="%K{black}%B%F{white}$GMPSBEG\$(gravemind_prompt_cmd_time) \$(gravemind_prompt_info_long) $GMPSSEP \$(gravemind_promt_cc)$GMPSSEP %F{blue}%D{%H:%M} %F{white}$GMPSEND%f%b%k"
 # RPS1="%K{black}%B%F{white}$GMPSBEG %F{blue}%D{%H:%M} %F{white}$GMPSEND%f%b%k"
-
-my_sourcing_again=true
