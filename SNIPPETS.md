@@ -251,6 +251,29 @@ ssh -T -i ~/.ssh/id_ed25519 -p 22 git@github.com
 ssh-keygen -t ed25519 -C "your_email@example.com" -f ~/.ssh/my_ssh_key
 ```
 
+### curl
+
+```sh
+curl -sSLf -O <url>  # Better default
+
+curl -sSLf -C - -R --connect-timeout 60 --max-time 600 --retry 3 -o <file> <url>  # Advanced. Add --compressed if content is not already compressed
+
+curl -sS       # Silent, but show errors
+curl -L        # Follow redirections
+curl -f        # Exit error on HTTP errors
+curl -O        # Output to a file named from URL
+curl -o <file> # Output to <file>
+
+curl -R            # Try to set output file modification date to the remote file modif time
+curl -C -          # Resume/Continue transfer
+curl --compressed  # Ask for compression. Note: curl decompresses but leaves compression header in response
+
+curl --connect-timeout 60  # Connection timeout
+curl --max-time 600        # Transfert timeout
+curl --retry 3             # Retry. Reset timeouts on retry.
+```
+
+
 ### stat
 
 ```
@@ -395,6 +418,37 @@ Makefile variable assignment:
 Overridable from cli: `make VAR=42`. Overridable from env: `VAR=42 make`.
 
 make automatic/magic variables:`$@` is the targeted rule name, `$<` is first prerequisite. See https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html
+
+
+### gdb
+
+```
+info proc           # pid, cmd, exe, cwd
+info program        # current state, exception, signal
+
+info symbol ADDR    # the function/section/binary/lib/exe of an address
+info address SYM    # the address of a symbol/function
+
+p arr@3             # print 3 elements of array (pointer) "arr"
+
+set env ENV VAL     # set environment variable
+show env ENV VAL    # get environment variable
+
+thread appy all bt  # backtrace of all threads
+
+info signals
+handle <SIGS...> <ACTIONS...>
+handle SIGUSR1 print nostop pass  # Print signal, and pass to inferior process
+handle SIGUSR1 print stop pass    # Print signal, stop, and pass to inferior process
+
+```
+
+
+### perf
+
+```
+sudo sysctl kernel.perf_event_paranoid=1  # >=2:per-process user, >=1:+kernel, >=0:+system-wide, >=-1:+tracepoints ftrace
+```
 
 ## Python
 
