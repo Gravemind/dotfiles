@@ -1,3 +1,6 @@
+# man 5 alacritty
+# man 5 alacritty-bindings
+
 [env]
 #TERM="xterm-256color"
 
@@ -122,9 +125,13 @@ key = "Equals"
 mods = "Control"
 
 [[keyboard.bindings]]
-action = "IncreaseFontSize"
-key = "Plus"
-mods = "Control"
+action = "ScrollHalfPageUp"
+mods = "Shift"
+key = "PageUp"
+[[keyboard.bindings]]
+action = "ScrollHalfPageDown"
+mods = "Shift"
+key = "PageDown"
 
 [scrolling]
 history = 100000

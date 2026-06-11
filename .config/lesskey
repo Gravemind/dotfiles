@@ -1,3 +1,8 @@
+#command
+S toggle-option S
+f toggle-option -redraw-on-quit\n  # `f` keeps current screen in terminal output on quit
+\kD forw-scroll  # `PageDown` scrolls half-page/screen
+\kU back-scroll
 #line-edit
 \e[1;5D word-left
 \e[1;5C word-right

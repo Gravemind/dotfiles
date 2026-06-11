@@ -15,19 +15,22 @@ export GROFF_NO_SGR=1  # all grotty
 
 export LESSBINFMT='*u<%02X>'
 
-# -q  : --quiet : less bell ringing
-# (-F : --quit-if-one-screen)
-# -R  : --RAW-CONTROL-CHARS: allow **only** color termcap escape sequences
-# (-r : --raw-control-chars)
-# (-X : --no-init : no termcap clear on quit)
-# -i  : --ignore-case : smart ignore case
-# (-I : --IGNORE-CASE : always ignore case)
-# -S  : --chop-long-lines : truncate lines (vs wrap lines)
-# -M  : --LONG-PROMPT : longest prompt
-# (-m : --long-prompt)
-# (-J : --status-column) : left-margin to highlight search/find
-# -jn : --jump-target=n : linenum position of "jumped to" target
-# -zn : --window=n : PAGE-up/down scrolled lines, negative for win_height-n
+# less options:
+#   -q : --quiet : less bell ringing
+#   -F : --quit-if-one-screen
+#   -R : --RAW-CONTROL-CHARS: allow color/hyperlinks/etc. termcap control escape sequences
+#   -r : --raw-control-chars
+#   -X : --no-init : no termcap clear on enter and quit
+#   -c : --clear-screen : clear screen before, always scroll to top - Note: makes redraw-on-quit output "~" lines
+#   -i : --ignore-case : smart ignore case
+#   -I : --IGNORE-CASE : always ignore case
+#   -S : --chop-long-lines : truncate lines vs wrap lines
+#   -M : --LONG-PROMPT : longest prompt
+#   -m : --long-prompt
+#   -J : --status-column : left-margin to highlight search/find
+#   -jn : --jump-target=n : linenum position of "jumped to" target
+#   -zn : --window=n : PAGE-up/down scrolled lines, negative for win_height-n
+#   --redraw-on-quit : on quit, output the current page in terminal
 export LESS='-qRiSM -j5 -z-4'
 
 function man() {

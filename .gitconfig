@@ -243,17 +243,28 @@
 #[column]
 #	ui = auto column dense
 
+# If $LESS is set, git wont use "less -FRX", so restore it.
+# See ~/.omz.custom/less.zsh
 [core]
-	pager = less
+	# Always paginate. On quit, leave nothing in the terminal.
+	pager = "less -R"
+	# # Always paginate. On quit, leave only the current page in the terminal.
+	# pager = "less -R --redraw-on-quit"
+	# # Paginate if nessecary. On quit, leave only the current page in the terimnal.
+	# pager = "less -RF --redraw-on-quit"
+	# # Paginate if nessecary. On quit, leave scrolled content (everything up to current page) in the terimnal.
+	# pager = "less -RFX"
 [pager]
-	# If $LESS exists, git will use it instead of the default "less -FRX"
-	# So here, restore "FRX" only for those commands.
-	# -F : --quit-if-one-screen
-	# -R : --RAW-CONTROL-CHARS: allow ANSI "color" escape sequences
-	# -X : --no-init : no termcap clear on quit
-	tag = "less -FRX"
-	branch = "less -FRX"
-	show-branch = "less -FRX"
+	log = true
+	reflog = true
+	diff = true
+	show-branch = true
+	ls-files = true
+	status = "less -RF --redraw-on-quit"
+	tag = "less -RF --redraw-on-quit"
+	branch = "less -RF --redraw-on-quit"
+	for-each-ref = "less -RF --redraw-on-quit"
+
 [init]
 	defaultBranch = main
 [tag]
