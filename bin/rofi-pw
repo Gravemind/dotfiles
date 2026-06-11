@@ -7,6 +7,8 @@ import json
 import subprocess as subp
 from functools import partial
 from types import SimpleNamespace
+import traceback
+
 
 RADIO_ICONS = ["", ""]
 CHECK_ICONS = [" ", "✓"]
@@ -75,10 +77,14 @@ class Rofi:
         self.entries.append(entry)
         self.actions.append(action)
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, exc_type, exc_value, tb):
         proc = self.proc
         self.proc = None
         if exc_type is not None:
+            proc.stdin.write("\nERROR: python code exception: ERROR: \n")
+            traceback.print_exc(file=proc.stdin)
+            proc.stdin.close()
+            proc.wait()
             proc.kill()
             return
         proc.stdin.close()
