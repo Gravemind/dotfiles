@@ -69,7 +69,7 @@ class Rofi:
 
     def entry(self, entry, action):
         assert self.proc is not None
-        assert entry not in self.entries
+        assert entry not in self.entries, f"duplicated entry: {entry!r}"
         assert entry == entry.rstrip()
         self.proc.stdin.write(entry + "\n")
         self.entries.append(entry)
@@ -135,15 +135,16 @@ def loop(ctx):
         if smart_filters:
             rofi.entry(f"Smart Filters {FILTER_ICON}:", nop)
             for node in smart_filters:
+                nid = node["id"]
                 props = node["info"]["props"]
                 desc = props["node.description"]
-                mt = metadata["filters"].get(node["id"], {})
+                mt = metadata["filters"].get(nid, {})
                 enabled = not mt.get(
                     "filter.smart.disabled", props.get("filter.smart.disabled", False)
                 )
                 rofi.entry(
-                    f"  {RADIO_ICONS[enabled]} {desc}",
-                    partial(enable_smart_filter, node["id"], not enabled),
+                    f"  {RADIO_ICONS[enabled]} {desc} [{nid}]",
+                    partial(enable_smart_filter, nid, not enabled),
                 )
 
         for name, icon, def_conf_key, def_key, nodes in [
@@ -168,13 +169,14 @@ def loop(ctx):
             rofi.entry(f"Default {name} {icon}:", nop)
             foundconf = False
             for node in nodes:
+                nid = node["id"]
                 props = node["info"]["props"]
                 desc = props["node.description"]
                 isdef = props["node.name"] == def_name
                 isconf = props["node.name"] == def_conf_name
                 foundconf = foundconf or isconf
                 rofi.entry(
-                    f"  {RADIO_ICONS[isconf]} {CHECK_ICONS[isdef]} {desc}",
+                    f"  {RADIO_ICONS[isconf]} {CHECK_ICONS[isdef]} {desc} [{nid}]",
                     partial(set_default, def_conf_key, props["node.name"]),
                 )
             if not foundconf and def_conf_name is not None:
