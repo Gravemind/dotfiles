@@ -30,6 +30,7 @@ main() {
             #entry_comm "$i" "--" &&
             entry_prop "$i" hdr &&
             entry_prop "$i" adaptive_sync &&
+            entry_prop "$i" allow_tearing &&
             entry_prop_int "$i" max_render_time &&
             # entry_win_max_render_time "$i" &&
             entry_win_max_render_time_all "$i" &&
@@ -157,9 +158,17 @@ entry_prop() {
         if [[ "$v" = "1" ]]
         then
             sway_output_set "$pty" "0"
+            yn=no
         else
             sway_output_set "$pty" "1"
+            yn=yes
         fi
+        case "$pty" in
+            allow_tearing)
+                checked_swaymsg "for_window [all] $pty $yn"
+                checked_swaymsg "[all] $pty $yn"
+                ;;
+        esac
         RERUN=true
         return 1 # break
     fi
