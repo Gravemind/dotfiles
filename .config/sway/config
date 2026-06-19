@@ -575,4 +575,8 @@ exec_always --no-startup-id exec $here/exec_daemon.sh swayidle $here/exec_swayid
 # exec_always --no-startup-id systemctl --user restart dunst.service
 exec_always --no-startup-id $here/exec_daemon.sh dunst dunst
 
+# Start custom sway-session.target that will start graphical-session.target
+# Fixes xdg-desktop-portal.service: Job xdg-desktop-portal.service/start failed with result 'dependency'.
+exec_always --no-startup-id systemctl --user start sway-session.target
+
 workspace 3
