@@ -142,9 +142,15 @@ declare | grep '^XDG_'
 
 ### dd
 
+- `dd bs=4M count=512`: transfer 512 * 4 * 1024 * 1024 bytes total
+- `dd conv=sync`: pad input with zeros if not multiple of bs
+- `dd conv=fsync`: long flush at the end
+- `dd oflag=sync`: flush each block: more accurate progress and bandwidth, no wait at the end
+
 ```sh
-# Hard-format, zero first 40MiB
-dd bs=4M count=10 conv=sync,fsync status=progress if=/dev/zero of=/dev/disk/by-id/usb-...
+# Format partition table
+# dd bs=512 count=1 conv=sync,fsync oflag=sync status=progress if=/dev/zero of=/dev/disk/by-id/usb-...
+wipefs -a /dev/disk/by-id/usb-...
 
 partprobe
 
