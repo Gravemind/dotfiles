@@ -211,10 +211,34 @@ perl -pe 's/
 perl -0777 -pe 's///gms'
 ```
 
-### tar
+### tar + zstd
 
 ```sh
-tar --owner=0 --group=0 --no-same-owner --no-same-permissions -caf tar.tar.xz -C dir file ...
+tar --owner=0 --group=0 --no-same-owner --no-same-permissions -caf tar.tar.zst -C parentdir dir-or-file ...
+
+tar -I "zstd -T0 --fast=1 --long" -cf /tmp/test.tar.zst ...
+tar -cf - ... | zstd -T0 --fast=1 --long > /tmp/test.tar.zst
+```
+
+| ratio  | comp seed | decomp sepeed | cmd                       | note                                         |
+|--------|-----------|---------------|---------------------------|----------------------------------------------|
+| high   | mid       | mid           | zstd -T0 -3 --long        | high ratio. ~= faster xz.                    |
+| mid    | fast      | fast          | zstd -T0 --fast=1 --long  | faster decomp. ~= faster zlib.               |
+| low    | fast      | fast          | zstd -T0 --fast=3         | lower memory usage. ~= less hungry "lz4 -1". |
+| low    | fast      | fastest       | zstd -T0 --fast=22 --long | fastest decomp                               |
+| lowest | fastest   | fast          | zstd -T0 --fast=22        | fastest comp                                 |
+
+- zstd -#       : higher # = higher ratio, slower decomp, much slower comp.
+- zstd --fast=# : higher # = lower ratio, faster decomp, barely faster comp (when -T6).
+- zstd --long   : x10 memory usage (10MB -> 100MB), better ratio and faster decompression, but slower comp.
+
+```sh
+# Transfer with adaptive compression:
+# - For a small transfer on slow speed (e.g. <=10GB file on <=1Gbit eth):
+tar -cf - -C parentdir dir | zstd -T0 --long --fast=22 --adapt -v | ssh remote 'zstd -d | tar -xf - -C parentdir'
+# - For large transfers, or on high speed, multithread adapt will get stuck at high level very low speed, so:
+tar -cf - -C parentdir dir | zstd -T1 --long --fast=22 --adapt -v | ssh remote 'zstd -d | tar -xf - -C parentdir'
+# - But a fixed level, multithreaded, deduced by benchmark, will be the fastest.
 ```
 
 ### Slurm
