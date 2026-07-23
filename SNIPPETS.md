@@ -456,6 +456,58 @@ handle SIGUSR1 print stop pass    # Print signal, stop, and pass to inferior pro
 sudo sysctl kernel.perf_event_paranoid=1  # >=2:per-process user, >=1:+kernel, >=0:+system-wide, >=-1:+tracepoints ftrace
 ```
 
+### magic sysrq REISUB
+
+https://en.wikipedia.org/wiki/Magic_SysRq_key
+https://wiki.archlinux.org/title/Keyboard_shortcuts
+https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html#what-are-the-command-keys
+
+Linux kernel commands keyboard shortcuts. Must be enabled:
+
+```console
+$ cat /proc/sys/kernel/sysrq
+244
+$ cat /etc/sysctl.d/99-sysrq.conf
+# Magic sysrq
+# 1: allow everything
+# 244: allow reisub (no log level, no dump, no nice)
+kernel.sysrq=244
+```
+
+Keep Alt pressed then press/release in sequence: PrintScr (SysRq), R, E, I, S, U, B, (reisub: Raising Elephants Is So Utterly Boring)
+
+| Cmd | Function                                                                    |
+|-----|-----------------------------------------------------------------------------|
+| r   | Turns off keyboard raw mode and sets it to XLATE.                           |
+| e   | SIGTERM processes, except init.                                             |
+| i   | SIGKILL processes, except init.                                             |
+| s   | Sync mounted filesystems.                                                   |
+| u   | Read-only remount mounted filesystems as  .                                 |
+| b   | Reboot without syncing or unmounting your disks.                            |
+|     |                                                                             |
+| h   | Help (works with any unknown key)                                           |
+| f   | OOM killer                                                                  |
+|     |                                                                             |
+| c   | Performs a system crash and a crashdump will be taken if configured.        |
+| d   | Shows all locks that are held.                                              |
+| g   | Used by kgdb (kernel debugger)                                              |
+| j   | Forcibly "Just thaw it" - filesystems frozen by the FIFREEZE ioctl.         |
+| k   | Kills all programs on the current virtual console. NOTE: See important doc. |
+| l   | Shows a stack backtrace for all active CPUs.                                |
+| m   | Dump current memory info to your console.                                   |
+| n   | Used to make RT tasks nice-able                                             |
+| o   | Shutdown.                                                                   |
+| p   | Dump current registers and flags.                                           |
+| q   | Dump per CPU lists of all armed hrtimers, clockevent devices, etc..         |
+| t   | Dump tasks.                                                                 |
+| v   | Forcefully restores framebuffer console                                     |
+| v   | Causes ETM buffer dump [ARM-specific]                                       |
+| w   | Dumps tasks that are in uninterruptible (blocked) state.                    |
+| z   | Dump the ftrace buffer                                                      |
+| 0-9 | Sets the console kernel log level (0=panic, 3=err, 4=warn, 7=info).         |
+| R   | Replay the kernel log messages on consoles.                                 |
+
+
 ## Python
 
 ### Python2 and Python3 unicode
