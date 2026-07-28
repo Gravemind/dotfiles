@@ -8,3 +8,9 @@
 
 /compile_commands.json
 /build*/
+
+*~
+\#*\#
+
+*.o
+*.so

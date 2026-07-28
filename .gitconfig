@@ -43,13 +43,13 @@
 	# usage: refs FOR-EACH-REF-ARGS
 	# List branch and tags in a short form
 	# FIXME: where is the color ?! git 2.24 had colors !?
-	rfs = for-each-ref --format='%(refname:lstrip=2)' --sort=version:refname
+	ls-refs = for-each-ref --format='%(refname:lstrip=2)' --sort=version:refname --exclude='refs/stash'
 
 	# usage: git cont REV
 	# Show branch and tags containing REV
 	#cont = branch --sort=version:refname --all --contains
 	#contt = tag --contains
-	cont = rfs --contains
+	cont = ls-refs --contains
 
 	a = add
 	# "un-add"
@@ -170,7 +170,6 @@
 	showuntrack = config --local status.showUntrackedFiles normal
 
 	# It's a good practice to make the very frist commit of a repo empty
-	first = commit -m 'first commit' --allow-empty
 	first = commit -m 'First commit' --allow-empty
 
 	branches = for-each-ref --sort committerdate --format '%(align:40)%(refname:lstrip=2)%(end) %(align:40)%(committerdate:relative)%(end) (%(committername)) %(contents:subject)' refs/heads refs/remotes
