@@ -356,6 +356,12 @@
   ;; :disabled t
   :load-path (my-packages-directory "rust-mode")
   :mode (("\\.rs\\'" . rust-mode))
+  :init
+  (require 'treesit)
+  (if (treesit-ready-p 'rust t)
+      ;; Make rust-mode derive from rust-ts-mode
+      (setq-default rust-mode-treesitter-derive t)
+    )
   :config
   ;; Fix rust source file links in cargo build output in compilation window
   ;; (this cargo regex matches can match comma from the line above)

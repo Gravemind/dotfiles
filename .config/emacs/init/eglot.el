@@ -17,7 +17,7 @@
    )
 
   (add-to-list 'eglot-server-programs
-               `((c-mode c-ts-mode c++-mode c++-ts-mode) . ,(eglot-alternatives '(
+               `((c-mode c++-mode) . ,(eglot-alternatives '(
                                  ("clangd-20")
                                  ("clangd-19")
                                  ("clangd-18")
