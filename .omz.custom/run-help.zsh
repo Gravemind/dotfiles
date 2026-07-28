@@ -74,7 +74,6 @@ run-help-sudo() {
 _run-help-sub-command() {
 	local base="$1"
 	shift
-	# TODO: support "command -ignore-me subcommand" ?
 	if [[ $# -ge 2 && "$1" =~ ^[a-z_-]+$ && "$2" =~ ^[a-z_-]+$ ]] && man -w $base-$1-$2; then
 		man $base-$1-$2
 	elif [[ $# -ge 1 && "$1" =~ ^[a-z_-]+$ ]] && man -w $base-$1; then
@@ -103,3 +102,31 @@ run-help-perf() {
 run-help-semanage() {
 	_run-help-sub-command semanage "$@"
 }
+
+_run-help-prepend--help() {
+	local base="$1"
+	shift
+
+	# run-help strips options/paths/etc from command line,
+	# so get back original command line:
+	local cmd_args
+	builtin getln cmd_args &&
+	builtin print -z "$cmd_args"
+	cmd_args=( ${(z)${cmd_args:-"$*"}} )
+	# FIXME: discard stuff ? see run_help_orig_cmd in /usr/share/zsh/functions/Misc/run-help
+
+	set -- "${cmd_args[@]}"
+
+	if [[ "${1:-}" = *"$base" ]] ; then
+		local a0="$1"
+		shift
+		local helpcmd=("$a0" --help "$@")
+		printf "(_run-help-prepend--help:" >&2
+		printf -- " %s" "${helpcmd[@]}" >&2
+		printf ")\n" >&2
+		"${helpcmd[@]}"
+	fi
+}
+
+run-help-nix-env() { _run-help-prepend--help nix-env "$@"; }
+run-help-nix-store() { _run-help-prepend--help nix-store "$@"; }
