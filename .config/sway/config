@@ -187,7 +187,7 @@ for_window [class="^Emacs$" title="^Helm$"] floating enable, border pixel 2
 for_window [class="^Emacs$" title="^Ediff"] floating enable, border pixel 2
 
 # Move Picture-in-Picture window to the side
-for_window [app_id="(?i)firefox" title="(?i)picture-in-picture"] move right, resize set width 1200 px, split v
+for_window [app_id="(?i)firefox" title="(?i)picture-in-picture"] border pixel 2, move right, resize set width 1200 px, split v
 
 assign [class="(?i)^.*steam.*$"] → 1
 for_window [class="^steam$" title="^Steam Settings$"] floating enable
@@ -278,9 +278,11 @@ bindsym $ModK+Shift+v split none
 
 # Focus the parent container
 bindsym $ModK+x focus parent
+bindsym $ModK+Shift+c focus parent
 
 # Focus the child container
 bindsym $ModK+c focus child
+bindsym $ModK+Shift+x focus child
 
 # Change container layout
 bindsym $ModK+a layout tabbed
@@ -557,6 +559,8 @@ bar {
 # Run at startup
 #
 
+workspace 3
+
 exec_always --no-startup-id $here/wallpaper_cycle
 
 # Device manager (auto user mount, umount, notify)
@@ -577,6 +581,4 @@ exec_always --no-startup-id $here/exec_daemon.sh dunst dunst
 
 # Start custom sway-session.target that will start graphical-session.target
 # Fixes xdg-desktop-portal.service: Job xdg-desktop-portal.service/start failed with result 'dependency'.
-exec_always --no-startup-id systemctl --user start sway-session.target
-
-workspace 3
+exec_always --no-startup-id systemctl --user restart sway-session.target
