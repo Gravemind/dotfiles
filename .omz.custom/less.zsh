@@ -33,6 +33,9 @@ export LESSBINFMT='*u<%02X>'
 #   --redraw-on-quit : on quit, output the current page in terminal
 export LESS='-qRiSM -j5 -z-4'
 
+# Disable man hyphenation (truncated words at eol)
+export MANOPT="--no-hyphenation"
+
 function man() {
 	# `less -J` adds a 2 char-wide search result marker before each lines, so we
 	# need to reduce man's width to account for that.
@@ -42,10 +45,18 @@ function man() {
 # for systemd (journalctl...)
 export SYSTEMD_LESS="$LESS -F"
 
-# Disable man hyphenation (truncated words at eol)
-export MANOPT="--no-hyphenation"
+export NIX_PAGER="less $LESS -FX"
 
 alias lesss='less -+S'
 
 alias -g LESS='|& less'
 alias -g LESSS='|& less -+S'
+
+if command -v lesspipe.sh >& /dev/null
+then
+	export LESSOPEN="|lesspipe.sh %s"
+	if command -v bat >& /dev/null
+	then
+		export LESSCOLORIZER="bat"
+	fi
+fi
