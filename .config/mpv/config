@@ -7,7 +7,7 @@ osd-color=0.7
 
 #volume=70
 hr-seek=yes
-sub-pos=84
+sub-pos=95
 sub-scale=0.6
 
 # Subtitle styles
@@ -37,9 +37,9 @@ screenshot-directory=~/
 
 # MPV downmix better than pulseaudio ?!
 #audio-channels=2
-audio-channels=stereo
+# audio-channels=stereo
 
-audio-swresample-o=lfe_mix_level=1
+# audio-swresample-o=lfe_mix_level=1
 
 # msg-level=vd=v,vo=v,vo/gpu/vaapi-egl=trace
 
@@ -102,6 +102,7 @@ profile=vulkan-next
 #
 [SDR-to-SDR]
 profile-cond=p["video-params/primaries"] ~= "bt.2020" and p["video-target-params/primaries"] ~= "bt.2020"
+target-peak=auto
 # target-trc=srgb
 
 [SDR-to-HDR]
@@ -112,6 +113,7 @@ target-peak=1001  # Workaround pending sway HDR luminance hint
 
 [HDR-to-SDR]
 profile-cond=p["video-params/primaries"] == "bt.2020" and p["video-target-params/primaries"] ~= "bt.2020"
+target-peak=auto
 # vf=format:gamma=gamma2.2 # use gamma 2.2 for SDR
 # target-trc=srgb
 
@@ -314,7 +316,7 @@ opengl-early-flush=no
 #
 [protocol.http]
 force-window=immediate
-volume=80
+# volume=80
 
 # Larger cache
 demuxer-max-bytes=1GiB  # 1GiB / 400Mbit/min (high 4k bitrate) = 21 min
