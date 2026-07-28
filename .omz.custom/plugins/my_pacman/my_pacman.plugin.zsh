@@ -64,24 +64,26 @@ pacup() {
 
 	pacupmir || { echo "$0: pacupmir failed"; return 1; }
 
-	cachedir="/var/cache/pacman/pkg/"
-	if [[ ! -w "$cachedir" ]]
-	then
-		echo "$0: Cannot write cache dir as user, it should be safe to:"
-		echo "$0: $> sudo chmod a+w $cachedir"
-		return 1
-	fi
+	# cachedir="/var/cache/pacman/pkg/"
+	# if [[ ! -w "$cachedir" ]]
+	# then
+	# 	echo "$0: Cannot write cache dir as user, it should be safe to:"
+	# 	echo "$0: $> sudo chmod a+w $cachedir"
+	# 	return 1
+	# fi
 
 	# same as checkupdate's default
 	export CHECKUPDATES_DB="${TMPDIR:-/tmp}/checkup-db-${USER}/"
 
-	# (uses CHECKUPDATES_DB)
 	checkupdates > /dev/null
 	~/bin/pacpend --aur
 
 	# `pacaur` does not catch pacman errors and continues with AUR packages silently, so run pacman alone
-	fakeroot -- pacman -Suw --noconfirm --dbpath "$CHECKUPDATES_DB" --color=always --logfile /dev/null || { echo "${fg_bold[red]}$0: pacman -Suw failed !!$reset_color"; return 1; }
+	# fakeroot --
+	sudo pacman -Suw --noconfirm --dbpath "$CHECKUPDATES_DB" --color=always --logfile /dev/null || { echo "${fg_bold[red]}$0: pacman -Suw failed !!$reset_color"; return 1; }
 	# ( pacaur --aur -Suw --noconfirm --noedit--color=always || { echo "${fg_bold[red]}$0: pacaur --aur -Suw failed !!$reset_color"; return 1; } ) | grep -v '^$'
+
+	# checkupdates --download   # Will run sudo
 
 	if [[ $? -eq 0 ]]
 	then
