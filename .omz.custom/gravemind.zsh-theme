@@ -42,7 +42,7 @@ GMPSDUR2="%{↲%G%}"
 
 gravemind_init_prompt_vars() {
 	_GRAVEMIND_GIT=0
-	[[ "$GRAVEMIND_NO_GIT" != "1" ]] || return 0
+	[[ "${GRAVEMIND_NO_GIT:-}" != "1" ]] || return 0
 	# [[ "$(git config --bool --get oh-my-zsh.hide-status 2>/dev/null)" != "true" ]] || return 0
 	local info
 	IFS=$'\n' info=(
@@ -50,26 +50,26 @@ gravemind_init_prompt_vars() {
 	)
 	unset IFS
 	# echol "<<<" "${info[@]}" ">>>>"
-	[[ -n "${info[1]}" ]] || return 0
+	[[ -n "${info[1]:-}" ]] || return 0
 	_GRAVEMIND_GIT=1
-	_GRAVEMIND_GIT_GITDIR="${info[1]}" # 1-indexed !?
-	_GRAVEMIND_GIT_HEAD_SHA="${info[2]}"
-	_GRAVEMIND_GIT_HEAD_REF="${info[3]}"
+	_GRAVEMIND_GIT_GITDIR="${info[1]:-}" # 1-indexed !?
+	_GRAVEMIND_GIT_HEAD_SHA="${info[2]:-}"
+	_GRAVEMIND_GIT_HEAD_REF="${info[3]:-}"
 	if [[ "$PWD" == "$_GRAVEMIND_GIT_GITDIR" || "$PWD" == "$_GRAVEMIND_GIT_GITDIR"/* ]]; then
 		_GRAVEMIND_GIT_TOPLEVEL="$_GRAVEMIND_GIT_GITDIR"
 	else
 		_GRAVEMIND_GIT_TOPLEVEL="$(cd "${info[4]:-}" && pwd)"
 	fi
-	_GRAVEMIND_GIT_HEAD_REF="${info[3]}"
+	_GRAVEMIND_GIT_HEAD_REF="${info[3]:-}"
 }
 
 gravemind_prompt_user() {
 	# user
-	if [[ $EUID -ne $GRAVEMIND_DEFAULT_USER_ID || -n "$SSH_CONNECTION" ]]; then
+	if [[ $EUID -ne $GRAVEMIND_DEFAULT_USER_ID || -n "${SSH_CONNECTION:-}" ]]; then
 		echo -n " %(!.%F{red}.%F{blue})%n"
 	fi
 	# @host
-	if [[ -n "$SSH_CONNECTION" ]]; then
+	if [[ -n "${SSH_CONNECTION:-}" ]]; then
 		echo -n "%F{green}@%m"
 	fi
 }
@@ -195,14 +195,14 @@ gravemind_prompt_git() {
 
 gravemind_prompt_cc() {
 	local o
-	if [[ -n "$CC" ]]; then
+	if [[ -n "${CC:-}" ]]; then
 		local ccname="$(basename "$CC")"
 		o+=" %F{blue}$ccname"
 	fi
-	if [[ "$ENABLE_RTAGS" == "1" ]]; then
+	if [[ "${ENABLE_RTAGS:-}" == "1" ]]; then
 		o+=" %F{blue}R"
 	fi
-	if [[ "$ENABLE_CCACHE" == "1" ]]; then
+	if [[ "${ENABLE_CCACHE:-}" == "1" ]]; then
 		o+=" %F{blue}C"
 	fi
 	echo -n "$o"
@@ -210,7 +210,7 @@ gravemind_prompt_cc() {
 
 gravemind_prompt_agent() {
 	local o
-	if [[ -n "$SSH_AUTH_SOCK" ]]; then
+	if [[ -n "${SSH_AUTH_SOCK:-}" ]]; then
 		ssh-add -l >& /dev/null
 		if [[ $? == 0 || $? == 1 ]]; then ## returns 1 when connected but no keys
 			local selfpid=$$
@@ -227,7 +227,7 @@ gravemind_prompt_agent() {
 }
 
 gravemind_prompt_proxy() {
-	local o
+	local o=""
 	if [[ -n "${http_proxy:-}" || -n "${https_proxy:-}" ]]; then
 		o="%F{green}P"
 	fi
@@ -309,15 +309,15 @@ gravemind_prompt_group() {
 
 gravemind_prompt_venv() {
 	local venv
-	: "${venv:="$VIRTUAL_ENV"}"
-	: "${venv:="$CONDA_DEFAULT_ENV"}"
+	: "${venv:="${VIRTUAL_ENV:-}"}"
+	: "${venv:="${CONDA_DEFAULT_ENV:-}"}"
 	[[ -n "$venv" ]] || return 0
 	echo -n " %F{cyan}%20<$GMPSTRUNC1<$venv%<<"
 }
 
 gravemind_prompt_spack() {
 	local spack
-	: "${spack:="$SPACK_ENV"}"
+	: "${spack:="${SPACK_ENV:-}"}"
 	[[ -n "$spack" ]] || return 0
 	echo -n " %F{cyan}%20<$GMPSTRUNC1<$spack%<<"
 }
