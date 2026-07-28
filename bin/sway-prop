@@ -10,8 +10,8 @@ rect_code='(.rect | "\(.x),\(.y) \(.width)x\(.height)")'
 tree_json="$(swaymsg -t get_tree)"
 
 rect="$(
-    jq <<<"$tree_json" -r 'recurse(.nodes[]) | select(.visible) | '"$rect_code" \
+    jq <<<"$tree_json" -r 'recurse((.floating_nodes + .nodes)[]) | select(.visible) | '"$rect_code" \
         | slurp -r
 )"
 
-jq <<<"$tree_json" -r --arg rect "$rect" '[recurse(.nodes[]) | select(.visible and '"$rect_code"' == $rect)] | first'
+jq <<<"$tree_json" -r --arg rect "$rect" '[recurse((.floating_nodes + .nodes)[]) | select(.visible and '"$rect_code"' == $rect)] | first'
