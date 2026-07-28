@@ -1,21 +1,25 @@
 
 
-.PHONY: all clean compile fetch
+.PHONY: all clean compile compile-my-packages compile-my-treesit math-preview fetch
 
 all: compile math-preview
 
 clean:
 	find . -name '*.elc' -print -delete
 
-compile:
+compile: compile-my-packages compile-my-treesit
+
+compile-my-packages:
 	./compile-my-packages.el
+
+compile-my-treesit:
+	./compile-my-treesit.el
 
 math-preview:
 	@echo "Compiling $@..."
 	set -eo pipefail; cd $@ && npm install |& sed 's/^/math-preview npm install: /'
 	@echo "Finished $@."
 	@echo ""
-.PHONY: math-preview
 
 fetch:
 	( cd cmake-mode ; ./fetch.sh )

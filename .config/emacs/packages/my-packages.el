@@ -106,6 +106,7 @@
      "math-preview"
      "meson-mode"
      "multiple-cursors"
+     "nix-ts-mode"
      "orderless"
      "org-bullets"
      "pfuture"

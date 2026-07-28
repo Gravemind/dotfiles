@@ -573,3 +573,11 @@
 	path = .config/emacs/packages/math-preview
 	url = https://gitlab.com/matsievskiysv/math-preview.git
 	branch = master
+[submodule ".config/emacs/packages/tree-sitter-nix"]
+	path = .config/emacs/packages/tree-sitter-nix
+	url = https://github.com/nix-community/tree-sitter-nix.git
+	branch = master
+[submodule ".config/emacs/packages/nix-ts-mode"]
+	path = .config/emacs/packages/nix-ts-mode
+	url = https://github.com/nix-community/nix-ts-mode.git
+	branch = trunk

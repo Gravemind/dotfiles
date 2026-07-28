@@ -520,3 +520,12 @@
   :mode (("\\.hs\\'" . haskell-mode)
          )
   )
+
+;;
+;; nix
+;;
+
+(use-package nix-ts-mode
+  :load-path (my-packages-directory "nix-ts-mode")
+  :mode "\\.nix\\'"
+  )
