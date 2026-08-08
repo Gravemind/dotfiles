@@ -29,9 +29,6 @@ function dotfiles() {
 	fi
 }
 
-# alias git
-alias dot="git --git-dir=$DOTFILES_BARE --work-tree=$DOTFILES_ROOT"
-
 # dotfiles command (dotc emacs)
 function dotc() {
 	(
