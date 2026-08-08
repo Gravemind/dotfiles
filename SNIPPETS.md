@@ -5,7 +5,7 @@
 
 ### bash strict template, with helper functions
 
-```sh
+```bash
 #!/bin/bash
 
 set -euo pipefail
@@ -15,24 +15,88 @@ die() { log "error: $*"; exit 1; }
 run() { local c; c="$(printf ' %q' "$@")"; log "+$c"; "$@" || die "command failed ($?):$c"; }
 
 main() {
-    local here
-    here="$(cd "$(dirname "$0")"; pwd)"
-
-    run ls
-    [[ ... ]] || die "some error"
+    [[ -e does/this/exists ]] || die "does not exist, will exit"
+    run cmd fatal on failure
+    local r
+    cmd not fatal || { r=$?; log "just a warning ($r)"; return $r; }
 }
 
 main "$@"
 ```
 
 - `#!/bin/bash` is probably more portable than `#!/usr/bin/bash`
+
 - `set -u`: error on use of unset variable
-- `set -e`: error on uncaught command error
+
+- `set -e`: error on uncaught command failure, except in `&&`, `||`, `if`, `while`, `!`, etc.
+
+  > [!WARNING]
+  > Cannot replace explicit command failure check.
+
 - `set -o pipefail`: error on uncaught command error in a pipeline chain
+
+- `run cmd...`: run cmd with a message, with fatal error (exit) on failure.
+
+
+### more bash misc tricks
+
+```bash
+local here
+here="$(cd "$(dirname "$0")"; pwd)"
+```
+
+```bash
+export PS4='+ '
+set -x
+```
+
+```bash
+# https://flokoe.github.io/bash-hackers-wiki/scripting/debuggingtips/
+export PS4='+ $(printf "[%-30s] " "$$ ${BASH_SOURCE:-?}:${LINENO:-?} ${FUNCNAME[0]:-}${FUNCNAME[0]:+()}")'
+set -x
+```
+
+```bash
+shopt -s nullglob  # Non-matching glob returns nothing
+```
+
+```bash
+# Run command with message, exit on failure
+run() { logrun "$@" || exit $?; }
+# Run command with message, just return exit code
+logrun() {
+    local c="$(printf ' %q' "$@")"
+    log "+$c"
+    "$@" || {
+        local r=$?
+        log "command failed ($?):$c"
+        return $r
+    }
+}
+```
+
+A "logging" `set -e`, still doesn't replace proper explicit command failure checks:
+
+```bash
+set -o errexit   # Exit on uncaught command error, won't catch if/while/&&/||/!/etc.
+set -o errtrace  # Inherit ERR trap in functions
+aterror() {
+    local ret="$1" cmd="$2" file="$3" line="$4" func="$5"
+    echo "(trap ERR) $file: line $line${func:+: in }${func}${func:+()}: command exited $ret: $cmd" >&2
+    exit "$ret"  # Equivalent to set -e
+}
+trap 'aterror "$?" "${BASH_COMMAND:-?}" "${BASH_SOURCE[0]:-?}" "${LINENO:-?}" "${FUNCNAME[0]:-}"' ERR
+```
+
+```sh
+tmpdir="$(mktemp -d -t myscript.XXXXXX)"
+# shellcheck disable=SC2064
+trap "$(printf 'rm -rf -- %q ||:' "$tmpdir")" EXIT
+```
 
 ### array/list operations
 
-```sh
+```bash
 # Command output lines to array
 mapfile -t array < <( command )
 
@@ -43,10 +107,12 @@ mapfile -t array -d " " < <( command )
 shifted=("${array[@]:1}")
 ```
 
-### log to stdout, but escape pipes and redirections
+### log to stdout, even inside pipes and redirections
 
 ```sh
 #!/bin/bash
+
+shopt -s varredir_close  # Close {fd} at exit
 
 # Duplicate stdout fd for logging (makes it immune to future pipes and redirs)
 exec {loggingfd}>&1
@@ -60,33 +126,19 @@ log() { echo "$*" >&$loggingfd; }
 } | sed 's/^/piped:/'
 ```
 
-### Duplicate stdout and stderr to a logfile
+### Merge stderr in stdout, and redirect a copy to a log file
 
 ```sh
 #!/bin/bash
 
-# Merge stdout and stderr to stdout, and duplicate to logfile
+# Merge stderr in stdout, and redirect a copy to a log file
 exec > >(tee logfile) 2>&1
 
 # with timestamps in file
 exec > >(tee >(ts "[%y-%m-%d %H:%M:%.S]" > logfile)) 2>&1
 ```
 
-### bash tmpdir
-
-```sh
-tmpdir="$(mktemp -d -t myscript.XXXXXX)"
-# shellcheck disable=SC2064
-trap "$(printf 'rm -rf -- %q ||:' "$tmpdir")" EXIT
-```
-
-### bash debug helpers
-
-```sh
-# Better debug prefix (bash -x, set -x):
-PS4=$'\e[1;30m''${BASH_SOURCE[0]}:${LINENO:-}+ '$'\e[0m'
-set -x
-```
+AFAIK merge is required to get proper stdout/stderr sync in the log file.
 
 ### Prefix all output lines with date
 
@@ -434,20 +486,49 @@ $ ls -ld /path
 $ chmod g-w /path   # changes the acl mask (!)
 ```
 
-### make
+### makefile
 
 Makefile variable assignment:
 
-| assignment     | evaluated                               | overridable from |
-|----------------|-----------------------------------------|------------------|
-| `VAR = val`    | at each rule start for each use in rule | cli              |
-| `VAR ?= val`   | at each rule start for each use in rule | env and cli      |
-| `VAR := val`   | once at decl                            | cli              |
-| `VAR != shell` | once at decl                            | cli              |
+| assignment     | evaluated                               | overridable from (*) |
+|----------------|-----------------------------------------|----------------------|
+| `VAR = val`    | at each rule start for each use in rule | cli                  |
+| `VAR ?= val`   | at each rule start for each use in rule | env and cli          |
+| `VAR := val`   | once at decl                            | cli                  |
+| `VAR != shell` | once at decl                            | cli                  |
 
-Overridable from cli: `make VAR=42`. Overridable from env: `VAR=42 make`.
+(*): Overridable from cli: `make VAR=42`. Overridable from env: `VAR=42 make`.
 
-make automatic/magic variables:`$@` is the targeted rule name, `$<` is first prerequisite. See https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html
+Rules:
+
+```make
+# Rule
+target1 target2: first-prereq other-prereq | order-only-prereq
+     echo $@ : the running target
+     echo $< : the first prereq
+     echo $^ : all prereqs
+     echo $? : outdated prereqs
+
+# Rule with pattern
+obj/%.o: src/%.c
+     echo $* : the matching '%' in % patterns
+
+# Rule with pattern, only for some files
+$(filter %.o,$(files)): obj/%.o: src/%.c
+```
+
+Magic variables, see https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html .
+
+Some functions:
+
+```make
+dirname := $(dir path)
+filename := $(notdir path)
+abspath := $(abspath names...)
+resolved-canonical-realpath := $(realpath names...)
+glob := $(wildcard *.o)
+substitute-match := $(patsubst %.c,%.o,$(files))
+```
 
 
 ### gdb
