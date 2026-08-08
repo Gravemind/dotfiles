@@ -3,6 +3,7 @@
 #
 # bare git dotfiles:
 #
+# ~/dotfiles/README.md
 # https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
 # https://news.ycombinator.com/item?id=11071754
 #
@@ -10,7 +11,9 @@
 DOTFILES_ROOT="$HOME"
 DOTFILES_BARE="$HOME/.dotfiles.git"
 
-# creates a symlink ~/.git to ~/.dotfiles.git
+# $ dotfiles
+# Toggles $HOME as git repo.
+# Creates or removes the symlink ~/.git to ~/.dotfiles.git
 # (works with magit (GIT_DIR not supported by magit anymore...))
 # Note: could also be a regular file containing: 'gitdir: /home/user/.dotfiles.git'
 function dotfiles() {
@@ -29,7 +32,10 @@ function dotfiles() {
 	fi
 }
 
-# dotfiles command (dotc emacs)
+# $ dotc cmd...
+# $ dotc git log
+# Runs cmd... with env setup to force git to use HOME as git repo
+# Note: will override/ignore any repo or submodule from current directory
 function dotc() {
 	(
 		export GIT_DIR="$DOTFILES_BARE"
@@ -38,14 +44,8 @@ function dotc() {
 	)
 }
 
-# dotfiles status
+# $ dots
+# Runs git status on dotfiles git repo
 function dots() {
-	(
-		export GIT_DIR="$DOTFILES_BARE"
-		export GIT_WORK_TREE="$DOTFILES_ROOT"
-		git -c status.showUntrackedFiles=normal ls-files |
-			sed -E 's#(.*)/.*?#\1#g' |
-			sort -u |
-			xargs git -c status.showUntrackedFiles=normal s
-	)
+	dotc git status -sb
 }

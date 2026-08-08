@@ -1,13 +1,13 @@
 
 ## Bare git dotfiles:
 
-Tweaked version of the dotfiles as a git bare repo way:
+Tweaked version of the dotfiles as git bare repo way:
 * https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
 * https://news.ycombinator.com/item?id=11071754
 
 Here is a short How To:
 
-#### Setup: Bare clone:
+#### Setup: Bare clone to `.dotfiles.git`, add the `.git` symlink:
 
 ```bash
 cd ~
@@ -21,22 +21,19 @@ git config --local core.bare false
 git config --local remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
 git fetch
 
-# Unstage "deleted" files
+# All files will be marked as staged for deletion,
+# so we unstage "deleted" files
 git reset HEAD .
 ```
 
-#### Use: HOME as a git repo:
+#### Use: Enable/Disable HOME as git repo:
 
-Note: the `git clone` already globally made your HOME a git repo: it created a
-`~/.git` file referencing `~/.dotfiles.git`.
+- Disable by removing the symlink `rm ~/.git`
+- Enable by creating the symlink `cd ~ ; ln -sfT .dotfiles.git .git`
 
-* To globally disable HOME as a git repo: `rm ~/.git`
-* To globally enable: `cd ~ ; ln -sfT .dotfiles.git .git`
-* [See helpers in `.omz.custom/dotfiles.zsh`](../.omz.custom/dotfiles.zsh), eg:
-  * `dotfiles` globally toggles HOME as git repo (with symlink `.git` to `.dotfiles.git`)
-  * `dot` alias to `git --git-dir=...`, so you can `dot status/add/commit` etc...
+See [helpers in `.omz.custom/dotfiles.zsh`](../.omz.custom/dotfiles.zsh)
 
-When globally enabled, HOME behaves like any other git repo:
+When enabled, HOME behaves like any other git repo:
 
 ```bash
 cd ~
@@ -46,10 +43,10 @@ git diff ...
 # gitk/magit/UIs/etc...
 ```
 
-
-#### Gitignore: Ignore all except ..., using `.git/info/exclude`:
+#### Tips: Ignore all except ..., using `.git/info/exclude`:
 
 Create and commit a **[`.dotfiles.gitignore`](../.dotfiles.gitignore)** file, for example:
+
 ```bash
 # ignore all:
 /*
@@ -58,26 +55,27 @@ Create and commit a **[`.dotfiles.gitignore`](../.dotfiles.gitignore)** file, fo
 !/.gitmodules
 !/.mydotfile1
 !/bin
-#!/...
 ```
 
 Or `git checkout .dotfiles.gitignore` if already commit.
 
 Setup it as `.git/info/exclude` (should conflict less than a `~/.gitignore`, see `man gitignore`):
+
 ```bash
 cd ~
 ln -sfT -r .dotfiles.gitignore .dotfiles.git/info/exclude
 ```
 
-#### Submodules: Checkout, update, and init:
+#### Tips: You can use submodules
 
 Add/update submodules like in other git repo.
 
 Setup/Init existing submodules (those already commit):
+
 ```sh
 git checkout .gitmodules
 # .. rm -rf any existing dirs ...
 git submodule update --init
 ```
 
-#### Multi-configs: as branches rebased onto the master config
+#### Tips: Config for other machines as branches, rebased on main config
