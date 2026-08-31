@@ -8,7 +8,7 @@ set print vtbl on
 set print demangle on
 set print asm-demangle on
 set print frame-arguments none
-set print elements 25
+set print elements 50
 set list 25
 set listsize 25
 set demangle-style gnu-v3

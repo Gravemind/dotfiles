@@ -52,6 +52,9 @@ output "*" subpixel none
 
 # output "*" max_render_time 1
 # for_window [all] max_render_time 2
+# for_window [app_id="mpv"] max_render_time 4
+# # Fix firefox stutters
+# for_window [app_id="(?i)firefox"] max_render_time 2
 
 #
 # Style and behaviors

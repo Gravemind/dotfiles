@@ -88,7 +88,8 @@ export EDITOR='emacs'
 export PAGER='less'
 export BROWSER='firefox'
 
-# `bash -x` "prompt" https://wiki.bash-hackers.org/scripting/debuggingtips
+# `bash -x` "prompt"
+# https://flokoe.github.io/bash-hackers-wiki/scripting/debuggingtips/
 export PS4='+$$+${BASH_SOURCE:-?}:${LINENO:-?}+${FUNCNAME[0]:-?}+ '
 
 # less config

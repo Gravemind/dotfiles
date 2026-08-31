@@ -26,6 +26,9 @@
 *color14: #6cc6c3
 *color13: #bb7793
 
+XTerm.vt100.faceName: DejaVu Sans Mono:antialias=true
+XTerm.vt100.faceSize: 9
+
 URxvt*urgentOnBell:     true
 
 URxvt*loginShell:       true

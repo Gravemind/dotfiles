@@ -23,3 +23,8 @@
 --sub-lang=en
 #--sub-format=ass
 #--convert-subs=ass
+
+--abort-on-error
+--abort-on-unavailable-fragment
+--fragment-retries 10
+--retry-sleep linear=1::4

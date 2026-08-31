@@ -34,5 +34,6 @@ export OS=`uname -s`
 # add bell (urgent alert) to sudo password prompt
 export SUDO_PROMPT=$'\a'"[sudo] [%u@%h] password for %p: "
 
-# `bash -x` "prompt" https://wiki.bash-hackers.org/scripting/debuggingtips
+# `bash -x` "prompt"
+# https://flokoe.github.io/bash-hackers-wiki/scripting/debuggingtips/
 export PS4='+$$+${BASH_SOURCE:-?}:${LINENO:-?}+${FUNCNAME[0]:-?}+ '

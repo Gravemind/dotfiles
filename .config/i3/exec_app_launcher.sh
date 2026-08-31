@@ -19,7 +19,8 @@ cmd=(
     -display-window ' window'
 
     -drun-match-fields name,exec
-    -drun-display-format '{name} <span size="small" alpha="80%">{exec}</span>'
+    # -drun-display-format '{name} <span size="small" alpha="80%">{exec}</span>'
+    -drun-display-format '{name}[ {generic}][<span weight="light" size="small" alpha="80%"> {comment}</span>][<span weight="light" size="small" alpha="70%"> {categories}</span>]<span weight="light" size="small" alpha="60%"> {exec}</span>'
 
     # -drun-show-actions
 )
