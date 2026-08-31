@@ -6,12 +6,19 @@
 #
 # Using `info/exclude` should conflict less than a `~/.gitignore`
 #
+# Notes:
+#
+# List ignored files here:
+# $ git check-ignore *
+#
+# This should be empty (files tracked but ignored):
+# $ git ls-ignored-tracked
+#
 
-# Ignore all files/dirs only at **first-depth** (leading `/`):
+# Ignore all here
 /*
 
-# Un-ignore dotfiles:
-#!/.*
+# Un-ignore those:
 
 !/.gitconfig
 !/.gitmodules

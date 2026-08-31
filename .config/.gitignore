@@ -1,3 +1,41 @@
 #
 # Bare git dotfiles's gitgnore
 #
+# See ~/.dotfiles.gitignore
+#
+
+# Ignore all here
+/*
+
+# Un-ignore those:
+
+!/.gitignore
+!/alacritty
+!/clipcat
+!/dunst
+!/emacs
+!/feh
+!/fontconfig
+!/foot
+!/greenclip.toml
+!/gtk-3.0
+!/i3
+!/lesskey
+!/mpd
+!/mpv
+!/pipewire
+!/ripgrep
+!/rofi
+!/starship.toml
+!/swappy
+!/sway
+!/systemd
+!/tmux
+!/user-dirs.dirs
+!/user-dirs.locale
+!/youtube-dl
+!/yt-dlp
+
+!/VSCodium
+/VSCodium/**
+!/VSCodium/User/settings.json
