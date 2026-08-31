@@ -93,18 +93,20 @@ class Rofi:
         assert entry not in self.entries, f"duplicated entry: {entry!r}"
         assert entry == entry.rstrip()
         self.proc.stdin.write(entry + "\n")
+        self.proc.stdin.flush()
         self.entries.append(entry)
         self.actions.append(action)
 
     def __exit__(self, exc_type, exc_value, tb):
         proc = self.proc
         self.proc = None
-        if exc_type is not None:
-            proc.stdin.write("\nERROR: python code exception: ERROR: \n")
-            traceback.print_exc(file=proc.stdin)
-            proc.stdin.close()
-            proc.wait()
-            proc.kill()
+        if exc_value is not None:
+            if isinstance(exc_value, Exception) and proc is not None:
+                proc.stdin.write("\nERROR: python code exception: ERROR: \n")
+                traceback.print_exc(file=proc.stdin)
+                proc.stdin.close()
+                proc.wait()
+                proc.kill()
             return
         proc.stdin.close()
         stdout, _ = proc.communicate()
