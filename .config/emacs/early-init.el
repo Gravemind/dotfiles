@@ -17,10 +17,10 @@
 (setq inhibit-x-resources t)
 
 ;; Set background early
-(add-to-list 'default-frame-alist '(background-color . "#101010"))
-(add-to-list 'default-frame-alist '(alpha-background . 96))
-;; Execute me: (set-frame-parameter nil 'alpha-background 96)
-;; Execute me: (set-frame-parameter nil 'background-color "#101010")
+(add-to-list 'default-frame-alist '(background-color . "#202020"))
+(add-to-list 'default-frame-alist '(alpha-background . 98))
+;; Execute me: (set-frame-parameter nil 'alpha-background 98)
+;; Execute me: (set-frame-parameter nil 'background-color "#181818")
 ;; (set-frame-parameter nil 'alpha-background 98)
 ;; (set-frame-parameter nil 'background-color "#18181B")
 

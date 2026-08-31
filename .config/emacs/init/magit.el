@@ -139,10 +139,15 @@
     (magit-run-git-async "merge" (delete "--no-ff" args) rev))
 
   (defun my-magit-diff-upstream (&optional args files)
-    "Show changes between the working tree and the upstream."
+    "Show diff @..@{upstream}. Use prefix to show diff @..<commit under cursor>"
     (interactive (magit-diff-arguments))
     (let ((current (or (magit-get-current-branch) (user-error "No current branch")))
-          (upstream (or (magit-get-upstream-branch) (user-error "No upstream for current branch")))
+          (upstream (if current-prefix-arg
+                        (or (pcase (magit-diff--dwim)
+                              (`(commit . ,value) value))
+                              (user-error "cannot dwim"))
+                      (or (magit-get-upstream-branch) (user-error "No upstream for current branch"))
+                      ))
           )
       (magit-diff-setup-buffer (format "%s..%s" current upstream) nil args files 'committed)))
 

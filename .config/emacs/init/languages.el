@@ -413,6 +413,7 @@
 ;; https://github.com/flycheck/flycheck-inline
 (use-package flycheck-inline
   :load-path (my-packages-directory "flycheck-inline")
+  :disabled t ;; deprecated in favor of builtin global-flycheck-annotate-mode
   :commands (flycheck-inline-mode)
   )
 

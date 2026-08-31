@@ -37,7 +37,7 @@
 
   (setq-default
    ;; Max recent files entries
-   recentf-max-saved-items 1000
+   recentf-max-saved-items 5000
 
    ;; Stat all files to remove deleted ones (recentf-cleanup)
    ;;recentf-auto-cleanup 60 ;; after N seconds
@@ -492,6 +492,9 @@
    ;; Highlight in all windows
    ahs-highlight-all-windows t
    )
+
+  ;; I keep pressing it by accident
+  (unbind-key "C-x C-a" auto-highlight-symbol-mode-map)
 
   (defun ahs-select-range (pred range &optional reverse onlydef)
     "Select highlighted symbol."

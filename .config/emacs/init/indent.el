@@ -34,6 +34,8 @@
 
    (gud-mode             8 t 8)
    (gdb-inferior-io-mode 8 t 8)
+
+   (dockerfile-mode 4 nil 8)
    )
 
  my-default-indentations-by-dtrt-lang

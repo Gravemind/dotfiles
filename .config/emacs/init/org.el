@@ -28,6 +28,9 @@
    ;; https://www.emacswiki.org/emacs/OrgMode
    org-replace-disputed-keys t
 
+   ;; begin_src block indentation
+   org-edit-src-content-indentation 0
+
    org-babel-load-languages '((emacs-lisp . t) (python . t) (gnuplot . t) (shell . t))
    org-confirm-babel-evaluate nil
    org-src-preserve-indentation nil

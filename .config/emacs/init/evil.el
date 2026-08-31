@@ -236,7 +236,9 @@ point."
 ;; Required by evil for `g;`
 (use-package goto-chg
   :load-path (my-packages-directory "goto-chg")
-  :defer t)
+  :after evil
+  :demand t
+  )
 
 ;; evil-compatible bindings for a lot of modes
 (use-package evil-collection
