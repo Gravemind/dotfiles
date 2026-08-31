@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;;
 ;; Allow for testing bare emacs with my-packages appended to load-path
 ;;

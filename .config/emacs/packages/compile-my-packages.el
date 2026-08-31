@@ -1,4 +1,5 @@
 #!/usr/bin/env -S emacs -Q -batch -l
+;; -*- lexical-binding: t; -*-
 ;;
 ;; Compile all .el files in my-packages-load-path from my-packages.el
 ;;

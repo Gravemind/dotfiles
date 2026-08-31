@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;;
 ;; emacs -Q -l ~/.emacs.d/vanilla-packages.el
 ;;

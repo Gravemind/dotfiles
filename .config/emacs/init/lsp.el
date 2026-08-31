@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 
 (use-package lsp-mode
   :load-path (my-packages-directory "lsp-mode")

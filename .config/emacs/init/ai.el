@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 
 (use-package gptel
   :load-path (my-packages-directory "gptel")

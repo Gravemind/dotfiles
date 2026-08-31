@@ -1,4 +1,5 @@
 #!/usr/bin/env -S emacs -Q -batch -l
+;; -*- lexical-binding: t; -*-
 ;;
 ;; Compile custom tree-sitter repos
 ;;
