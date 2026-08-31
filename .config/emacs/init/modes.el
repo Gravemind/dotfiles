@@ -83,7 +83,7 @@
 ;; Fix ediff with zoom-mode
 ;; https://github.com/cyrus-and/zoom/issues/29
 (defun my/fix-ediff-size ()
-  (when-let ((w (get-buffer-window "*Ediff Control Panel*")))
+  (when-let* ((w (get-buffer-window "*Ediff Control Panel*")))
     (with-selected-window w
       (setq window-size-fixed t)
       (window-resize (selected-window) (- (if ediff-use-long-help-message 20 5) (window-total-height)) nil t))))

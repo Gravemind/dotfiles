@@ -92,10 +92,10 @@ for the current major mode (uses dtrt)"
   "Lookup my-default-indentations* and apply it"
 
   ;; (require 'dtrt-indent)
-  (when-let ((indentations
-              (cond ((assoc major-mode my-default-indentations-by-mode))
-                    ((assoc (nth 1 (dtrt-indent--search-hook-mapping major-mode)) my-default-indentations-by-dtrt-lang))))
-             )
+  (when-let* ((indentations
+               (cond ((assoc major-mode my-default-indentations-by-mode))
+                     ((assoc (nth 1 (dtrt-indent--search-hook-mapping major-mode)) my-default-indentations-by-dtrt-lang))))
+              )
     ;;(message "indentations: %s" indentations)
     (jo--set-indent-vars (nth 1 indentations) (nth 2 indentations) (nth 3 indentations))
     )
@@ -213,8 +213,8 @@ spaces are treated."
   ;; (add-hook 'editorconfig-after-apply-functions
   ;;           (lambda (props)
   ;;             ;; set tab-stop-list
-  ;;             (when-let ((indent_size (gethash 'indent_size props)))
-  ;;               (when-let (((editorconfig-string-integer-p indent_size))
+  ;;             (when-let* ((indent_size (gethash 'indent_size props)))
+  ;;               (when-let* (((editorconfig-string-integer-p indent_size))
   ;;                          (indent_size (string-to-number indent_size)))
   ;;                 (setq tab-stop-list (number-sequence indent_size 200 indent_size))
   ;;                 ))

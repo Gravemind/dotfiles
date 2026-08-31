@@ -43,7 +43,7 @@
     (let* ((bfname (or buffer-file-truename buffer-file-name dired-directory))
            (fname (when bfname (file-truename bfname))))
       (if fname
-          (if-let ((_proj (my/project-root-directory fname)))
+          (if-let* ((_proj (my/project-root-directory fname)))
               (let* ((proj (directory-file-name (file-truename _proj)))
                      (proj-parent (directory-file-name (file-name-directory proj)))
                      (proj-name (file-name-nondirectory proj))
