@@ -1,2 +1,3 @@
 /load-paths.el
 /autoloads.el
+*.elc
