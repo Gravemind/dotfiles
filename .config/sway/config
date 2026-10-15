@@ -211,26 +211,26 @@ set $hibernate ~/bin/slock hibernate
 # Lock, Restart, Reboot...
 set $mode_system "    <u>e</u>xit  relo<u>a</u>d  <u>r</u>estart  ·  <u>i</u>dle  ·  <u>s</u>hutdown  re<u>b</u>oot  ·  s<u>u</u>spend  <u>h</u>ibernate  ·  <u>w</u>allpaper  "
 mode --pango_markup $mode_system {
-    # bindsym l exec --no-startup-id $locker, mode "default"
-    # bindsym c exec --no-startup-id $locker, mode "default"
+    # bindsym l exec --no-startup-id $locker, mode default
+    # bindsym c exec --no-startup-id $locker, mode default
 
-    bindsym e exec --no-startup-id i3-msg exit, mode "default"
-    bindsym a exec --no-startup-id i3-msg reload, mode "default"
-    bindsym r exec --no-startup-id i3-msg reload, mode "default" # No restart on sway !?
+    bindsym e mode default, exec --no-startup-id i3-msg exit
+    bindsym a mode default, exec --no-startup-id i3-msg reload
+    bindsym r mode default, exec --no-startup-id i3-msg reload # No restart on sway !?
 
-    bindsym i mode "default", exec --no-startup-id ~/bin/swayidle-once
+    bindsym i mode default, exec --no-startup-id ~/bin/swayidle-once
 
-    bindsym s exec --no-startup-id systemctl poweroff, mode "default"
-    bindsym b exec --no-startup-id systemctl reboot, mode "default"
+    bindsym s mode default, exec --no-startup-id systemctl poweroff
+    bindsym b mode default, exec --no-startup-id systemctl reboot
 
-    bindsym u exec --no-startup-id $suspend, mode "default"
-    bindsym h exec --no-startup-id $hibernate, mode "default"
+    bindsym u mode default, exec --no-startup-id $suspend
+    bindsym h mode default, exec --no-startup-id $hibernate
 
-    bindsym w exec --no-startup-id $here/wallpaper_cycle, mode "default"
+    bindsym w mode default, exec --no-startup-id $here/wallpaper_cycle
 
-    bindsym q mode "default"
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
+    bindsym q mode default
+    bindsym Return mode default
+    bindsym Escape mode default
 }
 bindsym $ModK+Escape mode $mode_system
 
@@ -344,27 +344,27 @@ mode --pango_markup $mode_resize {
 
     bindsym Tab move workspace to output right, mode default
 
-    bindsym s sticky toggle, mode "default"
+    bindsym s mode default, sticky toggle
 
-    bindsym e output * power on, mode "default"
-    bindsym Shift+e output * enable, output * power on, mode "default"
-    bindsym d output * power off, mode "default"
+    bindsym e mode default, output * power on
+    bindsym Shift+e mode default, output * enable, output * power on
+    bindsym d mode default, output * power off
 
-    bindsym w exec --no-startup-id $here/wallpaper_cycle, mode "default"
-    # bindsym x exec --no-startup-id ~/bin/setup-xrandr, mode "default"
-    bindsym v exec --no-startup-id exec $here/exec_video_mode.sh, mode "default"
+    bindsym w mode default, exec --no-startup-id $here/wallpaper_cycle
+    # bindsym x mode default, exec --no-startup-id ~/bin/setup-xrandr
+    bindsym v mode default, exec --no-startup-id exec $here/exec_video_mode.sh
 
-    # bindsym r output - hdr toggle, mode "default"  # Config wont load on sway 1.11
-    bindsym r exec --no-startup-id exec swaymsg "output - hdr toggle", mode "default"
+    # bindsym r mode default, output - hdr toggle   # Config wont load on sway 1.11
+    bindsym r mode default, exec --no-startup-id exec swaymsg "output - hdr toggle"
 
-    bindsym u exec --no-startup-id exec ~/bin/rofi-udisks, mode "default"
-    bindsym p exec --no-startup-id exec ~/bin/rofi-pw, mode "default"
+    bindsym u mode default, exec --no-startup-id exec ~/bin/rofi-udisks
+    bindsym p mode default, exec --no-startup-id exec ~/bin/rofi-pw
 
-    bindsym g gaps horizontal current toggle $hgap, mode "default"
+    bindsym g mode default, gaps horizontal current toggle $hgap
 
-    bindsym q mode "default"
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
+    bindsym q mode default
+    bindsym Return mode default
+    bindsym Escape mode default
 }
 bindsym $ModK+r mode $mode_resize
 
