@@ -113,22 +113,24 @@ plugins=(
 
 VI_MODE_SET_CURSOR=true
 
-# Execute command after loading omz, but before shell apears
-# http://www.zsh.org/mla/users/2005/msg00599.html
-#   Usage;
-#     zsh -is eval echo do something
-#
-if [[ $1 == eval ]]
-then
-	shift
-	[[ $1 != '-e' ]] || shift
-	echo "Executing input command \"$@\" ..."
-	eval "${@}"
-fi
-
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
+
+# Execute a command after loading omz, but before shell appears,
+# see http://www.zsh.org/mla/users/2005/msg00599.html
+#
+# usage:
+#     $ zsh -is command echo "a   command"
+#     $ zsh -is eval 'echo "a   command"; another'
+#
+if [[ $1 == eval || $1 == command ]]
+then
+    echo "(executing$(printf ' %q' "$@"))"
+    "$@"
+    echo "(exit $? from$(printf ' %q' "$@"))"
+    set --
+fi
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
