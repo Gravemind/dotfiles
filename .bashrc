@@ -14,17 +14,15 @@ fi
 #     source /usr/share/modules/init/bash
 # fi
 
-# Prepend to PATH (reverse order)
+# Prepend to PATH (reverse order, no duplicates)
 for p in "$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/bin"
 do
-    if [[ -d "$p" ]]
-    then
-        PATH=":${PATH}:"
-        PATH="${PATH//:$p:/:}"
-        PATH="${PATH#:}"
-        PATH="${PATH%:}"
-        export PATH="$p:$PATH"
-    fi
+    [[ -d "$p" ]] || continue
+    PATH=":${PATH}:"
+    PATH="${PATH//:$p:/:}"
+    PATH="${PATH#:}"
+    PATH="${PATH%:}"
+    export PATH="$p:$PATH"
 done
 unset p
 

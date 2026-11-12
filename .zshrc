@@ -1,36 +1,20 @@
 #!/usr/bin/env zsh
 
-# Prepend to PATH (reverse order)
+# Prepend to PATH (reverse order, no duplicates)
 for p in "$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/bin"
 do
-    if [[ -d "$p" ]]
-    then
-        PATH=":${PATH}:"
-        PATH="${PATH//:$p:/:}"
-        PATH="${PATH#:}"
-        PATH="${PATH%:}"
-        export PATH="$p:$PATH"
-    fi
+    [[ -d "$p" ]] || continue
+    PATH=":${PATH}:"
+    PATH="${PATH//:$p:/:}"
+    PATH="${PATH#:}"
+    PATH="${PATH%:}"
+    export PATH="$p:$PATH"
 done
 unset p
 
-[[ -f ~/.zshrc.local ]] && . ~/.zshrc.local
+[[ -f ~/.ghcup/env ]] && . ~/.ghcup/env # ghcup-env
 
-## emacs tramp
-if [[ "$TERM" == "dumb" || "$TERM" == "tramp" ]]
-then
-	unsetopt zle
-	unsetopt prompt_cr
-	unsetopt prompt_subst
-	if whence -w precmd >/dev/null; then
-		unfunction precmd
-	fi
-	if whence -w preexec >/dev/null; then
-		unfunction preexec
-	fi
-	PS1='$ '
-	return
-fi
+[[ -f ~/.zshrc.local ]] && . ~/.zshrc.local
 
 # Load environment modules
 # if ! type module >/dev/null 2>&1 && [[ -f /usr/share/modules/init/bash ]]
@@ -38,6 +22,21 @@ fi
 #     source /usr/share/modules/init/zsh
 # fi
 
+## emacs tramp
+if [[ "$TERM" == "dumb" || "$TERM" == "tramp" ]]
+then
+    unsetopt zle
+    unsetopt prompt_cr
+    unsetopt prompt_subst
+    if whence -w precmd >/dev/null; then
+        unfunction precmd
+    fi
+    if whence -w preexec >/dev/null; then
+        unfunction preexec
+    fi
+    PS1='$ '
+    return
+fi
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -114,15 +113,15 @@ VI_MODE_SET_CURSOR=true
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-	gitfast
-	syntax-highlight-git
-	history-substring-search
-	autojump
-	safe-paste
-	my_pacman
-	# my_laptop
-	vi-mode
-	fzf
+    gitfast
+    syntax-highlight-git
+    history-substring-search
+    autojump
+    safe-paste
+    my_pacman
+    # my_laptop
+    vi-mode
+    fzf
 )
 
 source $ZSH/oh-my-zsh.sh
