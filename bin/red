@@ -26,9 +26,9 @@ colstep=1000	# temperature step
 bristep=20	# brightness step
 gamstep=0	# gamma step * 100
 
-colors=(6500 6000 5500 5000 4000)
-brighs=(100  90   80   80   80)
-gammas=(100  100  100  100  100)
+colors=(6500 5600 5000 4000 3500)
+brighs=(80   80   70   60   40)
+gammas=(100  100  100  110  120)
 
 enable_current_output=0
 
@@ -127,7 +127,7 @@ esac
 
 max=$((${#colors[@]} - 1))
 value=$((value < 0 ? 0 : value))
-value=$((value > max ? max : value))
+value=$((value > max + 1 ? max + 1 : value))
 
 ## save value(s)
 
@@ -151,12 +151,16 @@ then
 	# bri=$((- $value * $bristep + $bria))
 	# gam=$((- $value * $gamstep + $gama))
 
-	col="${colors[$value]}"
-	bri="${brighs[$value]}"
-	gam="${gammas[$value]}"
+	i=$((value - 1))
+	col="${colors[$i]}"
+	bri="${brighs[$i]}"
+	gam="${gammas[$i]}"
 
 	bri=$(echo "scale=3; $bri / 100.0" | bc)
 	gam=$(echo "scale=3; $gam / 100.0" | bc)
+
+	# bri=$(printf '%.2f' "$bri")
+	# gam=$(printf '%.2f' "$gam")
 
 	icon="$notify_icon_on"
 
