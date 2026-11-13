@@ -106,5 +106,3 @@ alias BASH='bash_literally #'
 rmlastnl() {
 	perl -pe 'chomp if eof'
 }
-
-alias j=z

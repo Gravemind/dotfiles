@@ -4,7 +4,7 @@
 __systemctl_journal() {
 	local sudo="${1:-}"
 	shift
-	$sudo echo "$fg_bold[blue]Begin $sudo systemctl $@ & ...$reset_color"
+	$sudo echo "$fg_bold[blue]Begin $sudo systemctl $@ & ...$reset_color" || return 1
 	begin="$(date +'%F %T')"
 	{
 		$sudo systemctl --no-pager "$@"

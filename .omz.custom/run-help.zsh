@@ -73,7 +73,14 @@ run-help-sudo() {
 # Find man for up to "command subcommand subsubcommand"
 _run-help-sub-command() {
 	local base="$1"
-	shift
+	while [[ $# -gt 0 ]]; do
+		case "$1"
+		in
+			-*) shift; ;;
+			*=*) shift; ;;
+			*) base="$1"; shift; break ;;
+		esac
+	done
 	if [[ $# -ge 2 && "$1" =~ ^[a-z_-]+$ && "$2" =~ ^[a-z_-]+$ ]] && man -w $base-$1-$2; then
 		man $base-$1-$2
 	elif [[ $# -ge 1 && "$1" =~ ^[a-z_-]+$ ]] && man -w $base-$1; then

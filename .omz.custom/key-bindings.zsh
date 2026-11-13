@@ -48,13 +48,13 @@ do
 	# bindkey -M $b '^I' complete-word			  # [Ctrl-I]
 
 	# Quote region
-	bindkey -M $b "^[\'" quote-region			  # [Meta-']
+	bindkey -M $b "^[\'" quote-region			  # [Alt-']
 
 	# Copy-Paste
 	bindkey -M $b '^G' deactivate-region					    # [Ctrl-G]
 	bindkey -M $b '^W' kill-region								# [Ctrl-W]
 	bindkey -M $b '\e[2^' copy-region-as-kill-xclip-deactivate	# [Ctrl-Insert]
-	bindkey -M $b '^[w' copy-region-as-kill-deactivate			# [Meta-W]
+	bindkey -M $b '^[w' copy-region-as-kill-deactivate			# [Alt-W]
 
 	bindkey -M $b "\e[3^" delete-word             # [Ctrl-Del]
 	# Enable Ctrl-Backspace only on supported term
@@ -62,6 +62,7 @@ do
 	in
 		 rxvt*|xterm*|alacritty|foot|tmux*)
 			 bindkey -M $b "^H" backward-delete-word  # [Ctrl-Backspace]
+			 bindkey -M $b "^[^?" backward-delete-word  # [Alt-Backspace]
 			 ;;
 	esac
 
