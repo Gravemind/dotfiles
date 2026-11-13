@@ -38,6 +38,7 @@ local function list()
     local t = {}
     t.args = {'bash', '-c', '"$1" --download=none "$2" | grep "^#" | rofi -dmenu -p "subdl $2"', '--', subdl, path}
     t.capture_stdout = true
+    -- print('+ ' .. table.concat(t.args, " "))
     local res = utils.subprocess(t)
     if res.status ~= 0 then
         mp.osd_message("subd query failed")
@@ -49,6 +50,7 @@ local function list()
     print('Downloading subdl ' .. path .. ' #' .. id .. ' to ' .. output)
     local t = {}
     t.args = {'bash', '-c', '"$1" --download="$3" --existing=overwrite --output="$4" "$2"', '--', subdl, path, id, output}
+    -- print('+ ' .. table.concat(t.args, " "))
     local res = utils.subprocess(t)
     if res.status ~= 0 then
         mp.osd_message("subd download failed")
@@ -62,4 +64,4 @@ local function subdl()
     list()
 end
 
-mp.add_key_binding("Ctrl+j", "subdl", subdl)
+-- mp.add_key_binding("Ctrl+j", "subdl", subdl)

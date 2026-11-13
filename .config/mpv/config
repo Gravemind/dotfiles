@@ -15,7 +15,7 @@ sid=no # no subtitle by default
 # sub-font="Nunito"
 sub-font='Sylexiad Sans Medium'
 sub-font-size=60
-sub-color=1.0/0.5
+sub-color=0.8/0.7
 sub-border-size=4
 blend-subtitles=yes
 
@@ -96,6 +96,12 @@ profile=vulkan-next
 #
 # Profiles
 #
+
+[anime]
+profile-desc="Anime profile"
+sub-pos=80
+sub-ass-override=force
+profile=disable-svp
 
 #
 # SDR/HDR auto profiles
