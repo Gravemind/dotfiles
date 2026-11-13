@@ -1,5 +1,9 @@
 #!/usr/bin/env zsh
 
+if [[ -n "$OMZ_ZPROFILE" ]]; then
+    zmodload zsh/zprof
+fi
+
 # Prepend to PATH (reverse order, no duplicates)
 for p in "$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/bin"
 do
@@ -169,3 +173,7 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+if [[ -n "$OMZ_ZPROFILE" ]]; then
+    zprof
+fi
