@@ -5,11 +5,13 @@ set -euo pipefail
 DOWNLOADS=$HOME/Downloads
 
 VIDEOS=$HOME/Downloads/videos
+AUDIO=$HOME/Downloads/audio
+IMAGES=$HOME/Downloads/images
 BOOKS=$HOME/Downloads/books
 DOCUMENTS=$HOME/Downloads/documents
 
 main() {
-    mkdir -p "$VIDEOS" "$BOOKS" "$DOCUMENTS"
+    mkdir -p "$VIDEOS" "$AUDIO" "$IMAGES" "$BOOKS" "$DOCUMENTS"
 
     local ext file dst
     while IFS='' read -r -u3 file
@@ -19,8 +21,14 @@ main() {
         ext="${file##*.}"
         case "$ext"
         in
-            webm|mkv|mp4)
+            webm|mkv|mp4|vtt|srt)
                 dst="$VIDEOS"
+                ;;
+            ogg|oga|wav|mp3)
+                dst="$AUDIO"
+                ;;
+            png|jpg|jpeg|webp|dng|tiff|exif)
+                dst="$IMAGES"
                 ;;
             epub|epub3|mobi|azw3)
                 dst="$BOOKS"
