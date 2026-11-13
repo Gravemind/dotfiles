@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+# Add existing git clone as submodule, records current branch
+#
+# usage: git-dule-add-exiting path/to/submodule...
+#
+
+set -euo pipefail
+
+log() { echo "$*" >&2; }
+die() { log "error: $*"; exit 1; }
+run() { local c; c="$(printf ' %q' "$@")"; log "+$c"; "$@" || die "command failed ($?):$c"; }
+
+for path in "$@"
+do
+    path="${path%/}"
+    log "$path"
+
+    remote="$(git -C "$path" config --get remote.origin.url)"
+    branch="$(git -C "$path" rev-parse --verify --abbrev-ref HEAD)"
+
+    run git submodule add -b "$branch" "$remote" "$path"
+done
