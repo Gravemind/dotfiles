@@ -1,0 +1,49 @@
+#!/bin/bash
+#
+# usage:
+
+USAGE="onchange files... -- cmd..."
+
+set -euo pipefail
+
+green=$'\e[1;32m'
+red=$'\e[1;31m'
+reset=$'\e[0m'
+
+log() { echo "$*" >&2; }
+die() { log "error: $*"; exit 1; }
+run() { logrun "$@" || exit $?; }
+logrun() {
+    local c
+    c="$(printf ' %q' "$@")"
+    log "${green}+$c${reset}"
+    "$@" || {
+        local r=$?
+        log "${red}command failed ($?):${reset}$c"
+        return $r
+    }
+}
+
+files=()
+cmd=()
+
+while [[ $# -gt 0 ]]
+do
+    case "$1"
+    in
+        --) shift; cmd=("$@"); break; ;;
+        *) files+=("$1"); ;;
+    esac
+    shift
+done
+
+[[ "${#files[@]}" -gt 0 && "${#cmd[@]}" -gt 0 ]] || die "usage: $USAGE"
+
+log "execute command:$(printf ' %q' "${cmd[*]}")"
+log "on change of:$(printf ' %q' "${files[*]}")"
+
+while inotifywait -re close_write "${files[@]}"
+do
+    sleep 0.1
+    logrun "${cmd[@]}" || true
+done
