@@ -1,0 +1,68 @@
+#!/bin/bash
+#
+# Simple sequential command queue executor.
+#
+# Launch queue executor:
+#   $ q
+# Send and enqueue command to executor:
+#   $ q cmd...
+#
+# Remembers PWD but NO other env variables, use: q env MYVAR=42 cmd...
+#
+
+set -euo pipefail
+
+log() { echo "$*" >&2; }
+die() { log "error: $*"; exit 1; }
+run() { local c; c="$(printf ' %q' "$@")"; log "+$c"; "$@" || die "command failed ($?):$c"; }
+
+logd() { log "q:[$(date "+%Y-%m-%d %H:%M:%S")] $*"; }
+
+qlog="/tmp/q.log"
+
+# qfile="/tmp/q.queue"
+# qlock="/tmp/q.lock"
+# queue() { flock -x "$qlock" -c sh -c 'cat >> "$1"' -- "$qfile"; }
+# dequeue() { flock -x "$qlock" -c sh -c 'head -n1 "$1" && sed -i "1d" "$1"' -- "$qfile"; }
+
+# TODO: lock ? concurrent queue executor ?
+qfile="/tmp/q.fifo"
+if [[ ! -e "$qfile" ]]
+then
+    mkfifo "$qfile" || die "fail to mkfifo: $qfile"
+fi
+
+log "(log=$qlog queue=$qfile)"
+
+if [[ $# -eq 0 ]]
+then
+    # Run executor loop
+    exec > >(tee -a "$qlog") 2>&1
+
+    while true
+    do
+        while IFS= read -r cmd
+        do
+            logd "executing command: $cmd"
+            r=0
+            eval "command $cmd" || r=$?
+            if [[ $r -ne 0 ]]
+            then
+                logd "error: command failed ($r): $cmd"
+            else
+                logd "command success: $cmd"
+            fi
+        done < "$qfile"
+    done
+
+else
+    # Send command
+    cmd=(
+        env -C "$PWD"
+        # TODO: more env variables ?
+        "$@"
+    )
+    cmd_ser="$(printf '%q ' "${cmd[@]}")"
+    printf '%s\n' "$cmd_ser" >> "$qfile"
+    logd "enqueued cmd: $cmd_ser" |& tee -a "$qlog"
+fi
