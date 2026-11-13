@@ -635,6 +635,54 @@ Keep Alt pressed then press/release in sequence: PrintScr (SysRq), R, E, I, S, U
 | R   | Replay the kernel log messages on consoles.                                 |
 
 
+### podman (rootless)
+
+(This is for rootless podman. Rootful behavior can differ: --userns etc. see man.)
+
+```sh
+# Run inside current directory (rw), at same pwd, with same UID
+podman run --rm -it --userns=keep-id -v "${PWD}:${PWD}:rw" -w "${PWD}" image /bin/sh
+
+# Ditto, but pwd modifications stay inside the container (leave host $PWD untouched)
+podman run --rm -it --userns=keep-id -v "${PWD}:${PWD}:rw" -w "${PWD}" image /bin/sh
+```
+
+| Volume option                            |                                                               |
+|------------------------------------------|---------------------------------------------------------------|
+| --volume volumename:/cont                | mount a named volume (podman volume list)                     |
+| --volume /host:/cont                     | mount a host directory                                        |
+|                                          |                                                               |
+| --volume /host:/cont:z                   | shared selinux label                                          |
+| --volume /host:/cont:Z                   | private selinux label                                         |
+| --volume /host:/cont:U                   | on startup, chown -R UID:GID /host (UID = host uid or subuid) |
+| --volume /host:/cont:noexec,nosuid,nodev | block usage within container (default is nosuid,nodev)        |
+| --volume /host:/cont:O                   | put an overlay fs (leave host untouched)                      |
+
+| Userns option UID/GID mapping       | cont -> host | cont -> host         | Subuid range used                 |
+|-------------------------------------|--------------|----------------------|-----------------------------------|
+| --userns=auto                       | 0 -> S+off   | X -> S+off           | S+off to S+off+1024 (non-overlap) |
+| --userns=nomap                      | 0 -> S       | X -> S               | all subuids (overlaps!)           |
+| --userns=host or --userns="" (def.) | 0 -> $UID    | X -> S-1             | all subuids (overlaps!)           |
+| --userns=keep-id                    | 0 -> S       | $UID -> $UID, X -> S | all subuids (overlaps!)           |
+| --userns=keep-id:uid=200            | 0 -> S       | 200 -> $UID, X -> S  | all subuids (overlaps!)           |
+
+S = First subuid of /etc/subuid for this user
+off = offset to get a subuid range not already used (ie not overlapping other containers) from /etc/subuid for this user
+
+This means that --userns=auto containers cannot be run at the same time as a all-subuids-consuming
+(the default) containers.
+
+This also means that multiple --userns=host (the default) containers with the same UID number inside
+the container, also maps to the same host UID outside. So they can share some permissions (in volumes
+etc.), this is can be both useful and a security consideration.
+
+### podman compose (rootless)
+
+`.env` file used in `compose.yaml` variable expansions. defaults of `podman-compose --env-file .env`.
+
+`services:X:env_file: .other.env` is used for container environment.
+
+
 ## Python
 
 ### Python2 and Python3 unicode
