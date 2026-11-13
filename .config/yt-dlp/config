@@ -3,9 +3,18 @@
 # Filenames in ASCII, and remove "&" and spaces
 --restrict-filenames
 
+--no-playlist
 --prefer-free-formats
 
-# Download the video with the largest resolution no better than 720p,
+# Retries
+--fragment-retries 10
+--retry-sleep linear=1::4
+
+# Exit failure on error
+--abort-on-error
+--abort-on-unavailable-fragment
+
+# Download the video with the largest resolution no better than 1440p,
 # or the video with the smallest resolution available if there is no such video,
 # preferring larger framerate for formats with the same resolution
 --format-sort res:1440,fps,codec,ext
@@ -14,17 +23,16 @@
 #--format (bv*+ba/b)[protocol=https]
 # bestvideo[vcodec^=av01]+bestaudio/bestvideo[vcodec^=vp9]+bestaudio/bestvideo+bestaudio/best)[height<=?1440][protocol=https]
 
+# Add chapters
+--add-chapters
+--embed-chapters
 
---no-playlist
-
+# Add subs
 --embed-subs
-# --write-sub
+--write-sub
 --write-auto-subs
---sub-lang=en
+--sub-lang=.*orig,en.*,fr.*
+--sub-format "srt/best"
 #--sub-format=ass
 #--convert-subs=ass
 
---abort-on-error
---abort-on-unavailable-fragment
---fragment-retries 10
---retry-sleep linear=1::4
