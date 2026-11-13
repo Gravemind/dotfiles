@@ -7,6 +7,8 @@ shopt -s extglob
 clones_git_root="$HOME/git"
 parent_sh_do_file=""
 
+light_clone_args=("--filter=blob:limit=100k")
+
 error() {
     echo "clones: error: $*" >&2
 }
@@ -68,25 +70,27 @@ fzf_clone() {
     local path
 
     local res
-    res="$(list_git_tops | fzf)"
+    res="$(list_git_tops_and_remotes | fzf)"
+    res="${res%% *}"
 
     if [[ -d "$clones_git_root/$res" ]]
     then
         parent_sh_do cd "$clones_git_root/$res"
     else
-        error "Clone of $1 not found ($path)"
+        error "Clone not found ($res)"
         return 1
     fi
 }
 
 clone() {
     local url=
-    local light=
+    local light=1
     while [[ $# -gt 0 ]]
     do
         case "$1"
         in
             --light) light=1; ;;
+            --no-light) light=0; ;;
             *)
                 [[ -z "$url" ]] || { error "only support a single url"; return 1; }
                 url="$1"
@@ -133,7 +137,7 @@ clone() {
 
     local cmd
     cmd=(git clone)
-    [[ -z "$light" ]] || cmd+=("--filter=blob:limit=200k")
+    [[ -z "$light" ]] || cmd+=("${light_clone_args[@]}")
     cmd+=("$url" "$abspath")
     read -rp "${cmd[*]} ? " ans
     case "$ans"
@@ -151,29 +155,8 @@ clone() {
     parent_sh_do cd "$abspath"
 }
 
-list_git_tops() {
-    (
-        cd "$clones_git_root"
-        perl -MFile::Find -le '
-  sub wanted {
-    if (/^\../) {
-       $File::Find::prune = 1;
-       return;
-    }
-    if (-d && -e "$_/.git") {
-       $File::Find::prune = 1;
-       my $name = $File::Find::name;
-       $name =~ s/^\.\///;
-       print $name;
-    }
-  }
-  find \&wanted, ".";
-' | sort ||:
-    )
-}
-
-list() {
-    list_git_tops
+list_git_tops_and_remotes() {
+    ~/bin/find-git-and-remotes.py "$clones_git_root" 5
 }
 
 upgrade_clones() {
