@@ -41,6 +41,15 @@ main "$@"
 ### more bash misc tricks
 
 ```bash
+$@  # args (excluding $0)
+$#  # length of $@ (so, not counting $0)
+```
+
+```bash
+bash -c 'echo args: $@' -- args...
+```
+
+```bash
 local here
 here="$(cd "$(dirname "$0")"; pwd)"
 ```
@@ -530,6 +539,19 @@ glob := $(wildcard *.o)
 substitute-match := $(patsubst %.c,%.o,$(files))
 ```
 
+Make each rules execute in a single bash shell instance, add bash strict flags:
+
+```make
+SHELL = bash
+.SHELLFLAGS = -eu -c # Catch command errors and unbound variables
+# .SHELLFLAGS = -eu -x -o pipefail -c  # + trace + pipefail
+.ONESHELL:
+
+.PHONY: a
+a:
+	@a=42   # @ just means silent
+	echo a=$$a
+```
 
 ### gdb
 
