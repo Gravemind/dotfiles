@@ -100,8 +100,9 @@ export LESS_TERMCAP_se=$'\e[0m'     # end standout-mode
 export LESS_TERMCAP_us=$'\e[01;36m' # begin underline (words)
 export LESS_TERMCAP_ue=$'\e[0m'     # end underline
 export LESSBINFMT='*u<%02X>'
+
 export LESS='-qRiSM -j5 -z-4'
-export MANPAGER='less -J'
+export MANOPT="--no-hyphenation"
 
 # for systemd (journalctl...)
 export SYSTEMD_LESS="$LESS -F"
