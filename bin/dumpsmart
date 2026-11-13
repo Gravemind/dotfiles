@@ -1,0 +1,81 @@
+#!/bin/bash
+#
+# usage: dumpsmart
+#
+# Very crude smart log of all disks
+#
+
+set -euo pipefail
+
+LOGDIR="$HOME/smartlog"
+
+shopt -s extglob
+shopt -s nullglob
+
+log() { echo "$*" >&2; }
+die() { log "error: $*"; exit 1; }
+# Run command with message, exit on failure
+run() { logrun "$@" || exit $?; }
+# Run command with message, just return exit code
+logrun() {
+    local c="$(printf ' %q' "$@")"
+    log "+$c"
+    "$@" || {
+        local r=$?
+        log "command failed ($?):$c"
+        return $r
+    }
+}
+
+disklink() {
+    local l=""
+    l="$(find -L /dev/disk/by-id -samefile "$1" | sort | head -n1)" || true
+    if [[ -z "$l" ]]
+    then
+        log "error: /dev/disk/by-id not found for $1"
+        return 1
+    fi
+    echo "$l"
+}
+
+run mkdir -p "$LOGDIR"
+
+disks=(
+    /dev/sd+([a-z])
+    /dev/nvme+([0-9])n+([0-9])
+)
+
+log "disks: ${disks[*]}"
+log "logging to: $LOGDIR"
+
+run sudo echo preload sudo
+
+now="$(date +%Y%m%dT%H%M%S%z)"
+
+failed=
+tmpdir="${TMPDIR:-/tmp}"
+
+for d in "${disks[@]}"
+do
+    link="$(disklink "$d")"
+    name="${link##*/}"
+    [[ -n "$name" ]] || die "invalid link: $link for $d"
+    log "$name: $link -> $d"
+    logname="smart-$name-$now.log"
+    logrun sudo smartctl -x "$link" > "$tmpdir/$logname" || {
+        failed+="error: smartctl failed on $link ($d)"$'\n'
+        continue
+    }
+    run cp "$tmpdir/$logname" "$LOGDIR/$logname"
+done
+
+if [[ -n "$failed" ]]
+then
+    log ""
+    log ""
+    log "error: previous errors:"$'\n'"$failed"
+    log ""
+    exit 1
+fi
+
+log done.
