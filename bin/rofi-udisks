@@ -102,7 +102,7 @@ def loop(manager):
         eject = "⏏" if ejectable else "•"
         tree = ""
         add_entry(
-            f"{prefix} {eject} {label or blkid} - {size / 10e9:.2f}GB - {fstype}",
+            f"{prefix} {eject} {label or blkid} - {size / 1e9:.2f}GB - {fstype}",
             action,
         )
 
