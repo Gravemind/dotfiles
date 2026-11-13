@@ -1,0 +1,114 @@
+#!/usr/bin/env python3
+#
+# Convert google takeout youtube subscriptions csv to opml
+#
+# Inspired by: https://github.com/dksaunders/YouTube-Takeout-to-OPML/blob/trunk/yt-opml.py
+
+import argparse
+import json
+from xml.etree import ElementTree as et
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="yt-csv-to-opml takes Google's Takeout CSV for YouTube and converts it to an OPML file. The goal is to facilitate importing the OPML file into an RSS feed reader."
+    )
+    parser.add_argument(
+        "input",
+        type=argparse.FileType("rb"),
+        help="The JSON or CSV file provided by Google.",
+    )
+    parser.add_argument(
+        "output",
+        type=argparse.FileType("wb"),
+        help="The OPML file to be imported into an RSS feed reader.",
+    )
+    args = parser.parse_args()
+
+    subs = []
+
+    if args.input.name.endswith(".csv"):
+        with args.input as takeout:
+            lines = iter(takeout.readlines())
+            header = next(lines)
+            assert header == b"Channel Id,Channel Url,Channel Title\n"
+            for line in lines:
+                line = line.rstrip()
+                if not line:
+                    continue
+                spl = line.split(b",", maxsplit=2)
+                assert len(spl) == 3
+                subs.append(
+                    {
+                        "title": spl[2].decode(),
+                        "description": "",
+                        "channel_id": spl[0].decode(),
+                    }
+                )
+
+    elif args.input.name.endswith(".json"):
+        with args.input as takeout:
+            # YouTube's Takeout contains a subscriptions.json file. It's located at
+            # "./Takeout/YouTube and YouTube Music/subscriptions/subscriptions.json"
+            # The JSON file doesn't have a specification that I can find. It is a
+            # list of subscriptions. The parts that are relevant to creating the
+            # OPML file are
+            #   {
+            #     "snippet": {
+            #       "title",
+            #       "description",
+            #       "resourceId": {
+            #         "channelId"
+            #       }
+            #     }
+            #   }
+            #
+            for channel in json.load(takeout):
+                snippet = (channel.get("snippet"),)
+                resource_id = (snippet.get("resourceId"),)
+                channel_id = (resource_id.get("channelId"),)
+                subs.append(
+                    {
+                        "title": snippet.get("title"),
+                        "description": snippet.get("description"),
+                        "channel_id": channel_id,
+                    }
+                )
+
+    else:
+        assert False, f"Unsupported file {args.input!r}"
+
+    # Initialize the OPML Element
+    opml = et.Element("opml", version="2.0")
+    head = et.SubElement(opml, "head")
+    et.SubElement(head, "title").text = "Google Takeout"
+    body = et.SubElement(opml, "body")
+    youtube = et.SubElement(
+        body,
+        "outline",
+        title="YouTube Subscriptions",
+        text="YouTube Subscriptions",
+        type="folder",
+    )
+
+    for sub in subs:
+        et.SubElement(
+            youtube,
+            "outline",
+            title=sub["title"],
+            text=sub["title"],
+            description=sub["description"],
+            type="rss",
+            # This is the RSS feed for the channel.
+            xmlUrl=f"https://www.youtube.com/feeds/videos.xml?channel_id={sub['channel_id']}",
+            # This is the channel's homepage.
+            htmlUrl=f"https://www.youtube.com/channel/{sub['channel_id']}",
+        )
+
+    # Serialize the OPML Element to the output file
+    tree = et.ElementTree(opml)
+    tree.write(args.output, encoding="UTF-8", xml_declaration=True)
+
+
+if __name__ == "__main__":
+    main()
