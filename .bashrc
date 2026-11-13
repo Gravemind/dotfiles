@@ -160,6 +160,12 @@ take() {
     mkdir -p "$1" && cd "$1"
 }
 
+if command -v zoxide >& /dev/null
+then
+    eval "$(zoxide init bash)"
+    alias j=z
+fi
+
 if [[ -z "${_did_shell_depth:-}" ]]
 then
     _did_shell_depth=1

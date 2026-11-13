@@ -120,7 +120,7 @@ plugins=(
     gitfast
     syntax-highlight-git
     history-substring-search
-    autojump
+    zoxide
     safe-paste
     my_pacman
     # my_laptop
