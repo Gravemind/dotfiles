@@ -5,18 +5,26 @@ import sys
 import random
 import textwrap
 
+
 def print_box_line(l, style):
-    w=12
-    text="\e["+ style + "m"
-    #box="┏━┓┃┃┗━┛"
-    box="┌─┐││└─┘"
-    #box="╭─╮││╰─╯"
+    w = 12
+    text = r"\e[" + style + "m"
+    # box="┏━┓┃┃┗━┛"
+    box = "┌─┐││└─┘"
+    # box="╭─╮││╰─╯"
     if l == 0:
-        sys.stdout.write("\033[{}m{box[0]}{:{box[1]}^{w}}{box[2]}".format(style, '', box=box, w=w))
+        sys.stdout.write(
+            "\033[{}m{box[0]}{:{box[1]}^{w}}{box[2]}".format(style, "", box=box, w=w)
+        )
     elif l == 1:
-        sys.stdout.write("\033[{}m{box[3]}{:^{w}}{box[4]}".format(style, text, box=box, w=w)) # ┣ ┫
+        sys.stdout.write(
+            "\033[{}m{box[3]}{:^{w}}{box[4]}".format(style, text, box=box, w=w)
+        )  # ┣ ┫
     elif l == 2:
-        sys.stdout.write("\033[{}m{box[5]}{:{box[6]}^{w}}{box[7]}".format(style, '', box=box, w=w))
+        sys.stdout.write(
+            "\033[{}m{box[5]}{:{box[6]}^{w}}{box[7]}".format(style, "", box=box, w=w)
+        )
+
 
 def print_boxes(styles):
     for l in range(0, 3):
@@ -25,14 +33,18 @@ def print_boxes(styles):
             print_box_line(l, style)
         sys.stdout.write("\033[0m\n")
 
-styles=[]
-styles_bold=[]
-styles_bg=[]
-for col in list(range(30, 38)):
-    styles.append( str(col) )
-    styles_bold.append( "1;"+str(col) )
-    styles_bg.append( "1;"+str(col)+";"+str(col + 10) )
 
+styles = []
+styles_bold = []
+styles_bg = []
+for col in list(range(30, 38)):
+    styles.append(str(col))
+    styles_bold.append("1;" + str(col))
+    styles_bg.append("1;" + str(col) + ";" + str(col + 10))
+
+sys.stdout.write("\n")
+sys.stdout.write(r"reset color: \e[0m")
+sys.stdout.write("\n")
 
 sys.stdout.write("\n")
 print_boxes(styles)
@@ -40,32 +52,32 @@ print_boxes(styles_bold)
 print_boxes(styles_bg)
 sys.stdout.write("\n")
 
-wrapwidth=70
+wrapwidth = 70
 
 # https://slipsum.com/
-texts=[
-"The path of the righteous man is beset on all sides by the iniquities of the selfish and the tyranny of evil men. Blessed is he who, in the name of charity and good will, shepherds the weak through the valley of darkness, for he is truly his brother's keeper and the finder of lost children. And I will strike down upon thee with great vengeance and furious anger those who would attempt to poison and destroy My brothers. And you will know My name is the Lord when I lay My vengeance upon thee.",
-"Normally, both your asses would be dead as fucking fried chicken, but you happen to pull this shit while I'm in a transitional period so I don't wanna kill you, I wanna help you. But I can't give you this case, it don't belong to me. Besides, I've already been through too much shit this morning over this case to hand it over to your dumb ass.",
-"You think water moves fast? You should see ice. It moves like it has a mind. Like it knows it killed the world once and got a taste for murder. After the avalanche, it took us a week to climb out. Now, I don't know exactly when we turned on each other, but I know that seven of us survived the slide... and only five made it out. Now we took an oath, that I'm breaking now. We said we'd say it was the snow that killed the other two, but it wasn't. Nature is lethal but it doesn't hold a candle to man.",
+texts = [
+    "The path of the righteous man is beset on all sides by the iniquities of the selfish and the tyranny of evil men. Blessed is he who, in the name of charity and good will, shepherds the weak through the valley of darkness, for he is truly his brother's keeper and the finder of lost children. And I will strike down upon thee with great vengeance and furious anger those who would attempt to poison and destroy My brothers. And you will know My name is the Lord when I lay My vengeance upon thee.",
+    "Normally, both your asses would be dead as fucking fried chicken, but you happen to pull this shit while I'm in a transitional period so I don't wanna kill you, I wanna help you. But I can't give you this case, it don't belong to me. Besides, I've already been through too much shit this morning over this case to hand it over to your dumb ass.",
+    "You think water moves fast? You should see ice. It moves like it has a mind. Like it knows it killed the world once and got a taste for murder. After the avalanche, it took us a week to climb out. Now, I don't know exactly when we turned on each other, but I know that seven of us survived the slide... and only five made it out. Now we took an oath, that I'm breaking now. We said we'd say it was the snow that killed the other two, but it wasn't. Nature is lethal but it doesn't hold a candle to man.",
 ]
 
 random.shuffle(texts)
 
-for style in [''] + styles + styles_bold + ['']:
-    text=texts[-1][:wrapwidth]
+for style in [""] + styles + styles_bold + [""]:
+    text = texts[-1][:wrapwidth]
     sys.stdout.write("\033[{}m{}\033[0m\n".format(style, text))
-sys.stdout.write('\n')
+sys.stdout.write("\n")
 
-text="\n".join([ "\n".join(textwrap.wrap(text, width=wrapwidth)) for text in texts ])
+text = "\n".join(["\n".join(textwrap.wrap(text, width=wrapwidth)) for text in texts])
 
-words=text.split(" ")
+words = text.split(" ")
 
-randstyles = styles + styles_bold # + styles_bg
-#randstyles *= 2
+randstyles = styles + styles_bold  # + styles_bg
+# randstyles *= 2
 random.shuffle(randstyles)
 
-words_sampled = [ i for i, word in enumerate(words) if len(word) >= 6 ]
-assert(len(words_sampled) >= len(randstyles))
+words_sampled = [i for i, word in enumerate(words) if len(word) >= 6]
+assert len(words_sampled) >= len(randstyles)
 
 stylei = 0
 for wordi in random.sample(words_sampled, k=len(randstyles)):
